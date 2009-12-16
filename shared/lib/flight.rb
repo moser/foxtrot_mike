@@ -1,30 +1,11 @@
-class Validator
-  attr_reader :proc
-  
-  def initialize(proc)
-    @proc = proc
-  end
-  
-  def validate(record)
-    proc.call record
-  end
-end
-
 class Flight < ActiveRecord::Base
   #server side
   if RAILS_ENV
+    include SoftValidation::Validation
+    soft_validates_presence_of :duration
+    soft_validates_presence_of :departure
     acts_as_revisable
   end
-  
-  def self.soft_validate &block
-    @@soft_validations ||= []
-    @@soft_validations << Validator.new(block)
-  end
-  
-  soft_validate { |r| r.problems[:duration] = "needed" if r.duration.nil? || r.duration == 0 }
-  soft_validate { |r| r.problems[:departure] = "needed" if r.departure.nil? || r.departure == 0 }
-  
-  attr_reader :problems
   
   belongs_to :plane
   belongs_to :crew
@@ -61,13 +42,6 @@ class Flight < ActiveRecord::Base
       self.crew = c
     elsif obj.is_a? Crew
       self.crew_id = obj.id
-    end
-  end
-  
-  def soft_validate
-    @problems = {}
-    @@soft_validations.each do |v|
-      v.validate(self)
     end
   end
 end
