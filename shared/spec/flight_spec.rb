@@ -28,6 +28,13 @@ describe Flight do
     r.macro.should == :belongs_to
   end
   
+  describe "arrival" do
+    it "should return the arrival time" do
+      f = Factory.build(:flight)
+      f.arrival.should == f.departure + f.duration.minutes
+    end
+  end
+  
   describe "crew=" do
     before(:each) do
       @f = Flight.new

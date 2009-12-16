@@ -1,10 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe "/flights/show.html.erb" do
+describe "/flights/show.html.haml" do
   include FlightsHelper
   before(:each) do
     assigns[:flight] = @flight = stub_model(Flight,
-      :duration => 1
+      :duration => 1,
+      :crew => Factory.stub(:crew)
     )
   end
 

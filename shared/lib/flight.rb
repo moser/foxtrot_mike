@@ -13,6 +13,10 @@ class Flight < ActiveRecord::Base
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   
+  def arrival
+    self.departure + self.duration.minutes
+  end
+  
   #Accepts:
   #  - a Person object
   #  - an Array of two Persons (PIC or trainee first)
