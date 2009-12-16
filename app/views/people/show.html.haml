@@ -1,0 +1,19 @@
+%p
+  %b Firstname:
+  =h @person.firstname 
+
+%p
+  %b Lastname:
+  =h @person.lastname 
+
+%p
+  %b Email:
+  =h @person.email 
+
+%p
+  %b Birthdate:
+  =h @person.birthdate 
+
+
+= link_to 'Edit', edit_person_path(@person)
+= link_to 'Back', people_path

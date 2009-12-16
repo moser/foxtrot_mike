@@ -1,0 +1,2 @@
+class WireLaunch < Launch
+end

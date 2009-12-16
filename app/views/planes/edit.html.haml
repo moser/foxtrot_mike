@@ -1,0 +1,19 @@
+%h1 Editing plane
+
+- form_for(@plane) do |f|
+  = f.error_messages
+  %p
+    = f.label :registration
+    %br
+    = f.text_field :registration
+  %p
+    = f.label :make
+    %br
+    = f.text_field :make
+  %p
+    = f.label :plane_cost_category
+    %br
+    = f.select :plane_cost_category_id, PlaneCostCategory.all.collect { |c| [ c.name, c.id ] }
+  = f.submit 'Update'
+
+= link_to 'Back', planes_path

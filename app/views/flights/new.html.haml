@@ -1,0 +1,15 @@
+%h1 New flight
+
+- form_for(@flight) do |f|
+  = f.error_messages
+  %p
+    = f.label :duration
+    %br
+    = f.text_field :duration
+  %p
+    = f.label :departure
+    %br
+    = f.datetime_select :departure
+  = f.submit 'Create'
+
+= link_to 'Back', flights_path

@@ -1,0 +1,15 @@
+%p
+  %b Login:
+  =h @account.login 
+
+%p
+  %b Password:
+  =h @account.password 
+
+%p
+  %b Password confirmation:
+  =h @account.password_confirmation 
+
+
+= link_to 'Edit', edit_account_path(@account)
+= link_to 'Back', accounts_path

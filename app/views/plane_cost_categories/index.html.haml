@@ -1,0 +1,15 @@
+%h1 Listing plane_cost_categories
+
+%table
+  %tr
+    %th Name
+
+  -for plane_cost_category in @plane_cost_categories
+    %tr
+      %td=h plane_cost_category.name
+  
+      %td= link_to 'Show', plane_cost_category_path(plane_cost_category)
+      %td= link_to 'Edit', edit_plane_cost_category_path(plane_cost_category)
+      %td= link_to 'Destroy', plane_cost_category_path(plane_cost_category), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
+    
+= link_to 'New plane_cost_category', new_plane_cost_category_path 

@@ -1,0 +1,11 @@
+- if logged_in?
+  #account-bar-greeting 
+    Logged in as
+    = link_to_current_account
+  #account-bar-action
+    = link_to "Log out", logout_path, { :title => "Log out" }
+- else
+  #account-bar-greeting
+    = 'Not logged in'
+  #account-bar-action
+    = link_to "Log in",  login_path,  { :title => "Log in" }

@@ -1,0 +1,2 @@
+class PoweredAircraft < Plane
+end

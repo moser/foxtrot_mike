@@ -1,0 +1,2 @@
+class SelfLaunch < Launch
+end

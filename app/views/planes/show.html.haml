@@ -1,0 +1,21 @@
+%p
+  %b Registration:
+  =h @plane.registration 
+
+%p
+  %b Make:
+  =h @plane.make
+
+%p
+  %b Cost category:
+  =h PlaneCostCategory.find(@plane.plane_cost_category_id).name rescue 'None'
+  
+%p
+  %b Versions:
+  - @plane.revisions.each do |r|
+    =h r.revisable_number
+    =h r.revisable_current_at
+    %br
+    
+= link_to 'Edit', edit_plane_path(@plane)
+= link_to 'Back', planes_path

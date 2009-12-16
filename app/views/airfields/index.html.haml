@@ -1,0 +1,17 @@
+%h1 Listing airfields
+
+%table
+  %tr
+    %th Registration
+    %th Name
+
+  -for airfield in @airfields
+    %tr
+      %td=h airfield.registration
+      %td=h airfield.name
+  
+      %td= link_to 'Show', airfield_path(airfield)
+      %td= link_to 'Edit', edit_airfield_path(airfield)
+      %td= link_to 'Destroy', airfield_path(airfield), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
+    
+= link_to 'New airfield', new_airfield_path 

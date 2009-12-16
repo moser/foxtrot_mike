@@ -1,0 +1,14 @@
+%h1 New person_cost_category
+
+= error_messages_for :person_cost_category 
+
+- form_for(@person_cost_category) do |f| 
+  %p
+    %b Name
+    %br
+    = f.text_field :name 
+
+  %p
+    = f.submit "Create"
+    
+= link_to 'Back', person_cost_categories_path 

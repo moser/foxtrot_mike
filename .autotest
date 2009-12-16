@@ -1,0 +1,10 @@
+Autotest.add_hook :initialize do |at|
+  at.add_mapping(%r%shared/lib/(.*).rb$%) { |_, m|
+    ["shared/spec/#{m[1]}_spec.rb", "spec/models/#{m[1]}_spec.rb"]
+  }
+  
+  at.add_mapping(%r%^shared/spec/.*rb$%) { |filename, _|
+    filename
+  }
+end
+

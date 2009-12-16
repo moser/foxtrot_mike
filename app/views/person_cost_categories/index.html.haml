@@ -1,0 +1,15 @@
+%h1 Listing person_cost_categories
+
+%table
+  %tr
+    %th Name
+
+  -for person_cost_category in @person_cost_categories
+    %tr
+      %td=h person_cost_category.name
+  
+      %td= link_to 'Show', person_cost_category_path(person_cost_category)
+      %td= link_to 'Edit', edit_person_cost_category_path(person_cost_category)
+      %td= link_to 'Destroy', person_cost_category_path(person_cost_category), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
+    
+= link_to 'New person_cost_category', new_person_cost_category_path 

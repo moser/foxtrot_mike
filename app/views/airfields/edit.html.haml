@@ -1,0 +1,17 @@
+%h1 Editing airfield
+
+= error_messages_for :airfield
+
+- form_for(@airfield) do |f|
+  %p
+    %b Registration
+    = f.text_field :registration 
+  %p
+    %b Name
+    = f.text_field :name 
+    
+  %p= f.submit "Update"
+  
+= link_to 'Show', airfield_path(@airfield)
+= link_to 'Back', airfields_path
+

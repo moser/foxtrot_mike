@@ -1,0 +1,17 @@
+%h1 Listing planes
+%table
+  %tr
+    %th
+      = Plane.human_attribute_name :registration
+  - @planes.each do |plane|
+    %tr
+      %td
+        = h plane.registration
+      %td
+        = link_to 'Show', plane
+      %td
+        = link_to 'Edit', edit_plane_path(plane)
+      %td
+        = link_to 'Destroy', plane, :confirm => 'Are you sure?', :method => :delete
+        
+= link_to 'New plane', new_plane_path

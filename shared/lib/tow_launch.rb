@@ -1,0 +1,2 @@
+class TowLaunch < Launch
+end

@@ -1,0 +1,14 @@
+%h1 Editing person_cost_category
+
+= error_messages_for :person_cost_category
+
+- form_for(@person_cost_category) do |f|
+  %p
+    %b Name
+    = f.text_field :name 
+    
+  %p= f.submit "Update"
+  
+= link_to 'Show', person_cost_category_path(@person_cost_category)
+= link_to 'Back', person_cost_categories_path
+

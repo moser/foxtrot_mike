@@ -1,0 +1,25 @@
+%h1 Listing flights
+%table
+  %tr
+    %th
+      Crew
+    %th
+      Duration
+    %th
+      Departure
+  - @flights.each do |flight|
+    %tr
+      %td
+        = render :partial => "crews/" + flight.crew.class.name.underscore, :locals => { :crew => flight.crew }
+      %td
+        = h flight.duration
+      %td
+        = h flight.departure
+      %td
+        = link_to 'Show', flight
+      %td
+        = link_to 'Edit', edit_flight_path(flight)
+      %td
+        = link_to 'Destroy', flight, :confirm => 'Are you sure?', :method => :delete
+        
+= link_to 'New flight', new_flight_path
