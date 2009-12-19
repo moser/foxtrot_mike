@@ -1,6 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec/spec_helper')
 
 describe Flight do
+  before(:each) do
+    @f = Flight.new
+  end
+
   it "should reference a plane" do
     r = Flight.reflect_on_association :plane
     r.class_name.should == "Plane"
@@ -30,14 +34,43 @@ describe Flight do
   
   describe "arrival" do
     it "should return the arrival time" do
-      f = Factory.build(:flight)
-      f.arrival.should == f.departure + f.duration.minutes
+      @f.arrival.should be_nil
+      @f.departure = 20.minutes.ago
+      @f.duration = 10
+      @f.arrival.should == @f.departure + @f.duration.minutes
+    end
+    
+    it "should set the duration when arrival is set" do
+      @f.departure = 20.minutes.ago
+      @f.arrival = @f.departure + 10.minutes
+      @f.duration.should == 10
+    end
+    
+    it "should set departure and duration if there is no departure set" do
+      d = DateTime.now
+      @f.arrival = d
+      @f.departure.should == d
+      @f.duration.should == 0
+    end
+  end
+  
+  describe "departure" do
+    it "should convert values to utc" do
+      @f.departure = DateTime.now
+      @f.departure.should be_utc
+    end
+    
+    it "should change the duration if it is set" do
+      d = DateTime.now
+      @f.departure = d
+      @f.duration = 1
+      @f.departure = d - 1.minute
+      @f.duration.should == 2
     end
   end
   
   describe "crew=" do
     before(:each) do
-      @f = Flight.new
       @person = Factory.create(:person)
     end
     

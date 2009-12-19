@@ -2,8 +2,8 @@ class Flight < ActiveRecord::Base
   #server side
   if RAILS_ENV
     include SoftValidation::Validation
-    soft_validates_presence_of :duration
-    soft_validates_presence_of :departure
+    soft_validates_presence_of 1, :duration
+    soft_validates_presence_of 1, :departure
     acts_as_revisable
   end
   
@@ -14,8 +14,33 @@ class Flight < ActiveRecord::Base
   belongs_to :to, :class_name => "Airfield"
   
   def arrival
-    self.departure + self.duration.minutes
+    self.departure + self.duration.minutes unless self.departure.nil? || self.duration.nil?
   end
+  
+  def arrival=(time)
+    if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
+      time = time.to_datetime
+      unless self.departure.nil?
+        self.duration = rational_day_to_minutes(time - self.departure.to_datetime)
+      else
+        self.departure = time
+        self.duration = 0
+      end
+    end
+  end
+  
+  def departure=(time)
+    if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
+      time = time.to_datetime
+      unless self.departure.nil? || self.duration.nil?
+        delta = rational_day_to_minutes(self.departure.to_datetime - time)
+        self.duration = self.duration + delta
+      end
+      write_attribute(:departure, time)
+    end
+  end
+  
+  
   
   #Accepts:
   #  - a Person object
@@ -47,5 +72,10 @@ class Flight < ActiveRecord::Base
     elsif obj.is_a? Crew
       self.crew_id = obj.id
     end
+  end
+  
+protected
+  def rational_day_to_minutes(r)
+    (r * 1440).to_i
   end
 end
