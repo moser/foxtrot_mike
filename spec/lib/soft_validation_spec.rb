@@ -25,7 +25,7 @@ describe "soft validation" do
         include SoftValidation::Validation
       end
       klass.soft_validations.size.should == 0
-      klass.soft_validate { |i| }
+      klass.soft_validate(1) { |i| }
       klass.soft_validations.size.should == 1
     end
   end
@@ -35,10 +35,20 @@ describe "soft validation" do
       called = false
       klass = Class.new do
         include SoftValidation::Validation
-        soft_validate { called = true }
+        soft_validate(1) { called = true }
       end
       klass.new.soft_validate
       called.should == true
+    end
+    
+    it "should call only soft validation with severity above the threshold" do
+      klass = Class.new do
+        include SoftValidation::Validation
+        soft_validates_presence_of 1, :a
+        attr_accessor :a
+      end
+      instance = klass.new
+      instance.soft_validate(2).should == true
     end
   end
   
@@ -46,7 +56,7 @@ describe "soft validation" do
     it "should create a validation that generates a problem if attribute is nil" do
       klass = Class.new do
         include SoftValidation::Validation
-        soft_validates_presence_of :a
+        soft_validates_presence_of 1, :a
         attr_accessor :a
       end
       instance = klass.new
