@@ -14,7 +14,7 @@ class Flight < ActiveRecord::Base
   belongs_to :to, :class_name => "Airfield"
   
   def arrival
-    self.departure + self.duration.minutes unless self.departure.nil? || self.duration.nil?
+    self.departure + self.duration.minutes rescue nil
   end
   
   def arrival=(time)
@@ -31,7 +31,7 @@ class Flight < ActiveRecord::Base
   
   def departure=(time)
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
-      time = time.to_datetime
+      time = time.to_datetime.utc
       unless self.departure.nil? || self.duration.nil?
         delta = rational_day_to_minutes(self.departure.to_datetime - time)
         self.duration = self.duration + delta

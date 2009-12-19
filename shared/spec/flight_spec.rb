@@ -56,8 +56,9 @@ describe Flight do
   
   describe "departure" do
     it "should convert values to utc" do
-      @f.departure = DateTime.now
+      @f.departure = d = DateTime.now
       @f.departure.should be_utc
+      @f.departure.should == d
     end
     
     it "should change the duration if it is set" do
