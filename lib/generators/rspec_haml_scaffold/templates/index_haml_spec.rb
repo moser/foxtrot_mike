@@ -12,10 +12,7 @@ describe "/<%= name.pluralize %>/index.<%= default_file_extension %>" do
     assigns[:<%= file_name.pluralize %>] = [<%= file_name %>_98, <%= file_name %>_99]
   end
 
-  it "should render list of <%= table_name %>" do
+  it "should render without errors" do
     render "/<%= name.pluralize %>/index.<%= default_file_extension %>"
-<% for attribute in attributes -%><% unless attribute.name =~ /_id/ || [:datetime, :timestamp, :time, :date].index(attribute.type) -%>
-    response.should have_tag("tr>td", <%= attribute.default_value %>, 2)
-<% end -%><% end -%>
   end
 end

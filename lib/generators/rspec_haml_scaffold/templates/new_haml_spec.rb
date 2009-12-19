@@ -12,13 +12,8 @@ describe "/<%= name.pluralize %>/new.<%= default_file_extension %>" do
     assigns[:<%= file_name %>] = @<%= file_name %>
   end
 
-  it "should render new form" do
+  it "should render without errors" do
     render "/<%= name.pluralize %>/new.<%= default_file_extension %>"
-    
-    response.should have_tag("form[action=?][method=post]", <%= table_name %>_path) do
-<% for attribute in attributes -%><% unless attribute.name =~ /_id/ || [:datetime, :timestamp, :time, :date].index(attribute.type) -%>
-      with_tag("<%= attribute.input_type -%>#<%= file_name %>_<%= attribute.name %>[name=?]", "<%= file_name %>[<%= attribute.name %>]")
-<% end -%><% end -%>
     end
   end
 end

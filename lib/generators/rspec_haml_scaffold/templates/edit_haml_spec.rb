@@ -11,13 +11,7 @@ describe "/<%= name %>/edit.<%= default_file_extension %>" do
     assigns[:<%= file_name %>] = @<%= file_name %>
   end
 
-  it "should render edit form" do
+  it "should render without errors" do
     render "/<%= name.pluralize %>/edit.<%= default_file_extension %>"
-    
-    response.should have_tag("form[action=#{<%= table_name.singularize %>_path(@<%= file_name %>)}][method=post]") do
-<% for attribute in attributes -%><% unless attribute.name =~ /_id/ || [:datetime, :timestamp, :time, :date].index(attribute.type) -%>
-      with_tag('<%= attribute.input_type -%>#<%= file_name %>_<%= attribute.name %>[name=?]', "<%= file_name %>[<%= attribute.name %>]")
-<% end -%><% end -%>
-    end
   end
 end

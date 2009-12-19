@@ -12,11 +12,8 @@ describe "/<%= name.pluralize %>/show.<%= default_file_extension %>" do
     assigns[:<%= file_name %>] = @<%= file_name %>
   end
 
-  it "should render attributes in <p>" do
+  it "should render without erros" do
     render "/<%= name.pluralize %>/show.<%= default_file_extension %>"
-<% for attribute in attributes -%><% unless attribute.name =~ /_id/ || [:datetime, :timestamp, :time, :date].index(attribute.type) -%>
-    response.should have_text(/<%= Regexp.escape(attribute.default_value)[1..-2]%>/)
-<% end -%><% end -%>
   end
 end
 
