@@ -19,7 +19,7 @@ class Flight < ActiveRecord::Base
   
   def arrival=(time)
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
-      time = time.to_datetime
+      time = time.to_datetime.utc
       unless self.departure.nil?
         self.duration = rational_day_to_minutes(time - self.departure.to_datetime)
       else

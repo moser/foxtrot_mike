@@ -57,8 +57,14 @@ describe Flight do
   describe "departure" do
     it "should convert values to utc" do
       @f.departure = d = DateTime.now
+      d = d.utc
       @f.departure.should be_utc
       @f.departure.should == d
+      @f.save
+      @f.reload
+      @f.departure.should be_utc
+      #db only saves seconds => delta should be less than 1000 ms
+      (((@f.departure - d) * 86400000) < 1000).should be_true
     end
     
     it "should change the duration if it is set" do
