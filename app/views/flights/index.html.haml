@@ -2,19 +2,27 @@
 %table
   %tr
     %th
-      Crew
+      Crew1
     %th
-      Duration
+      Crew2
     %th
       Departure
+    %th
+      Arrival
+    %th
+      Duration
   - @flights.each do |flight|
     %tr
       %td
-        = render :partial => "crews/" + flight.crew.class.name.underscore, :locals => { :crew => flight.crew } unless flight.crew.nil?
+        = h flight.crew1.name rescue ''
       %td
-        = h flight.duration
+        = h flight.crew2.name rescue ''
       %td
         = h flight.departure
+      %td
+        = h flight.arrival
+      %td
+        = h flight.duration
       %td
         = link_to 'Show', flight
       %td

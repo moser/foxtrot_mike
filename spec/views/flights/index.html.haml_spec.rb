@@ -6,12 +6,10 @@ describe "/flights/index.html.haml" do
   before(:each) do
     assigns[:flights] = [
       stub_model(Flight,
-        :duration => 1,
-        :crew => Factory.stub(:crew)
+        :duration => 1
       ),
       stub_model(Flight,
-        :duration => 1,
-        :crew => Factory.stub(:crew)
+        :duration => 1
       )
     ]
   end

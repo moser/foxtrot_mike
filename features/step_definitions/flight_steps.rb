@@ -1,8 +1,9 @@
-Given "there is a flight" do
-  Factory.create(:flight)
-  Flight.count.should == 1
+Given /^two people and a plane$/ do
+  Given 'a person named Foo Bar'
+  Given 'a person named John Doe'
+  Given 'a plane record:', table(%{
+    | registration | D-1234 |
+    | make | BF IV |
+  })
 end
 
-Then "there should be no flights" do
-  Flight.count.should == 0
-end

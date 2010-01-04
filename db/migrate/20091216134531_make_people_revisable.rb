@@ -1,7 +1,7 @@
 class MakePeopleRevisable < ActiveRecord::Migration
   def self.up
-        add_column :people, :revisable_original_id, :integer
-        add_column :people, :revisable_branched_from_id, :integer
+        add_column :people, :revisable_original_id, :string, :limit => 36
+        add_column :people, :revisable_branched_from_id, :string, :limit => 36
         add_column :people, :revisable_number, :integer, :default => 0
         add_column :people, :revisable_name, :string
         add_column :people, :revisable_type, :string

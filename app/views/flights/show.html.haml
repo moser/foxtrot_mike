@@ -1,6 +1,4 @@
 %p
-  = render :partial => "crews/" + @flight.crew.class.name.underscore, :locals => { :crew => @flight.crew } unless @flight.crew.nil?
-%p
   = @flight.departure
 %p
   = @flight.arrival

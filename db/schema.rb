@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091216153626) do
+ActiveRecord::Schema.define(:version => 20100104142909) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -20,17 +20,20 @@ ActiveRecord::Schema.define(:version => 20091216153626) do
     t.datetime "updated_at"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
-    t.integer  "person_id"
+    t.string   "person_id",                 :limit => 36
   end
 
   add_index "accounts", ["login"], :name => "index_accounts_on_login", :unique => true
 
-  create_table "airfields", :force => true do |t|
+  create_table "airfields", :id => false, :force => true do |t|
+    t.string   "id",           :limit => 36
     t.string   "name"
     t.string   "registration"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true
 
   create_table "cost_rules", :force => true do |t|
     t.string   "depends_on"
@@ -41,47 +44,34 @@ ActiveRecord::Schema.define(:version => 20091216153626) do
     t.datetime "updated_at"
   end
 
-  create_table "crews", :force => true do |t|
-    t.integer  "pic_id"
-    t.integer  "co_id"
-    t.integer  "trainee_id"
-    t.integer  "instructor_id"
-    t.integer  "passengers"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "flights", :force => true do |t|
-    t.integer  "duration"
+  create_table "flights", :id => false, :force => true do |t|
+    t.string   "id",                         :limit => 36
+    t.string   "plane_id",                   :limit => 36
+    t.string   "from_id",                    :limit => 36
+    t.string   "to_id",                      :limit => 36
+    t.string   "crew1_id",                   :limit => 36
+    t.string   "crew2_id",                   :limit => 36
+    t.string   "launched_by_id"
+    t.string   "launched_by_type"
     t.datetime "departure"
-    t.integer  "from_id"
-    t.integer  "to_id"
-    t.integer  "plane_id"
-    t.integer  "launch_id"
-    t.integer  "crew_id"
+    t.integer  "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "revisable_original_id"
-    t.integer  "revisable_branched_from_id"
-    t.integer  "revisable_number",           :default => 0
+    t.string   "revisable_original_id",      :limit => 36
+    t.string   "revisable_branched_from_id", :limit => 36
+    t.integer  "revisable_number",                         :default => 0
     t.string   "revisable_name"
     t.string   "revisable_type"
     t.datetime "revisable_current_at"
     t.datetime "revisable_revised_at"
     t.datetime "revisable_deleted_at"
-    t.boolean  "revisable_is_current",       :default => true
+    t.boolean  "revisable_is_current",                     :default => true
   end
 
-  create_table "launches", :force => true do |t|
-    t.integer  "tow_flight_id"
-    t.integer  "wire_launcher_id"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "flights", ["id"], :name => "index_flights_on_id", :unique => true
 
-  create_table "people", :force => true do |t|
+  create_table "people", :id => false, :force => true do |t|
+    t.string   "id",                         :limit => 36
     t.string   "lastname"
     t.string   "firstname"
     t.datetime "birthdate"
@@ -89,16 +79,18 @@ ActiveRecord::Schema.define(:version => 20091216153626) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "person_cost_category_id"
-    t.integer  "revisable_original_id"
-    t.integer  "revisable_branched_from_id"
-    t.integer  "revisable_number",           :default => 0
+    t.string   "revisable_original_id",      :limit => 36
+    t.string   "revisable_branched_from_id", :limit => 36
+    t.integer  "revisable_number",                         :default => 0
     t.string   "revisable_name"
     t.string   "revisable_type"
     t.datetime "revisable_current_at"
     t.datetime "revisable_revised_at"
     t.datetime "revisable_deleted_at"
-    t.boolean  "revisable_is_current",       :default => true
+    t.boolean  "revisable_is_current",                     :default => true
   end
+
+  add_index "people", ["id"], :name => "index_people_on_id", :unique => true
 
   create_table "person_cost_categories", :force => true do |t|
     t.string   "name"
@@ -112,22 +104,34 @@ ActiveRecord::Schema.define(:version => 20091216153626) do
     t.datetime "updated_at"
   end
 
-  create_table "planes", :force => true do |t|
+  create_table "planes", :id => false, :force => true do |t|
+    t.string   "id",                         :limit => 36
     t.string   "registration"
-    t.string   "type"
+    t.string   "make"
+    t.string   "competition_sign"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "plane_cost_category_id"
-    t.integer  "revisable_original_id"
-    t.integer  "revisable_branched_from_id"
-    t.integer  "revisable_number",           :default => 0
+    t.string   "revisable_original_id",      :limit => 36
+    t.string   "revisable_branched_from_id", :limit => 36
+    t.integer  "revisable_number",                         :default => 0
     t.string   "revisable_name"
     t.string   "revisable_type"
     t.datetime "revisable_current_at"
     t.datetime "revisable_revised_at"
     t.datetime "revisable_deleted_at"
-    t.boolean  "revisable_is_current",       :default => true
-    t.string   "make"
+    t.boolean  "revisable_is_current",                     :default => true
   end
+
+  add_index "planes", ["id"], :name => "index_planes_on_id", :unique => true
+
+  create_table "wire_launchers", :id => false, :force => true do |t|
+    t.string   "id",           :limit => 36
+    t.string   "registration"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true
 
 end

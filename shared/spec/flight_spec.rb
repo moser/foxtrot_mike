@@ -11,15 +11,19 @@ describe Flight do
     r.macro.should == :belongs_to
   end
   
-  it "should reference a crew" do
-    r = Flight.reflect_on_association :crew
-    r.class_name.should == "Crew"
-    r.macro.should == :belongs_to
-  end
-  
   it "should reference a launch" do
     r = Flight.reflect_on_association :launch
     r.class_name.should == "Launch"
+    r.macro.should == :belongs_to
+  end
+  
+  it "should reference 2 crew members" do
+    r = Flight.reflect_on_association :crew1
+    r.class_name.should == "Person"
+    r.macro.should == :belongs_to
+    
+    r = Flight.reflect_on_association :crew2
+    r.class_name.should == "Person"
     r.macro.should == :belongs_to
   end
   

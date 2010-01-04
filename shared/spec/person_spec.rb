@@ -10,4 +10,9 @@ describe Person do
     p = Factory.build(:person)
     p.name.should == "bar foo"
   end
+  
+  it "should return name when sent to_s" do
+    p = Factory.build(:person)
+    p.to_s.should == "bar foo"
+  end
 end

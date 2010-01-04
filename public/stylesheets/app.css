@@ -1,0 +1,7 @@
+fieldset ol {
+  list-style: none; 
+}
+
+fieldset li label {
+  display: block;
+}

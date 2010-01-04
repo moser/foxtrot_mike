@@ -1,25 +1,22 @@
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
-  host: localhost
-  adapter: postgresql
-  database: fmdev
-  username: fmdev
-  password: 123
+  adapter: sqlite3
+  database: db/dev.sqlite3
+  pool: 5
+  timeout: 5000
 
 test: &TEST
-  host: localhost
-  adapter: postgresql
-  database: fmtest
-  username: fmdev
-  password: 123
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
 
 production:
-  host: localhost
-  adapter: postgresql
-  database: fmprod
-  username: fmprod
-  password: 123
+  adapter: sqlite3
+  database: db/prod.sqlite3
+  pool: 5
+  timeout: 5000
 
 cucumber:
   <<: *TEST

@@ -26,4 +26,13 @@ describe Airfield do
     flights_to.class_name.should == "Flight"
     flights_from.macro.should == :has_many
   end
+  
+  it "should return registration or name when sent to_s" do
+    str = "EDXY"
+    p = Airfield.new :registration => str
+    p.to_s.should == str
+    str = "Foo"
+    p = Airfield.new :name => str
+    p.to_s.should == str
+  end
 end

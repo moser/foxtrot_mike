@@ -1,7 +1,7 @@
 class MakePlanesRevisable < ActiveRecord::Migration
   def self.up
-        add_column :planes, :revisable_original_id, :integer
-        add_column :planes, :revisable_branched_from_id, :integer
+        add_column :planes, :revisable_original_id, :string, :limit => 36
+        add_column :planes, :revisable_branched_from_id, :string, :limit => 36
         add_column :planes, :revisable_number, :integer, :default => 0
         add_column :planes, :revisable_name, :string
         add_column :planes, :revisable_type, :string

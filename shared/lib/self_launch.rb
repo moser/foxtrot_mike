@@ -1,2 +1,0 @@
-class SelfLaunch < Launch
-end

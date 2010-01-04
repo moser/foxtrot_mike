@@ -9,7 +9,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.column :updated_at,                :datetime
       t.column :remember_token,            :string, :limit => 40
       t.column :remember_token_expires_at, :datetime
-      t.references :person
+      t.string :person_id, :limit => 36
 
     end
     add_index :accounts, :login, :unique => true

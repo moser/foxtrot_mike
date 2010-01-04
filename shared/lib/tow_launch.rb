@@ -1,2 +1,0 @@
-class TowLaunch < Launch
-end

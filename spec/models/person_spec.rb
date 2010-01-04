@@ -5,10 +5,19 @@ describe Person do
   it "should find people by their name" do
     martin = Factory.create(:person, :lastname => "Foo", :firstname => "Martin")
     tom = Factory.create(:person, :lastname => "Foo", :firstname => "Tom")
-    Person.find_by_name('foo').should == [martin, tom]
-    Person.find_by_name('martin').should == [martin]
-    Person.find_by_name('martin f').should == [martin]
-    Person.find_by_name('FOO M').should == [martin]
+    Person.find_by_name('foo').should == nil
+    Person.find_by_name('martin').should == martin
+    Person.find_by_name('martin f').should == martin
+    Person.find_by_name('FOO M').should == martin
+  end
+  
+  it "should find all people by their name" do
+    martin = Factory.create(:person, :lastname => "Foo", :firstname => "Martin")
+    tom = Factory.create(:person, :lastname => "Foo", :firstname => "Tom")
+    Person.find_all_by_name('foo').should == [martin, tom]
+    Person.find_all_by_name('martin').should == [martin]
+    Person.find_all_by_name('martin f').should == [martin]
+    Person.find_all_by_name('FOO M').should == [martin]
   end
   
   it "should belong to a person cost category" do

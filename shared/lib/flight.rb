@@ -1,13 +1,17 @@
 class Flight < ActiveRecord::Base
   include FlightAddition
+  include UUIDHelper
   
   belongs_to :plane
-  belongs_to :crew
   belongs_to :launch
+  belongs_to :crew1, :class_name => "Person"
+  belongs_to :crew2, :class_name => "Person"
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   
   accepts_string_for :plane, :parent_method => 'registration'
+  accepts_string_for :crew1, :ignore_case => false, :create => false
+  accepts_string_for :crew2, :ignore_case => false, :create => false
   
   def arrival
     self.departure + self.duration.minutes rescue nil

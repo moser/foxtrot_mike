@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  duration: 1
-  departure: 2009-12-12 18:56:59
-
-two:
-  duration: 1
-  departure: 2009-12-12 18:56:59

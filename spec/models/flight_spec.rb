@@ -9,7 +9,7 @@ describe Flight do
   end
 
   it "should create a new instance given valid attributes" do
-    Flight.create!(@valid_attributes)
+    Flight.create(@valid_attributes)
   end
   
   it "should be revisable" do

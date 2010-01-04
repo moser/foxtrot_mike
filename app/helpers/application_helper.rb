@@ -10,7 +10,7 @@ module ApplicationHelper
       "people" => people_path }
   end
   
-  def labeled_text_field(form, method)
-    "<p>\n" + form.label(method) + "<br/>\n" + form.text_field(method) + "\n</p>"
+  def labeled_text_field(form, method, options = {})
+    form.label(method) + "\n" + form.text_field(method, options) 
   end
 end
