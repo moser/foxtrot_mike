@@ -1,17 +1,6 @@
 %h1 Editing flight
 
-- form_for(@flight) do |f|
-  = f.error_messages
-  %p
-    = f.label :duration
-    %br
-    = f.text_field :duration
-  %p
-    = f.label :departure
-    %br
-    = f.datetime_select :departure
-  = f.submit 'Update'
-
+= render_partial :partial => "flights/form", :locals => { :flight => @flight }
 
 = link_to 'Show', @flight
 = link_to 'Back', flights_path

@@ -9,5 +9,10 @@ Autotest.add_hook :initialize do |at|
   at.add_mapping(%r%^shared/spec/.*rb$%) { |filename, _|
     filename
   }
+
+  # Ignore files in tmp/
+  at.add_exception %r%^\./tmp%
+  at.add_exception %r%rerun.txt$%
 end
+
 

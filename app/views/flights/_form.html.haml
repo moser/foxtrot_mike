@@ -1,0 +1,12 @@
+- form_for(flight) do |f|
+  = f.error_messages
+  = labeled_text_field f, :plane
+  - f.fields_for :crew do |crew|
+    = labeled_text_field crew, :seat1
+    = labeled_text_field crew, :seat2
+  = labeled_text_field f, :duration
+  %p
+    = f.label :departure
+    %br
+    = f.datetime_select :departure
+  = f.submit 'Submit'

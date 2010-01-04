@@ -9,4 +9,8 @@ module ApplicationHelper
       "person_cost_category" => person_cost_categories_path,
       "people" => people_path }
   end
+  
+  def labeled_text_field(form, method)
+    "<p>\n" + form.label(method) + "<br/>\n" + form.text_field(method) + "\n</p>"
+  end
 end

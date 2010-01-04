@@ -4,3 +4,4 @@ tmp/**/*
 coverage*
 *.sqlite3
 doc/*
+rerun.txt

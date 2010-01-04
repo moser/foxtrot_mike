@@ -8,7 +8,7 @@ class MakeFlightsRevisable < ActiveRecord::Migration
         add_column :flights, :revisable_current_at, :datetime
         add_column :flights, :revisable_revised_at, :datetime
         add_column :flights, :revisable_deleted_at, :datetime
-        add_column :flights, :revisable_is_current, :boolean, :default => 1
+        add_column :flights, :revisable_is_current, :boolean, :default => true
       end
 
   def self.down

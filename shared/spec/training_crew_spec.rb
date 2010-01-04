@@ -12,4 +12,16 @@ describe TrainingCrew do
     r.class_name.should == "Person"
     r.macro.should == :belongs_to
   end
+  
+  it "should return the trainee for seat1" do
+    p = Factory.build(:person)
+    c = TrainingCrew.new :trainee => p
+    c.seat1.should == p
+  end
+  
+  it "should return the instructor for seat2" do
+    p = Factory.build(:person)
+    c = TrainingCrew.new :instructor => p
+    c.seat2.should == p 
+  end
 end
