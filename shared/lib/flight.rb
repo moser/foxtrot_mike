@@ -1,6 +1,5 @@
 class Flight < ActiveRecord::Base
-  include FlightAddition
-  include UUIDHelper
+  include UuidHelper
   
   belongs_to :plane
   belongs_to :launch
@@ -8,6 +7,9 @@ class Flight < ActiveRecord::Base
   belongs_to :crew2, :class_name => "Person"
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
+  
+  #added methods may rely on associations
+  include FlightAddition
   
   accepts_string_for :plane, :parent_method => 'registration'
   accepts_string_for :crew1, :ignore_case => false, :create => false

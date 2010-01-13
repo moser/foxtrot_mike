@@ -1,7 +1,8 @@
 class Person < ActiveRecord::Base
-  include PersonAddition
-  include UUIDHelper
+  include UuidHelper
 
+  #added methods may rely on associations
+  include PersonAddition
   
   def self.find_all_by_name(str)
     find :all, 
