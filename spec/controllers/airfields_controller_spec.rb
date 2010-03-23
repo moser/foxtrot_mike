@@ -30,6 +30,10 @@ end
 
 describe AirfieldsController, "handling GET /airfields" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @airfield = mock_model(Airfield)
     Airfield.stub!(:find).and_return([@airfield])
@@ -62,6 +66,10 @@ end
 
 describe AirfieldsController, "handling GET /airfields.json" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @airfield = mock_model(Airfield, :to_json => "JSON")
     Airfield.stub!(:find).and_return(@airfield)
@@ -89,7 +97,11 @@ describe AirfieldsController, "handling GET /airfields.json" do
   end
 end
 
-describe AirfieldsController, "handling GET /airfields/1" do
+describe AirfieldsController, "handling GET /airfields/1" do#
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @airfield = mock_model(Airfield)
@@ -123,6 +135,10 @@ end
 
 describe AirfieldsController, "handling GET /airfields/1.json" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @airfield = mock_model(Airfield, :to_json => "JSON")
     Airfield.stub!(:find).and_return(@airfield)
@@ -151,6 +167,10 @@ describe AirfieldsController, "handling GET /airfields/1.json" do
 end
 
 describe AirfieldsController, "handling GET /airfields/new" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @airfield = mock_model(Airfield)
@@ -189,6 +209,10 @@ end
 
 describe AirfieldsController, "handling GET /airfields/1/edit" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @airfield = mock_model(Airfield)
     Airfield.stub!(:find).and_return(@airfield)
@@ -220,6 +244,10 @@ describe AirfieldsController, "handling GET /airfields/1/edit" do
 end
 
 describe AirfieldsController, "handling POST /airfields" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @airfield = mock_model(Airfield, :to_param => "1")
@@ -253,6 +281,10 @@ describe AirfieldsController, "handling POST /airfields" do
 end
 
 describe AirfieldsController, "handling PUT /airfields/1" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @airfield = mock_model(Airfield, :to_param => "1")
@@ -296,6 +328,10 @@ describe AirfieldsController, "handling PUT /airfields/1" do
 end
 
 describe AirfieldsController, "handling DELETE /airfield/1" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @airfield = mock_model(Airfield, :destroy => true)

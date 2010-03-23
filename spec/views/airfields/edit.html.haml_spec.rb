@@ -7,6 +7,7 @@ describe "/airfield/edit.html.haml" do
     @airfield = mock_model(Airfield)
     @airfield.stub!(:registration).and_return("MyString")
     @airfield.stub!(:name).and_return("MyString")
+    @airfield.errors.stub!(:[]).and_return(nil)
     assigns[:airfield] = @airfield
   end
 

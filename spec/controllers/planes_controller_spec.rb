@@ -5,6 +5,10 @@ describe PlanesController do
   def mock_plane(stubs={})
     @mock_plane ||= mock_model(Plane, stubs)
   end
+  
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   describe "GET index" do
     it "assigns all planes as @planes" do
@@ -16,10 +20,18 @@ describe PlanesController do
     it "should return json" do
       str = "str"
       mock_array = [mock_plane]
-      mock_array.should_receive(:to_json).and_return(str)
+      mock_array.should_receive(:to_json).with(:only => [:id, :registration, :make, :competition_sign]).and_return(str)
       Plane.should_receive(:all).and_return(mock_array)
       get :index, :format => 'json'
       response.body.should == str
+    end
+    
+    it "should return only planes updated after a given date" do
+      arr = [2000,1,1,12,1,44]
+      date = DateTime.new(*arr)
+      Plane.should_receive(:find).with(:all, :conditions => ['updated_at > ?', date]).and_return([])
+      x = 0
+      get :index, {:format => 'json', :after => date.to_i}
     end
   end
 

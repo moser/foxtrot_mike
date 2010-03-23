@@ -1,12 +1,19 @@
 class PlanesController < ApplicationController
+  #prepend_before_filter :login_required
+  
   # GET /planes
   # GET /planes.xml
   def index
-    @planes = Plane.all
+    p @after
+    if @after.nil?
+      @planes = Plane.all
+    else
+      @planes = Plane.find(:all, :conditions => ['updated_at > ?', @after] )
+    end
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json  { render :json => @planes }
+      format.json  { render :json => @planes.to_json(:only => Plane.shared_attribute_names) }
     end
   end
 
@@ -17,7 +24,7 @@ class PlanesController < ApplicationController
     
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @plane }
+      format.json  { render :json => @plane }
     end
   end
 
@@ -28,7 +35,7 @@ class PlanesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @plane }
+      format.json  { render :json => @plane }
     end
   end
 
@@ -46,10 +53,11 @@ class PlanesController < ApplicationController
       if @plane.save
         flash[:notice] = 'Plane was successfully created.'
         format.html { redirect_to(@plane) }
-        format.xml  { render :xml => @plane, :status => :created, :location => @plane }
+        format.json  { render :json => @plane, :status => :created, :location => @plane }
       else
+        p @plane.errors
         format.html { render :action => "new" }
-        format.xml  { render :xml => @plane.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @plane.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,10 +71,10 @@ class PlanesController < ApplicationController
       if @plane.update_attributes(params[:plane])
         flash[:notice] = 'Plane was successfully updated.'
         format.html { redirect_to(@plane) }
-        format.xml  { head :ok }
+        format.json  { render :json => @plane, :location => @plane }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @plane.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @plane.errors, :status => :unprocessable_entity }
       end
     end
   end

@@ -1,5 +1,13 @@
 %h1 New flight
 
-= render_partial :partial => "flights/form", :locals => { :flight => @flight }
+- form_for(@flight) do |f|
+  = f.error_messages
+  %fieldset
+    %ol 
+      %li
+        = f.label :departure
+        = f.date_select :departure
+      %li= labeled_text_field f, :plane
+    = f.submit 'Submit'
 
 = link_to 'Back', flights_path

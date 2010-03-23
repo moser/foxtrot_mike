@@ -7,10 +7,14 @@
   <title>FoxtrotMike</title>
   <%= stylesheet_link_tag 'scaffold' %>
   <%= stylesheet_link_tag 'app' %>
+  <%= javascript_include_tag 'jquery-1.4' %>
+  <%= javascript_include_tag 'i18n' %>
+  <%= javascript_include_tag 'application' %>
+  <%= yield :head %>
 </head>
 <body>
   <%= render :partial => "common/navigation_bar" %>
   <%= render :partial => "common/account_bar" %>
-  <%= yield %>
+  <%= yield(:content) or yield %>
 </body>
 </html>

@@ -6,16 +6,18 @@ describe "/flights/index.html.haml" do
   before(:each) do
     assigns[:flights] = [
       stub_model(Flight,
-        :duration => 1
+        :duration => 1,
+        :departure => DateTime.now
       ),
       stub_model(Flight,
-        :duration => 1
+        :duration => 1,
+        :departure => DateTime.now
       )
     ]
   end
 
   it "renders a list of flights" do
     render
-    response.should have_tag("tr>td", 1.to_s, 2)
+    response.should have_tag("tr>td", "0:01", 2)
   end
 end

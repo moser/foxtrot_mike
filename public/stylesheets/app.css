@@ -5,3 +5,26 @@ fieldset ol {
 fieldset li label {
   display: block;
 }
+
+div.flight {
+  position: relative;
+}
+
+div.disabler {
+  position: absolute; 
+  z-index:199;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  background: #fff;
+  background-image:url(/images/ajax-loader.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div.disabler a.stop_load {
+  opacity: 1.0;
+  
+}

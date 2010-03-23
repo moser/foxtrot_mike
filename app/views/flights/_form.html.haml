@@ -3,10 +3,8 @@
   %fieldset
     %ol
       %li= labeled_text_field f, :plane
-      %li= labeled_text_field f, :crew1
-      %li= labeled_text_field f, :crew2
-      %li= labeled_text_field f, :duration
       %li
         = f.label :departure
         = f.datetime_select :departure
-  = f.submit 'Submit'
+      %li= labeled_text_field f, :duration
+    = f.submit 'Submit'

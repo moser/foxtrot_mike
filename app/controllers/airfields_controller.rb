@@ -1,11 +1,16 @@
 class AirfieldsController < ApplicationController
+  #prepend_before_filter :login_required
 
   def index
-    @airfields = Airfield.find(:all)
-
+    if @after.nil?
+      @airfields = Airfield.find(:all)
+    else
+      @airfields = Airfield.find(:all, :conditions => ['updated_at > ?', @after] )
+    end 
+    
     respond_to do |format|
       format.html # index.haml
-      format.json  { render :json => @airfields }
+      format.json  { render :json => @airfields.to_json(:only => Airfield.shared_attribute_names) }
     end
   end
 
@@ -33,7 +38,7 @@ class AirfieldsController < ApplicationController
 
   def create
     @airfield = Airfield.new(params[:airfield])
-
+    @airfield.id = params[:airfield][:id] unless params[:airfield].nil? || params[:airfield][:id].nil?
     respond_to do |format|
       if @airfield.save
         format.html { redirect_to(airfield_path(@airfield)) }

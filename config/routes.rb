@@ -7,11 +7,13 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :people
   map.resources :accounts
   map.resource :session
-  map.resources :flights  
+  map.resources :flights, :has_one => :crew
   map.resources :planes
   map.resources :airfields
   
   map.connect '/', :controller => 'flights', :action => 'index'
+  
+  map.connect 'graveyard/:action.:format', :controller => 'graveyard'
   
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'

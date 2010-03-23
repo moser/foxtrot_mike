@@ -1,0 +1,2 @@
+#!/bin/bash
+ruby rstakeout.rb "./run_js_specs" 'public/javascripts/*.js' 'spec/javascripts/**/*.js' 'spec/javascripts/fixtures/**/*.html'

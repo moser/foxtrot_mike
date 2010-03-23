@@ -1,0 +1,9 @@
+#!/bin/bash
+out="$(rake spec:javascript 2>&1)"
+if [[ $out =~ "JavaScript test failures" ]]; then
+  notify-send 'JS specs failed' -i ~/.autotest-img/failed.png -t 5000
+else
+  notify-send 'JS specs passed' -i ~/.autotest-img/passed.png -t 5000
+fi
+echo "$out"
+

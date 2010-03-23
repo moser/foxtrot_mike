@@ -7,7 +7,7 @@ class FlightsController < ApplicationController
     @flights = Flight.all
     
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render :layout => 'application' }
       format.xml  { render :xml => @flights }
     end
   end
@@ -18,7 +18,11 @@ class FlightsController < ApplicationController
     @flight = Flight.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        if request.xhr?
+          render :layout => false
+        end
+      end
       format.xml  { render :xml => @flight }
     end
   end
@@ -37,17 +41,20 @@ class FlightsController < ApplicationController
   # GET /flights/1/edit
   def edit
     @flight = Flight.find(params[:id])
+    if request.xhr?
+      render :layout => false
+    end
   end
 
   # POST /flights
   # POST /flights.xml
   def create
     @flight = Flight.new(params[:flight])
-
+    
     respond_to do |format|
       if @flight.save
         flash[:notice] = 'Flight was successfully created.'
-        format.html { redirect_to(@flight) }
+        format.html { redirect_to(edit_flight_path(@flight)) }
         format.xml  { render :xml => @flight, :status => :created, :location => @flight }
       else
         format.html { render :action => "new" }
@@ -60,7 +67,7 @@ class FlightsController < ApplicationController
   # PUT /flights/1.xml
   def update
     @flight = Flight.find(params[:id])
-
+    p params[:departure]
     respond_to do |format|
       if @flight.update_attributes(params[:flight])
         flash[:notice] = 'Flight was successfully updated.'

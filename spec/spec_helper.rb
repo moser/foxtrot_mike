@@ -11,7 +11,7 @@ include AuthenticatedTestHelper
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
-Dir["#{RAILS_ROOT}/shared/factories/**/*.rb"].each {|f| require f}
+Dir["#{RAILS_ROOT}/shared/spec/factories/**/*.rb"].each {|f| require f}
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these

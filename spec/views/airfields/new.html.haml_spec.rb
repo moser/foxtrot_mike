@@ -8,6 +8,7 @@ describe "/airfields/new.html.haml" do
     @airfield.stub!(:new_record?).and_return(true)
     @airfield.stub!(:registration).and_return("MyString")
     @airfield.stub!(:name).and_return("MyString")
+    @airfield.errors.stub!(:[]).and_return(nil)
     assigns[:airfield] = @airfield
   end
 

@@ -52,10 +52,10 @@ describe FlightsController do
         assigns[:flight].should equal(mock_flight)
       end
 
-      it "redirects to the created flight" do
+     it "redirects to the edit" do
         Flight.stub!(:new).and_return(mock_flight(:save => true))
         post :create, :flight => {}
-        response.should redirect_to(flight_url(mock_flight))
+        response.should redirect_to(edit_flight_url(mock_flight))
       end
     end
 

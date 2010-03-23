@@ -14,7 +14,7 @@ describe "/flights/new.html.haml" do
     render
 
     response.should have_tag("form[action=?][method=post]", flights_path) do
-      with_tag("input#flight_duration[name=?]", "flight[duration]")
+      with_tag("input#flight_plane[name=?]", "flight[plane]")
     end
   end
 end

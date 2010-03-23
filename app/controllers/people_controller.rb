@@ -1,11 +1,16 @@
 class PeopleController < ApplicationController
+  #prepend_before_filter :login_required
 
   def index
-    @people = Person.find(:all)
+    if @after.nil?
+      @people = Person.find(:all)
+    else
+      @people = Person.find(:all, :conditions => ['updated_at > ?', @after] )
+    end
 
     respond_to do |format|
       format.html # index.haml
-      format.json  { render :json => @people }
+      format.json  { render :json => @people.to_json(:only => Person.shared_attribute_names) }
     end
   end
 
@@ -47,7 +52,7 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find(params[:id])
-
+    
     respond_to do |format|
       if @person.update_attributes(params[:person])
         format.html { redirect_to(person_path(@person)) }

@@ -30,6 +30,10 @@ end
 
 describe PeopleController, "handling GET /people" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @person = mock_model(Person)
     Person.stub!(:find).and_return([@person])
@@ -62,6 +66,10 @@ end
 
 describe PeopleController, "handling GET /people.json" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @person = mock_model(Person, :to_json => "JSON")
     Person.stub!(:find).and_return(@person)
@@ -90,6 +98,10 @@ describe PeopleController, "handling GET /people.json" do
 end
 
 describe PeopleController, "handling GET /people/1" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person)
@@ -122,6 +134,10 @@ describe PeopleController, "handling GET /people/1" do
 end
 
 describe PeopleController, "handling GET /people/1.json" do
+  
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person, :to_json => "JSON")
@@ -151,6 +167,10 @@ describe PeopleController, "handling GET /people/1.json" do
 end
 
 describe PeopleController, "handling GET /people/new" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person)
@@ -189,6 +209,10 @@ end
 
 describe PeopleController, "handling GET /people/1/edit" do
 
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
+
   before do
     @person = mock_model(Person)
     Person.stub!(:find).and_return(@person)
@@ -220,6 +244,10 @@ describe PeopleController, "handling GET /people/1/edit" do
 end
 
 describe PeopleController, "handling POST /people" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person, :to_param => "1")
@@ -253,6 +281,10 @@ describe PeopleController, "handling POST /people" do
 end
 
 describe PeopleController, "handling PUT /people/1" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person, :to_param => "1")
@@ -296,6 +328,10 @@ describe PeopleController, "handling PUT /people/1" do
 end
 
 describe PeopleController, "handling DELETE /person/1" do
+
+  before(:each) do
+    controller.stub!(:authorized?).and_return(true)
+  end
 
   before do
     @person = mock_model(Person, :destroy => true)

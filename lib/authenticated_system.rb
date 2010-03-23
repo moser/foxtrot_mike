@@ -5,6 +5,10 @@ module AuthenticatedSystem
     def logged_in?
       !!current_account
     end
+    
+    def logged_in_basic?
+      !!@basic
+    end
 
     # Accesses the current account from the session.
     # Future calls avoid the database because nil is not equal to false.
@@ -111,7 +115,9 @@ module AuthenticatedSystem
     # Called from #current_account.  Now, attempt to login by basic authentication information.
     def login_from_basic_auth
       authenticate_with_http_basic do |login, password|
-        self.current_account = Account.authenticate(login, password)
+        acc = Account.authenticate(login, password)
+        @basic = true unless acc.nil?
+        self.current_account = acc
       end
     end
     

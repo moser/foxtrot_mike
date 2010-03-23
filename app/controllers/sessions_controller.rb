@@ -1,9 +1,11 @@
-# This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
 
 
-  # render new.rhtml
   def new
+    respond_to do |format|
+      format.html
+      format.json { render :json => { :auth_token => form_authenticity_token }.to_json }
+    end
   end
 
   def create

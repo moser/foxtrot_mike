@@ -2,8 +2,8 @@ require 'autotest/growl'
 Autotest::Growl::clear_terminal = false
 
 Autotest.add_hook :initialize do |at|
-  at.add_mapping(%r%shared/lib/(.*).rb$%) { |_, m|
-    ["shared/spec/#{m[1]}_spec.rb", "spec/models/#{m[1]}_spec.rb"]
+  at.add_mapping(%r%shared/app/models/(.*).rb$%) { |_, m|
+    ["shared/spec/models/#{m[1]}_spec.rb", "spec/models/#{m[1]}_spec.rb"]
   }
   
   at.add_mapping(%r%^shared/spec/.*rb$%) { |filename, _|

@@ -1,0 +1,3 @@
+class ImmutableObjectException < Exception
+
+end

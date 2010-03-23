@@ -2,15 +2,9 @@
 
 = error_messages_for :airfield
 
-- form_for(@airfield) do |f|
-  %p
-    %b Registration
-    = f.text_field :registration 
-  %p
-    %b Name
-    = f.text_field :name 
-    
-  %p= f.submit "Update"
+- semantic_form_for(@airfield) do |f|
+  = f.inputs :registration, :name
+  = f.buttons
   
 = link_to 'Show', airfield_path(@airfield)
 = link_to 'Back', airfields_path
