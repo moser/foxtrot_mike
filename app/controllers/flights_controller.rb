@@ -67,7 +67,6 @@ class FlightsController < ApplicationController
   # PUT /flights/1.xml
   def update
     @flight = Flight.find(params[:id])
-    p params[:departure]
     respond_to do |format|
       if @flight.update_attributes(params[:flight])
         flash[:notice] = 'Flight was successfully updated.'

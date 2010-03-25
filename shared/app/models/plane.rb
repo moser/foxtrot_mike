@@ -2,6 +2,7 @@ class Plane < ActiveRecord::Base
   include UuidHelper
   
   has_many :flights
+  belongs_to :plane_cost_category
   
   #added methods may rely on associations
   include PlaneAddition

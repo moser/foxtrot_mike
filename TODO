@@ -1,0 +1,4 @@
+- STI <=> actsasrevisable TowFlight...
+- locking for editing (optimistic?)
+- locking when stuff is booked
+- interface to fibu

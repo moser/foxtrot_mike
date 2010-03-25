@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100211001846) do
+ActiveRecord::Schema.define(:version => 20100323170537) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20100211001846) do
     t.integer  "duration"
     t.string   "purpose"
     t.text     "comment"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -131,7 +132,6 @@ ActiveRecord::Schema.define(:version => 20100211001846) do
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "person_cost_category_id"
     t.string   "revisable_original_id",      :limit => 36
     t.string   "revisable_branched_from_id", :limit => 36
     t.integer  "revisable_number",                         :default => 0
@@ -151,6 +151,15 @@ ActiveRecord::Schema.define(:version => 20100211001846) do
     t.datetime "updated_at"
   end
 
+  create_table "person_cost_category_memberships", :force => true do |t|
+    t.string   "person_id"
+    t.integer  "person_cost_category_id"
+    t.datetime "from"
+    t.datetime "to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "plane_cost_categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -162,9 +171,10 @@ ActiveRecord::Schema.define(:version => 20100211001846) do
     t.string   "registration"
     t.string   "make"
     t.string   "competition_sign"
+    t.string   "editor_id",                  :limit => 36
+    t.integer  "plane_cost_category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "plane_cost_category_id"
     t.string   "revisable_original_id",      :limit => 36
     t.string   "revisable_branched_from_id", :limit => 36
     t.integer  "revisable_number",                         :default => 0
@@ -178,9 +188,46 @@ ActiveRecord::Schema.define(:version => 20100211001846) do
 
   add_index "planes", ["id"], :name => "index_planes_on_id", :unique => true
 
+  create_table "time_cost_rules", :force => true do |t|
+    t.integer  "person_cost_category_id"
+    t.integer  "plane_cost_category_id"
+    t.integer  "cost"
+    t.string   "name"
+    t.string   "flight_type"
+    t.string   "depends_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tow_cost_rules", :force => true do |t|
+    t.integer  "person_cost_category_id"
+    t.integer  "plane_cost_category_id"
+    t.integer  "cost"
+    t.string   "name"
+    t.string   "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wire_launch_cost_rules", :force => true do |t|
+    t.integer  "person_cost_category_id"
+    t.integer  "wire_launcher_cost_category_id"
+    t.integer  "cost"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wire_launcher_cost_categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "wire_launchers", :id => false, :force => true do |t|
-    t.string   "id",           :limit => 36
+    t.string   "id",                             :limit => 36
     t.string   "registration"
+    t.integer  "wire_launcher_cost_category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

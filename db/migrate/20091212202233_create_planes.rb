@@ -5,6 +5,8 @@ class CreatePlanes < ActiveRecord::Migration
       t.string :registration
       t.string :make
       t.string :competition_sign
+      t.string :editor_id, :limit => 36
+      t.integer :plane_cost_category_id
       
       t.timestamps
     end

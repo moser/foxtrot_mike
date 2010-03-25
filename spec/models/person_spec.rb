@@ -20,10 +20,10 @@ describe Person do
     Person.find_all_by_name('FOO M').should == [martin]
   end
   
-  it "should belong to a person cost category" do
-    r = Person.reflect_on_association :person_cost_category
-    r.class_name.should == "PersonCostCategory"
-    r.macro.should == :belongs_to
+  it "should have many person cost category memberships" do
+    r = Person.reflect_on_association :person_cost_category_memberships
+    r.class_name.should == "PersonCostCategoryMembership"
+    r.macro.should == :has_many
   end
   
   it "should be revisable" do

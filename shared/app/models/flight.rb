@@ -17,6 +17,34 @@ class Flight < ActiveRecord::Base
   accepts_string_for :from, :parent_method => ['registration', 'name']
   accepts_string_for :to, :parent_method => ['registration', 'name']
   
+  #TODO engine_time cost
+  def time_cost
+    #TODO find current, do all finding candidates in person
+    #     find should only return fittind 
+    candidate_costs = cost_responsible.person_cost_category_memberships.map do |m|
+      m.person_cost_category.time_cost_rules.map do |r|
+        if r.flight_type = self.class.name && 
+           r.plane_cost_category == plane.plane_cost_category
+          r.cost_for(self)
+        end
+      end
+    end
+    #p candidate_costs
+    candidate_costs.flatten.compact.min || 0
+  end
+  
+  def launch_cost
+    launch.nil? ? 0 : launch.cost
+  end
+  
+  def cost
+    launch_cost + time_cost
+  end
+  
+  def cost_responsible
+    crew_members.find_all { |m| m.class == PilotInCommand }.first.person rescue nil
+  end
+  
   def arrival
     self.departure + self.duration.minutes rescue nil
   end

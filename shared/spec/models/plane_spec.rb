@@ -7,6 +7,12 @@ describe Plane do
     flights.macro.should == :has_many
   end
   
+  it "should belong to a plane cost category" do
+    r = Plane.reflect_on_association :plane_cost_category
+    r.class_name.should == "PlaneCostCategory"
+    r.macro.should == :belongs_to
+  end
+  
   it "should return registration when sent to_s" do
     str = "D-ZZZZ"
     p = Plane.new :registration => str

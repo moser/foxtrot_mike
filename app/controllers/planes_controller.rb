@@ -4,7 +4,6 @@ class PlanesController < ApplicationController
   # GET /planes
   # GET /planes.xml
   def index
-    p @after
     if @after.nil?
       @planes = Plane.all
     else
@@ -55,7 +54,6 @@ class PlanesController < ApplicationController
         format.html { redirect_to(@plane) }
         format.json  { render :json => @plane, :status => :created, :location => @plane }
       else
-        p @plane.errors
         format.html { render :action => "new" }
         format.json  { render :json => @plane.errors, :status => :unprocessable_entity }
       end

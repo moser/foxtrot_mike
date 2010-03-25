@@ -4,6 +4,6 @@ module FlightAddition
   soft_validates_presence_of 1, :departure
   
   def self.included(base) #:nodoc:
-    base.acts_as_revisable
+    base.acts_as_revisable :on_delete => :revise
   end
 end

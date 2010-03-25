@@ -9,6 +9,7 @@ class CreateFlights < ActiveRecord::Migration
       t.integer     :duration
       t.string      :purpose
       t.text        :comment
+      t.string      :type
       t.timestamps
     end
     add_index "flights", ["id"], :name => "index_flights_on_id", :unique => true
