@@ -1,9 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../../spec/spec_helper')
 
 describe PlaneCostCategory do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name"
+      :name => "value for name",
+      :tow_cost_rule_type => "TimeCostRule"
     }
   end
 

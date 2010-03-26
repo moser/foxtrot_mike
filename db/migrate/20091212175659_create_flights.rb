@@ -6,8 +6,8 @@ class CreateFlights < ActiveRecord::Migration
       t.string      :from_id,        :limit => 36
       t.string      :to_id,        :limit => 36
       t.datetime    :departure
-      t.integer     :duration
-      t.string      :purpose
+      t.integer     :duration, :engine_duration
+      t.string      :purpose #TODO what purposes are needed, how to save them (enum?)
       t.text        :comment
       t.string      :type
       t.timestamps

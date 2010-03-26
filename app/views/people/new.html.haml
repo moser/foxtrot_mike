@@ -19,7 +19,10 @@
     %b Birthdate
     %br
     = f.datetime_select :birthdate 
-
+  %p
+    = f.label :group
+    %br
+    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
   %p
     = f.submit "Create"
     

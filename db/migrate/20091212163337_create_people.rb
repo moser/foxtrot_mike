@@ -6,6 +6,7 @@ class CreatePeople < ActiveRecord::Migration
       t.string    :firstname
       t.datetime  :birthdate
       t.string    :email
+      t.integer   :group_id
       
       t.timestamps
     end

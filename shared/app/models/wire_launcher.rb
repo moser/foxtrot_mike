@@ -1,3 +1,4 @@
 class WireLauncher < ActiveRecord::Base
-  belongs_to :wire_launcher_cost_category
+  include UuidHelper
+  has_many :wire_launcher_cost_category_memberships
 end

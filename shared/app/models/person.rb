@@ -3,6 +3,7 @@ class Person < ActiveRecord::Base
   
   has_many :crew_members
   has_many :person_cost_category_memberships
+  belongs_to :group
 
   #added methods may rely on associations
   include PersonAddition

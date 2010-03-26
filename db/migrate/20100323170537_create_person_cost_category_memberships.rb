@@ -1,10 +1,9 @@
 class CreatePersonCostCategoryMemberships < ActiveRecord::Migration
   def self.up
     create_table :person_cost_category_memberships do |t|
-      t.string :person_id
+      t.string :person_id, :limit => 36
       t.integer :person_cost_category_id
-      t.datetime :from
-      t.datetime :to
+      t.datetime :valid_from, :valid_to
       t.timestamps
     end
   end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100323170537) do
+ActiveRecord::Schema.define(:version => 20100326083506) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -43,15 +43,6 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
   end
 
   add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true
-
-  create_table "cost_rules", :force => true do |t|
-    t.string   "depends_on"
-    t.integer  "rate"
-    t.integer  "cost"
-    t.string   "round"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "crew_members", :id => false, :force => true do |t|
     t.string   "id",                         :limit => 36
@@ -94,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.string   "to_id",                      :limit => 36
     t.datetime "departure"
     t.integer  "duration"
+    t.integer  "engine_duration"
     t.string   "purpose"
     t.text     "comment"
     t.string   "type"
@@ -112,11 +104,18 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
 
   add_index "flights", ["id"], :name => "index_flights_on_id", :unique => true
 
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "launches", :id => false, :force => true do |t|
     t.string   "id",               :limit => 36
     t.string   "flight_id",        :limit => 36
     t.string   "tow_flight_id",    :limit => 36
     t.string   "wire_launcher_id", :limit => 36
+    t.integer  "tow_cost_rule_id"
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -130,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.string   "firstname"
     t.datetime "birthdate"
     t.string   "email"
+    t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -152,16 +152,26 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
   end
 
   create_table "person_cost_category_memberships", :force => true do |t|
-    t.string   "person_id"
+    t.string   "person_id",               :limit => 36
     t.integer  "person_cost_category_id"
-    t.datetime "from"
-    t.datetime "to"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "plane_cost_categories", :force => true do |t|
     t.string   "name"
+    t.string   "tow_cost_rule_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "plane_cost_category_memberships", :force => true do |t|
+    t.string   "plane_id",               :limit => 36
+    t.integer  "plane_cost_category_id"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -172,7 +182,10 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.string   "make"
     t.string   "competition_sign"
     t.string   "editor_id",                  :limit => 36
-    t.integer  "plane_cost_category_id"
+    t.integer  "group_id"
+    t.boolean  "has_engine"
+    t.boolean  "can_fly_without_engine"
+    t.boolean  "can_tow"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -195,6 +208,8 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.string   "name"
     t.string   "flight_type"
     t.string   "depends_on"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -205,6 +220,8 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.integer  "cost"
     t.string   "name"
     t.string   "level"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -214,6 +231,8 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.integer  "wire_launcher_cost_category_id"
     t.integer  "cost"
     t.string   "name"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -224,10 +243,18 @@ ActiveRecord::Schema.define(:version => 20100323170537) do
     t.datetime "updated_at"
   end
 
-  create_table "wire_launchers", :id => false, :force => true do |t|
-    t.string   "id",                             :limit => 36
-    t.string   "registration"
+  create_table "wire_launcher_cost_category_memberships", :force => true do |t|
+    t.string   "wire_launcher_id",               :limit => 36
     t.integer  "wire_launcher_cost_category_id"
+    t.datetime "valid_from"
+    t.datetime "valid_to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "wire_launchers", :id => false, :force => true do |t|
+    t.string   "id",           :limit => 36
+    t.string   "registration"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -2,3 +2,7 @@
 - locking for editing (optimistic?)
 - locking when stuff is booked
 - interface to fibu
+- column disabled on planes, people + before_destroy => false (=> no more graveyard)
+- means to delete flights safely including revisions (+ export to another db) (command line tool?)
+- license stuff? get information on situation in other countries (segelflug.de?)
+

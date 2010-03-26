@@ -3,7 +3,6 @@ class CreateWireLaunchers < ActiveRecord::Migration
     create_table :wire_launchers, :id => false do |t|
       t.string :id, :limit => 36
       t.string :registration
-      t.integer :wire_launcher_cost_category_id
 
       t.timestamps
     end

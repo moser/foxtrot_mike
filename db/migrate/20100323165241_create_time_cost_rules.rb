@@ -3,6 +3,7 @@ class CreateTimeCostRules < ActiveRecord::Migration
     create_table :time_cost_rules do |t|
       t.integer :person_cost_category_id, :plane_cost_category_id, :cost
       t.string :name, :flight_type, :depends_on
+      t.datetime :valid_from, :valid_to
       t.timestamps
     end
   end

@@ -8,7 +8,7 @@ class FlightsController < ApplicationController
     
     respond_to do |format|
       format.html { render :layout => 'application' }
-      format.xml  { render :xml => @flights }
+      format.json  { render :json => @flights }
     end
   end
 
@@ -23,7 +23,7 @@ class FlightsController < ApplicationController
           render :layout => false
         end
       end
-      format.xml  { render :xml => @flight }
+      format.json  { render :json => @flight }
     end
   end
 
@@ -34,7 +34,7 @@ class FlightsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @flight }
+      format.json  { render :json => @flight }
     end
   end
 
@@ -49,16 +49,18 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.xml
   def create
+    #TODO what to do with type? new controller or split here
+    p params[:flight]
     @flight = Flight.new(params[:flight])
-    
+    @flight.id = params[:flight][:id] unless params[:flight][:id].nil?
     respond_to do |format|
       if @flight.save
         flash[:notice] = 'Flight was successfully created.'
         format.html { redirect_to(edit_flight_path(@flight)) }
-        format.xml  { render :xml => @flight, :status => :created, :location => @flight }
+        format.json  { render :json => @flight, :status => :created, :location => @flight }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @flight.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @flight.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -71,10 +73,10 @@ class FlightsController < ApplicationController
       if @flight.update_attributes(params[:flight])
         flash[:notice] = 'Flight was successfully updated.'
         format.html { redirect_to(@flight) }
-        format.xml  { head :ok }
+        format.json  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @flight.errors, :status => :unprocessable_entity }
+        format.json  { render :json => @flight.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -87,7 +89,7 @@ class FlightsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(flights_url) }
-      format.xml  { head :ok }
+      format.json  { head :ok }
     end
   end
 end

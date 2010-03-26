@@ -17,8 +17,12 @@
     %tr
       %td= h flight.departure.to_date
       %td= h flight.plane
-      %td CREW
-      %td CREW
+      %td
+        - if flight.pic == flight.seat1
+          %u= h flight.seat1.to_s
+        - else
+          = h flight.seat1.to_s
+      %td= h flight.seat2.to_s
       %td= h flight.from
       %td= h flight.to
       %td= h flight.departure.strftime("%H:%M")

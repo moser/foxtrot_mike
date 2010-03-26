@@ -1,7 +1,12 @@
 class PlaneCostCategoriesController < ApplicationController
-
+  #before_filter :login_required
+  
   def index
-    @plane_cost_categories = PlaneCostCategory.find(:all)
+    if @after.nil?
+      @plane_cost_categories = PlaneCostCategory.find(:all)
+    else
+      @plane_cost_categories = PlaneCostCategory.find(:all, :conditions => ['updated_at > ?', @after] )
+    end
 
     respond_to do |format|
       format.html # index.haml

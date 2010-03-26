@@ -1,0 +1,2 @@
+module WireLauncherCostCategoriesHelper
+end

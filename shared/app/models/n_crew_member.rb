@@ -6,5 +6,9 @@ class NCrewMember < CrewMember
     raise ImmutableObjectException unless n.nil?
     write_attribute(:n, i)
   end
+  
+  def to_s
+    "+#{n}"
+  end
 end
 

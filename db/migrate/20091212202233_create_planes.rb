@@ -2,11 +2,11 @@ class CreatePlanes < ActiveRecord::Migration
   def self.up
     create_table :planes, :id => false do |t|
       t.string :id, :limit => 36
-      t.string :registration
-      t.string :make
-      t.string :competition_sign
+      t.string :registration, :make, :competition_sign
       t.string :editor_id, :limit => 36
-      t.integer :plane_cost_category_id
+      t.integer :group_id
+      #flags...
+      t.boolean :has_engine, :can_fly_without_engine, :can_tow
       
       t.timestamps
     end

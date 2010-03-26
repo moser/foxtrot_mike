@@ -11,9 +11,9 @@
     %br
     = f.text_field :make
   %p
-    = f.label :plane_cost_category
+    = f.label :group
     %br
-    = f.select :plane_cost_category_id, PlaneCostCategory.all.collect { |c| [ c.name, c.id ] }
+    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
   = f.submit 'Update'
 
 = link_to 'Back', planes_path

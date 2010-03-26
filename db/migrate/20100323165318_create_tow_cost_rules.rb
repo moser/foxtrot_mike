@@ -3,6 +3,7 @@ class CreateTowCostRules < ActiveRecord::Migration
     create_table :tow_cost_rules do |t|
       t.integer :person_cost_category_id, :plane_cost_category_id, :cost
       t.string :name, :level
+      t.datetime :valid_from, :valid_to
       t.timestamps
     end
   end

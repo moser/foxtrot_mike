@@ -4,12 +4,7 @@ describe "/person/edit.html.haml" do
   include PeopleHelper
   
   before do
-    @person = mock_model(Person)
-    @person.stub!(:firstname).and_return("MyString")
-    @person.stub!(:lastname).and_return("MyString")
-    @person.stub!(:email).and_return("MyString")
-    @person.stub!(:birthdate).and_return(Time.now)
-    assigns[:person] = @person
+    assigns[:person] = @person = Factory.create(:person)
   end
 
   it "should render edit form" do

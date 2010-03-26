@@ -1,7 +1,12 @@
 class PersonCostCategoriesController < ApplicationController
-
+  #before_filter :login_required
+  
   def index
-    @person_cost_categories = PersonCostCategory.find(:all)
+    if @after.nil?
+      @person_cost_categories = PersonCostCategory.find(:all)
+    else
+      @person_cost_categories = PersonCostCategory.find(:all, :conditions => ['updated_at > ?', @after] )
+    end
 
     respond_to do |format|
       format.html # index.haml

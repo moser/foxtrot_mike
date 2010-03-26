@@ -2,10 +2,14 @@ class Flight < ActiveRecord::Base
   include UuidHelper
   
   belongs_to :plane
+  #launch == nil <=> selflaunched
   has_one :launch, :autosave => true, :dependent => :destroy
   has_many :crew_members, :autosave => true
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
+  
+  #accepts_nested_attributes_for :crew_members
+  #accepts_nested_attributes_for :launch
   
   #added methods may rely on associations
   include FlightAddition
@@ -17,28 +21,8 @@ class Flight < ActiveRecord::Base
   accepts_string_for :from, :parent_method => ['registration', 'name']
   accepts_string_for :to, :parent_method => ['registration', 'name']
   
-  #TODO engine_time cost
-  def time_cost
-    #TODO find current, do all finding candidates in person
-    #     find should only return fittind 
-    candidate_costs = cost_responsible.person_cost_category_memberships.map do |m|
-      m.person_cost_category.time_cost_rules.map do |r|
-        if r.flight_type = self.class.name && 
-           r.plane_cost_category == plane.plane_cost_category
-          r.cost_for(self)
-        end
-      end
-    end
-    #p candidate_costs
-    candidate_costs.flatten.compact.min || 0
-  end
-  
-  def launch_cost
-    launch.nil? ? 0 : launch.cost
-  end
-  
   def cost
-    launch_cost + time_cost
+    FlightCost.new(self)
   end
   
   def cost_responsible
@@ -133,6 +117,29 @@ class Flight < ActiveRecord::Base
     end
   end
   
+  def pic
+    if seat1.is_a?(PilotInCommand) || (seat1.is_a?(Trainee) && seat2.nil?)
+      seat1
+    else
+      seat2
+    end
+  end
+  
+  def crew_members_attributes=(attrs)
+    unless attrs.nil?
+      attrs.each do |h|
+        obj = h[:type].constantize.new(h)
+        obj.id = h[:id]
+        obj.save
+        crew_members << obj
+      end
+    end
+  end
+  
+  def launch_attributes=(attrs)
+    
+  end
+  
 =begin
   def crew_attributes=(attributes)
     [1,2].each do |i|
@@ -166,6 +173,19 @@ class Flight < ActiveRecord::Base
     end
   end
 =end
+
+  def self.shared_attribute_names
+    [  :plane_id, :from_id, :to_id, :departure, :duration, :engine_duration,
+      :purpose, :comment ] #:id, , :type
+  end
+  
+  def shared_attributes
+    a = self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
+    a[:crew_members_attributes] = crew_members.map { |m| m.attributes }
+    a[:launch_attributes] = launch.attributes unless launch.nil?
+    a
+  end 
+  
   def self.l(sym = nil)
     if sym.nil?
       human_name
