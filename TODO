@@ -1,8 +1,24 @@
 - STI <=> actsasrevisable TowFlight...
 - locking for editing (optimistic?)
 - locking when stuff is booked
+- define a "booking now" = 1 second after last booking
+  - rules can be edited if they were not yet valid @booking now
+  - a rule's valid_to date can be edited if it is after booking now
+    - for these rules there should be a "end & replace by copy (editable)" feature
+  - new rules must have a valid_from date >= booking now
 - interface to fibu
+  - save accounts (financial ones) on planes, wire_launchers and people
 - column disabled on planes, people + before_destroy => false (=> no more graveyard)
+- no destroying (people|planes|airfields), just "disable"
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
 - license stuff? get information on situation in other countries (segelflug.de?)
+- manual costs
+- payments (map person with a percentage to a flight)
+- metaprogram/inherit cost rules controller
+- controller for TowLevel & sync
+- extract immutability into module
+- refactor and improve FlightCost, LaunchCost. common interface with manual cost
 
+
+DONE:
+- time_cost_rule: conditions (duration (<|>) x) && additive costs (+/-)

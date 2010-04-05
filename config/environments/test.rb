@@ -30,4 +30,6 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 config.gem "factory_girl", :lib => 'factory_girl'
+config.gem 'shoulda', :lib => false
+
 

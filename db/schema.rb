@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100326083506) do
+ActiveRecord::Schema.define(:version => 20100401182742) do
 
   create_table "accounts", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20100326083506) do
     t.string   "flight_id",        :limit => 36
     t.string   "tow_flight_id",    :limit => 36
     t.string   "wire_launcher_id", :limit => 36
-    t.integer  "tow_cost_rule_id"
+    t.integer  "tow_level_id"
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -123,11 +123,21 @@ ActiveRecord::Schema.define(:version => 20100326083506) do
 
   add_index "launches", ["id"], :name => "index_launches_on_id", :unique => true
 
+  create_table "manual_costs", :force => true do |t|
+    t.string   "flight_id",  :limit => 36
+    t.string   "launch_id",  :limit => 36
+    t.integer  "value"
+    t.text     "comment"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "people", :id => false, :force => true do |t|
     t.string   "id",                         :limit => 36
     t.string   "lastname"
     t.string   "firstname"
-    t.datetime "birthdate"
+    t.date     "birthdate"
     t.string   "email"
     t.integer  "group_id"
     t.datetime "created_at"
@@ -186,6 +196,7 @@ ActiveRecord::Schema.define(:version => 20100326083506) do
     t.boolean  "has_engine"
     t.boolean  "can_fly_without_engine"
     t.boolean  "can_tow"
+    t.boolean  "can_be_towed"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -208,6 +219,11 @@ ActiveRecord::Schema.define(:version => 20100326083506) do
     t.string   "name"
     t.string   "flight_type"
     t.string   "depends_on"
+    t.string   "condition_field"
+    t.string   "condition_operator"
+    t.string   "comment"
+    t.integer  "condition_value",         :default => 0
+    t.integer  "additive_cost",           :default => 0
     t.datetime "valid_from"
     t.datetime "valid_to"
     t.datetime "created_at"
@@ -217,11 +233,19 @@ ActiveRecord::Schema.define(:version => 20100326083506) do
   create_table "tow_cost_rules", :force => true do |t|
     t.integer  "person_cost_category_id"
     t.integer  "plane_cost_category_id"
-    t.integer  "cost"
     t.string   "name"
-    t.string   "level"
+    t.string   "comment"
     t.datetime "valid_from"
     t.datetime "valid_to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tow_levels", :force => true do |t|
+    t.string   "name"
+    t.integer  "tow_cost_rule_id"
+    t.integer  "cost"
+    t.string   "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

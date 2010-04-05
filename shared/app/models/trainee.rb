@@ -3,4 +3,8 @@
 # plane, he is PICUS (pilot in command under supervision).
 class Trainee < PersonCrewMember
   include TraineeAddition
+  
+  def short
+    person.trainee?(flight) ? "PIC" : "PICUS" 
+  end
 end

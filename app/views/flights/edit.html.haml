@@ -11,7 +11,13 @@
       %li.plane
         = labeled_text_field f, :plane
       %li
-        CREW MEMBERS
+        = f.label :seat1
+        %br
+        = f.select :seat1_id, Person.all.collect { |c| [ c.name, c.id ] }
+      %li
+        = f.label :seat2
+        %br
+        = f.select :seat2_id, Person.all.collect { |c| [ c.name, c.id ] }
       %li.from
         = labeled_text_field f, :from
       %li.to

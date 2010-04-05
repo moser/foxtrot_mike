@@ -4,7 +4,7 @@ describe "/people/new.html.haml" do
   include PeopleHelper
   
   before do
-    assigns[:person] = @person = Factory.build(:person)
+    assigns[:person] = @person = Person.spawn
   end
 
   it "should render new form" do

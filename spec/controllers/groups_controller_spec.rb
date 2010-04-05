@@ -7,4 +7,5 @@ describe GroupsController do
     controller.should be_an_instance_of(GroupsController)
   end
 
+  it "should return only groups changed after x"
 end

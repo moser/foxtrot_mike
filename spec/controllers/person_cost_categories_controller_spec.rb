@@ -58,6 +58,8 @@ describe PersonCostCategoriesController, "handling GET /person_cost_categories" 
     do_get
     assigns[:person_cost_categories].should == [@person_cost_category]
   end
+  
+  it "should return only objects changed after x"
 end
 
 describe PersonCostCategoriesController, "handling GET /person_cost_categories.json" do
@@ -87,6 +89,8 @@ describe PersonCostCategoriesController, "handling GET /person_cost_categories.j
     do_get
     response.body.should == "JSON"
   end
+  
+  it "should return only objects changed after x"
 end
 
 describe PersonCostCategoriesController, "handling GET /person_cost_categories/1" do

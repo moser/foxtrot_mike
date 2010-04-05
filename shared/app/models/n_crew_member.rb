@@ -10,5 +10,9 @@ class NCrewMember < CrewMember
   def to_s
     "+#{n}"
   end
+  
+  def equals?(other)
+    self.class == other.class && n == other.n
+  end
 end
 

@@ -1,25 +1,6 @@
 %h1 Editing person
 
-= error_messages_for :person
-
-- form_for(@person) do |f|
-  %p
-    %b Firstname
-    = f.text_field :firstname 
-  %p
-    %b Lastname
-    = f.text_field :lastname 
-  %p
-    %b Email
-    = f.text_field :email 
-  %p
-    %b Birthdate
-    = f.datetime_select :birthdate 
-  %p
-    = f.label :group
-    %br
-    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
-  %p= f.submit "Update"
+= render :partial => "people/form", :locals => { :person => @person }
   
 = link_to 'Show', person_path(@person)
 = link_to 'Back', people_path

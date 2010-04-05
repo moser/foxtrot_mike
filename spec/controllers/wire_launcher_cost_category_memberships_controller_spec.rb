@@ -6,5 +6,7 @@ describe WireLauncherCostCategoryMembershipsController do
   it "should use WireLauncherCostCategoryMembershipsController" do
     controller.should be_an_instance_of(WireLauncherCostCategoryMembershipsController)
   end
+  
+  it "should return only objects changed after x"
 
 end

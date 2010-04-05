@@ -17,15 +17,8 @@ describe Airfield do
     a.valid?.should be_true
   end
   
-  it "should have two relations referencing flights" do
-    flights_from = Airfield.reflect_on_association :flights_from
-    flights_from.class_name.should == "Flight"
-    flights_from.macro.should == :has_many
-    
-    flights_to = Airfield.reflect_on_association :flights_to
-    flights_to.class_name.should == "Flight"
-    flights_from.macro.should == :has_many
-  end
+  it { should have_many :flights_from }
+  it { should have_many :flights_to }
   
   it "should return registration or name when sent to_s" do
     str = "EDXY"

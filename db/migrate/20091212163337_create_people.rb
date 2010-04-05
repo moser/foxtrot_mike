@@ -4,7 +4,7 @@ class CreatePeople < ActiveRecord::Migration
       t.string    :id, :limit => 36 #, :null => false
       t.string    :lastname
       t.string    :firstname
-      t.datetime  :birthdate
+      t.date      :birthdate
       t.string    :email
       t.integer   :group_id
       

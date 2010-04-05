@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe "/flights/show.html.haml" do
   include FlightsHelper
   before(:each) do
-    assigns[:flight] = @flight = Factory.create(:flight)
+    assigns[:flight] = @flight = Flight.generate!
   end
 
   it "render without errors" do

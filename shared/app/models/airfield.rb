@@ -1,12 +1,15 @@
 class Airfield < ActiveRecord::Base
   include UuidHelper
-  include AirfieldAddition
 
   has_many :flights_from, :foreign_key => 'from_id', :class_name => 'Flight'
   has_many :flights_to, :foreign_key => 'to_id', :class_name => 'Flight'
   
+  validates_presence_of :name
+  validates_uniqueness_of :registration, :if => Proc.new { |airfield| airfield.registration != "" }
+  
+  include AirfieldAddition
+  
   def to_s
-    #registration || name || ''
     if name && registration
       "#{name} (#{registration})"
     elsif registration

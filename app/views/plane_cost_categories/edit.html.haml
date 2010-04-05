@@ -1,13 +1,6 @@
 %h1 Editing plane_cost_category
 
-= error_messages_for :plane_cost_category
-
-- form_for(@plane_cost_category) do |f|
-  %p
-    %b Name
-    = f.text_field :name 
-    
-  %p= f.submit "Update"
+= render :partial => "plane_cost_categories/form", :locals => { :plane_cost_category => @plane_cost_category }
   
 = link_to 'Show', plane_cost_category_path(@plane_cost_category)
 = link_to 'Back', plane_cost_categories_path

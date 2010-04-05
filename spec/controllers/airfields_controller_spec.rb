@@ -62,6 +62,8 @@ describe AirfieldsController, "handling GET /airfields" do
     do_get
     assigns[:airfields].should == [@airfield]
   end
+  
+  it "should return only airfields changed after x"
 end
 
 describe AirfieldsController, "handling GET /airfields.json" do
@@ -95,6 +97,8 @@ describe AirfieldsController, "handling GET /airfields.json" do
     do_get
     response.body.should == "JSON"
   end
+  
+  it "should return only airfields changed after x"
 end
 
 describe AirfieldsController, "handling GET /airfields/1" do#

@@ -1,0 +1,9 @@
+.controls {
+  display: inline;
+  border: 1px solid black;
+}
+
+.cost_rule {
+  padding: 1px;
+  border: 1px solid black;
+}

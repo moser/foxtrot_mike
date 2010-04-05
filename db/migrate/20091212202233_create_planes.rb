@@ -5,8 +5,8 @@ class CreatePlanes < ActiveRecord::Migration
       t.string :registration, :make, :competition_sign
       t.string :editor_id, :limit => 36
       t.integer :group_id
-      #flags...
-      t.boolean :has_engine, :can_fly_without_engine, :can_tow
+      #flags... TODO
+      t.boolean :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed
       
       t.timestamps
     end

@@ -1,29 +1,5 @@
 %h1 New person
 
-= error_messages_for :person 
+= render :partial => "people/form", :locals => { :person => @person }
 
-- form_for(@person) do |f| 
-  %p
-    %b Firstname
-    %br
-    = f.text_field :firstname 
-  %p
-    %b Lastname
-    %br
-    = f.text_field :lastname 
-  %p
-    %b Email
-    %br
-    = f.text_field :email 
-  %p
-    %b Birthdate
-    %br
-    = f.datetime_select :birthdate 
-  %p
-    = f.label :group
-    %br
-    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
-  %p
-    = f.submit "Create"
-    
 = link_to 'Back', people_path 

@@ -4,9 +4,7 @@ describe "/PersonCostCategory/edit.html.haml" do
   include PersonCostCategoriesHelper
   
   before do
-    @person_cost_category = mock_model(PersonCostCategory)
-    @person_cost_category.stub!(:name).and_return("MyString")
-    assigns[:person_cost_category] = @person_cost_category
+    assigns[:person_cost_category] = @person_cost_category = PersonCostCategory.generate!
   end
 
   it "should render edit form" do

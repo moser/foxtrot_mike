@@ -72,6 +72,10 @@ describe FlightsController do
         response.should render_template('new')
       end
     end
+    
+    describe "with JSON params" do
+      it "should create a flight with a launch and 2 crew members"
+    end
 
   end
 

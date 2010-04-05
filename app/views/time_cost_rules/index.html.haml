@@ -1,0 +1,29 @@
+#not_valid_anymore
+  %h3 Old rules 
+  .hint
+    No changes possible.
+  - @not_valid_anymore.each do |r|
+    .cost_rule
+      = r.name
+#valid
+  %h3 Current rules
+  .hint
+    You may change the end date. In order to change other things, you have to copy the rule.
+  - @valid.each do |r|
+    .cost_rule
+      = r.name
+      .controls
+        %a set end date
+        %a copy
+        %a copy and end
+#not_yet_valid
+  %h3 Future rules
+  .hint
+    Any changes are possible.
+  - @not_yet_valid.each do |r|
+    .cost_rule
+      = r.name
+      .controls
+        %a edit
+        %a copy
+        %a delete

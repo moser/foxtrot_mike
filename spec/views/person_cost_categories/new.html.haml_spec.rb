@@ -4,10 +4,7 @@ describe "/PersonCostCategories/new.html.haml" do
   include PersonCostCategoriesHelper
   
   before do
-    @person_cost_category = mock_model(PersonCostCategory)
-    @person_cost_category.stub!(:new_record?).and_return(true)
-    @person_cost_category.stub!(:name).and_return("MyString")
-    assigns[:person_cost_category] = @person_cost_category
+    assigns[:person_cost_category] = @person_cost_category = PersonCostCategory.new
   end
 
   it "should render new form" do

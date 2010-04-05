@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :time_cost_rules
   map.resources :tow_cost_rules
   map.resources :wire_launch_cost_rules
+  map.resources :plane_cost_rules
   
   map.connect '/', :controller => 'flights', :action => 'index'
   

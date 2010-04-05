@@ -13,6 +13,9 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 Dir["#{RAILS_ROOT}/shared/spec/factories/**/*.rb"].each {|f| require f}
 
+require 'shoulda'
+require 'factory_girl/syntax/generate'
+
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record

@@ -50,7 +50,6 @@ class FlightsController < ApplicationController
   # POST /flights.xml
   def create
     #TODO what to do with type? new controller or split here
-    p params[:flight]
     @flight = Flight.new(params[:flight])
     @flight.id = params[:flight][:id] unless params[:flight][:id].nil?
     respond_to do |format|

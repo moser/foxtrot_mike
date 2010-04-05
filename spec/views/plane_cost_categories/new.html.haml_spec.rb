@@ -4,10 +4,7 @@ describe "/PlaneCostCategories/new.html.haml" do
   include PlaneCostCategoriesHelper
   
   before do
-    @plane_cost_category = mock_model(PlaneCostCategory)
-    @plane_cost_category.stub!(:new_record?).and_return(true)
-    @plane_cost_category.stub!(:name).and_return("MyString")
-    assigns[:plane_cost_category] = @plane_cost_category
+    assigns[:plane_cost_category] = @plane_cost_category = PlaneCostCategory.new
   end
 
   it "should render new form" do

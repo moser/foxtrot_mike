@@ -8,7 +8,7 @@ describe "Costs" do
     catTowPlane = PlaneCostCategory.create :name => "TowPlane", :tow_cost_rule_type => "TimeCostRule"
     catWinch = WireLauncherCostCategory.create :name => "Winch"
     
-    @pilot_a = Person.create :lastname => "A"
+    @pilot_a = Person.create :lastname => "A", :firstname => "B", :group => Group.create(:name => "hua")
     PersonCostCategoryMembership.create :valid_from => 1.year.ago, :valid_to => 1.day.from_now, 
                                         :person_cost_category => catA, :person => @pilot_a
     PersonCostCategoryMembership.create :valid_from => 1.day.from_now, :valid_to => 1.year.from_now, 
@@ -84,4 +84,5 @@ describe "Costs" do
     tow_flight.cost_responsible.should == @pilot_a
     flight.cost.to_i.should == 1350
   end
+  
 end

@@ -1,10 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Person do
-  fixtures "people"
+describe Person do  
   it "should find people by their name" do
-    martin = Factory.create(:person, :lastname => "Foo", :firstname => "Martin")
-    tom = Factory.create(:person, :lastname => "Foo", :firstname => "Tom")
+    martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
+    tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")
     Person.find_by_name('foo').should == nil
     Person.find_by_name('martin').should == martin
     Person.find_by_name('martin f').should == martin
@@ -12,8 +11,8 @@ describe Person do
   end
   
   it "should find all people by their name" do
-    martin = Factory.create(:person, :lastname => "Foo", :firstname => "Martin")
-    tom = Factory.create(:person, :lastname => "Foo", :firstname => "Tom")
+    martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
+    tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")
     Person.find_all_by_name('foo').should == [martin, tom]
     Person.find_all_by_name('martin').should == [martin]
     Person.find_all_by_name('martin f').should == [martin]

@@ -3,8 +3,8 @@ class Flight < ActiveRecord::Base
   
   belongs_to :plane
   #launch == nil <=> selflaunched
-  has_one :launch, :autosave => true, :dependent => :destroy
-  has_many :crew_members, :autosave => true
+  has_one :launch, :dependent => :destroy #, :autosave => true
+  has_many :crew_members, :dependent => :destroy  # , :autosave => true
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   
@@ -22,11 +22,12 @@ class Flight < ActiveRecord::Base
   accepts_string_for :to, :parent_method => ['registration', 'name']
   
   def cost
-    FlightCost.new(self)
+    FlightCost.new(self) unless cost_responsible.nil?
   end
   
   def cost_responsible
-    crew_members.find_all { |m| m.class == PilotInCommand }.first.person rescue nil
+
+    seat1.nil? ? nil : seat1.person
   end
   
   def arrival
@@ -85,14 +86,34 @@ class Flight < ActiveRecord::Base
     crew_members.find_all { |m| [ Instructor, PersonCrewMember, NCrewMember ].include?(m.class) }.first
   end
   
+  def seat1_id
+    seat1.person_id rescue nil
+  end
+  
+  def seat2_id
+    seat2.person_id rescue nil
+  end
+  
+  def seat1_id=(id)
+    self.seat1 = id
+  end
+  
+  def seat2_id=(id)
+    self.seat2 = id
+  end
+  
   def seat1=(obj)
     obj = Person.find(obj) unless obj.is_a?(Person)
     old = seat1
-    crew_members.delete old unless old.nil?
     if obj.trainee?(self)
-      crew_members << Trainee.create(:person => obj)
+      new = Trainee.new(:person => obj)
     else
-      crew_members << PilotInCommand.create(:person => obj)
+      new = PilotInCommand.new(:person => obj)
+    end
+    if !new.equals?(old)
+      crew_members.delete old unless old.nil?
+      new.save
+      crew_members << new
     end
     unless seat2.nil? #check if this one should be changed by reassigning it
       if seat2.is_a?(PersonCrewMember) #don't need to check if seat2 is a number (NCrewMember)
@@ -105,15 +126,19 @@ class Flight < ActiveRecord::Base
   def seat2=(obj)
     obj = Person.find(obj) unless obj.is_a?(Person) || obj.is_a?(Integer)
     old = seat2
-    crew_members.delete old unless old.nil?
     if obj.is_a?(Person)
       if seat1.is_a?(Trainee) && obj.instructor?(self)
-        crew_members << Instructor.create(:person => obj)
+        new = Instructor.new(:person => obj)
       else #we do allow other people to fly with trainees, but should warn about that
-        crew_members << PersonCrewMember.create(:person => obj)
+        new = PersonCrewMember.new(:person => obj)
       end
     else
-      crew_members << NCrewMember.create(:n => obj)
+      new = NCrewMember.new(:n => obj)
+    end
+    if !new.equals?(old)
+      crew_members.delete old unless old.nil?
+      new.save
+      crew_members << new
     end
   end
   

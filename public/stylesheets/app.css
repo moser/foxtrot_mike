@@ -28,3 +28,7 @@ div.disabler a.stop_load {
   opacity: 1.0;
   
 }
+
+.marked {
+  background: #99f;
+}

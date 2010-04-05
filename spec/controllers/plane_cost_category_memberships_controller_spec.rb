@@ -6,5 +6,7 @@ describe PlaneCostCategoryMembershipsController do
   it "should use PlaneCostCategoryMembershipsController" do
     controller.should be_an_instance_of(PlaneCostCategoryMembershipsController)
   end
+  
+  it "should return only objects changed after x"
 
 end

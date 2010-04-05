@@ -1,10 +1,6 @@
 %h1 Editing airfield
 
-= error_messages_for :airfield
-
-- semantic_form_for(@airfield) do |f|
-  = f.inputs :registration, :name
-  = f.buttons
+= render :partial => "airfields/form", :locals => { :airfield => @airfield }
   
 = link_to 'Show', airfield_path(@airfield)
 = link_to 'Back', airfields_path

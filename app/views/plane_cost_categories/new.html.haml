@@ -1,14 +1,5 @@
 %h1 New plane_cost_category
 
-= error_messages_for :plane_cost_category 
-
-- form_for(@plane_cost_category) do |f| 
-  %p
-    %b Name
-    %br
-    = f.text_field :name 
-
-  %p
-    = f.submit "Create"
+= render :partial => "plane_cost_categories/form", :locals => { :plane_cost_category => @plane_cost_category }
     
 = link_to 'Back', plane_cost_categories_path 

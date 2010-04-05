@@ -58,6 +58,8 @@ describe PlaneCostCategoriesController, "handling GET /plane_cost_categories" do
     do_get
     assigns[:plane_cost_categories].should == [@plane_cost_category]
   end
+  
+  it "should return only objects changed after x"
 end
 
 describe PlaneCostCategoriesController, "handling GET /plane_cost_categories.json" do
@@ -87,6 +89,8 @@ describe PlaneCostCategoriesController, "handling GET /plane_cost_categories.jso
     do_get
     response.body.should == "JSON"
   end
+  
+  it "should return only objects changed after x"
 end
 
 describe PlaneCostCategoriesController, "handling GET /plane_cost_categories/1" do

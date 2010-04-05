@@ -9,30 +9,33 @@ class FlightCost
     @flight.departure
   end
   
-  def to_i
+  def to_i #rename: combined value (?)
     launch_cost.to_i + cost_i
   end
   
-  def cost_i
+  def cost_i #rename: value
     cost[1] rescue 0
   end
   
-  def cost
-    candidate_costs.find { |k, v| v == candidate_costs.values.min }
+  def cost_rule
+    #TODO
+  end
+  
+  def cost #rename?
+    cc = candidate_costs
+    cc.find { |k, v| v == cc.values.min }
   end
   
   #TODO engine_time cost
   #     fixed cost tow cost rules
   def candidate_costs
-    unless @cc
-      @cc = {}
-      candidate_rules.each do |r|
-        if r.flight_type = @flight.class.name
-          @cc[r] = r.cost_for(@flight)
-        end
+    cc = {}
+    candidate_rules.each do |r|
+      if r.flight_type = @flight.class.name
+        cc[r] = r.cost_for(@flight)
       end
     end
-    @cc
+    cc
   end
   
   def candidate_rules

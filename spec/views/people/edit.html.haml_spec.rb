@@ -4,7 +4,7 @@ describe "/person/edit.html.haml" do
   include PeopleHelper
   
   before do
-    assigns[:person] = @person = Factory.create(:person)
+    assigns[:person] = @person = Person.generate!
   end
 
   it "should render edit form" do

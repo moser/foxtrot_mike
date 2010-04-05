@@ -5,7 +5,7 @@ class CreateLaunches < ActiveRecord::Migration
       t.string :flight_id,        :limit => 36
       t.string :tow_flight_id,        :limit => 36
       t.string :wire_launcher_id,     :limit => 36
-      t.integer :tow_cost_rule_id
+      t.integer :tow_level_id
       t.string :type
       t.timestamps
     end

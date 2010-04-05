@@ -62,6 +62,8 @@ describe PeopleController, "handling GET /people" do
     do_get
     assigns[:people].should == [@person]
   end
+  
+  it "should return only people changed after x"
 end
 
 describe PeopleController, "handling GET /people.json" do
@@ -95,6 +97,8 @@ describe PeopleController, "handling GET /people.json" do
     do_get
     response.body.should == "JSON"
   end
+  
+  it "should return only people changed after x"
 end
 
 describe PeopleController, "handling GET /people/1" do

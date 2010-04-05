@@ -4,34 +4,13 @@ describe Flight do
   before(:each) do
     @f = Flight.new
   end
-
-  it "should reference a plane" do
-    r = Flight.reflect_on_association :plane
-    r.class_name.should == "Plane"
-    r.macro.should == :belongs_to
-  end
   
-  it "should reference a launch" do
-    r = Flight.reflect_on_association :launch
-    r.class_name.should == "Launch"
-    r.macro.should == :has_one
-  end
+  it { should belong_to :plane }
+  it { should belong_to :from }
+  it { should belong_to :to }
   
-  it "should reference crew members" do
-    r = Flight.reflect_on_association :crew_members
-    r.class_name.should == "CrewMember"
-    r.macro.should == :has_many
-
-  end
-  
-  it "should reference two airfields" do
-    r = Flight.reflect_on_association :from
-    r.class_name.should == "Airfield"
-    r.macro.should == :belongs_to
-    r = Flight.reflect_on_association :to
-    r.class_name.should == "Airfield"
-    r.macro.should == :belongs_to
-  end
+  it { should have_many :crew_members }
+  it { should have_one :launch }
   
   describe "arrival" do
     it "should return the arrival time" do
@@ -111,12 +90,12 @@ describe Flight do
   
   describe "crew member factory" do
     before(:each) do
-      @f = Factory.create(:flight)
-      @pilot = Factory.create(:person)
+      @f = Flight.generate!
+      @pilot = Person.generate!
       @pilot.stub(:trainee? => false)
-      @trainee = Factory.create(:person)
+      @trainee = Person.generate!
       @trainee.stub(:trainee? => true)
-      @instructor = Factory.create(:person, :lastname => "instructor")
+      @instructor = Person.generate!(:lastname => "instructor")
       @instructor.stub(:instructor? => true)
     end
     
@@ -163,6 +142,12 @@ describe Flight do
     it "should accept a number for seat2" do
       @f.seat2 = 3
       @f.crew_members.first.should be_a NCrewMember
+    end
+  end
+  
+  describe "cost" do
+    it "should be nil if there is no crew" do
+      @f.cost.should be_nil
     end
   end
   

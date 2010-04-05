@@ -4,9 +4,7 @@ describe "/PlaneCostCategory/edit.html.haml" do
   include PlaneCostCategoriesHelper
   
   before do
-    @plane_cost_category = mock_model(PlaneCostCategory)
-    @plane_cost_category.stub!(:name).and_return("MyString")
-    assigns[:plane_cost_category] = @plane_cost_category
+    assigns[:plane_cost_category] = @plane_cost_category = PlaneCostCategory.generate!
   end
 
   it "should render edit form" do

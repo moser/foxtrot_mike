@@ -7,6 +7,8 @@ describe PlaneCostCategory do
       :tow_cost_rule_type => "TimeCostRule"
     }
   end
+  
+  it { should have_many :plane_cost_category_memberships }
 
   it "should create a new instance given valid attributes" do
     PlaneCostCategory.create!(@valid_attributes)
