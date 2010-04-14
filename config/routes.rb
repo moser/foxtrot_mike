@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :flights
   map.resources :planes
   map.resources :airfields
+  map.resources :wire_launchers
   
   map.resources :person_cost_categories
   map.resources :plane_cost_categories

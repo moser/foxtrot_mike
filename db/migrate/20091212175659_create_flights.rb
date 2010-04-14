@@ -10,6 +10,7 @@ class CreateFlights < ActiveRecord::Migration
       t.string      :purpose #TODO what purposes are needed, how to save them (enum?)
       t.text        :comment
       t.string      :type
+      #TODO controller_id => person
       t.timestamps
     end
     add_index "flights", ["id"], :name => "index_flights_on_id", :unique => true

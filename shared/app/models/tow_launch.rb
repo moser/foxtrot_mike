@@ -1,5 +1,5 @@
 class TowLaunch < Launch
-  belongs_to :tow_flight
+  belongs_to :tow_flight, :dependent => :destroy, :autosave => true
   
   def cost
     #if ...
@@ -17,5 +17,12 @@ class TowLaunch < Launch
   
   def available_tow_levels
     available_tow_cost_rules.map { |r| r.tow_levels }.flatten
+  end
+
+protected
+  def after_initialize
+    if new_record?
+      self.tow_flight = tow_flight || TowFlight.create(:plane => Defaults.instance.tow_plane)
+    end 
   end
 end

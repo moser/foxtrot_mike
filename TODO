@@ -18,6 +18,7 @@
 - controller for TowLevel & sync
 - extract immutability into module
 - refactor and improve FlightCost, LaunchCost. common interface with manual cost
+- keep track of controller (flugleiter)
 
 
 DONE:

@@ -48,7 +48,7 @@ class Person < ActiveRecord::Base
   end
   
   def self.shared_attribute_names
-    [ :id, :lastname, :firstname, :birthdate, :email ]
+    [ :id, :lastname, :firstname, :birthdate, :email, :group_id ]
   end
   
   def shared_attributes

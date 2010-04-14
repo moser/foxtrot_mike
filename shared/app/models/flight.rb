@@ -31,10 +31,11 @@ class Flight < ActiveRecord::Base
   end
   
   def arrival
-    self.departure + self.duration.minutes rescue nil
+    self.departure + self.duration.minutes #rescue nil
   end
   
   def arrival=(time)
+    #if time.respond to "to_datetime"
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
       time = time.to_datetime.utc
       unless self.departure.nil?
@@ -55,8 +56,25 @@ class Flight < ActiveRecord::Base
     if self.departure.nil?
       self.departure = date
     else
-      self.departure = DateTime.new(date.year, date.month, date.day, departure.hour, departure.min, departure.sec, 0)
+      self.departure = DateTime.new(date.year, date.month, date.day, departure.hour, departure.min, 0, 0)
     end
+  end
+  
+  def departure_time
+    departure.hour * 60 + departure.min
+  end
+  
+  def departure_time=(i)
+    #p "departure_time = #{i}"
+    self.departure = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes
+  end
+  
+  def arrival_time
+    arrival.hour * 60 + arrival.min
+  end
+  
+  def arrival_time=(i)
+    self.arrival = DateTime.new(arrival.year, arrival.month, arrival.day + (i < departure_time ? 1 : 0), 0, 0, 0, 0) + i.minutes
   end
   
   def departure=(time)
@@ -103,42 +121,51 @@ class Flight < ActiveRecord::Base
   end
   
   def seat1=(obj)
-    obj = Person.find(obj) unless obj.is_a?(Person)
-    old = seat1
-    if obj.trainee?(self)
-      new = Trainee.new(:person => obj)
+    unless obj.nil?
+      obj = Person.find(obj) unless obj.is_a?(Person)
+      old = seat1
+      if obj.trainee?(self)
+        new = Trainee.new(:person => obj)
+      else
+        new = PilotInCommand.new(:person => obj)
+      end
+      if !new.equals?(old)
+        crew_members.delete old unless old.nil?
+        new.save
+        crew_members << new
+      end
     else
-      new = PilotInCommand.new(:person => obj)
-    end
-    if !new.equals?(old)
+      old = seat1
       crew_members.delete old unless old.nil?
-      new.save
-      crew_members << new
     end
     unless seat2.nil? #check if this one should be changed by reassigning it
       if seat2.is_a?(PersonCrewMember) #don't need to check if seat2 is a number (NCrewMember)
         self.seat2 = seat2.person
       end
     end
-    
   end
   
   def seat2=(obj)
-    obj = Person.find(obj) unless obj.is_a?(Person) || obj.is_a?(Integer)
-    old = seat2
-    if obj.is_a?(Person)
-      if seat1.is_a?(Trainee) && obj.instructor?(self)
-        new = Instructor.new(:person => obj)
-      else #we do allow other people to fly with trainees, but should warn about that
-        new = PersonCrewMember.new(:person => obj)
+    unless obj.nil?
+      obj = Person.find(obj) unless obj.is_a?(Person) || obj.is_a?(Integer)
+      old = seat2
+      if obj.is_a?(Person)
+        if seat1.is_a?(Trainee) && obj.instructor?(self)
+          new = Instructor.new(:person => obj)
+        else #we do allow other people to fly with trainees, but should warn about that
+          new = PersonCrewMember.new(:person => obj)
+        end
+      else
+        new = NCrewMember.new(:n => obj)
+      end
+      if !new.equals?(old)
+        crew_members.delete old unless old.nil?
+        new.save
+        crew_members << new
       end
     else
-      new = NCrewMember.new(:n => obj)
-    end
-    if !new.equals?(old)
+      old = seat2
       crew_members.delete old unless old.nil?
-      new.save
-      crew_members << new
     end
   end
   
@@ -223,5 +250,12 @@ class Flight < ActiveRecord::Base
 protected
   def rational_day_to_minutes(r)
     (r * 1440).to_i
+  end
+  
+  def after_initialize
+    if new_record?
+      self.departure ||= Date.today
+      self.duration ||= 0
+    end
   end
 end

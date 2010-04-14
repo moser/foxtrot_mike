@@ -13,7 +13,7 @@ class Plane < ActiveRecord::Base
   end
   
   def self.shared_attribute_names
-    [ :id, :registration, :make, :competition_sign ]
+    [ :id, :registration, :make, :competition_sign, :group_id ]
   end
   
   def shared_attributes
