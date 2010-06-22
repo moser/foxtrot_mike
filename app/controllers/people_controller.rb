@@ -38,6 +38,7 @@ class PeopleController < ApplicationController
 
   def create
     @person = Person.new(params[:person])
+    @person.id = params[:person][:id] unless params[:person].nil? || params[:person][:id].nil?
 
     respond_to do |format|
       if @person.save

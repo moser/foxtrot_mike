@@ -272,6 +272,12 @@ describe AirfieldsController, "handling POST /airfields" do
     Airfield.should_receive(:new).with({}).and_return(@airfield)
     post_with_successful_save
   end
+  
+  it "should create a new person with an given ID" do
+    @airfield.should_receive(:id=).with("1234567")
+    @airfield.should_receive(:save).and_return(true)
+    post :create, :airfield => { :name => "foo", :id => "1234567" }
+  end
 
   it "should redirect to the new airfield on successful save" do
     post_with_successful_save

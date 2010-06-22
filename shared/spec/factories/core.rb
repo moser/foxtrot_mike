@@ -1,7 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../spec/spec_helper')
+#require File.expand_path(File.dirname(__FILE__) + '/../../../spec/spec_helper')
 
 Factory.define :group do |g|
-  g.name 'some_group'
+  g.sequence(:name) { |n| "Group #{n}" }
 end
 
 Factory.define :person do |p|
@@ -10,23 +10,33 @@ Factory.define :person do |p|
   p.association :group, :factory => :group
 end
 
+Factory.define :airfield do |a|
+  a.sequence(:name) {|n| "Airfield #{n}" }
+  a.sequence(:registration) {|n| "#{n}" }
+end
+
 Factory.define :flight do |p|
+  p.departure { 20.minutes.ago }
+  p.duration 1
+end
+
+Factory.define :abstract_flight do |p|
   p.departure { 20.minutes.ago }
   p.duration 1
 end
 
 
 Factory.define :plane do |p|
-  p.registration "D-1234"
+  p.sequence(:registration) {|n| "D-#{n}" }
 end
 
 Factory.define :plane_cost_category do |c|
-  c.name "plane_cost_category"
+  c.sequence(:name) {|n| "plane_cost_category #{n}" }
   c.tow_cost_rule_type ""
 end
 
 Factory.define :person_cost_category do |c|
-  c.name "person_cost_category"
+  c.sequence(:name) {|n| "person_cost_category #{n}" }
 end
 
 Factory.define :person_cost_category_membership do |m|

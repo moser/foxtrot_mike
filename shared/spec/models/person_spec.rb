@@ -21,4 +21,12 @@ describe Person do
     p = Person.spawn
     p.to_s.should == "bar foo"
   end
+  
+  it "should only shared some attributes" do
+    Person.shared_attribute_names.should == [ :id, :lastname, :firstname, :birthdate, :email, :group_id ]
+  end
+  
+  it "should return shared_attributes" do
+    Person.generate!.shared_attributes.keys.to_set.should == Person.shared_attribute_names.map { |n| n.to_s }.to_set
+  end
 end

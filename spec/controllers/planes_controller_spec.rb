@@ -20,7 +20,7 @@ describe PlanesController do
     it "should return json" do
       str = "str"
       mock_array = [mock_plane]
-      mock_array.should_receive(:to_json).with(:only => [:id, :registration, :make, :competition_sign]).and_return(str)
+      mock_array.should_receive(:to_json).with(:only => [:id, :registration, :make, :competition_sign, :group_id]).and_return(str)
       Plane.should_receive(:all).and_return(mock_array)
       get :index, :format => 'json'
       response.body.should == str

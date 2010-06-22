@@ -1,4 +1,3 @@
-- STI <=> actsasrevisable TowFlight...
 - locking for editing (optimistic?)
 - locking when stuff is booked
 - define a "booking now" = 1 second after last booking
@@ -18,8 +17,15 @@
 - controller for TowLevel & sync
 - extract immutability into module
 - refactor and improve FlightCost, LaunchCost. common interface with manual cost
-- keep track of controller (flugleiter)
+- views: 
+  - Hauptflugbuch (von/nach Heimatflugplatz)
+  - Flugleiterdienstbuch
+  - flugbuch
+  - bordbuch
+
 
 
 DONE:
 - time_cost_rule: conditions (duration (<|>) x) && additive costs (+/-)
+- STI <=> actsasrevisable TowFlight...
+- keep track of controller (flugleiter)

@@ -1,4 +1,4 @@
-class InstructorRevision < ActiveRecord::Base
-  acts_as_revision :clone_associations => :all
+class InstructorRevision < PilotInCommandRevision
+  acts_as_revision
   include UuidHelper
 end

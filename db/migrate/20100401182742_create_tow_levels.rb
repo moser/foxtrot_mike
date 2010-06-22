@@ -5,7 +5,7 @@ class CreateTowLevels < ActiveRecord::Migration
       t.integer :tow_cost_rule_id
       t.integer :cost
       t.string :comment
-
+      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

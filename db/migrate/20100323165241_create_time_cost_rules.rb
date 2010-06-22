@@ -6,6 +6,7 @@ class CreateTimeCostRules < ActiveRecord::Migration
       t.integer :condition_value, :default => 0
       t.integer :additive_cost, :default => 0
       t.datetime :valid_from, :valid_to
+      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

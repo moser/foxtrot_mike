@@ -4,6 +4,7 @@ class CreateTowCostRules < ActiveRecord::Migration
       t.integer :person_cost_category_id, :plane_cost_category_id
       t.string :name, :comment
       t.datetime :valid_from, :valid_to
+      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

@@ -59,6 +59,7 @@ Spec::Rake::SpecTask.new(:spec => spec_prereq) do |t|
   t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.spec_files += FileList["shared/spec/**/*_spec.rb"]
+  t.spec_files = t.spec_files.find_all { |f| f =~ /#{ENV['filter']}/ } if ENV.include?("filter")  
 end
 
 namespace :spec do

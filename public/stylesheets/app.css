@@ -29,6 +29,47 @@ div.disabler a.stop_load {
   
 }
 
+/*
+dl.data dt {
+  clear: left;
+  float: left;
+  width: 120px;
+  text-align: left;
+  white-space: nowrap;
+  color: #999;
+}
+
+dl.data dd {
+  margin: 0;
+  margin-left: 120px;
+  /*overflow: hidden;
+}
+*/
+
+table.data th {
+  font-weight: normal;
+  vertical-align: top;
+  text-align: left;
+  width: 120px;
+  color: #999;
+}
+
+table.categories th {
+  vertical-align: top;
+  text-align: left;
+  width: 120px;
+  color: #999;
+}
+
+ul.versions {
+  list-style-type: none;
+  padding: 0 0;
+}
+
+ul.versions li {
+  margin: 0px;
+}
+
 .marked {
   background: #99f;
 }

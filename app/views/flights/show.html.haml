@@ -1,46 +1,82 @@
-%dl.flight
-  %dt= Flight.l(:plane)
-  %dd= @flight.plane
-  %dt= Flight.l(:crew)
-  %dd
-    - unless @flight.seat1.nil?
-      = @flight.seat1.person.to_s 
-      = @flight.seat1.short
-      %br
-    - unless @flight.seat2.nil?
-      = @flight.seat2.person.to_s 
-      = @flight.seat2.short
-  %dt= Flight.l(:from)
-  %dd= @flight.from
-  %dt= Flight.l(:to)
-  %dd= @flight.to
-  %dt= Flight.l(:departure)
-  %dd= @flight.departure
-  %dt= Flight.l(:arrival)
-  %dd= @flight.arrival
-  %dt= Flight.l(:duration)
-  %dd= @flight.duration
-  %dt Cost
-  %dd
-    - if !@flight.cost.nil? 
-      - if !@flight.cost.cost.nil?
-        = @flight.cost.cost[0].name
-        = @flight.cost.cost_i
-        %br
-      - if !@flight.cost.launch_cost.nil?
-        = @flight.cost.launch_cost.cost[0].name
-        = @flight.cost.launch_cost.cost_i
-      = @flight.cost.to_i
+%table.categories
+  %tr
+    %th
+      Data
+    %td
+      %table.data
+        %tr
+          %th= Flight.l(:date)
+          %td= format_date(@flight.departure_date) || '-'
+        %tr
+          %th= Flight.l(:plane)
+          %td= @flight.plane || '-'
+        %tr
+          %th= Flight.l(:crew)
+          %td
+            - unless @flight.seat1.nil?
+              = @flight.seat1.person.to_s 
+              = @flight.seat1.short
+              %br
+            - unless @flight.seat2.nil?
+              = @flight.seat2.person.to_s 
+              = @flight.seat2.short
+        %tr
+          %th= Flight.l(:from)
+          %td= @flight.from || '-'
+        %tr
+          %th= Flight.l(:to)
+          %td= @flight.to || '-'
+        %tr
+          %th= Flight.l(:departure)
+          %td= format_time(@flight.departure) || '-'
+        %tr
+          %th= Flight.l(:arrival)
+          %td= format_time(@flight.arrival) || '-'
+        %tr
+          %th= Flight.l(:duration)
+          %td= format_minutes(@flight.duration) || '-'
+        %tr
+          %th= Flight.l(:engine_duration)
+          %td= format_minutes(@flight.engine_duration) || '-'
+        %tr
+          %th= Flight.l(:comment)
+          %td= @flight.comment
+  %tr
+    %th= Flight.l(:launch)
+    %td= @flight.launch.nil? ? "Selflaunched TODO i18n" : render(:partial => "flights/#{@flight.launch.class.name.underscore}", :locals => { :launch => @flight.launch })
+  %tr
+    %th
+      = Flight.l(:cost)
+    %td
+      %table.data
+        - unless @flight.cost.nil? || @flight.cost.cost.nil?
+          %tr
+            %th= Flight.l(:cost)
+            %td= @flight.cost.cost[0].name
+            %td= format_currency(@flight.cost.cost_i)
+        - unless @flight.cost.launch_cost.nil? || @flight.cost.launch_cost.cost.nil?
+          %tr
+            %th= Flight.l(:launch_cost)
+            %td= @flight.cost.launch_cost.cost[0].name
+            %td= format_currency(@flight.cost.launch_cost.cost_i)
+        %tr
+          %th= Flight.l(:sum)
+          %td
+            
+          %td= format_currency(@flight.cost.to_i)
   - unless @flight.soft_validate
-    %dt Problems
-    %dd
-      %ul
-        - @flight.problems.each do |col, str|
-          %li= Flight.l(col) + " " + str
-      
-  %dt Versions
-  - @flight.revisions.each do |r|
-    %dd= r.revisable_current_at.to_s + ' ' + r.diffs(@flight).keys.inspect
+    %tr
+      %th= Flight.l(:problems)
+      %td
+        %ul
+          - @flight.problems.each do |col, str|
+            %li= Flight.l(col) + " " + str
+  %tr
+    %th= Flight.l(:versions)
+    %td
+      %ul.versions
+        - @flight.revisions.each do |r|
+          %li= format_datetime(r.revisable_current_at) + ' ' + r.diffs(@flight).keys.inspect
 
 = link_to 'Reload', flight_path(@flight), :class => "replace_flight"
 = link_to 'Edit', edit_flight_path(@flight), :class => "replace_flight"

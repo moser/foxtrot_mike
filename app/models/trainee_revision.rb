@@ -1,4 +1,4 @@
-class TraineeRevision < ActiveRecord::Base
+class TraineeRevision < PersonCrewMemberRevision
   acts_as_revision
   include UuidHelper
 end

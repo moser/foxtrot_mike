@@ -4,26 +4,27 @@
     No changes possible.
   - @not_valid_anymore.each do |r|
     .cost_rule
-      = r.name
+      .controls
+        %a.copy{:href => "#time_cost_rule_id=#{r.id}"} copy
+      = render :partial => "time_cost_rules/time_cost_rule", :locals => { :rule => r }
 #valid
   %h3 Current rules
   .hint
     You may change the end date. In order to change other things, you have to copy the rule.
   - @valid.each do |r|
     .cost_rule
-      = r.name
       .controls
-        %a set end date
-        %a copy
-        %a copy and end
+        %a.edit{:href => "#time_cost_rule_id=#{r.id}"} edit
+        %a.copy{:href => "#time_cost_rule_id=#{r.id}"} copy
+      = render :partial => "time_cost_rules/time_cost_rule", :locals => { :rule => r }
 #not_yet_valid
   %h3 Future rules
   .hint
     Any changes are possible.
   - @not_yet_valid.each do |r|
     .cost_rule
-      = r.name
       .controls
-        %a edit
-        %a copy
-        %a delete
+        %a.edit{:href => "#time_cost_rule_id=#{r.id}"} edit
+        %a.copy{:href => "#time_cost_rule_id=#{r.id}"} copy
+        %a.delete{:href => "#time_cost_rule_id=#{r.id}"} delete 
+      = render :partial => "time_cost_rules/time_cost_rule", :locals => { :rule => r }

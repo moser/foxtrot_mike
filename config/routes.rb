@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :accounts
   map.resource :session
   map.resources :flights
+  map.resources :tow_flights, :controller => 'flights'
   map.resources :planes
   map.resources :airfields
   map.resources :wire_launchers

@@ -1,0 +1,21 @@
+= link_to 'Tow Flight', flight_path(launch.tow_flight)
+%table.data  
+  %tr
+    %th= Flight.l(:tow_plane)
+    %td= launch.tow_flight.plane
+  %tr
+    %th= Flight.l(:crew)
+    %td
+      - unless launch.tow_flight.seat1.nil?
+        = launch.tow_flight.seat1.person.to_s 
+        = launch.tow_flight.seat1.short
+        %br
+      - unless launch.tow_flight.seat2.nil?
+        = launch.tow_flight.seat2.person.to_s 
+        = launch.tow_flight.seat2.short
+  %tr
+    %th= Flight.l(:arrival)
+    %td= format_time(launch.tow_flight.arrival)
+  %tr
+    %th= Flight.l(:duration)
+    %td= format_minutes(launch.tow_flight.duration)

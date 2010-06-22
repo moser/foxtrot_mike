@@ -15,4 +15,22 @@ describe Flight do
   it "should be revisable" do
     Flight.new.should respond_to :revisions
   end
+  
+  it "should have a complete history" do
+    f = Flight.create
+    f.update_attribute :plane_id, Plane.generate!.id
+    sleep 1
+    f.seat1 = Person.generate!
+    sleep 1
+    f.seat2 = Person.generate!
+    sleep 1
+    f.seat2 = 1
+    sleep 1
+    f.update_attribute :from_id, Airfield.generate!.id
+    p f
+    #f.history.each { |r|
+    #  puts r.revisable_current_at
+    #  puts r.class
+    #}
+  end
 end

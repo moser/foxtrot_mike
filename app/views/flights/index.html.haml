@@ -15,7 +15,7 @@
     %th= Flight.l(:duration)
   - @flights.each do |flight|
     %tr
-      %td= h flight.departure.to_date
+      %td= h format_date(flight.departure)
       %td= h flight.plane
       %td
         - if flight.pic == flight.seat1
@@ -25,9 +25,9 @@
       %td= h flight.seat2.to_s
       %td= h flight.from
       %td= h flight.to
-      %td= h flight.departure.strftime("%H:%M")
-      %td= h flight.arrival.strftime("%H:%M") rescue ""
-      %td= h i_to_h(flight.duration) rescue ""
+      %td= h format_time(flight.departure) || "-"
+      %td= h format_time(flight.arrival) || "-"
+      %td= h format_minutes(flight.duration) || "0:00"
       %td= link_to 'Show', flight
       %td= link_to 'Edit', edit_flight_path(flight)
       %td= link_to 'Destroy', flight, :confirm => 'Are you sure?', :method => :delete

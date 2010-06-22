@@ -15,7 +15,7 @@ class FlightsController < ApplicationController
   # GET /flights/1
   # GET /flights/1.xml
   def show
-    @flight = Flight.find(params[:id])
+    @flight = AbstractFlight.find(params[:id])
 
     respond_to do |format|
       format.html do
@@ -40,7 +40,7 @@ class FlightsController < ApplicationController
 
   # GET /flights/1/edit
   def edit
-    @flight = Flight.find(params[:id])
+    @flight = AbstractFlight.find(params[:id])
     if request.xhr?
       render :layout => false
     end
@@ -50,8 +50,9 @@ class FlightsController < ApplicationController
   # POST /flights.xml
   def create
     #TODO what to do with type? new controller or split here
-    @flight = Flight.new(params[:flight])
-    @flight.id = params[:flight][:id] unless params[:flight][:id].nil?
+    attrs = params[:flight] #|| params[:tow_flight]
+    @flight = attrs.delete(:type).constantize.new(attrs)
+    @flight.id = attrs[:id] unless attrs[:id].nil?
     respond_to do |format|
       if @flight.save
         flash[:notice] = 'Flight was successfully created.'
@@ -67,7 +68,7 @@ class FlightsController < ApplicationController
   # PUT /flights/1
   # PUT /flights/1.xml
   def update
-    @flight = Flight.find(params[:id])
+    @flight = AbstractFlight.find(params[:id])
     respond_to do |format|
       if @flight.update_attributes(params[:flight])
         flash[:notice] = 'Flight was successfully updated.'
@@ -83,7 +84,7 @@ class FlightsController < ApplicationController
   # DELETE /flights/1
   # DELETE /flights/1.xml
   def destroy
-    @flight = Flight.find(params[:id])
+    @flight = AbstractFlight.find(params[:id])
     @flight.destroy
 
     respond_to do |format|

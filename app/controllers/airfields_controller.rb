@@ -39,6 +39,7 @@ class AirfieldsController < ApplicationController
   def create
     @airfield = Airfield.new(params[:airfield])
     @airfield.id = params[:airfield][:id] unless params[:airfield].nil? || params[:airfield][:id].nil?
+    
     respond_to do |format|
       if @airfield.save
         format.html { redirect_to(airfield_path(@airfield)) }

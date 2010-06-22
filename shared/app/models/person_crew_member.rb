@@ -17,6 +17,6 @@ class PersonCrewMember < CrewMember
   end
   
   def short
-    ""
+    "" #TODO should be a I18n string?
   end
 end

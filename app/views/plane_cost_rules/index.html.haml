@@ -1,17 +1,19 @@
 %h1 Plane cost rules
 .person_cost_categories
+  %h2= PersonCostCategory.l
   - @person_cost_categories.each do |c|
     %a.update_selection{:href => "#person_cost_category=#{c.id}"}= c.name
     %br
-
-.middle
-  .cost_rule_types
-    %a.update_type{:href => "#cost_rule_type=time_cost_rules"}= TimeCostRule.human_name
-    %a.update_type{:href => "#cost_rule_type=tow_cost_rules"}= TowCostRule.human_name
-
-  #cost_rules
-
+    
 .plane_cost_categories
+  %h2= PlaneCostCategory.l
   - @plane_cost_categories.each do |c|
     %a.update_selection{:href => "#plane_cost_category=#{c.id}"}= c.name
     %br
+
+.cost_rule_types
+  %h2 Cost rule type
+  %a.update_type{:href => "#cost_rule_type=time_cost_rules"}= TimeCostRule.human_name
+  %a.update_type{:href => "#cost_rule_type=tow_cost_rules"}= TowCostRule.human_name
+
+#cost_rules

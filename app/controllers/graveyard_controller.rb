@@ -1,3 +1,5 @@
+#TODO remove
+
 class GraveyardController < ApplicationController
   #before_filter :login_required
   

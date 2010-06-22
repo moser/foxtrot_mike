@@ -45,3 +45,13 @@ class String
     return x
   end
 end
+
+class ActiveRecord::Base
+  def self.l(sym = nil)
+    if sym.nil?
+      human_name
+    else
+      human_attribute_name(sym)
+    end
+  end
+end

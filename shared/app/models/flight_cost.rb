@@ -1,3 +1,5 @@
+#TODO rename? TimeCost (<=> EngineTimeCost)
+
 class FlightCost
   attr_reader :flight
   
@@ -14,11 +16,13 @@ class FlightCost
   end
   
   def cost_i #rename: value
-    cost[1] rescue 0
+    c = cost
+    !c.nil? ? c[1] : 0
   end
   
   def cost_rule
-    #TODO
+    c = cost
+    !c.nil? ? c[0] : nil
   end
   
   def cost #rename?
@@ -39,10 +43,14 @@ class FlightCost
   end
   
   def candidate_rules
-    person_categories = @flight.cost_responsible.person_cost_category_memberships.find_all { |m| m.valid_at?(time) }.map { |m| m.person_cost_category }
-    plane_categories = @flight.plane.plane_cost_category_memberships.find_all { |m| m.valid_at?(time) }.map { |m| m.plane_cost_category }
-    (person_categories.map { |c| c.time_cost_rules }.flatten & 
-      plane_categories.map { |c| c.time_cost_rules }.flatten).find_all { |r| r.valid_at?(time) }
+    unless @flight.cost_responsible.nil? || @flight.plane.nil?
+      person_categories = @flight.cost_responsible.person_cost_category_memberships.find_all { |m| m.valid_at?(time) }.map { |m| m.person_cost_category }
+      plane_categories = @flight.plane.plane_cost_category_memberships.find_all { |m| m.valid_at?(time) }.map { |m| m.plane_cost_category }
+      (person_categories.map { |c| c.time_cost_rules }.flatten & 
+        plane_categories.map { |c| c.time_cost_rules }.flatten).find_all { |r| r.valid_at?(time) }
+    else
+      []
+    end
   end
   
   def launch_cost

@@ -10,11 +10,11 @@ class TimeCostRule < ActiveRecord::Base
   def matches?(flight)
     if !condition_field.nil? && !condition_operator.nil?
       i = flight.send(condition_field)
-      if i.is_a?(Fixnum)
-        i.send(condition_operator, condition_value)
-      else #hmm
-        false
-      end
+      #if i.is_a?(Fixnum)
+      i.send(condition_operator, condition_value)
+      #else #hmm
+      #  false
+      #end
     else
       true # => no condition
     end

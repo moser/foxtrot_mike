@@ -47,7 +47,8 @@ class PlanesController < ApplicationController
   # POST /planes.xml
   def create
     @plane = Plane.new(params[:plane])
-
+    @plane.id = params[:plane][:id] unless params[:plane].nil? || params[:plane][:id].nil?
+    
     respond_to do |format|
       if @plane.save
         flash[:notice] = 'Plane was successfully created.'

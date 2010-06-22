@@ -3,6 +3,7 @@ class CreatePlaneCostCategories < ActiveRecord::Migration
     create_table :plane_cost_categories do |t|
       t.string :name
       t.string :tow_cost_rule_type #TowCostRule|TimeCostRule
+      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

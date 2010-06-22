@@ -6,10 +6,6 @@ describe Airfield do
       :registration => 'EDDM',
       :name => 'FJS München'
     }
-    @invalid_attributes = {
-      :registration => 'some',
-      :name => '' 
-    }
   end
 
   it "should accept valid attributes" do
@@ -27,5 +23,15 @@ describe Airfield do
     str = "Foo"
     p = Airfield.new :name => str
     p.to_s.should == str
+    p = Airfield.new :name => "Abc", :registration => "XXXX"
+    p.to_s.should == "Abc (XXXX)"
+  end
+  
+  it "should only shared some attributes" do
+    Airfield.shared_attribute_names.should == [ :id, :registration, :name ]
+  end
+  
+  it "should return shared_attributes" do
+    Airfield.generate!.shared_attributes.keys.to_set.should == Airfield.shared_attribute_names.map { |n| n.to_s }.to_set
   end
 end

@@ -45,3 +45,5 @@ TimeCostRule.create :name => "10ct pre minute", :person_cost_category => catA,
                     :cost => 10, :flight_type => "Flight"          
 WireLaunchCostRule.create :name => "4€ for a winch launch", :person_cost_category => catA, 
                           :wire_launcher_cost_category => catWinch, :cost => 400
+                          
+

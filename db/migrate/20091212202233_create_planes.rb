@@ -5,8 +5,10 @@ class CreatePlanes < ActiveRecord::Migration
       t.string :registration, :make, :competition_sign
       t.string :editor_id, :limit => 36
       t.integer :group_id
-      #flags... TODO default_launch_method?
-      t.boolean :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed
+      t.string :default_launch_method
+      t.boolean :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched
+      t.boolean   :disabled, :default => false
+      t.string :editor_id, :limit => 36
       
       t.timestamps
     end

@@ -272,6 +272,12 @@ describe PeopleController, "handling POST /people" do
     Person.should_receive(:new).with({}).and_return(@person)
     post_with_successful_save
   end
+  
+  it "should create a new person with an given ID" do
+    @person.should_receive(:id=).with("1234567")
+    @person.should_receive(:save).and_return(true)
+    post :create, :person => { :firstname => "foo", :lastname => "bar", :id => "1234567" }
+  end
 
   it "should redirect to the new person on successful save" do
     post_with_successful_save

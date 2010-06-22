@@ -11,4 +11,6 @@ class WireLaunchersController < ApplicationController
       format.json  { render :json => @wire_launchers.to_json(:only => WireLauncher.shared_attribute_names) }
     end
   end
+  
+  #TODO create
 end

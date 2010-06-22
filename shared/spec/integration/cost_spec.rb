@@ -60,6 +60,10 @@ describe "Costs" do
     WireLaunchCostRule.create :valid_from => 1.year.ago, :valid_to => 1.year.from_now,
                               :name => "4€ for a winch launch", :person_cost_category => catB, 
                               :wire_launcher_cost_category => catWinch, :cost => 400
+    @pilot_a.reload
+    @tow_plane.reload
+    @glider.reload
+    @winch.reload
   end
   
   it "should calculate costs for a winch launch and a short flight" do
@@ -78,11 +82,17 @@ describe "Costs" do
   it "should calculate costs for a towed flight" do
     flight = Flight.create :plane => @glider, :seat1 => @pilot_a, :departure => Time.now, 
                            :duration => 15
-    tow_flight = TowFlight.create :plane => @tow_plane, :departure => flight.departure, 
-                                  :duration => 6
+    tow_flight = TowFlight.create :plane => @tow_plane, :duration => 6
     flight.launch = TowLaunch.create :tow_flight => tow_flight
     tow_flight.cost_responsible.should == @pilot_a
     flight.cost.to_i.should == 1350
+  end
+  
+  it "should distribute cost to liable people" do
+    flight = Flight.create :plane => @glider, :seat1 => @pilot_a, :departure => Time.now, 
+                           :duration => 15
+    flight.launch = WireLaunch.create :wire_launcher => @winch
+    #TODO
   end
   
 end

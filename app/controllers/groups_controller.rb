@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  #before_filter :login_required
+  #prepend_before_filter :login_required
   
   def index
     if @after.nil?
@@ -9,7 +9,7 @@ class GroupsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json  { render :json => @groups }
+      format.json  { render :json => @groups.to_json }
     end
   end
 end

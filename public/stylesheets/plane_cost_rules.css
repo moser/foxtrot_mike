@@ -1,4 +1,14 @@
+.person_cost_categories {
+
+}
+
+.plane_cost_categories {
+
+}
+
+
 .controls {
+  float: right;
   display: inline;
   border: 1px solid black;
 }

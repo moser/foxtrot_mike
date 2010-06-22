@@ -9,7 +9,35 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100401182742) do
+ActiveRecord::Schema.define(:version => 20100507113644) do
+
+  create_table "abstract_flights", :id => false, :force => true do |t|
+    t.string   "id",                         :limit => 36
+    t.string   "plane_id",                   :limit => 36
+    t.string   "from_id",                    :limit => 36
+    t.string   "to_id",                      :limit => 36
+    t.string   "controller_id",              :limit => 36
+    t.datetime "departure"
+    t.integer  "duration"
+    t.integer  "engine_duration"
+    t.string   "purpose"
+    t.text     "comment"
+    t.string   "editor_id",                  :limit => 36
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "revisable_original_id",      :limit => 36
+    t.string   "revisable_branched_from_id", :limit => 36
+    t.integer  "revisable_number",                         :default => 0
+    t.string   "revisable_name"
+    t.string   "revisable_type"
+    t.datetime "revisable_current_at"
+    t.datetime "revisable_revised_at"
+    t.datetime "revisable_deleted_at"
+    t.boolean  "revisable_is_current",                     :default => true
+  end
+
+  add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
 
   create_table "accounts", :force => true do |t|
     t.string   "login",                     :limit => 40
@@ -29,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "id",                         :limit => 36
     t.string   "name"
     t.string   "registration"
+    t.boolean  "disabled",                                 :default => false
+    t.string   "editor_id",                  :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -46,10 +76,11 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
 
   create_table "crew_members", :id => false, :force => true do |t|
     t.string   "id",                         :limit => 36
-    t.string   "flight_id"
+    t.string   "abstract_flight_id"
     t.string   "person_id"
     t.integer  "n"
     t.string   "type"
+    t.string   "editor_id",                  :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -78,21 +109,24 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
 
   add_index "crews", ["id"], :name => "index_crews_on_id", :unique => true
 
-  create_table "flights", :id => false, :force => true do |t|
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "launches", :id => false, :force => true do |t|
     t.string   "id",                         :limit => 36
-    t.string   "plane_id",                   :limit => 36
-    t.string   "from_id",                    :limit => 36
-    t.string   "to_id",                      :limit => 36
-    t.datetime "departure"
-    t.integer  "duration"
-    t.integer  "engine_duration"
-    t.string   "purpose"
-    t.text     "comment"
+    t.string   "abstract_flight_id",         :limit => 36
+    t.string   "tow_flight_id",              :limit => 36
+    t.string   "wire_launcher_id",           :limit => 36
+    t.integer  "tow_level_id"
+    t.string   "editor_id",                  :limit => 36
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "revisable_original_id",      :limit => 36
-    t.string   "revisable_branched_from_id", :limit => 36
+    t.integer  "revisable_original_id"
+    t.integer  "revisable_branched_from_id"
     t.integer  "revisable_number",                         :default => 0
     t.string   "revisable_name"
     t.string   "revisable_type"
@@ -102,26 +136,27 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.boolean  "revisable_is_current",                     :default => true
   end
 
-  add_index "flights", ["id"], :name => "index_flights_on_id", :unique => true
-
-  create_table "groups", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "launches", :id => false, :force => true do |t|
-    t.string   "id",               :limit => 36
-    t.string   "flight_id",        :limit => 36
-    t.string   "tow_flight_id",    :limit => 36
-    t.string   "wire_launcher_id", :limit => 36
-    t.integer  "tow_level_id"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   add_index "launches", ["id"], :name => "index_launches_on_id", :unique => true
+
+  create_table "liabilities", :id => false, :force => true do |t|
+    t.string   "id"
+    t.string   "flight_id"
+    t.string   "person_id"
+    t.datetime "booked_at"
+    t.integer  "proportion"
+    t.string   "editor_id",                  :limit => 36
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "revisable_original_id"
+    t.integer  "revisable_branched_from_id"
+    t.integer  "revisable_number",                         :default => 0
+    t.string   "revisable_name"
+    t.string   "revisable_type"
+    t.datetime "revisable_current_at"
+    t.datetime "revisable_revised_at"
+    t.datetime "revisable_deleted_at"
+    t.boolean  "revisable_is_current",                     :default => true
+  end
 
   create_table "manual_costs", :force => true do |t|
     t.string   "flight_id",  :limit => 36
@@ -129,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.integer  "value"
     t.text     "comment"
     t.string   "type"
+    t.string   "editor_id",  :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -138,8 +174,29 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "lastname"
     t.string   "firstname"
     t.date     "birthdate"
+    t.string   "title"
+    t.string   "sex"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "zip"
+    t.string   "city"
+    t.string   "phone1"
+    t.string   "phone2"
+    t.string   "cell"
+    t.string   "facsimile"
     t.string   "email"
+    t.text     "comment"
     t.integer  "group_id"
+    t.boolean  "disabled",                                 :default => false
+    t.string   "editor_id",                  :limit => 36
+    t.boolean  "in_training"
+    t.string   "fibunr"
+    t.string   "lvbnr"
+    t.boolean  "primary_member",                           :default => true
+    t.text     "description"
+    t.date     "entry_date"
+    t.string   "ssv_member_state"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -157,6 +214,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
 
   create_table "person_cost_categories", :force => true do |t|
     t.string   "name"
+    t.string   "editor_id",  :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -173,6 +231,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
   create_table "plane_cost_categories", :force => true do |t|
     t.string   "name"
     t.string   "tow_cost_rule_type"
+    t.string   "editor_id",          :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -193,10 +252,13 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "competition_sign"
     t.string   "editor_id",                  :limit => 36
     t.integer  "group_id"
+    t.string   "default_launch_method"
     t.boolean  "has_engine"
     t.boolean  "can_fly_without_engine"
     t.boolean  "can_tow"
     t.boolean  "can_be_towed"
+    t.boolean  "can_be_wire_launched"
+    t.boolean  "disabled",                                 :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "revisable_original_id",      :limit => 36
@@ -222,10 +284,11 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "condition_field"
     t.string   "condition_operator"
     t.string   "comment"
-    t.integer  "condition_value",         :default => 0
-    t.integer  "additive_cost",           :default => 0
+    t.integer  "condition_value",                       :default => 0
+    t.integer  "additive_cost",                         :default => 0
     t.datetime "valid_from"
     t.datetime "valid_to"
+    t.string   "editor_id",               :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -237,6 +300,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "comment"
     t.datetime "valid_from"
     t.datetime "valid_to"
+    t.string   "editor_id",               :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -246,6 +310,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.integer  "tow_cost_rule_id"
     t.integer  "cost"
     t.string   "comment"
+    t.string   "editor_id",        :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -257,6 +322,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
     t.string   "name"
     t.datetime "valid_from"
     t.datetime "valid_to"
+    t.string   "editor_id",                      :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -279,6 +345,7 @@ ActiveRecord::Schema.define(:version => 20100401182742) do
   create_table "wire_launchers", :id => false, :force => true do |t|
     t.string   "id",           :limit => 36
     t.string   "registration"
+    t.string   "editor_id",    :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end

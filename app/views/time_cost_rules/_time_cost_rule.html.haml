@@ -1,0 +1,20 @@
+%h4= rule.name
+%dl.time_cost_rule.data
+  %dt
+    = TimeCostRule.l(:flight_type)
+  %dd
+    = rule.flight_type
+  %dt
+    = TimeCostRule.l(:cost)
+  %dd
+    = rule.cost
+    per minute 
+    = Flight.l(rule.depends_on.to_sym)
+    - unless rule.additive_cost == 0
+      = (rule.additive_cost > 0 ? "+ " : " ") + rule.additive_cost.to_s
+  - unless rule.condition_field.nil? || rule.condition_operator.nil? || rule.condition_value.nil?
+    %dt= TimeCostRule.l(:condition)
+    %dd
+      = Flight.l(rule.condition_field.to_sym)
+      = rule.condition_operator
+      = rule.condition_value
