@@ -1,3 +1,4 @@
+=begin
 require 'cucumber/rake/task' #I have to add this
 require 'spec/rake/spectask'
  
@@ -25,3 +26,4 @@ namespace :rcov do
     Rake::Task["rcov:rspec"].invoke
   end
 end
+=end

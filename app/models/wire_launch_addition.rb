@@ -1,6 +1,6 @@
 module WireLaunchAddition
   def self.included(base) #:nodoc:
-    base.acts_as_revisable :on_delete => :revise
+    #base.acts_as_revisable :on_delete => :revise
     base.after_revise_on_destroy :set_type
   end
   

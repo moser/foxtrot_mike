@@ -3,7 +3,7 @@ class AirfieldsController < ApplicationController
 
   def index
     if @after.nil?
-      @airfields = Airfield.find(:all)
+      @airfields = Airfield.all
     else
       @airfields = Airfield.find(:all, :conditions => ['updated_at > ?', @after] )
     end 
