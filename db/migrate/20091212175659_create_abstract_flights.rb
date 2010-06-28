@@ -10,7 +10,6 @@ class CreateAbstractFlights < ActiveRecord::Migration
       t.integer     :duration, :engine_duration
       t.string      :purpose #TODO what purposes are needed, how to save them (enum?)
       t.text        :comment
-      t.string      :editor_id, :limit => 36
       
       t.string      :type
       #TODO controller_id => person

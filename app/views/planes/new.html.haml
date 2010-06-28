@@ -1,19 +1,5 @@
 %h1 New plane
 
-- form_for(@plane) do |f|
-  = f.error_messages
-  %p
-    = f.label :registration
-    %br
-    = f.text_field :registration
-  %p
-    = f.label :make
-    %br
-    = f.text_field :make
-  %p
-    = f.label :group
-    %br
-    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
-  = f.submit 'Create'
+= render :partial => "planes/form", :locals => { :plane => @plane }
 
 = link_to 'Back', planes_path

@@ -44,4 +44,8 @@ class ApplicationController < ActionController::Base
       obj
     end
   end
+  
+  def user_for_paper_trail
+    logged_in? ? current_account.id : nil
+  end
 end

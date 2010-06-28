@@ -4,11 +4,11 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>FoxtrotMike</title>
+  <%= csrf_meta_tag %>
   <%= stylesheet_link_tag :all %>
   <%= stylesheet_link_tag 'scaffold' %>
   <%= stylesheet_link_tag 'formtastic' %>
   <%= stylesheet_link_tag 'app' %>
-  <%= csrf_meta_tag %>
   <%= javascript_include_tag 'jquery-1.4.2' %>
   <%= javascript_include_tag 'i18n' %>
   <%= javascript_include_tag 'application' %>
@@ -17,6 +17,6 @@
 <body>
   <%= render :partial => "common/navigation_bar" %>
   <%= render :partial => "common/account_bar" %>
-  <%= yield(:content) or yield %>
+  <%= yield(:content) == "" ? yield : yield(:content) %>
 </body>
 </html>

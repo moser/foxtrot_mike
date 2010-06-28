@@ -5,7 +5,6 @@ class CreateAirfields < ActiveRecord::Migration
       t.string :name
       t.string :registration
       t.boolean   :disabled, :default => false
-      t.string :editor_id, :limit => 36
       t.timestamps
     end
     add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true

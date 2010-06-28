@@ -31,6 +31,6 @@ module ApplicationHelper
   end
   
   def format_datetime(d)
-    d.strftime("%d.%m.%Y %H:%M") unless d.nil?
+    d.strftime("%d.%m.%Y %H:%M:%S") unless d.nil?
   end
 end

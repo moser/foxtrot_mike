@@ -1,20 +1,19 @@
 %p
   %b Registration:
-  =h @plane.registration 
+  = @plane.registration 
 
 %p
   %b Make:
-  =h @plane.make
+  = @plane.make
 
 %p
   %b Cost category:
-  =h PlaneCostCategory.find(@plane.plane_cost_category_id).name rescue 'None'
+  = PlaneCostCategory.find(@plane.plane_cost_category_id).name rescue 'None'
   
 %p
   %b Versions:
-  - @plane.revisions.each do |r|
-    =h r.revisable_number
-    =h r.revisable_current_at
+  - @plane.versions.each do |v|
+    = v.created_at
     %br
 
 TODO show plane_cost_category_memberships

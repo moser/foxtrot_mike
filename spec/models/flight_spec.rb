@@ -13,7 +13,7 @@ describe Flight do
   end
   
   it "should be revisable" do
-    Flight.new.should respond_to :revisions
+    Flight.new.should respond_to :versions
   end
   
   it "should have a complete history" do

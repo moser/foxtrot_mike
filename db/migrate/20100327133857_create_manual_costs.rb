@@ -6,7 +6,6 @@ class CreateManualCosts < ActiveRecord::Migration
       t.integer :value
       t.text :comment
       t.string :type
-      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

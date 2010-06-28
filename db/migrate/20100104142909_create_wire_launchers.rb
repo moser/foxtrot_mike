@@ -3,7 +3,6 @@ class CreateWireLaunchers < ActiveRecord::Migration
     create_table :wire_launchers, :id => false do |t|
       t.string :id, :limit => 36
       t.string :registration
-      t.string :editor_id, :limit => 36
       t.timestamps
     end
     add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true

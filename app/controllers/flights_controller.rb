@@ -51,7 +51,7 @@ class FlightsController < ApplicationController
   def create
     #TODO what to do with type? new controller or split here
     attrs = params[:flight] #|| params[:tow_flight]
-    @flight = attrs.delete(:type).constantize.new(attrs)
+    @flight = (attrs.delete(:type) || "Flight").constantize.new(attrs)
     @flight.id = attrs[:id] unless attrs[:id].nil?
     respond_to do |format|
       if @flight.save

@@ -6,7 +6,6 @@ class CreateLiabilities < ActiveRecord::Migration
       t.string :person_id
       t.datetime :booked_at
       t.integer :proportion
-      t.string :editor_id, :limit => 36
       t.timestamps
     end
   end

@@ -12,6 +12,6 @@ describe Plane do
   
   it "should have some flags" do
     p = Plane.new :has_engine => true, :can_tow => true, :can_fly_without_engine => false
-    p.engine_duration?.should be_false
+    p.engine_duration_possible?.should be_false
   end
 end

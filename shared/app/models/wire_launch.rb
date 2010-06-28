@@ -6,4 +6,13 @@ class WireLaunch < Launch
   def cost
     WireLaunchCost.new(self)
   end
+  
+  def shared_attributes
+    attributes
+  end
+  
+  #TODO
+  def self.l(a=nil)
+    ''
+  end
 end

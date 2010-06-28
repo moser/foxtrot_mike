@@ -20,7 +20,7 @@ class Plane < ActiveRecord::Base
     self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
   end
   
-  def engine_duration?
+  def engine_duration_possible?
     has_engine && can_fly_without_engine
   end
 end

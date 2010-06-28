@@ -26,6 +26,6 @@ describe Person do
   end
   
   it "should be revisable" do
-    Person.new.should respond_to :revisions
+    Person.new.should respond_to :versions
   end
 end

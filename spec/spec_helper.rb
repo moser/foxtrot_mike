@@ -18,7 +18,7 @@ unless defined?(SetupSpec)
   require 'shoulda'
   require 'factory_girl/syntax/generate'
 
-  Spec::Runner.configure do |config|
+  RSpec.configure do |config|
     # If you're not using ActiveRecord you should remove these
     # lines, delete config/database.yml and disable :active_record
     # in your config/boot.rb
@@ -57,5 +57,10 @@ unless defined?(SetupSpec)
     # == Notes
     #
     # For more information take a look at Spec::Runner::Configuration and Spec::Runner
+    config.include Haml::Helpers
+    config.include ActionView::Helpers
+    config.before(:each) do
+      init_haml_helpers
+    end
   end
 end

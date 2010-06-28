@@ -30,17 +30,16 @@ class TowLaunch < Launch
     end
   end
   
-  def attributes
-    attrs = super
+  def shared_attributes
+    attrs = attributes
     attrs[:tow_flight_attributes] = tow_flight.shared_attributes
     attrs
   end
   
-
-protected
-  def after_initialize
+  def initialize(*args)
+    super(*args)
     if new_record?
-      self.tow_flight = tow_flight || TowFlight.create(:plane => Defaults.instance.tow_plane)
+      self.tow_flight ||= TowFlight.create(:plane => Defaults.instance.tow_plane)
     end 
   end
 end

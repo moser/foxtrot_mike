@@ -19,7 +19,6 @@ class CreatePeople < ActiveRecord::Migration
       t.text      :comment
       t.integer   :group_id
       t.boolean   :disabled, :default => false
-      t.string :editor_id, :limit => 36
       
       # members only
       t.boolean   :in_training

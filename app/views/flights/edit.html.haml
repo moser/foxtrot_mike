@@ -31,6 +31,9 @@
         = text_field_tag :arrival, (@flight.arrival.strftime("%H:%M") rescue "")
       %li.duration
         = labeled_text_field f, :duration, { :class => 'duration' }
+      - if !@flight.plane.nil? && @flight.plane.engine_duration_possible?
+        %li.engine_duration
+          = labeled_text_field f, :engine_duration, { :class => 'engine_duration' }
     = f.submit 'Submit'
 
 = link_to 'Reload', edit_flight_path(@flight), :class => "replace_flight"

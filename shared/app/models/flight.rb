@@ -7,7 +7,11 @@ class Flight < AbstractFlight
   end
   
   def value_for(liability)
-    (liability.proportion.to_f * cost.to_i.to_f / proportion_sum.to_f).to_i
+    (proportion_for(liability) * cost.to_i.to_f).round
+  end
+  
+  def proportion_for(liability)
+    liability.proportion.to_f / proportion_sum.to_f
   end
   
   def liabilities_attributes=(attrs)
@@ -31,8 +35,8 @@ class Flight < AbstractFlight
     a.nil? ? human_name : human_attribute_name(a)
   end
   
-protected  
-  def after_initialize
+  def initialize(*args)
+    super(*args)
     if new_record?
       self.departure ||= Date.today
       self.duration ||= 0

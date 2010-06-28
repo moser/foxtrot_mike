@@ -33,8 +33,19 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def cost_responsible
-
     seat1.nil? ? nil : seat1.person
+  end
+  
+  def engine_duration
+    unless plane.nil?
+      if !plane.has_engine
+        0
+      elsif !plane.can_fly_without_engine
+        duration
+      else
+        read_attribute(:engine_duration)
+      end
+    end
   end
   
   def arrival
@@ -219,7 +230,7 @@ class AbstractFlight < ActiveRecord::Base
   def shared_attributes
     a = self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
     a[:crew_members_attributes] = crew_members.map { |m| m.attributes }
-    a[:launch_attributes] = launch.attributes unless launch.nil?
+    a[:launch_attributes] = launch.shared_attributes unless launch.nil?
     a[:type] = self.class.to_s if a[:type].nil?
     a
   end  

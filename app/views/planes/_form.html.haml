@@ -1,0 +1,31 @@
+- form_for(plane) do |f|
+  = f.error_messages
+  %p
+    = f.label :registration
+    %br
+    = f.text_field :registration
+  %p
+    = f.label :make
+    %br
+    = f.text_field :make
+  %p
+    = f.label :group
+    %br
+    = f.select :group_id, Group.all.collect { |c| [ c.name, c.id ] }
+  %p 
+    = f.label :has_engine
+    = f.check_box :has_engine
+  %p 
+    = f.label :can_tow
+    = f.check_box :can_tow
+  %p 
+    = f.label :can_fly_without_engine
+    = f.check_box :can_fly_without_engine
+  %p 
+    = f.label :can_be_towed
+    = f.check_box :can_be_towed
+  %p 
+    = f.label :can_be_wire_launched
+    = f.check_box :can_be_wire_launched
+  
+  = f.submit

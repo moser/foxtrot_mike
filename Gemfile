@@ -25,19 +25,13 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 #gem "acts_as_revisable", :require => "acts_as_revisable"
 gem "haml"
 gem "uuidtools"
-gem "formtastic"
-
-# Bundle gems for certain environments:
-# gem 'rspec', :group => :test
-# group :test do
-#   gem 'webrat'
-# config.gem "factory_girl", :lib => 'factory_girl'
-# config.gem 'shoulda', :lib => false
-# end
+gem "formtastic-rails3", :require => "formtastic"
+gem "paper_trail"
+gem "json"
 
 group :test do
-gem "rspec", "2.0.0.beta.12"
-gem "rspec-rails", "2.0.0.beta.12"
-gem "shoulda"
-gem "factory_girl"
+  gem "rspec", "2.0.0.beta.12"
+  gem "rspec-rails", "2.0.0.beta.12"
+  gem "shoulda"
+  gem "factory_girl"
 end

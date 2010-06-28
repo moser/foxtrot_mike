@@ -28,8 +28,8 @@ class TowFlight < AbstractFlight
   def from_id=(o)
   end
   
-protected
-  def after_initialize
+  def initialize(*args)
+    super(*args)
     if new_record?
       self.duration ||= 0
     end

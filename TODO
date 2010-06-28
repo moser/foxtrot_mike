@@ -1,4 +1,4 @@
-- locking for editing (optimistic?)
+- locking for editing (optimistic?) (obj.versions.count?)
 - locking when stuff is booked
 - define a "booking now" = 1 second after last booking
   - rules can be edited if they were not yet valid @booking now
@@ -11,8 +11,13 @@
 - no destroying (people|planes|airfields), just "disable"
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
 - license stuff? get information on situation in other countries (segelflug.de?)
+  - create "LawPlaneGroup" n-1 "Planes"
+  - table LawPlaneGroupPeople:
+    - no entry => Trainee
+    - entry instructor = false => Normal Pilot
+    - entry instructor = true => Instructor
+  - controller & sync needed
 - manual costs
-- payments (map person with a percentage to a flight)
 - metaprogram/inherit cost rules controller
 - controller for TowLevel & sync
 - extract immutability into module
@@ -22,10 +27,23 @@
   - Flugleiterdienstbuch
   - flugbuch
   - bordbuch
+- substitue auth plugin?
+- replace marker css classes by data-* attributes
+- formtastic?
+- wtf?
+    Rendered flights/show.html.haml within layouts/flights (1046.6ms)
+    Completed 200 OK in 1416ms (Views: 1043.4ms | ActiveRecord: 9.8ms)
+- liabilities: create default one if none exists (Trainee/PIC 100%)
+- cost for Flight/TowFlight (tow rules must not be used for normal flights)
 
+  
+IN PROGRESS:
+- substitute acts as revisable by paper_trail
 
 
 DONE:
 - time_cost_rule: conditions (duration (<|>) x) && additive costs (+/-)
 - STI <=> actsasrevisable TowFlight...
 - keep track of controller (flugleiter)
+- payments (map person with a percentage to a flight)
+- remove Make*Revisable migrations

@@ -19,10 +19,11 @@ Airfield.create(:name => "Cham")
 Airfield.create(:registration => "EDNB", :name => "Arnbruck")
 Airfield.create(:registration => "EDMS", :name => "Straubing")
 
-sh = Plane.create(:registration => "D-EJSH", :make => "Robin DR400", :group => ssv)
-ask13 = Plane.create(:registration => "D-0228", :make => "ASK 13", :group => ssv)
-fm = Plane.create(:registration => "D-1875", :make => "Ventus 2cx", :group => ssv)
-k8 = Plane.create(:registration => "D-0946", :make => "Ka 8b", :group => ssv)
+
+sh = Plane.create(:registration => "D-EJSH", :make => "Robin DR400", :group => ssv, :has_engine => true, :can_fly_without_engine => false, :can_tow => true,:can_be_towed => false, :can_be_wire_launched => false)
+ask13 = Plane.create(:registration => "D-0228", :make => "ASK 13", :group => ssv, :has_engine => false, :can_fly_without_engine => true, :can_tow => false, :can_be_towed => true, :can_be_wire_launched => true)
+fm = Plane.create(:registration => "D-1875", :make => "Ventus 2cx", :group => ssv, :has_engine => false, :can_fly_without_engine => true, :can_tow => false, :can_be_towed => true, :can_be_wire_launched => true)
+k8 = Plane.create(:registration => "D-0946", :make => "Ka 8b", :group => ssv, :has_engine => false, :can_fly_without_engine => true, :can_tow => false, :can_be_towed => true, :can_be_wire_launched => true)
 PlaneCostCategoryMembership.create :valid_from => 1.year.ago, :valid_to => 1.year.from_now, 
                                    :plane_cost_category => catTowPlane, :plane => sh
 PlaneCostCategoryMembership.create :valid_from => 1.year.ago, :valid_to => 1.year.from_now, 

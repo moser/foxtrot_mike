@@ -1,5 +1,5 @@
 module LaunchAddition
   def self.included(base) #:nodoc:
-    #base.acts_as_revisable :on_delete => :revise
+    base.has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.abstract_flight_id unless l.nil? || l.new_record? || l.abstract_flight_id.nil? } }
   end
 end

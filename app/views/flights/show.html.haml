@@ -64,6 +64,18 @@
           %td
             
           %td= format_currency(@flight.cost.to_i)
+          
+  %tr
+    %th= Flight.l(:liabilities)
+    %td
+      %table.data
+        - @flight.liabilities.each do |l|
+          %tr
+            %th= l.person.name
+            %td
+              = (@flight.proportion_for(l) * 100.0).to_i
+              \%
+            %td= format_currency(l.value)
   - unless @flight.soft_validate
     %tr
       %th= Flight.l(:problems)
@@ -75,8 +87,12 @@
     %th= Flight.l(:versions)
     %td
       %ul.versions
-        - @flight.revisions.each do |r|
-          %li= format_datetime(r.revisable_current_at) + ' ' + r.diffs(@flight).keys.inspect
+        - @flight.all_versions.each do |v|
+          %li
+            = format_datetime(v.created_at) + ' ' + v.item_type
+            = Account.find(v.whodunnit).person unless v.whodunnit.nil?
+            - #TODO ^ change to person?
+          - #+ ' ' + v.reify.attributes.diffs(@flight.attributes).keys.inspect
 
 = link_to 'Reload', flight_path(@flight), :class => "replace_flight"
 = link_to 'Edit', edit_flight_path(@flight), :class => "replace_flight"
