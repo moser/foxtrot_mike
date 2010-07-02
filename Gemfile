@@ -27,7 +27,7 @@ gem "haml"
 gem "uuidtools"
 gem "formtastic-rails3", :require => "formtastic"
 gem "paper_trail"
-gem "json"
+#gem "json"
 
 group :test do
   gem "rspec", "2.0.0.beta.12"

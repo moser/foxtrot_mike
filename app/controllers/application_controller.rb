@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
     if params[:json]
       params.each do |k, v|
         if m = k.to_s.match(/(.*)_json/)
-          params[m[1].to_sym] = parse_json_dates(JSON.parse(v))
+          params[m[1].to_sym] = parse_json_dates(ActiveSupport::JSON.decode(v))
+          p params[m[1].to_sym]
         end
       end
     end
@@ -38,8 +39,12 @@ class ApplicationController < ActionController::Base
       obj
     elsif obj.is_a?(Array)
       obj.map { |e| parse_json_dates(e) }
-    elsif obj.is_a?(String) && obj =~ /^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \+\d{4}$/
-      DateTime.strptime(obj, "%Y/%m/%d %H:%M:%S")
+    elsif obj.is_a?(String) && obj =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+\d{2}:\d{2}|Z)$/
+      if obj =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/
+        DateTime.strptime(obj, "%Y-%m-%dT%H:%M:%S%z")
+      else
+        DateTime.strptime(obj, "%Y-%m-%dT%H:%M:%SZ")
+      end
     else
       obj
     end
