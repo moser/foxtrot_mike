@@ -49,7 +49,7 @@ end
 class ActiveRecord::Base
   def self.l(sym = nil)
     if sym.nil?
-      human_name
+      model_name.human
     else
       human_attribute_name(sym)
     end

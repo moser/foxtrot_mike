@@ -30,10 +30,6 @@ class Flight < AbstractFlight
     a[:liabilities_attributes] = liabilities.map { |l| l.attributes }
     a
   end
-
-  def self.l(a=nil)
-    a.nil? ? human_name : human_attribute_name(a)
-  end
   
   def initialize(*args)
     super(*args)
