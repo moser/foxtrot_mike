@@ -11,8 +11,7 @@ class WireLaunch < Launch
     attributes
   end
   
-  #TODO
-  def self.l(a=nil)
-    ''
+  def self.short
+    "W"
   end
 end

@@ -37,9 +37,14 @@ class TowLaunch < Launch
   end
   
   def initialize(*args)
+    tow_flight_args = (args[0] || {}).delete(:tow_flight_args)
     super(*args)
     if new_record?
-      self.tow_flight ||= TowFlight.create(:plane => Defaults.instance.tow_plane)
+      self.tow_flight ||= TowFlight.create(tow_flight_args || {})
     end 
+  end
+  
+  def self.short
+    "F"
   end
 end
