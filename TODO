@@ -35,10 +35,13 @@
     Completed 200 OK in 1416ms (Views: 1043.4ms | ActiveRecord: 9.8ms)
 - liabilities: create default one if none exists (Trainee/PIC 100%)
 - cost for Flight/TowFlight (tow rules must not be used for normal flights)
+- what if there is the posibility to create tow costs both time and level based?
+- wire launch: +operator
+- flight: duration == -1 <=> still flying <=> arrival == nil
 
   
 IN PROGRESS:
-- substitute acts as revisable by paper_trail
+
 
 
 DONE:
@@ -47,3 +50,4 @@ DONE:
 - keep track of controller (flugleiter)
 - payments (map person with a percentage to a flight)
 - remove Make*Revisable migrations
+- substitute acts as revisable by paper_trail
