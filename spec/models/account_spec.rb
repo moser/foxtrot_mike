@@ -29,7 +29,7 @@ describe Account do
   it 'requires login' do
     lambda do
       u = create_account(:login => nil)
-      u.errors.on(:login).should_not be_nil
+      u.errors[:login].should_not be_empty
     end.should_not change(Account, :count)
   end
 
@@ -39,7 +39,7 @@ describe Account do
       it "'#{login_str}'" do
         lambda do
           u = create_account(:login => login_str)
-          u.errors.on(:login).should     be_nil
+          u.errors[:login].should     be_empty
         end.should change(Account, :count).by(1)
       end
     end
@@ -51,7 +51,7 @@ describe Account do
       it "'#{login_str}'" do
         lambda do
           u = create_account(:login => login_str)
-          u.errors.on(:login).should_not be_nil
+          u.errors[:login].should_not be_empty
         end.should_not change(Account, :count)
       end
     end
@@ -60,14 +60,14 @@ describe Account do
   it 'requires password' do
     lambda do
       u = create_account(:password => nil)
-      u.errors.on(:password).should_not be_nil
+      u.errors[:password].should_not be_empty
     end.should_not change(Account, :count)
   end
 
   it 'requires password confirmation' do
     lambda do
       u = create_account(:password_confirmation => nil)
-      u.errors.on(:password_confirmation).should_not be_nil
+      u.errors[:password_confirmation].should_not be_empty
     end.should_not change(Account, :count)
   end
 
