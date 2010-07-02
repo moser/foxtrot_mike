@@ -1,5 +1,5 @@
-require 'autotest/growl'
-Autotest::Growl::clear_terminal = false
+#require 'autotest/growl'
+#Autotest::Growl::clear_terminal = false
 
 Autotest.add_hook :initialize do |at|
   at.add_mapping(%r%shared/app/models/(.*).rb$%) { |_, m|
