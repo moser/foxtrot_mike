@@ -4,7 +4,7 @@
   %tr
     %th Name
 
-  -for person_cost_category in @person_cost_categories
+  - @person_cost_categories.each do |person_cost_category|
     %tr
       %td=h person_cost_category.name
   

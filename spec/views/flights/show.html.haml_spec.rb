@@ -1,7 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/flights/show.html.haml" do
-  include FlightsHelper
+  helper :application, :flights
+  
   before(:each) do
     assigns[:flight] = @flight = Flight.generate!
   end

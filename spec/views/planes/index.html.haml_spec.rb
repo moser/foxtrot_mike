@@ -4,9 +4,9 @@ describe "/planes/index.html.haml" do
   include PlanesHelper
 
   before(:each) do
-    assigns[:planes] = [
-      stub_model(Plane),
-      stub_model(Plane)
+    assigns[:planes] = @planes = [
+      Plane.generate!,
+      Plane.generate!
     ]
   end
 

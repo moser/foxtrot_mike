@@ -4,7 +4,7 @@
   %tr
     %th Name
 
-  -for plane_cost_category in @plane_cost_categories
+  - @plane_cost_categories.each do |plane_cost_category|
     %tr
       %td=h plane_cost_category.name
   

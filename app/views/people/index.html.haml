@@ -7,7 +7,7 @@
     %th Email
     %th Birthdate
 
-  -for person in @people
+  - @people.each do |person|
     %tr
       %td=h person.firstname
       %td=h person.lastname

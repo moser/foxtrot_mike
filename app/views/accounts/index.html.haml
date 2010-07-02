@@ -6,7 +6,7 @@
     %th Password
     %th Password confirmation
 
-  -for account in @accounts
+  - @accounts.each do |account|
     %tr
       %td=h account.login
       %td=h account.password

@@ -5,7 +5,7 @@
     %th Registration
     %th Name
 
-  -for airfield in @airfields
+  - @airfields.each do |airfield|
     %tr
       %td=h airfield.registration
       %td=h airfield.name
