@@ -78,6 +78,12 @@ describe AbstractFlight do
       @f.arrival_time = 122
       @f.duration.should == 122
     end
+    
+    it "should set arrival to the next day if arrival is lower than departure" do
+      @f.departure = DateTime.new(2010, 6, 30, 20, 0, 0, 0)
+      Proc.new { @f.arrival_time = 65 }.should_not raise_error
+      @f.duration.should == 305
+    end
   end
   
   describe "departure_date" do

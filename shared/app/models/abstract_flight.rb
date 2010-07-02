@@ -97,7 +97,7 @@ class AbstractFlight < ActiveRecord::Base
   
   def arrival_time=(i)
     unless i.nil?
-      self.arrival = DateTime.new(departure.year, departure.month, departure.day + (i < departure_time ? 1 : 0), 0, 0, 0, 0) + i.minutes
+      self.arrival = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes + (i < departure_time ? 1 : 0).days
     else
       self.duration = 0
     end
