@@ -4,7 +4,7 @@ class FlightsController < ApplicationController
   # GET /flights
   # GET /flights.xml
   def index
-    @flights = Flight.all
+    @flights = Flight.includes(:plane, :from, :to, :crew_members).all
     
     respond_to do |format|
       format.html { render :layout => 'application' }
@@ -15,7 +15,7 @@ class FlightsController < ApplicationController
   # GET /flights/1
   # GET /flights/1.xml
   def show
-    @flight = AbstractFlight.find(params[:id])
+    @flight = AbstractFlight.find(params[:id], :include => [:plane, :from, :to, :crew_members, :liabilities])
 
     respond_to do |format|
       format.html do
