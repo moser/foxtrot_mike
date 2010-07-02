@@ -62,5 +62,6 @@ unless defined?(SetupSpec)
     config.before(:each) do
       init_haml_helpers
     end
+    config.include  Webrat::HaveTagMatcher
   end
 end
