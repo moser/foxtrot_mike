@@ -1,0 +1,42 @@
+.memberships.inline_form_replace_context
+  %h3= t("#{group.to_s.pluralize}.index.title")
+  %table.data
+    - if object.send("previous_#{group}_memberships").count > 0
+      %tr
+        %th= t('views.previous')
+        %td
+          %ul.no_bullet
+            - object.send("previous_#{group}_memberships").each do |m|
+              %li
+                = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                \-
+                = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
+                = m.send(group).name
+    - if object.send("current_#{group}_memberships").count > 0
+      %tr
+        %th= t('views.current')
+        %td
+          %ul.no_bullet
+            - object.send("current_#{group}_memberships").each do |m|
+              %li
+                = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                \-
+                = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
+                = link_to m.send(group).name, m.send(group)
+                = link_to t('views.edit'), polymorphic_path(m, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])
+    - if object.send("future_#{group}_memberships").count > 0
+      %tr
+        %th= t('views.future')
+        %td
+          %ul.no_bullet
+            - object.send("future_#{group}_memberships").each do |m|
+              %li
+                %span.inline_form_hide_context
+                  = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                  \-
+                  = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
+                  = link_to m.send(group).name, m.send(group)
+                  = link_to t('views.edit'), polymorphic_path(m, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])
+    %tr
+      %td
+      %td= link_to t('views.add'), polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize], :action => :new), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])

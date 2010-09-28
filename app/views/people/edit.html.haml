@@ -1,7 +1,5 @@
-%h1 Editing person
-
+%h1= t "views.editing", :name => Person.model_name.human
 = render :partial => "people/form", :locals => { :person => @person }
-TODO edit person_cost_category_memberships
-= link_to 'Show', person_path(@person)
-= link_to 'Back', people_path
+= link_to t('views.show'), person_path(@person)
+= link_to t('views.back'), people_path
 

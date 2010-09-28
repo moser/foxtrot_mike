@@ -7,6 +7,8 @@ describe Group do
     }
   end
 
+  it { should validate_presence_of :name }
+
   it "should create a new instance given valid attributes" do
     Group.create!(@valid_attributes)
   end

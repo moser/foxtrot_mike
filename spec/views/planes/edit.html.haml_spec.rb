@@ -9,8 +9,5 @@ describe "/planes/edit.html.haml" do
 
   it "renders the edit plane form" do
     render
-
-#    response.should have_tag("form[action=#{plane_path(@plane)}][method=post]") do
-#    end
   end
 end

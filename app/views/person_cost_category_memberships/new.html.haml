@@ -1,0 +1,7 @@
+= simple_form_for(@person_cost_category_membership) do |f|
+  = f.association :person, :as => :hidden
+  = f.association :person_cost_category
+  = f.input :valid_from, :include_blank => true
+  = f.input :valid_to, :include_blank => true
+  = f.button :submit
+= link_to t('views.cancel'), @person_cost_category_membership.person, :class => "inline_form_hide"

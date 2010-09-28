@@ -1,4 +1,5 @@
 #TODO create AbstractFlight, let Flight and TowFlight inherit
+require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
   Purposes = ['training', 'exercise', '', nil] 
@@ -7,7 +8,8 @@ class AbstractFlight < ActiveRecord::Base
   belongs_to :plane
   #launch == nil <=> selflaunched
   has_one :launch, :dependent => :destroy #, :autosave => true
-  has_many :crew_members, :dependent => :destroy  # , :autosave => true
+  has_one :manual_cost, :as => :item
+  has_many :crew_members #, :dependent => :destroy  # , :autosave => true
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
@@ -27,6 +29,13 @@ class AbstractFlight < ActiveRecord::Base
   accepts_string_for :plane, :parent_method => 'registration'
   accepts_string_for :from, :parent_method => ['registration', 'name']
   accepts_string_for :to, :parent_method => ['registration', 'name']
+  
+  def initialize(*args)
+    super
+    if new_record?
+      self.duration ||= -1
+    end
+  end
   
   def cost
     @cost ||= FlightCost.new(self)
@@ -49,7 +58,7 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def arrival
-    unless departure.nil? || duration.nil? || duration == 0
+    unless departure.nil? || duration.nil? || duration < 0
       departure + duration.minutes
     end
   end
@@ -58,7 +67,7 @@ class AbstractFlight < ActiveRecord::Base
     #if time.respond to "to_datetime"
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
       time = time.to_datetime.utc
-      unless self.departure.nil?
+      unless departure.nil?
         self.duration = rational_day_to_minutes(time - self.departure.to_datetime)
       else #won't happen
         self.departure = time
@@ -68,16 +77,22 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def departure_date
-    self.departure.to_date #rescue nil
+    departure.to_date #rescue nil
   end
   
   def departure_date=(date)
     date = date.to_date
-    if self.departure.nil? #won't happen
+    if departure.nil? #won't happen
       self.departure = date
     else
       self.departure = DateTime.new(date.year, date.month, date.day, departure.hour, departure.min, 0, 0)
     end
+  end
+  
+  def departure_day_time
+    @departure_day_time ||= DayTime.new(departure_time)
+    @departure_day_time.minutes = departure_time
+    @departure_day_time
   end
   
   def departure_time
@@ -85,8 +100,14 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def departure_time=(i)
-    self.departure = DateTime.now if self.departure.nil? #won't happen
+    self.departure = DateTime.now if departure.nil? #won't happen
     self.departure = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes
+  end
+  
+  def arrival_day_time
+    @arrival_day_time ||= DayTime.new(arrival_time)
+    @arrival_day_time.minutes = arrival_time
+    @arrival_day_time
   end
   
   def arrival_time
@@ -99,28 +120,38 @@ class AbstractFlight < ActiveRecord::Base
     unless i.nil?
       self.arrival = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes + (i < departure_time ? 1 : 0).days
     else
-      self.duration = 0
+      self.duration = -1
     end
   end
   
   def departure=(time)
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
       time = time.to_datetime.utc
-      #unless self.departure.nil? || self.duration.nil?
-      #  delta = rational_day_to_minutes(self.departure.to_datetime - time)
-      #  self.duration = self.duration + delta if delta.abs < 1440
-      #end
+      unless departure.nil? || duration.nil? || duration < 0
+        delta = rational_day_to_minutes(self.departure.to_datetime - time)
+        self.duration = duration + delta if delta.abs < 1440
+      end
       write_attribute(:departure, DateTime.new(time.year, time.month, time.day, time.hour, time.min, 0, 0))
     end
   end
   
+  def duration_time_span
+    @duration_time_span ||= TimeSpan.new(duration)
+    @duration_time_span.minutes = duration
+    @duration_time_span
+  end
+  
+  # Any negative duration means that a flight has not ended yet
   def duration=(i)
     i = i.to_i unless i.is_a? Integer
-    i = i.abs
-    i = i % 1440 #no flights > 24h
+    i = -1 if i < 0
+    i = i % 1440 unless i < 0 #no flights > 24h
     write_attribute(:duration, i)
   end
-
+  
+  def landed?
+    !duration.nil? && duration >= 0 #there are flights with duration 0 minutes
+  end
 
   def seat1
     crew_members.find_all { |m| [ PilotInCommand, Trainee ].include?(m.class) }.first
@@ -139,11 +170,11 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def seat1_id=(id)
-    self.seat1 = id
+    self.seat1 = (id != '' ? id : nil)
   end
   
   def seat2_id=(id)
-    self.seat2 = id
+    self.seat2 = (id != '' ? id : nil)
   end
   
   def seat1=(obj)
@@ -239,6 +270,10 @@ class AbstractFlight < ActiveRecord::Base
     #TODO add manual cost?
     #[revisions, [PilotInCommandRevision, TraineeRevision, PersonCrewMemberRevision,
     #  NCrewMemberRevision, WireLaunchRevision, TowLaunchRevision].map { |c| c.find(:all, :conditions => { :abstract_flight_id => id }) }].flatten.sort_by { |r| r.revisable_current_at }
+  end
+
+  def group_id
+    Digest::SHA256.hexdigest((crew_members.sort_by(&:class).map {|m| m.person_id + m.class.name}).join + "#{departure_date}")
   end
   
 protected

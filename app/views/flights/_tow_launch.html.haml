@@ -1,4 +1,4 @@
-= link_to 'Tow Flight', flight_path(launch.tow_flight)
+= link_to TowFlight.l, flight_path(launch.tow_flight)
 %table.data  
   %tr
     %th= Flight.l(:tow_plane)
@@ -15,7 +15,7 @@
         = launch.tow_flight.seat2.short
   %tr
     %th= Flight.l(:arrival)
-    %td= format_time(launch.tow_flight.arrival)
+    %td= launch.tow_flight.arrival.nil? ? '-' : l(launch.tow_flight.arrival, :format => :time)
   %tr
     %th= Flight.l(:duration)
     %td= format_minutes(launch.tow_flight.duration)

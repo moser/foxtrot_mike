@@ -1,0 +1,10 @@
+%h1= t '.title'
+%table
+  %tr
+    %th= Group.l(:name)
+  - @groups.each do |group|
+    %tr
+      %td= h group.name
+      %td= link_to t('views.show'), group
+      %td= link_to t('views.edit'), edit_group_path(group)
+= link_to t('views.new'), new_group_path

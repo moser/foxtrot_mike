@@ -1,10 +1,17 @@
-= form_for(flight) do |f|
-  = f.error_messages
-  %fieldset
-    %ol
-      %li= labeled_text_field f, :plane
-      %li
-        = f.label :departure
-        = f.datetime_select :departure
-      %li= labeled_text_field f, :duration
-    = f.submit 'Submit'
+= simple_form_for(@flight) do |f|
+  = f.input :departure, :as => :date
+  = f.association :plane
+  = f.input :seat1_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
+  = f.input :seat2_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
+  = f.association :from
+  = f.association :to
+  = f.input :departure, :as => :time
+  .input.time.optional.replaced
+    %label.time.optional{ :for => "arrival"}= Flight.l(:arrival)
+    = text_field_tag :arrival, (@flight.arrival.strftime("%H:%M") rescue ""), :class => "timepicker"
+  = f.input :duration
+  - if !@flight.plane.nil? && @flight.plane.engine_duration_possible?
+    = f.input :engine_duration
+  = f.association :controller
+  = f.input :comment
+  = f.button :submit

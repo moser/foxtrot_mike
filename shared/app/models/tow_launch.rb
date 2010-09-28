@@ -22,25 +22,17 @@ class TowLaunch < Launch
     available_tow_cost_rules.map { |r| r.tow_levels }.flatten
   end
   
-  def tow_flight_attributes=(attrs)
-    unless attrs.nil?
-      obj = attrs.delete(:type).constantize.new(attrs)
-      obj.id = attrs[:id]
-      obj.save
-    end
-  end
-  
   def shared_attributes
-    attrs = attributes
-    attrs[:tow_flight_attributes] = tow_flight.shared_attributes
-    attrs
+    attributes.merge({ :tow_flight_attributes => tow_flight.shared_attributes })
   end
   
   def initialize(*args)
-    tow_flight_args = (args[0] || {}).delete(:tow_flight_args)
+    tow_flight_attrs = (args[0] || {}).delete(:tow_flight_attributes)
     super(*args)
-    if new_record?
-      self.tow_flight ||= TowFlight.create(tow_flight_args || {})
+    if new_record? && tow_flight.nil? && !tow_flight_attrs.nil?
+      self.tow_flight = TowFlight.new(tow_flight_attrs)
+      tow_flight.id = tow_flight_attrs[:id]
+      tow_flight.save
     end 
   end
   

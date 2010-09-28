@@ -5,7 +5,7 @@ class CreateTimeCostRules < ActiveRecord::Migration
       t.string :name, :flight_type, :depends_on, :condition_field, :condition_operator, :comment
       t.integer :condition_value, :default => 0
       t.integer :additive_cost, :default => 0
-      t.datetime :valid_from, :valid_to
+      t.date :valid_from, :valid_to
       t.timestamps
     end
   end

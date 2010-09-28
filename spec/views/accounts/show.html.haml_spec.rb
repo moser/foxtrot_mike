@@ -4,19 +4,11 @@ describe "/accounts/show.html.haml" do
   include AccountsHelper
   
   before do
-    @account = mock_model(Account)
-    @account.stub!(:login).and_return("MyString")
-    @account.stub!(:password).and_return()
-    @account.stub!(:password_confirmation).and_return("MyString")
-
-    assigns[:account] = @account
+    assigns[:account] = @account = Account.generate!
   end
 
-  it "should render attributes in <p>" do
-    render :template => "accounts/show.html.haml"
-#    response.should have_text(/MyString/)
-#    response.should have_text(//)
-#    response.should have_text(/MyString/)
+  it "should render" do
+    render
   end
 end
 

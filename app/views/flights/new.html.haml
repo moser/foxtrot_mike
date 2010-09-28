@@ -1,13 +1,4 @@
-%h1 New flight
-
-= form_for(@flight) do |f|
-  = f.error_messages
-  %fieldset
-    %ol 
-      %li
-        = f.label :departure
-        = f.date_select :departure
-      %li= labeled_text_field f, :plane
-    = f.submit 'Submit'
-
-= link_to 'Back', flights_path
+.item
+  %h1= t "views.create", :name => Flight.model_name.human
+  = render :partial => "flights/form", :locals => { :flight => @flight }
+  = link_to t('views.back'), flights_path, :class => "sop back"

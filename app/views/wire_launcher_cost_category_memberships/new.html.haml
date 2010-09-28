@@ -1,0 +1,7 @@
+= simple_form_for(@wire_launcher_cost_category_membership) do |f|
+  = f.association :wire_launcher, :as => :hidden
+  = f.association :wire_launcher_cost_category
+  = f.input :valid_from, :include_blank => true
+  = f.input :valid_to, :include_blank => true
+  = f.button :submit
+= link_to t('views.cancel'), @wire_launcher_cost_category_membership.wire_launcher, :class => "inline_form_hide"

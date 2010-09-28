@@ -1,0 +1,2 @@
+class FinancialAccountsController < ResourceController
+end

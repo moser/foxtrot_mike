@@ -1,5 +1,3 @@
-%h1 New airfield
-
+%h1= t "views.create", :name => Airfield.l
 = render :partial => "airfields/form", :locals => { :airfield => @airfield }
-
-= link_to 'Back', airfields_path 
+= link_to t('views.back'), airfields_path 

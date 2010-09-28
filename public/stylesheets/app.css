@@ -29,6 +29,12 @@ div.disabler a.stop_load {
   
 }
 
+div.disabler .box {
+  opacity: 1.0;
+  
+}
+
+
 /*
 dl.data dt {
   clear: left;
@@ -52,6 +58,8 @@ table.data th {
   text-align: left;
   width: 120px;
   color: #999;
+  font-size: 13px;
+  
 }
 
 table.categories th {
@@ -72,4 +80,92 @@ ul.versions li {
 
 .marked {
   background: #99f;
+}
+
+.hidden {
+  display: none;
+}
+
+#navigation ul {
+  margin: 0;
+  padding: 0;
+  
+}
+
+#navigation li {
+  list-style-type: none;
+  display: inline;
+}
+
+#navigation li a {
+  text-decoration: none;
+  margin: 0.5em;
+}
+
+#navigation li.active {
+  background: #ccc;
+}
+
+.header {
+  width: 75em;
+  margin: auto;
+  padding: 1em;
+  padding-bottom: 0;
+}
+
+.please_wait {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  display: none;
+}
+
+.content {
+  width: 75em;
+  margin: auto;
+  border: 1px solid #ccc;
+  padding: 1em;
+  position: relative;
+  
+}
+
+ul.no_bullet {
+  list-style-type: none;  
+  padding: 0;
+}
+
+ul.scroll {
+  width: 12em;
+  max-height: 10em;
+  overflow-y: auto;
+}
+
+.pagination a, .pagination em, .pagination span {
+  display: inline-block;
+  padding: 3px 5px;
+  border: 1px dotted #666;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.small {
+  width: 25em;
+  padding: 2em;
+  border: 1px solid #ccc;
+}
+
+.small label {
+  width: 8em;
+  display: inline-block;
+  text-align: right;
+  padding-right: 1em;
+}
+
+.small input {
+  width: 8em;
+}
+
+.small input[type=submit] {
 }

@@ -1,6 +1,8 @@
 class TowFlight < AbstractFlight
   has_one :tow_launch
   include TowFlightAddition
+
+  #validates_presence_of :tow_launch
   
   def cost_responsible
     tow_launch.abstract_flight.cost_responsible #rescue nil

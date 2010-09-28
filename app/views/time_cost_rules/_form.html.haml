@@ -1,0 +1,24 @@
+= simple_form_for(time_cost_rule) do |f|
+  = f.input :name, :required => true
+  - if time_cost_rule.person_cost_category
+    .input.string.required
+      = f.label :person_cost_category
+      = time_cost_rule.person_cost_category.name
+      = f.input :person_cost_category_id, :as => :hidden, :value => time_cost_rule.person_cost_category_id
+  - else
+    = f.input :person_cost_category, :required => true
+  - if time_cost_rule.plane_cost_category
+    .input.string.required
+      = f.label :plane_cost_category
+      = time_cost_rule.plane_cost_category.name
+      = f.input :plane_cost_category_id, :as => :hidden, :value => time_cost_rule.plane_cost_category_id
+  - else
+    = f.input :plane_cost_category, :required => true
+  = f.input :flight_type, :as => :radio, :collection => {Flight.model_name.human => "Flight", TowFlight.model_name.human => "TowFlight"}, :selected => "Flight",:required => true
+  = f.input :cost, :required => true
+  = f.input :depends_on, :as => :radio, :collection => {Flight.human_attribute_name("duration") => "duration", Flight.human_attribute_name("engine_duration") => "engine_duration"}, :selected => "duration", :selected => "duration", :required => true
+  = f.input :additive_cost
+  = f.input :valid_from, :required => true, :include_blank => true
+  = f.input :valid_to, :include_blank => true
+  = f.input :comment
+  = f.button :submit

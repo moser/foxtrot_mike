@@ -5,6 +5,20 @@ class DateTime
   end
 end
 
+class Date
+  def week
+    cweek
+  end
+  
+  def prev_week
+    self - 7.days
+  end
+  
+  def prev_day
+    self - 1.days
+  end
+end
+
 class String
   # Calculates the Levenshtein distance of two strings
   # http://www.dcs.shef.ac.uk/~sam/stringmetrics.html#Levenshtein

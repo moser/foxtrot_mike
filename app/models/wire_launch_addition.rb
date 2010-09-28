@@ -1,6 +1,10 @@
 module WireLaunchAddition
   def self.included(base) #:nodoc:
   end
+
+  def financial_account
+    wire_launcher.financial_account
+  end
   
 #  def set_type
 #    p self

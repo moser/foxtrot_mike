@@ -1,21 +1,19 @@
-%p
-  %b Registration:
-  = @plane.registration 
+%table.data
+  %tr
+    %th= Plane.l(:registration)
+    %td=h @plane.registration
+  %tr
+    %th= Plane.l(:make)
+    %td=h @plane.make
+  %tr
+    %th= Plane.l(:group)
+    %td= @plane.group.name
+  %tr
+    %th= Plane.l(:legal_plane_class)
+    %td= @plane.legal_plane_class.name
 
-%p
-  %b Make:
-  = @plane.make
-
-%p
-  %b Cost category:
-  = PlaneCostCategory.find(@plane.plane_cost_category_id).name rescue 'None'
-  
-%p
-  %b Versions:
-  - @plane.versions.each do |v|
-    = v.created_at
-    %br
-
-TODO show plane_cost_category_memberships
+= render :partial => "common/memberships", :locals => { :object => @plane, :group => :plane_cost_category }
+        
+= link_to 'Bordbuch', plane_flights_path(@plane)
 = link_to 'Edit', edit_plane_path(@plane)
 = link_to 'Back', planes_path

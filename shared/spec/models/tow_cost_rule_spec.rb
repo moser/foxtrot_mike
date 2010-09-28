@@ -5,4 +5,6 @@ describe TowCostRule do
   it { should belong_to :person_cost_category }
   it { should have_many :tow_levels }
   
+  it { should validate_presence_of :plane_cost_category }
+  it { should validate_presence_of :person_cost_category }
 end

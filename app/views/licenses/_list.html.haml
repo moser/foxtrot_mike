@@ -1,0 +1,45 @@
+.licenses.inline_form_replace_context
+  %h3= t("licenses.index.title")
+  %table.data
+    - if person.previous_licenses.count > 0
+      %tr
+        %th= t('views.previous')
+        %td
+          %ul.no_bullet
+            - person.previous_licenses.each do |l|
+              %li
+                = l(l.valid_from) rescue t('views.dates.minus_infinity')
+                \-
+                = l(l.valid_to) rescue t('views.dates.infinity')
+                = l.name
+                = link_to t('views.flightbook'), polymorphic_path([l, :flights])
+    - if person.current_licenses.count > 0
+      %tr
+        %th= t('views.current')
+        %td
+          %ul.no_bullet
+            - person.current_licenses.each do |l|
+              %li
+                %span.inline_form_hide_context
+                  = l(l.valid_from) rescue t('views.dates.minus_infinity')
+                  \-
+                  = l(l.valid_to) rescue t('views.dates.infinity')
+                  = l.name
+                  = link_to t('views.edit'), polymorphic_path(l, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])
+                  = link_to t('views.flightbook'), polymorphic_path([l, :flights])
+    - if person.future_licenses.count > 0
+      %tr
+        %th= t('views.future')
+        %td
+          %ul.no_bullet
+            - person.future_licenses.each do |l|
+              %li
+                %span.inline_form_hide_context
+                  = l(l.valid_from) rescue t('views.dates.minus_infinity')
+                  \-
+                  = l(l.valid_to) rescue t('views.dates.infinity')
+                  = l.name
+                  = link_to t('views.edit'), polymorphic_path(l, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])
+    %tr
+      %td
+      %td= link_to t('views.add'), polymorphic_path([person, License], :action => :new), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])

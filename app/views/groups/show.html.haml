@@ -1,0 +1,18 @@
+%table.data
+  %tr
+    %th= Group.l(:name)
+    %td=h @group.name 
+  %tr
+    %th= Group.l(:members)
+    %td
+      %ul.scroll.no_bullet
+        - @group.people.each do |p|
+          %li= link_to p.name, p
+  %tr
+    %th= Group.l(:planes)
+    %td
+      %ul.scroll.no_bullet
+        - @group.planes.each do |p|
+          %li= link_to p.registration, p
+= link_to t('views.edit'), edit_group_path(@group)
+= link_to t('views.back'), groups_path

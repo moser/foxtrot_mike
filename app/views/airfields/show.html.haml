@@ -1,11 +1,9 @@
-%p
-  %b Registration:
-  =h @airfield.registration 
-
-%p
-  %b Name:
-  =h @airfield.name 
-
-
-= link_to 'Edit', edit_airfield_path(@airfield)
-= link_to 'Back', airfields_path
+%table.data
+  %tr
+    %th= Airfield.l(:registration)
+    %td=h @airfield.registration 
+  %tr
+    %th= Airfield.l(:name)
+    %td=h @airfield.name 
+= link_to t('views.edit'), edit_airfield_path(@airfield)
+= link_to t('views.back'), airfields_path

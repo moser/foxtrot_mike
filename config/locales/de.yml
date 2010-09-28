@@ -1,0 +1,143 @@
+de: 
+  attributes:
+    valid_from: "gültig von"
+    valid_to: "gültig bis"
+    group: Gruppe
+    name: "Name"
+    comment: Kommentar
+  helpers:
+    submit:
+      create: "Erstellen"
+      update: "Ok"
+  views:
+    editing: "%{name} bearbeiten"
+    create: "%{name} erstellen"
+    add: "Hinzufügen"
+    copy: Kopieren
+    edit: "Bearbeiten"
+    cancel: "Abbrechen"
+    new: "Erstellen"
+    show: "Anzeigen"
+    back: "Zurück"
+    destroy: "Löschen"
+    areusure: "Sind Sie sicher?"
+    previous: "Ehemalig"
+    current: "Aktuell"
+    future: "Zukünftig"
+    validity: "Gültigkeit"
+    dates:
+      infinity: "unbegrenzt"
+      minus_infinity: "unbegrenzt"
+  accounts:
+    index:
+      title: Benutzerkonten
+  airfields:
+    index:
+      title: "Flugplätze"
+  flights:
+    index:
+      title: "Flüge"
+    show:
+      selflaunch: Eigenstart
+  groups:
+    index:
+      title: "Gruppen"
+  licenses:
+    index:
+      title: "Lizenzen"
+  plane_cost_categories:
+    index:
+      title: "Flugzeugkategorien"
+  plane_cost_rules:
+    index:
+      title: "Flugzeugkosten"
+      not_valid_anymore_hint: "Keine Änderung möglich."
+      valid_hint: "Nur das Enddatum der Gültigkeit kann bearbeitet werden."
+      not_yet_valid_hint: "Alle Änderung möglich."
+  planes:
+    index:
+      title: "Flugzeuge"
+  people:
+    index:
+      title: "Personen"
+  person_cost_categories:
+    index:
+      title: "Personenkategorien"
+  wire_launchers:
+    index:
+      title: "Winden"
+  wire_launcher_cost_categories:
+    index:
+      title: "Windenkategorien"
+  time_cost_rules:
+    time_cost_rule:
+      per_minute: "%{n} pro Minute %{on}"
+  activerecord:
+    models:
+      account: Benutzerkonto
+      airfield: Flugplatz
+      flight: Flug
+      tow_flight: Schleppflug
+      plane: Flugzeug
+      time_cost_rule: Zeitkostenregel
+    attributes:
+      account:
+        password: Passwort
+        password_confirmation: "Passwort (Wiederholung)"
+        login: Loginname
+      airfield:
+        registration: Kennung
+      flight:
+        plane: Flugzeug
+        date: Datum
+        seat1: Sitz 1
+        seat2: Sitz 2
+        from: Von
+        to: Nach
+        departure: Abflug
+        arrival: Ankunft
+        duration: Dauer
+        engine_duration: Motorlaufzeit
+        crew: Besatzung
+        launch: Start
+        cost: Kosten
+        lauch_cost: Startkosten
+        sum: Summe
+        liabilities: Zahlungsverpflichtungen
+        problems: Probleme
+        versions: Änderungen
+        tow_plane: Schleppflugzeug
+        data: Daten
+      license:
+        name: Bezeichnung
+        level: Stufe
+        normal: "Normal"
+        instructor: "Lehrberechtigung"
+      plane:
+        registration: Kennzeichen
+        make: Typ
+      person:
+        name: Name
+      wire_launcher:
+        registration: Kennzeichen
+      time_cost_rule:
+        cost: Kosten
+        flight_type: Flugtyp
+    errors:
+      models:
+        account:
+          attributes:
+            password:
+              confirmation: "Stimmt nicht mit der Wiederholung überein!"
+  simple_form:
+    "yes": 'Ja'
+    "no": 'Nein'
+    required:
+      text: 'notwendig'
+      mark: '*'
+    error_notification:
+      default_message: "Es wurden Fehler gefunden:"        
+    hints:
+      account:
+    labels:
+      account:

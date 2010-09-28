@@ -51,12 +51,11 @@ describe AbstractFlight do
       (@f.departure - d).abs.should < 60
     end
     
-    it "should not change the duration" do
-      d = DateTime.now
-      @f.departure = d
+    it "should change the duration" do
+      @f.departure = DateTime.now
       @f.duration = 1
-      @f.departure = d - 10.minutes
-      @f.duration.should == 1
+      @f.departure = @f.departure - 10.minutes
+      @f.duration.should == 11
     end
   end
   
@@ -70,7 +69,7 @@ describe AbstractFlight do
     it "should not fail when passed nil and set duration = 0" do
       @f.duration = 5
       Proc.new { @f.arrival_time = nil }.should_not raise_error
-      @f.duration.should == 0
+      @f.duration.should == -1
     end
     
     it "should set the duration" do
@@ -120,6 +119,10 @@ describe AbstractFlight do
   end
   
   describe "duration" do
+    it "should be negative on a new record" do
+      @f.duration.should < 0  
+    end
+    
     it "should convert strings" do
       @f.duration = "1"
       @f.duration.should == 1
@@ -130,9 +133,22 @@ describe AbstractFlight do
       @f.duration.should == 10
     end
     
-    it "should not allow negative values" do
+    it "should allow negative values and set -1" do
       @f.duration = -10
-      @f.duration.should == 10
+      @f.duration.should == -1
+    end
+  end
+  
+  describe "landed?" do
+    it "should be false if duration negative" do
+      @f.landed?.should == false
+    end
+    
+    it "should be true if duration non-negative" do
+      @f.duration = 0
+      @f.landed?.should == true
+      @f.duration = 100
+      @f.landed?.should == true
     end
   end
   
@@ -209,6 +225,16 @@ describe AbstractFlight do
       @f.seat2 = nil
       @f.crew_members.size.should == 0
     end
+
+    it "should remove a crew member if passed id=''" do
+      @f.seat1 = @pilot
+      @f.seat1_id = ''
+      @f.crew_members.size.should == 0
+      
+      @f.seat2 = @pilot
+      @f.seat2_id = ''
+      @f.crew_members.size.should == 0
+    end
     
     describe "pic" do
       it "should return seat1 if no trainee" do
@@ -226,6 +252,11 @@ describe AbstractFlight do
         @f.seat2 = @instructor
         @f.pic.should == @f.seat2
       end
+    end
+
+    it "should make the crew members persistent" do
+      @f.seat1 = @pilot
+      @f.seat1.should_not be_nil
     end
   end
   
@@ -258,6 +289,24 @@ describe AbstractFlight do
     end
   end
   
+  describe "group_id" do
+    it "should change when departure_date, seat1 or seat2 change" do
+      f = Flight.create
+      s = f.group_id
+      f.departure_date = 1.day.ago
+      f.group_id.should_not == s
+      s = f.group_id
+      f.seat1 = Person.generate!
+      f.group_id.should_not == s
+      s = f.group_id
+      f.seat2 = Person.generate!
+      f.group_id.should_not == s
+      s = f.group_id
+      f.seat1 = Person.generate!
+      f.group_id.should_not == s
+    end
+  end
+
   describe "l" do
     it "should translate FLIGHT" do
       AbstractFlight.l.should == "Abstract flight"

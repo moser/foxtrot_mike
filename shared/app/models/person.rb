@@ -1,10 +1,14 @@
 class Person < ActiveRecord::Base
   include UuidHelper
+  include Membership
   
   has_many :crew_members
   has_many :person_cost_category_memberships
   has_many :liabilities
+  has_many :licenses
+  has_many_current :licenses
   belongs_to :group
+  membership :person_cost_category_memberships
   
   validates_presence_of :firstname, :lastname, :group
 
@@ -26,14 +30,32 @@ class Person < ActiveRecord::Base
       nil
     end
   end
+
+  def relevant_licenses_for(flight)
+    if flight 
+      time = flight.departure || DateTime.now
+      if flight.plane
+        return licenses_at(time).select { |l| l.legal_plane_classes.include?(flight.plane.legal_plane_class) }
+      end
+    end
+    []
+  end
   
   # Returns if the person is a trainee on the given flight
   def trainee?(flight)
-    false
+    if flight
+      (relevant_licenses_for(flight).reject { |l| l.trainee? }).empty?
+    else
+      false
+    end
   end
   
   def instructor?(flight)
-    false
+    if flight
+      !(relevant_licenses_for(flight).select { |l| l.instructor? }).empty?
+    else
+      false
+    end
   end
   
   def name
@@ -54,5 +76,9 @@ class Person < ActiveRecord::Base
   
   def shared_attributes
     self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
+  end
+
+  def flights
+    Flight.where(:id => [ Trainee.where(:person_id => id), PilotInCommand.where(:person_id => id)].flatten.map(&:abstract_flight_id))
   end
 end

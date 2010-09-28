@@ -1,0 +1,19 @@
+require File.dirname(__FILE__) + '/../../spec_helper'
+
+describe "/<%= controller %>/<%= name %>.html.haml" do
+  include <%= controller.camelcase %>Helper
+  
+  before do
+    <%- if name == "new" -%>
+    assigns[:<%= controller.singularize %>] = @<%= controller.singularize.camelcase %> = <%= controller.singularize.camelcase %>.spawn
+    <%- elsif name == "index" -%>
+    assigns[:<%= controller %>] = @<%= controller.camelcase %> = [<%= controller.singularize.camelcase %>.generate!, <%= controller.singularize.camelcase %>.generate!]
+    <%- else -%>
+    assigns[:<%= controller.singularize %>] = @<%= controller.singularize.camelcase %> = <%= controller.singularize.camelcase %>.generate!
+    <%- end -%>
+  end
+
+  it "should render" do
+    render
+  end
+end

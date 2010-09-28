@@ -1,0 +1,3 @@
+%h1= t "views.create", :name => Group.l
+= render :partial => "groups/form", :locals => { :group => @group }
+= link_to t('views.back'), groups_path

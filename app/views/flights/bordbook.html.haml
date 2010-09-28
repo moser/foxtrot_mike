@@ -1,0 +1,18 @@
+%h2= t('views.book')
+= render :partial => "common/timeline", :locals => @timeline_locals
+.book
+  .flight_format
+    %span.date= Flight.l(:date)
+    %span.plane= Flight.l(:plane)
+    %span.seat= Flight.l(:seat1)
+    %span.seat= Flight.l(:seat2)
+    %span.airfield= Flight.l(:from)
+    %span.airfield= Flight.l(:to)
+    %span.time= Flight.l(:departure)
+    %span.time= Flight.l(:arrival)
+    %span.duration= Flight.l(:duration)
+  .flights
+    = render :partial => "flights/bordbook", :locals => { :calculated_flights => @calculated_flights }
+  %span.base_url.hidden= polymorphic_url(@url_obj)
+  %span.hidden.from= @from
+  %span.hidden.to= @to

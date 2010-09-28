@@ -4,4 +4,6 @@ class TowCostRule < ActiveRecord::Base
   has_many :tow_levels
 
   include ValidityCheck
+
+  validates_presence_of :plane_cost_category, :person_cost_category
 end

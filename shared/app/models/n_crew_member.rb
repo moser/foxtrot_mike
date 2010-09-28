@@ -14,5 +14,9 @@ class NCrewMember < CrewMember
   def equals?(other)
     self.class == other.class && n == other.n
   end
+
+  def value
+    n
+  end
 end
 

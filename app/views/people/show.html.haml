@@ -1,19 +1,12 @@
-%p
-  %b Firstname:
-  =h @person.firstname 
+%table.data
+  %tr
+    %th= Person.l(:name)
+    %td=h @person.name
+  %tr
+    %th= Person.l(:group)
+    %td=h @person.group.name
+= render :partial => "licenses/list", :locals => { :person => @person }
+= render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
 
-%p
-  %b Lastname:
-  =h @person.lastname 
-
-%p
-  %b Email:
-  =h @person.email 
-
-%p
-  %b Birthdate:
-  =h @person.birthdate 
-
-TODO show person_cost_category_memberships
 = link_to 'Edit', edit_person_path(@person)
 = link_to 'Back', people_path

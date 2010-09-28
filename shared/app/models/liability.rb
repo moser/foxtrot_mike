@@ -4,6 +4,9 @@ class Liability < ActiveRecord::Base
   belongs_to :person
   
   include LiabilityAddition
+
+  validates_presence_of :flight, :person, :proportion
+  validates_numericality_of :proportion, :greater_than => 0
   
   def value
     flight.value_for(self)

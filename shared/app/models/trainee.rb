@@ -3,8 +3,10 @@
 # plane, he is PICUS (pilot in command under supervision).
 class Trainee < PersonCrewMember
   include TraineeAddition
+
+  #default_scope includes(:person)
   
   def short
-    person.trainee?(flight) ? "PIC" : "PICUS" 
+    ""
   end
 end

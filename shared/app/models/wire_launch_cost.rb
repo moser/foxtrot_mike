@@ -3,23 +3,18 @@ class WireLaunchCost
     @launch = launch
   end
   
-  def to_i
-    cost_i
-  end
-  
-  def cost_i #rename: value
-    c = cost
+  def value
+    cc = candidate_costs
+    min = cc.values.min
+    c = cc.find { |k, v| v == min }
     !c.nil? ? c[1] : 0
   end
   
   def cost_rule
-    c = cost
-    !c.nil? ? c[0] : nil
-  end
-  
-  def cost #rename?
     cc = candidate_costs
-    cc.find { |k, v| v == cc.values.min }
+    min = cc.values.min
+    c = cc.find { |k, v| v == min }
+    !c.nil? ? c[0] : nil
   end
   
   def time
@@ -40,7 +35,7 @@ class WireLaunchCost
   def candidate_costs
     cc = {}
     candidate_rules.each do |r|
-      cc[r] = r.cost
+      cc[r] = r.cost.to_i #make sure it's an integer, not nil
     end
     cc
   end

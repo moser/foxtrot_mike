@@ -1,0 +1,13 @@
+= simple_form_for(@person_cost_category_membership) do |f|
+  .input
+    = f.label :person_cost_category
+    = @person_cost_category_membership.person_cost_category.name
+  - if @person_cost_category_membership.valid_at_booking_now?
+    .input
+      = f.label :valid_from
+      %input{ :value => l(@person_cost_category_membership.valid_from), :disabled => "true" }
+  - else
+    = f.input :valid_from, :include_blank => false
+  = f.input :valid_to, :include_blank => true
+  = f.button :submit
+= link_to t('views.cancel'), @person_cost_category_membership.person, :class => "inline_form_hide"

@@ -1,12 +1,17 @@
 class Plane < ActiveRecord::Base
-  include UuidHelper
+  include UuidHelper  
+  include Membership
   
   has_many :flights
-  has_many :plane_cost_category_memberships
+  has_many :plane_cost_category_memberships, :order => "valid_from ASC"  
+  belongs_to :legal_plane_class
   belongs_to :group
+  membership :plane_cost_category_memberships
   
   #added methods may rely on associations
   include PlaneAddition
+
+  validates_presence_of :legal_plane_class, :group
   
   def to_s
     registration || ""

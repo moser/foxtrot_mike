@@ -1,0 +1,12 @@
+%table.data
+  %tr
+    %th= FinancialAccount.l(:name)
+    %td=h @financial_account.name 
+  %tr
+    %th= FinancialAccount.l(:owners)
+    %td
+      %ul.scroll.no_bullet
+        - @financial_account.owners.each do |o|
+          %li= link_to o.to_s, o
+= link_to t('views.edit'), edit_financial_account_path(@financial_account)
+= link_to t('views.back'), financial_accounts_path

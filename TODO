@@ -5,11 +5,50 @@
   - a rule's valid_to date can be edited if it is after booking now
     - for these rules there should be a "end & replace by copy (editable)" feature
   - new rules must have a valid_from date >= booking now
-- interface to fibu
-  - save accounts (financial ones) on planes, wire_launchers and people
 - column disabled on planes, people + before_destroy => false (=> no more graveyard)
 - no destroying (people|planes|airfields), just "disable"
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
+- metaprogram/inherit cost rules controller
+- controller for TowLevel & sync
+- extract immutability into module
+- views: 
+  - Hauptflugbuch (von/nach Heimatflugplatz)
+  - Flugleiterdienstbuch
+- liabilities:
+  - remove bookedat
+- what if there is the posibility to create tow costs both time and level based?
+  - remove tow level stuff!
+- ValidityCheck:
+  - configure module of what is now (time.now, booking.now)
+- application config:
+  - currency
+  - units for height (tow lvl)
+  - ...
+- tow_levels as integer -> altitude, is ceil'd to next higher available lvl
+- OR: remove/hide tow lvl stuff...
+- add concept of a update event (bundles all changes of automatic update thru a client)
+  - add possibility to undo all changes
+  - show changes of such an event
+
+PAPER_TRAIL:
+  - item_type should be the real class, not the superclass (STI)
+    - add column real_type and keep track of the real class there
+  
+IN PROGRESS:
+
+
+
+DONE:
+- bordbuch
+- liabilities: create default one if none exists (Trainee/PIC 100%) when booking
+- refactor and improve FlightCost, LaunchCost. common interface with manual cost
+- interface to fibu
+  - save accounts (financial ones) on planes, wire_launchers and people
+- formtastic?
+- substitue auth plugin?
+- replace marker css classes by data-* attributes
+- wire launch: +operator
+- flight: duration == -1 <=> still flying <=> arrival == nil
 - license stuff? get information on situation in other countries (segelflug.de?)
   - create "LawPlaneGroup" n-1 "Planes"
   - table LawPlaneGroupPeople:
@@ -17,37 +56,10 @@
     - entry instructor = false => Normal Pilot
     - entry instructor = true => Instructor
   - controller & sync needed
-- manual costs
-- metaprogram/inherit cost rules controller
-- controller for TowLevel & sync
-- extract immutability into module
-- refactor and improve FlightCost, LaunchCost. common interface with manual cost
-- views: 
-  - Hauptflugbuch (von/nach Heimatflugplatz)
-  - Flugleiterdienstbuch
-  - flugbuch
-  - bordbuch
-- substitue auth plugin?
-- replace marker css classes by data-* attributes
-- formtastic?
-- wtf?
-    Rendered flights/show.html.haml within layouts/flights (1046.6ms)
-    Completed 200 OK in 1416ms (Views: 1043.4ms | ActiveRecord: 9.8ms)
-- liabilities: create default one if none exists (Trainee/PIC 100%)
-- cost for Flight/TowFlight (tow rules must not be used for normal flights)
-- what if there is the posibility to create tow costs both time and level based?
-- wire launch: +operator
-- flight: duration == -1 <=> still flying <=> arrival == nil
-
-  
-IN PROGRESS:
-
-
-
-DONE:
 - time_cost_rule: conditions (duration (<|>) x) && additive costs (+/-)
 - STI <=> actsasrevisable TowFlight...
 - keep track of controller (flugleiter)
 - payments (map person with a percentage to a flight)
 - remove Make*Revisable migrations
 - substitute acts as revisable by paper_trail
+- cost for Flight/TowFlight (tow rules must not be used for normal flights)

@@ -1,10 +1,8 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 var Parse = {
   time_pattern: /([0-9]+)(\.|:)([0-9]+)/,
   date_pattern_de: /([0-9]+)\.([0-9]+)\.([0-9]+)/,
   date_pattern_en: /([0-9]+)(-|\/)([0-9]+)(-|\/)([0-9]+)/,
+  date_pattern_to_s: /([0-9]+)-([0-9]+)-([0-9]+)/,
   duration_pattern: /([0-9]+):([0-9]+)/,
   time: function(str) {
     matches = this.time_pattern.exec(str);
@@ -31,6 +29,14 @@ var Parse = {
     }
     return obj;
   },
+  date_to_s: function(str) {
+    matches = this.date_pattern_to_s.exec(str);
+    if(matches != null && matches.length == 4) {
+      return new Date(this.integer(matches[1]), this.integer(matches[2]), this.integer(matches[3]));
+    } else {
+      return false;
+    }
+  },
   duration: function(str) {
     matches = this.duration_pattern.exec(str);
     if(matches != null && matches.length == 3) {
@@ -55,6 +61,24 @@ var Parse = {
 };
 
 var Format = {
+  date_to_s: function(date) {
+    var m = date.getMonth();
+    var d = date.getDate();
+    return date.getFullYear() + '-' +  (m < 10 ? '0': '') + m + '-' + (d < 10 ? '0': '') + d;
+  },
+  date_time_short: function(date) {
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var min = date.getMinutes();
+    var h = date.getHours();
+    return ((d < 10 ? '0': '') + d) + '.' + ((m < 10 ? '0': '') + m) + '.' +
+            date.getFullYear() + ' ' + ((h < 10 ? '0': '') + h) + ':' + ((min < 10 ? '0': '') + min);
+  },
+  date_short: function(date) {
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    return ((d < 10 ? '0': '') + d) + '.' + ((m < 10 ? '0': '') + m) + '.' + date.getFullYear();
+  },
   duration: function(i) {
     h = Math.floor(i / 60);
     m = i % 60;
@@ -62,6 +86,11 @@ var Format = {
   },
   time: function(obj) {
     return obj.h + ":" + (obj.m < 10 ? "0": "") + obj.m;
+  },
+  time_of_date: function(date) {
+    var h = date.getHours();
+    var m = date.getMinutes();
+    return ((h < 10 ? '0': '') + h) + ":" + (m < 10 ? "0": "") + m;
   }
 };
 
@@ -87,3 +116,39 @@ UI.Disabler.prototype = {
     $('.disabler', this.element).remove();
   }
 };
+
+var PleaseWait = {
+  n: 0,
+  vote_show: function() {
+    this.n++;
+    $('.please_wait').show();
+  },
+  vote_hide: function() {
+    this.n--;
+    if(this.n < 0) { this.n = 0; }
+    if(this.n == 0) { $('.please_wait').hide(); }
+  }
+};
+
+var DomInsertionWatcher = {
+  register: function(f) {
+    if(DomInsertionWatcher.listeners == null) { DomInsertionWatcher.listeners = []; }
+    DomInsertionWatcher.listeners.push(f);
+  },
+  notify_listeners: function(new_items) {
+    if(new_items == null) { new_items = 'body'; }
+    if(DomInsertionWatcher.listeners == null) { DomInsertionWatcher.listeners = []; }
+    DomInsertionWatcher.listeners.forEach(function(f) { f.call($(new_items)); });
+  }
+};
+
+var urlParams = {};
+(function () {
+    var e,
+        d = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); },
+        q = window.location.search.substring(1),
+        r = /([^&=]+)=?([^&]*)/g;
+
+    while (e = r.exec(q))
+       urlParams[d(e[1])] = d(e[2]);
+})();

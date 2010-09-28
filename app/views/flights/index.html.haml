@@ -1,35 +1,24 @@
-%h1 Listing flights
-%table
-  %tr
-    %th
-      Date
-    %th= Flight.l(:plane)
-    %th
-      Crew1
-    %th
-      Crew2
-    %th= Flight.l(:to)
-    %th= Flight.l(:from)
-    %th= Flight.l(:departure)
-    %th= Flight.l(:arrival)
-    %th= Flight.l(:duration)
-  - @flights.each do |flight|
+.list
+  %h1= t '.title'
+  %table
     %tr
-      %td= h format_date(flight.departure)
-      %td= h flight.plane
-      %td
-        - if flight.pic == flight.seat1
-          %u= h flight.seat1.to_s
-        - else
-          = h flight.seat1.to_s
-      %td= h flight.seat2.to_s
-      %td= h flight.from
-      %td= h flight.to
-      %td= h format_time(flight.departure) || "-"
-      %td= h format_time(flight.arrival) || "-"
-      %td= h format_minutes(flight.duration) || "0:00"
-      %td= link_to 'Show', flight
-      %td= link_to 'Edit', edit_flight_path(flight)
-      %td= link_to 'Destroy', flight, :confirm => 'Are you sure?', :method => :delete
-        
-= link_to 'New flight', new_flight_path
+      %th
+        Date
+      %th= Flight.l(:plane)
+      %th
+        Crew1
+      %th
+        Crew2
+      %th= Flight.l(:to)
+      %th= Flight.l(:from)
+      %th= Flight.l(:departure)
+      %th= Flight.l(:arrival)
+      %th= Flight.l(:duration)
+    - @flights.each do |flight|
+      %tr
+        = render :partial => "flights/table_content", :locals => { :flight => flight }
+        %td= link_to t('views.show'), flight, :class => "sop show"
+        %td= link_to t('views.edit'), edit_flight_path(flight), :class => "sop edit"
+  = will_paginate @flights, :renderer => ApplicationHelper::CustomLinkRenderer
+  = link_to 'Reload', flights_path, :class => "sop reload"
+  = link_to 'New flight', new_flight_path, :class => "sop new"

@@ -1,18 +1,6 @@
-%h1 Editing account
+%h1= t "views.editing", :name => Account.l
 
-= error_messages_for :account
-= form_for(@account) do |f|
-  %p
-    %b Login
-    = f.text_field :login 
-  %p
-    %b Password
-    = f.text_field :password 
-  %p
-    %b Password confirmation
-    = f.text_field :password_confirmation 
-    
-  %p= f.submit "Update"
+= render :partial => "accounts/form", :locals => { :account => @account }
   
-= link_to 'Show', account_path(@account)
-= link_to 'Back', accounts_path
+= link_to t('views.show'), account_path(@account)
+= link_to t('views.back'), accounts_path

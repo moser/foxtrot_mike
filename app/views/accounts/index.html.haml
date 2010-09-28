@@ -1,19 +1,11 @@
-%h1 Listing accounts
-
+%h1= t '.title'
 %table
   %tr
-    %th Login
-    %th Password
-    %th Password confirmation
-
+    %th= Account.l(:login)
   - @accounts.each do |account|
     %tr
       %td=h account.login
-      %td=h account.password
-      %td=h account.password_confirmation
-  
-      %td= link_to 'Show', account_path(account)
-      %td= link_to 'Edit', edit_account_path(account)
-      %td= link_to 'Destroy', account_path(account), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
-    
-= link_to 'New account', new_account_path 
+      %td= link_to t('views.show'), account_path(account)
+      %td= link_to t('views.edit'), edit_account_path(account)
+      %td= link_to t('views.destroy'), account_path(account), :confirm => t('views.areusure'), :method => :delete
+= link_to t('views.new'), new_account_path 

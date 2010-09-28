@@ -2,7 +2,11 @@ class PersonCrewMember < CrewMember
   belongs_to :person
   
   include PersonCrewMemberAddition
+
+  validates_presence_of :person
   
+  #default_scope includes(:person)
+
   def person=(obj)
     raise ImmutableObjectException unless person.nil?
     write_attribute(:person_id, obj.id)
@@ -18,5 +22,9 @@ class PersonCrewMember < CrewMember
   
   def short
     "" #TODO should be a I18n string?
+  end
+
+  def value
+    person
   end
 end

@@ -1,5 +1,4 @@
-= semantic_form_for(plane_cost_category) do |f|
-  = f.inputs do
-    = f.input :name
-    = f.input :tow_cost_rule_type, :as => :select, :prompt => true, :collection => ["", "TowCostRule", "TimeCostRule"]
-  = f.buttons
+= simple_form_for(plane_cost_category) do |f|
+  = f.input :name
+  = f.input :tow_cost_rule_type, :as => :select, :collection => ["", "TowCostRule", "TimeCostRule"]
+  = f.button :submit

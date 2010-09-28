@@ -1,0 +1,24 @@
+.timeline
+  %span.hidden.base= base
+  %span.hidden.scope= scope
+  .bars
+    %span.setters
+      %a{ :href => polymorphic_url(url_obj, :from => first_group, :to => to, :scope => scope, :base => base), :"data-date" => first_group, :class => "set_date from#{first_group == from ? ' active' : ''}" }>
+      %a{ :href => polymorphic_url(url_obj, :from => from, :to => first_group, :scope => scope, :base => base), :"data-date" => first_group, :class => "set_date to" }>
+    - groups.each do |d|
+      - height = (45.0 * (counts[d].to_f / (counts.values.max != 0 ? counts.values.max : 1).to_f)).to_i + 5
+      - margin = 40 - (height / 2)
+      %img{ :src => '/images/green1x1.png', :class => "bar", :style => "height: #{height}; margin-top: #{margin}; margin-bottom: #{margin};", :title => "#{l(d, :format => scope.to_sym)}: #{counts[d]}"}>
+      %span.setters
+        %a{ :href => polymorphic_url(url_obj, :from => d, :to => to, :scope => scope, :base => base), :"data-date" => d, :class => "set_date from#{d == from ? ' active' : ''}" }>
+        %a{ :href => polymorphic_url(url_obj, :from => from, :to => d, :scope => scope, :base => base), :"data-date" => d, :class => "set_date to#{d == to ? ' active' : ''}" }>
+  .caption
+    %span.left>
+      %a{ :href => prev_base ? polymorphic_url(url_obj, :from => from, :to => to, :scope => scope, :base => prev_base) : '#', :class => 'prev_base set_base', :"data-date" => prev_base }
+      = l(groups.first)
+    %span.middle
+      %a{ :href => zoom_in ? polymorphic_url(url_obj, :from => from, :to => to, :scope => zoom_in, :base => base) : '#', :class => 'zoom_in set_scope', :"data-scope" => zoom_in }
+      %a{ :href => zoom_out ? polymorphic_url(url_obj, :from => from, :to => to, :scope => zoom_out, :base => base) : '#', :class => 'zoom_out set_scope', :"data-scope" => zoom_out }
+    %span.right>
+      = l(groups.last)
+      %a{ :href => next_base ? polymorphic_url(url_obj, :from => from, :to => to, :scope => scope, :base => next_base) : '#', :class => 'next_base set_base', :"data-date" => next_base }

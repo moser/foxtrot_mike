@@ -1,0 +1,18 @@
+%html
+  %head
+    %meta{ "http-equiv" => "content-type", "content" => "text/html;charset=UTF-8" }
+    %title
+      FoxtrotMike
+    = csrf_meta_tag
+    = stylesheet_link_tag 'scaffold', 'app', 'jquery-ui-1.8.5.custom', 'facebox'
+    = stylesheet_link_tag @include_stylesheet_files
+    = javascript_include_tag 'jquery-1.4.2', 'jquery.ba-bbq.min', 'application', '/i18n.js', 'jquery-ui-1.8.5.custom', 'jquery-ui-timepicker-addon-0.6.js', 'facebox'
+    = javascript_include_tag @include_javascript_files
+    %body
+      .header
+        = render :partial => "common/account_bar"
+      = render :partial => "common/navigation_bar"
+      .please_wait
+        = image_tag "ajax-loader.gif"
+      .content
+        = yield

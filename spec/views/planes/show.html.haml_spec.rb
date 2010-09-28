@@ -6,7 +6,7 @@ describe "/planes/show.html.haml" do
     assigns[:plane] = @plane = Plane.generate!
   end
 
-  it "renders attributes in <p>" do
+  it "should render" do
     render
   end
 end

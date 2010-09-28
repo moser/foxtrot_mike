@@ -29,4 +29,8 @@ describe Person do
   it "should return shared_attributes" do
     Person.generate!.shared_attributes.keys.to_set.should == Person.shared_attribute_names.map { |n| n.to_s }.to_set
   end
+
+  it "should return a persons flights" do
+    Person.generate!.flights
+  end
 end

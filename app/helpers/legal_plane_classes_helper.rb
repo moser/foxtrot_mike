@@ -1,0 +1,2 @@
+module LegalPlaneClassesHelper
+end

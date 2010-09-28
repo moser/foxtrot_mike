@@ -11,4 +11,9 @@ describe NCrewMember do
   it "should respond to to_s" do
     NCrewMember.new(:n => 1).to_s.should == "+1"
   end
+
+  it "value should return n" do
+    m = NCrewMember.new :n => 1
+    m.value.should == 1    
+  end
 end

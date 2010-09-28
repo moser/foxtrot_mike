@@ -1,15 +1,11 @@
-%h1 Listing person_cost_categories
-
+%h1= t '.title'
 %table
   %tr
-    %th Name
-
+    %th= PersonCostCategory.human_attribute_name(:name)
   - @person_cost_categories.each do |person_cost_category|
     %tr
       %td=h person_cost_category.name
-  
-      %td= link_to 'Show', person_cost_category_path(person_cost_category)
-      %td= link_to 'Edit', edit_person_cost_category_path(person_cost_category)
-      %td= link_to 'Destroy', person_cost_category_path(person_cost_category), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
-    
-= link_to 'New person_cost_category', new_person_cost_category_path 
+      %td= link_to t('views.show'), person_cost_category_path(person_cost_category)
+      %td= link_to t('views.edit'), edit_person_cost_category_path(person_cost_category)
+      %td= link_to t('views.destroy'), person_cost_category_path(person_cost_category), :confirm => t('views.areusure'), :method => :delete
+= link_to t('views.new'), new_person_cost_category_path 

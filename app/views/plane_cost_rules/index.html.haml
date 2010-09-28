@@ -1,19 +1,25 @@
 %h1 Plane cost rules
-.person_cost_categories
-  %h2= PersonCostCategory.l
-  - @person_cost_categories.each do |c|
-    %a.update_selection{:href => "#person_cost_category=#{c.id}"}= c.name
-    %br
-    
-.plane_cost_categories
-  %h2= PlaneCostCategory.l
-  - @plane_cost_categories.each do |c|
-    %a.update_selection{:href => "#plane_cost_category=#{c.id}"}= c.name
-    %br
+.colspace
+  .person_cost_categories.col.left
+    %h3= PersonCostCategory.l
+    %ul.categories
+      - @person_cost_categories.each do |c|
+        %li{:id => "person_cost_category_id-#{c.id}", :class => (c == @current_person_cost_category ? "current" : "")}
+          = select_cost_parameter_link(c.name, c.id, :person_cost_category_id)
 
-.cost_rule_types
-  %h2 Cost rule type
-  %a.update_type{:href => "#cost_rule_type=time_cost_rules"}= TimeCostRule.human_name
-  %a.update_type{:href => "#cost_rule_type=tow_cost_rules"}= TowCostRule.human_name
+  .middle
+    %ul.tablist
+      - { TimeCostRule.human_name => "time_cost_rules", TowCostRule.human_name => "tow_cost_rules"}.each do |k, v|
+        %li{:id => "cost_rule_type-#{v}", :class => (v == @current_cost_rule_type ? "current" : "")}
+          = select_cost_parameter_link(k, v, :cost_rule_type)
+    #cost_rules
+      = render :partial => "#{@current_cost_rule_type}/list", :locals => { :not_valid_anymore => @not_valid_anymore, :valid => @valid, :not_yet_valid => @not_yet_valid, :person_cost_category_id => @current_person_cost_category.id, :plane_cost_category_id => @current_plane_cost_category.id }
+  .plane_cost_categories.col.right
+    %h3= PlaneCostCategory.l
+    %ul.categories
+      - @plane_cost_categories.each do |c|
+        %li{:id => "plane_cost_category_id-#{c.id}", :class => (c == @current_plane_cost_category ? "current" : "")}
+          = select_cost_parameter_link(c.name, c.id, :plane_cost_category_id)
 
-#cost_rules
+  .clear
+  

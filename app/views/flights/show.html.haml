@@ -1,99 +1,102 @@
-%table.categories
-  %tr
-    %th
-      Data
-    %td
-      %table.data
-        %tr
-          %th= Flight.l(:date)
-          %td= format_date(@flight.departure_date) || '-'
-        %tr
-          %th= Flight.l(:plane)
-          %td= @flight.plane || '-'
-        %tr
-          %th= Flight.l(:crew)
-          %td
-            - unless @flight.seat1.nil?
-              = @flight.seat1.person.to_s 
-              = @flight.seat1.short
-              %br
-            - unless @flight.seat2.nil?
-              = @flight.seat2.person.to_s 
-              = @flight.seat2.short
-        %tr
-          %th= Flight.l(:from)
-          %td= @flight.from || '-'
-        %tr
-          %th= Flight.l(:to)
-          %td= @flight.to || '-'
-        %tr
-          %th= Flight.l(:departure)
-          %td= format_time(@flight.departure) || '-'
-        %tr
-          %th= Flight.l(:arrival)
-          %td= format_time(@flight.arrival) || '-'
-        %tr
-          %th= Flight.l(:duration)
-          %td= format_minutes(@flight.duration) || '-'
-        %tr
-          %th= Flight.l(:engine_duration)
-          %td= format_minutes(@flight.engine_duration) || '-'
-        %tr
-          %th= Flight.l(:comment)
-          %td= @flight.comment
-  %tr
-    %th= Flight.l(:launch)
-    %td= @flight.launch.nil? ? "Selflaunched TODO i18n" : render(:partial => "flights/#{@flight.launch.class.name.underscore}", :locals => { :launch => @flight.launch })
-  %tr
-    %th
-      = Flight.l(:cost)
-    %td
-      %table.data
-        - unless @flight.cost.nil? || @flight.cost.cost.nil?
-          %tr
-            %th= Flight.l(:cost)
-            %td= @flight.cost.cost[0].name
-            %td= format_currency(@flight.cost.cost_i)
-        - unless @flight.cost.launch_cost.nil? || @flight.cost.launch_cost.cost.nil?
-          %tr
-            %th= Flight.l(:launch_cost)
-            %td= @flight.cost.launch_cost.cost[0].name
-            %td= format_currency(@flight.cost.launch_cost.cost_i)
-        %tr
-          %th= Flight.l(:sum)
-          %td
-            
-          %td= format_currency(@flight.cost.to_i)
-          
-  %tr
-    %th= Flight.l(:liabilities)
-    %td
-      %table.data
-        - @flight.liabilities.each do |l|
-          %tr
-            %th= l.person.name
-            %td
-              = (@flight.proportion_for(l) * 100.0).to_i
-              \%
-            %td= format_currency(l.value)
-  - unless @flight.soft_validate
+.item
+  %table.categories
     %tr
-      %th= Flight.l(:problems)
+      %th= Flight.l(:data)
       %td
-        %ul
-          - @flight.problems.each do |col, str|
-            %li= Flight.l(col) + " " + str
-  %tr
-    %th= Flight.l(:versions)
-    %td
-      %ul.versions
-        - @flight.all_versions.each do |v|
-          %li
-            = format_datetime(v.created_at) + ' ' + v.item_type
-            = Account.find(v.whodunnit).person unless v.whodunnit.nil?
-            - #TODO ^ change to person?
-          - #+ ' ' + v.reify.attributes.diffs(@flight.attributes).keys.inspect
+        %table.data
+          %tr
+            %th= Flight.l(:date)
+            %td= l  @flight.departure_date
+          %tr
+            %th= Flight.l(:plane)
+            %td
+              - unless @flight.plane.nil?
+                = link_to @flight.plane.to_s, plane_path(@flight.plane)
+              - else
+                = "-"
+          %tr
+            %th= Flight.l(:crew)
+            %td
+              - unless @flight.seat1.nil?
+                = @flight.seat1.value.to_s 
+                = @flight.seat1.short
+                %br
+              - unless @flight.seat2.nil?
+                = @flight.seat2.value.to_s 
+                = @flight.seat2.short
+          %tr
+            %th= Flight.l(:from)
+            %td= @flight.from || '-'
+          %tr
+            %th= Flight.l(:to)
+            %td= @flight.to || '-'
+          %tr
+            %th= Flight.l(:departure)
+            %td= l(@flight.departure, :format => :time)
+          %tr
+            %th= Flight.l(:arrival)
+            %td= @flight.arrival.nil? ? '-' : l(@flight.arrival, :format => :time)
+          %tr
+            %th= Flight.l(:duration)
+            %td= format_minutes(@flight.duration) || '-'
+          - if @flight.plane && @flight.plane.engine_duration_possible?
+            %tr
+              %th= Flight.l(:engine_duration)
+              %td= format_minutes(@flight.engine_duration) || '-'
+          %tr
+            %th= Flight.l(:comment)
+            %td= @flight.comment
+    %tr
+      %th= Flight.l(:launch)
+      %td= @flight.launch.nil? ? t('.selflaunch') : render(:partial => "flights/#{@flight.launch.class.name.underscore}", :locals => { :launch => @flight.launch })
+    %tr
+      %th
+        = Flight.l(:cost)
+      %td
+        %table.data
+          - @flight.cost.time_costs.each do |tc|
+            - unless tc.cost_rule.nil?
+              %tr
+                %th= Flight.l("cost_#{tc.attribute}".to_sym)
+                %td= tc.cost_rule.name
+                %td= format_currency(tc.value)
+          - unless @flight.cost.launch_cost.nil? || @flight.cost.launch_cost.cost_rule.nil?
+            %tr
+              %th= Flight.l(:launch_cost)
+              %td= @flight.cost.launch_cost.cost_rule.name
+              %td= format_currency(@flight.cost.launch_cost.value)
+          %tr
+            %th= Flight.l(:sum)
+            %td= ' '
+            %td= format_currency(@flight.cost.sum)
+    - unless @flight.is_a? TowFlight    
+      %tr
+        %th= Flight.l(:liabilities)
+        %td
+          %table.data
+            - @flight.liabilities.each do |l|
+              %tr
+                %th= l.person.name
+                %td
+                  = (@flight.proportion_for(l) * 100.0).to_i
+                  \%
+                %td= format_currency(l.value)
+    - unless @flight.soft_validate
+      %tr
+        %th= Flight.l(:problems)
+        %td
+          %ul
+            - @flight.problems.each do |col, str|
+              %li= Flight.l(col) + " " + str
+    %tr
+      %th= Flight.l(:versions)
+      %td
+        %ul.versions
+          - @flight.all_versions.each do |v|
+            %li
+              = l(v.created_at) + ' ' + v.item_type
+              = Account.find(v.whodunnit).person unless v.whodunnit.nil?
+              - #TODO ^ change to person?
 
-= link_to 'Reload', flight_path(@flight), :class => "replace_flight"
-= link_to 'Edit', edit_flight_path(@flight), :class => "replace_flight"
-= link_to 'Back', flights_path
+  = link_to t('views.edit'), edit_flight_path(@flight), :class => "sop edit"
+  = link_to t('views.back'), flights_path, :class => "sop back"

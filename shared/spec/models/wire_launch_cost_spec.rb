@@ -5,7 +5,6 @@ describe WireLaunchCost do
     f = Flight.new
     f.launch = WireLaunch.create
     f.save
-    f.cost.to_i.should == 0
-    f.cost.cost_rule.should be_nil
+    f.cost.launch_cost.value.should == 0
   end
 end

@@ -1,7 +1,7 @@
-%h1 Editing person_cost_category
+%h1= t "views.editing", :name => PersonCostCategory.l
 
 = render :partial => "person_cost_categories/form", :locals => { :person_cost_category => @person_cost_category }
   
-= link_to 'Show', person_cost_category_path(@person_cost_category)
-= link_to 'Back', person_cost_categories_path
+= link_to t('views.show'), person_cost_category_path(@person_cost_category)
+= link_to t('views.back'), person_cost_categories_path
 

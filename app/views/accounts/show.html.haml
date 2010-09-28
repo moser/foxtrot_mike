@@ -1,15 +1,9 @@
-%p
-  %b Login:
-  =h @account.login 
-
-%p
-  %b Password:
-  =h @account.password 
-
-%p
-  %b Password confirmation:
-  =h @account.password_confirmation 
-
-
-= link_to 'Edit', edit_account_path(@account)
-= link_to 'Back', accounts_path
+%table.data
+  %tr
+    %th= Account.l(:login)
+    %td=h @account.login 
+  %tr
+    %th= Account.l(:person)
+    %td= link_to @account.person.name, @account.person
+= link_to t('views.edit'), edit_account_path(@account)
+= link_to t('views.back'), accounts_path

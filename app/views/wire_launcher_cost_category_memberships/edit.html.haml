@@ -1,0 +1,13 @@
+= simple_form_for(@wire_launcher_cost_category_membership) do |f|
+  .input
+    = f.label :wire_launcher_cost_category
+    = @wire_launcher_cost_category_membership.wire_launcher_cost_category.name
+  - if @wire_launcher_cost_category_membership.valid_at_booking_now?
+    .input
+      = f.label :valid_from
+      %input{ :value => l(@wire_launcher_cost_category_membership.valid_from, :format => :short), :disabled => "true" }
+  - else
+    = f.input :valid_from, :include_blank => true
+  = f.input :valid_to, :include_blank => true
+  = f.button :submit
+= link_to t('views.cancel'), @wire_launcher_cost_category_membership.wire_launcher, :class => "inline_form_hide"

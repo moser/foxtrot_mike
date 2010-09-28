@@ -1,0 +1,3 @@
+%h1= t "views.create", :name => FinancialAccount.l
+= render :partial => "financial_accounts/form", :locals => { :financial_account => @financial_account }
+= link_to t('views.back'), financial_accounts_path

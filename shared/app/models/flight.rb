@@ -1,13 +1,18 @@
 class Flight < AbstractFlight   
   has_many :liabilities
   include FlightAddition
-  
+
+  def liabilities_with_default
+    liabilities.count == 0 ? [ DefaultLiability.new(self) ] : liabilities
+  end
+
+
   def proportion_sum
-    liabilities.map { |l| l.proportion }.sum
+    liabilities_with_default.map { |l| l.proportion }.sum
   end
   
   def value_for(liability)
-    (proportion_for(liability) * cost.to_i.to_f).round
+    (proportion_for(liability) * cost.sum.to_f).round
   end
   
   def proportion_for(liability)
@@ -24,10 +29,14 @@ class Flight < AbstractFlight
       end
     end
   end
+
+  def liabilities_attributes
+    liabilities.map { |l| l.attributes }
+  end
   
   def shared_attributes
     a = super
-    a[:liabilities_attributes] = liabilities.map { |l| l.attributes }
+    a[:liabilities_attributes] = liabilities_attributes
     a
   end
   
@@ -35,7 +44,6 @@ class Flight < AbstractFlight
     super(*args)
     if new_record?
       self.departure ||= Date.today
-      self.duration ||= 0
     end
   end
 end

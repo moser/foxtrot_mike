@@ -1,0 +1,12 @@
+//TODO make translations available
+var I18n = {
+  translations: {
+  <% @translations.each do |t, v| %>
+    '<%= t %>': '<%= v %>',
+  <% end %>
+    dummy: "I'm a teapot"
+  },
+  t: function(key, args) {
+    return "Stop";
+  }
+}

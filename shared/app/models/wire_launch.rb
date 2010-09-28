@@ -1,5 +1,6 @@
 class WireLaunch < Launch
   belongs_to :wire_launcher
+  has_one :manual_cost, :as => :item
   
   include WireLaunchAddition
   

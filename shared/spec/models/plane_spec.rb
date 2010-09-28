@@ -3,6 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../spec/spec_helper')
 describe Plane do  
   it { should have_many :flights }
   it { should have_many :plane_cost_category_memberships }
+  it { should belong_to :group }
+  it { should belong_to :legal_plane_class }
+
+  it { should validate_presence_of :group }
+  it { should validate_presence_of :legal_plane_class }
   
   it "should return registration when sent to_s" do
     str = "D-ZZZZ"

@@ -1,7 +1,0 @@
-- content_for :content do
-  %div{ :class => "flight { id: #{@flight.id} }" }
-    = yield
-- content_for :head do 
-  = javascript_include_tag 'flight'
-
-= render :file => 'layouts/application'

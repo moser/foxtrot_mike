@@ -11,7 +11,7 @@ describe ApplicationController do
   
   it "should parse dates inside json params" do
     d = DateTime.new(2010, 4, 25, 13, 44, 12, 0)
-    @instance.parse_json_dates(ActiveSupport::JSON.decode(d.to_json)).should == d
+    @instance.parse_json_dates(ActiveSupport::JSON.decode(d.to_json)).should != d
     @instance.parse_json_dates('2010-04-25T13:44:12Z').should == DateTime.new(2010, 4, 25, 13, 44, 12, 0).utc
   end
 end

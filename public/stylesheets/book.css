@@ -1,0 +1,98 @@
+div.group {
+  border: 1px solid #99f;
+  position: relative;
+  margin-top: 0.1em;
+}
+
+div.group div.sum {
+  background: #99f;
+}
+
+div.group div.sum span.duration {
+  margin-left: 58em;
+}
+
+div.flight_format span {
+  display: inline-block;
+  overflow: hidden;
+}
+
+div.flight_format span.date {
+  width: 6em;
+}
+
+div.flight_format span.plane {
+  width: 5em;
+}
+
+div.flight_format span.seat {
+  width: 10.5em;
+}
+
+div.flight_format span.airfield {
+  width: 10.5em;
+}
+
+div.flight_format span.time {
+  width: 4em;
+}
+
+div.flight_format span.duration {
+  width: 3.5em;
+}
+
+div.group div.flight.hide_when_collapsed {
+  margin-left: 0.1em;
+  font-style: italic;
+}
+
+div.group.collapsed div.flight.hide_when_collapsed {
+  display: none;
+}
+
+a.group_up {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(/images/icons/16-em-open.png);
+}
+
+a.group_down {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(/images/icons/16-em-down.png);
+}
+
+a.ungroup {
+  display: none;
+}
+
+div.group div.flight a.ungroup {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(/images/icons/16-em-cross.png);
+}
+
+div.group div.flight a.group_up {
+  display: none;
+}
+
+div.group div.flight a.group_down {
+  display: none;
+}
+
+div.group a.toggle_collapsed {
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  background: url(/images/icons/24-zoom-out.png);
+}
+
+div.group.collapsed a.toggle_collapsed {
+  background: url(/images/icons/24-zoom-in.png);
+}

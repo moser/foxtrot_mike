@@ -1,0 +1,25 @@
+= simple_form_for(license) do |f|
+  = f.association :person, :as => :hidden
+  .input
+    = f.label :person
+    = license.person.name
+  = f.input :name
+  - unless license.editable?
+    .input
+      = f.label :level
+      %input.disabled{ :value => License.l(license.level), :disabled => "true" }
+    .input
+      = f.label :valid_from
+      %input.disabled{ :value => l(license.valid_from), :disabled => "true" }
+  - else
+    = f.input :level, :as => :select, :collection => Hash[ License::Levels.map { |l| [License.l(l), l] } ], :include_blank => false
+    = f.input :valid_from, :include_blank => false
+  = f.input :valid_to, :include_blank => true
+  - unless license.editable?
+    .input
+      = f.label :legal_plane_classes
+      = license.legal_plane_classes.join ', '
+  - else
+    = f.association :legal_plane_classes, :as => :check_boxes
+  = f.button :submit
+= link_to t('views.cancel'), @license.person, :class => "inline_form_hide"

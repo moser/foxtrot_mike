@@ -3,7 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../spec/spec_helper')
 describe WireLauncherCostCategoryMembership do
   before(:each) do
     @valid_attributes = {
-      
+      :valid_from => 1.day.ago,
+      :wire_launcher_cost_category => WireLauncherCostCategory.generate!,
+      :wire_launcher => WireLauncher.generate!
     }
   end
 
@@ -12,4 +14,5 @@ describe WireLauncherCostCategoryMembership do
   end
   
   it { should belong_to :wire_launcher_cost_category }
+  it { should belong_to :wire_launcher }
 end

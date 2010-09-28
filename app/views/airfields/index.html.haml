@@ -1,17 +1,13 @@
-%h1 Listing airfields
-
+%h1= t '.title'
 %table
   %tr
-    %th Registration
-    %th Name
-
+    %th= Airfield.human_attribute_name(:registration)
+    %th= Airfield.human_attribute_name(:name)
   - @airfields.each do |airfield|
     %tr
       %td=h airfield.registration
       %td=h airfield.name
-  
-      %td= link_to 'Show', airfield_path(airfield)
-      %td= link_to 'Edit', edit_airfield_path(airfield)
-      %td= link_to 'Destroy', airfield_path(airfield), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
-    
-= link_to 'New airfield', new_airfield_path 
+      %td= link_to t('views.show'), airfield_path(airfield)
+      %td= link_to t('views.edit'), edit_airfield_path(airfield)
+      %td= link_to t('views.destroy'), airfield_path(airfield), :confirm => t('views.areusure'), :method => :delete
+= link_to t('views.new'), new_airfield_path 

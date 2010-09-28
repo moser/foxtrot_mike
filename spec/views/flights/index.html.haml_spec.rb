@@ -4,14 +4,10 @@ describe "/flights/index.html.haml" do
   helper :application, :flights
 
   before(:each) do
-    assigns[:flights] = @flights = [
-      Flight.generate!,
-      Flight.generate!
-    ]
+    assigns[:flights] = @flights = Flight.paginate(:per_page => 5, :page => 1)
   end
 
   it "renders a list of flights" do
-    render
-#    response.should have_tag("tr>td", "0:01", 2)
+    render    
   end
 end
