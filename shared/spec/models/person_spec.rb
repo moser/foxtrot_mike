@@ -21,6 +21,14 @@ describe Person do
     p = Person.spawn
     p.to_s.should == "bar foo"
   end
+
+  it "should be sortable" do
+    Person.new.should respond_to :'<=>'
+    a = Person.new(:firstname => "Foo", :lastname => "Bar")
+    b = Person.new(:firstname => "Goo", :lastname => "Bar")
+    c = Person.new(:firstname => "Aaa", :lastname => "Zar")
+    [b, c, a].sort.should == [a, b, c]
+  end
   
   it "should only shared some attributes" do
     Person.shared_attribute_names.should == [ :id, :lastname, :firstname, :birthdate, :email, :group_id ]

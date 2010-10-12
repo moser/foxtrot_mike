@@ -1,5 +1,3 @@
-%h1 New person
-
+%h1= t "views.create", :name => Person.l
 = render :partial => "people/form", :locals => { :person => @person }
-
-= link_to 'Back', people_path 
+= link_to t('views.back'), people_path 

@@ -58,9 +58,9 @@
             - unless tc.cost_rule.nil?
               %tr
                 %th= Flight.l("cost_#{tc.attribute}".to_sym)
-                %td= tc.cost_rule.name
+                %td= link_to tc.cost_rule.name, tc.cost_rule, :class => "facebox"
                 %td= format_currency(tc.value)
-          - unless @flight.cost.launch_cost.nil? || @flight.cost.launch_cost.cost_rule.nil?
+          - unless true || @flight.cost.launch_cost.nil?
             %tr
               %th= Flight.l(:launch_cost)
               %td= @flight.cost.launch_cost.cost_rule.name

@@ -17,10 +17,36 @@ var StayOnPage = {
         $('.list').hide();
       }
       DomInsertionWatcher.notify_listeners($('.item'));
+      $('.item').find('form.sop').bind('submit', StayOnPage.submit);
       item.show();
       PleaseWait.vote_hide();
     });
     PleaseWait.vote_show();
+  },
+  submit: function(e) {
+    var form = $(e.target);
+    PleaseWait.vote_show(); //TODO remove when async again
+    $.ajax({url: form.attr('action'),
+          async: false, //TODO watch error http://forum.jquery.com/topic/problem-with-ajax-and-redirect-since-jquery-1-4-2
+          data: form.serialize(),
+          type: 'POST',
+          success: function(html, status, xhr) {
+            $('.item').replaceWith($(html));
+            $('.list').hide();
+            DomInsertionWatcher.notify_listeners($('.item'));
+            $('.item').find('form.sop').bind('submit', StayOnPage.submit);
+            PleaseWait.vote_hide();
+          },
+          error: function(xhr, status) {
+            $('.item').replaceWith($(html));
+            $('.list').hide();
+            DomInsertionWatcher.notify_listeners($('.item'));
+            $('.item').find('form.sop').bind('submit', StayOnPage.submit);
+            PleaseWait.vote_hide();
+          }
+    });
+    //PleaseWait.vote_show(); 
+    return false;
   },
   click_replace: function(e) {
     $.bbq.pushState({ method: "replace", p: e.target.href });

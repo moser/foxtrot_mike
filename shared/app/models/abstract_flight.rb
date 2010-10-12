@@ -273,7 +273,39 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def group_id
-    Digest::SHA256.hexdigest((crew_members.sort_by(&:class).map {|m| m.person_id + m.class.name}).join + "#{departure_date}")
+    Digest::SHA256.hexdigest(((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}")
+  end
+
+  def grouping_people
+    crew_members.select { |m| [ PilotInCommand, Trainee, Instructor ].include?(m.class) }.map(&:person).reject(&:'nil?')
+  end
+
+  def grouping_licenses
+    grouping_people.map { |p| p.relevant_licenses_for(self).first }.reject(&:'nil?')
+  end
+
+  def grouping_people_groups
+    grouping_people.map(&:group).uniq
+  end
+
+  def grouping_groups
+    unless plane
+      grouping_people_groups
+    else
+      (grouping_people_groups + [plane.group]).uniq
+    end
+  end
+
+  def sort
+    departure.to_i
+  end
+
+  def self.include_all
+    includes(:plane, :from, :to, :crew_members)
+  end
+
+  def self.latest_departure(rel = Flight)
+    rel.order('departure DESC').limit(1).first.departure rescue DateTime.now
   end
   
 protected

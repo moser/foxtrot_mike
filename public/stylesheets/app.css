@@ -1,56 +1,6 @@
-fieldset ol {
-  list-style: none; 
-}
-
-fieldset li label {
-  display: block;
-}
-
 div.flight {
   position: relative;
 }
-
-div.disabler {
-  position: absolute; 
-  z-index:199;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  opacity: 0.5;
-  background: #fff;
-  background-image:url(/images/ajax-loader.gif);
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-div.disabler a.stop_load {
-  opacity: 1.0;
-  
-}
-
-div.disabler .box {
-  opacity: 1.0;
-  
-}
-
-
-/*
-dl.data dt {
-  clear: left;
-  float: left;
-  width: 120px;
-  text-align: left;
-  white-space: nowrap;
-  color: #999;
-}
-
-dl.data dd {
-  margin: 0;
-  margin-left: 120px;
-  /*overflow: hidden;
-}
-*/
 
 table.data th {
   font-weight: normal;
@@ -86,15 +36,21 @@ ul.versions li {
   display: none;
 }
 
+#navigation {
+  margin: auto;
+}
+
 #navigation ul {
-  margin: 0;
+  list-style-type: none;
+  margin: auto;
   padding: 0;
-  
 }
 
 #navigation li {
-  list-style-type: none;
-  display: inline;
+  position: relative;
+  display: inline-block;
+  padding: 0 0.5em;
+  margin-left: 0.2em;
 }
 
 #navigation li a {
@@ -102,14 +58,59 @@ ul.versions li {
   margin: 0.5em;
 }
 
-#navigation li.active {
+#navigation li {
+  border: 1px solid #ccc;
+  border-bottom: 0;
+}
+
+#navigation li.current {
   background: #ccc;
 }
 
+#navigation li ul {
+  display: none;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: -1px;
+  top: 18px;
+  background-color: #fff;
+}
+
+#navigation li ul li {
+  display: block;
+  margin: 0;
+}
+
+#navigation li ul li:last-child {
+  display: block;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+#navigation li:hover {
+  background: #eee;
+}
+
+#navigation li:hover ul {
+  display: block;
+  z-index: 200;
+}
+
+#navigation li:hover ul li ul {
+  left: 40px;
+  display: none;
+}
+
+#navigation li:hover ul li:hover ul {
+  display: block;
+  z-index: 400;
+}
+
 .header {
-  width: 75em;
+  width: 76em;
   margin: auto;
-  padding: 1em;
+  padding: 0.5em;
   padding-bottom: 0;
 }
 
@@ -126,7 +127,6 @@ ul.versions li {
   border: 1px solid #ccc;
   padding: 1em;
   position: relative;
-  
 }
 
 ul.no_bullet {
@@ -169,3 +169,100 @@ ul.scroll {
 
 .small input[type=submit] {
 }
+
+.boxes > div {
+  float: left;
+  width: 35.5em;
+  border: 1px solid #ddd;
+  margin: 0.9em;
+}
+
+.boxes > div h2 {
+  margin-left: 1em;
+}
+
+.clear {
+  clear: both;
+}
+
+/*************FORMS**************/
+.input label {
+  display: inline-block;
+  width: 12em;
+  color: #999;
+}
+
+.input label.collection_radio {
+  display: inline;
+  color: #000;
+}
+
+.input input,
+.input select {
+  width: 14em;
+}
+
+/*.input textarea {*/
+/*  width: 20em;*/
+/*  height: 10em;*/
+/*}*/
+
+.simple_form input[type=submit] {
+  margin-left: 12em;
+}
+
+
+
+
+
+
+
+div.flight_format span {
+  display: inline-block;
+  overflow: hidden;
+}
+
+div.flight_format span.date {
+  width: 6em;
+}
+
+div.flight_format span.plane {
+  width: 5em;
+}
+
+div.flight_format span.seat {
+  width: 10.5em;
+}
+
+div.flight_format span.airfield {
+  width: 10.5em;
+}
+
+div.flight_format span.time {
+  width: 4em;
+}
+
+div.flight_format span.duration {
+  width: 3.5em;
+}
+
+.print_off {
+  opacity: 0.5;
+}
+
+.controls {
+  float: right;
+  display: none;
+  border: 1px solid #ccc;
+  padding: 0.2em;  
+}
+
+div.hover_controls:hover .controls {
+  display: inline;
+}
+
+
+
+
+
+

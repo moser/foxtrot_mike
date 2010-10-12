@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100927074510) do
+ActiveRecord::Schema.define(:version => 20100930203507) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",              :limit => 36
@@ -29,6 +29,24 @@ ActiveRecord::Schema.define(:version => 20100927074510) do
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
+
+  create_table "accounting_entries", :force => true do |t|
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.integer  "value"
+    t.integer  "accounting_session_id"
+    t.string   "item_id"
+    t.string   "item_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "accounting_sessions", :force => true do |t|
+    t.string   "name"
+    t.datetime "finished_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "accounts", :force => true do |t|
     t.string   "person_id",           :limit => 36
@@ -122,7 +140,7 @@ ActiveRecord::Schema.define(:version => 20100927074510) do
 
   create_table "licenses", :force => true do |t|
     t.string   "name"
-    t.string   "level"
+    t.string   "level",                    :default => "normal", :null => false
     t.date     "valid_from"
     t.date     "valid_to"
     t.string   "person_id",  :limit => 36

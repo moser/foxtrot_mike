@@ -7,4 +7,8 @@ class Group < ActiveRecord::Base
   def to_s
     name
   end
+
+  def info
+    ''
+  end
 end

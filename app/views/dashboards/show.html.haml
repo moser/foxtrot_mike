@@ -1,0 +1,22 @@
+.boxes
+  .controls
+    %h2 Benutzerkonto
+    %ul
+      %li Personendaten bearbeiten
+      %li Passwort ändern
+  .views
+    %h2 Ansichten
+    %ul
+      %li= link_to 'Kladde', airfield_flights_path(AppConfig::HomeAirfield)
+      %li= link_to 'Flugleiterdienstbuch', airfield_flights_path(AppConfig::HomeAirfield, :as => "controller_log")
+  .flightbooks
+    %h2= t('views.flightbooks')
+    %ul
+      - @licenses.each do |l|
+        %li= link_to l.name, polymorphic_path([l, :flights])
+  .bordbooks
+    %h2= t('views.bordbooks')
+    %ul
+      - @planes.each do |p|
+        %li= link_to p.registration, polymorphic_path([p, :flights])
+.clear

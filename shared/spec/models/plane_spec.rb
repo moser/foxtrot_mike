@@ -19,4 +19,12 @@ describe Plane do
     p = Plane.new :has_engine => true, :can_tow => true, :can_fly_without_engine => false
     p.engine_duration_possible?.should be_false
   end
+
+  it "should be sortable" do
+    Plane.new.should respond_to :'<=>'
+    a = Plane.new(:registration => "D-STFU")
+    b = Plane.new(:registration => "D-UFTS")
+    c = Plane.new(:registration => "D-0123")
+    [b, c, a].sort.should == [c, a, b]
+  end
 end

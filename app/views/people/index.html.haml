@@ -1,21 +1,13 @@
-%h1 Listing people
-
+%h1= t('.title')
 %table
   %tr
-    %th Firstname
-    %th Lastname
-    %th Email
-    %th Birthdate
-
+    %th= Flight.l(:firstname)
+    %th= Flight.l(:lastname)
   - @people.each do |person|
     %tr
       %td=h person.firstname
-      %td=h person.lastname
-      %td=h person.email
-      %td=h person.birthdate
-  
-      %td= link_to 'Show', person_path(person)
-      %td= link_to 'Edit', edit_person_path(person)
-      %td= link_to 'Destroy', person_path(person), :confirm => 'Are you sure?', :method => :delete, :confirm => "Are you sure?", :method => :delete
-    
-= link_to 'New person', new_person_path 
+      %td=h person.lastname  
+      %td= link_to t('views.show'), person_path(person)
+      %td= link_to t('views.edit'), edit_person_path(person)
+      %td= link_to t('views.destroy'), person_path(person), :confirm => t('views.areusure'), :method => :delete
+= link_to t('views.new'), new_person_path 

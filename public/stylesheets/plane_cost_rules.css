@@ -6,14 +6,6 @@
 
 }
 
-
-.controls {
-  float: right;
-  display: none;
-  border: 1px solid #ccc;
-  padding: 0.2em;  
-}
-
 #not_valid_anymore .controls a.edit {
   display: none;
 }
@@ -24,10 +16,6 @@
 
 #valid .controls a.delete {
   display: none;
-}
-
-div.cost_rule:hover .controls {
-  display: inline;
 }
 
 .cost_rule {

@@ -1,0 +1,12 @@
+%table.data
+  %tr
+    %th= LegalPlaneClass.l(:name)
+    %td=h @legal_plane_class.name 
+  %tr
+    %th= LegalPlaneClass.l(:planes)
+    %td
+      %ul.scroll.no_bullet
+        - @legal_plane_class.planes.each do |p|
+          %li= link_to p.registration, p
+= link_to t('views.edit'), edit_legal_plane_class_path(@legal_plane_class)
+= link_to t('views.back'), legal_plane_classes_path

@@ -1,4 +1,4 @@
-%h1= t "views.editing", :name => Person.model_name.human
+%h1= t "views.editing", :name => Person.l
 = render :partial => "people/form", :locals => { :person => @person }
 = link_to t('views.show'), person_path(@person)
 = link_to t('views.back'), people_path

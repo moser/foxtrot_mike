@@ -28,4 +28,12 @@ class Plane < ActiveRecord::Base
   def engine_duration_possible?
     has_engine && can_fly_without_engine
   end
+
+  def <=>(other)
+    to_s <=> other.to_s
+  end
+
+  def info
+    "#{make}, #{group.name}"
+  end
 end

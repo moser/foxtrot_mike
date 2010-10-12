@@ -1,5 +1,4 @@
-%h1 Editing plane
-
+%h1= t "views.editing", :name => Plane.model_name.human
 = render :partial => "planes/form", :locals => { :plane => @plane }
-
-= link_to 'Back', plane_path(@plane)
+= link_to t('views.show'), plane_path(@plane)
+= link_to t('views.back'), plane_path

@@ -2,8 +2,6 @@
   %tr
     %th= WireLauncher.l(:registration)
     %td=h @wire_launcher.registration
-
 = render :partial => "common/memberships", :locals => { :object => @wire_launcher, :group => :wire_launcher_cost_category }
-
-= link_to 'Edit', edit_wire_launcher_path(@wire_launcher)
-= link_to 'Back', wire_launchers_path
+= link_to t('views.edit'), edit_wire_launcher_path(@wire_launcher)
+= link_to t('views.back'), wire_launchers_path

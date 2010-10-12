@@ -28,12 +28,25 @@ de:
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
+  main_flight_book: "Hauptflugbuch %{airfield}"
   accounts:
     index:
       title: Benutzerkonten
   airfields:
     index:
       title: "Flugplätze"
+  categories:
+    index:
+      title: "Kategorien & Gruppen"
+  cost_categories:
+    index:
+      title: "Kostenkategorien"
+  cost:
+    index:
+      title: "Kosten"
+  dashboard:
+    index:
+      title: "Startseite"
   flights:
     index:
       title: "Flüge"
@@ -42,9 +55,15 @@ de:
   groups:
     index:
       title: "Gruppen"
+  legal_plane_classes:
+    index:
+      title: "Flugzeuggruppen"
   licenses:
     index:
       title: "Lizenzen"
+  machines:
+    index:
+      title: "Geräte"
   plane_cost_categories:
     index:
       title: "Flugzeugkategorien"
@@ -69,6 +88,9 @@ de:
   wire_launcher_cost_categories:
     index:
       title: "Windenkategorien"
+  wire_launcher_cost_rules:
+    index:
+      title: "Windenkosten"
   time_cost_rules:
     time_cost_rule:
       per_minute: "%{n} pro Minute %{on}"
@@ -113,9 +135,11 @@ de:
         level: Stufe
         normal: "Normal"
         instructor: "Lehrberechtigung"
+        book: "Flugbuch"
       plane:
         registration: Kennzeichen
         make: Typ
+        book: "Bordbuch"
       person:
         name: Name
       wire_launcher:

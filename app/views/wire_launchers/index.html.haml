@@ -1,11 +1,10 @@
-%h1 Listing wire launchers
+%h1= t('.title')
 %table
   %tr
     %th= WireLauncher.l(:registration)
   - @wire_launchers.each do |wire_launcher|
     %tr
       %td= h wire_launcher.registration
-      %td= link_to 'Show', wire_launcher
-      %td= link_to 'Edit', edit_wire_launcher_path(wire_launcher)
-        
-= link_to 'New wire launcher', new_wire_launcher_path
+      %td= link_to t('views.show'), wire_launcher
+      %td= link_to t('views.edit'), edit_wire_launcher_path(wire_launcher)
+= link_to t('views.new'), new_wire_launcher_path

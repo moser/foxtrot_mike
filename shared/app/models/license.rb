@@ -37,4 +37,16 @@ class License < ActiveRecord::Base
                  'crew_members.person_id' => person_id).joins(:plane).
            where('planes.legal_plane_class_id' => legal_plane_class_ids)
   end
+
+  def <=>(other)
+    name <=> other.name
+  end
+
+  def to_s
+    "#{person.name} #{name}"
+  end
+
+  def info
+    "#{level}"
+  end
 end

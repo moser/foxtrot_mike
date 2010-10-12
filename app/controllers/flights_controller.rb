@@ -13,6 +13,60 @@ class FlightsController < ApplicationController
       bordbook
     elsif params[:license_id]
       flightbook
+    elsif params[:airfield_id]
+      @airfield = Airfield.find(params[:airfield_id])
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
+      @flights = Flight.where(Flight.arel_table[:departure].gteq(@date.to_datetime)).
+                         where(Flight.arel_table[:departure].lt((@date + 1.day).to_datetime)).
+                         where(Flight.arel_table[:from_id].eq(@airfield.id).
+                               or(Flight.arel_table[:to_id].eq(@airfield.id))).
+                         order("departure ASC")
+      if params[:as].nil? || params[:as] == 'main_flight_book'
+        render :template => "flights/main_flight_book"
+      elsif params[:as] == 'controller_log'
+        @controllers = []
+        if @flights.count > 0
+          c = nil
+          @flights.each do |f|
+            if c != f.controller
+              c = f.controller
+              if @controllers.last
+                @controllers.last[:to] = f.departure
+              end
+              @controllers << { :person => f.controller, :from => f.departure, :to => f.departure }
+            end
+          end
+          @controllers.last[:to] = (@flights.map(&:arrival).select { |a| !a.nil? }).max
+        end
+        render :template => "flights/controller_log"
+      end
+    elsif params[:group_id]
+      javascript :filtered_flights
+      stylesheet :filtered_flights
+      p params
+      if params[:filter]
+        if !params[:filter]['from(1i)'].nil?
+          @from, @to = ['from', 'to'].map do |attr|
+            Date.new(params[:filter]["#{attr}(1i)"].to_i, params[:filter]["#{attr}(2i)"].to_i, params[:filter]["#{attr}(3i)"].to_i)
+          end
+        end
+ 
+      end
+      @flights = Flight.include_all.where(Flight.arel_table[:id].in(CrewMember.arel_table.join(Person.arel_table).on(CrewMember.arel_table[:person_id].eq(Person.arel_table[:id])).where(CrewMember.arel_table[:type].in(['Trainee', 'PilotInCommand', 'Instructor'])).where(Person.arel_table[:group_id].eq(params[:group_id])).project(CrewMember.arel_table[:abstract_flight_id])))
+      unless @from
+        @from = @to = Flight.latest_departure(@flights).to_date
+      end
+      @flights = @flights.where(Flight.arel_table[:departure].gteq(@from.to_datetime)).
+                            where(Flight.arel_table[:departure].lt(@to.to_datetime + 1.day)).
+                            order('departure ASC').all
+      if params[:group_by] && !request.xhr?
+        @flights = @flights.group_by &:"#{params[:group_by]}"
+      end
+      unless request.xhr?
+        render :template => "flights/filtered_flights"
+      else 
+        render :partial => "flights/filtered_flights", :locals => { :flights => @flights }
+      end
     else
       javascript :stay_on_page
       @flights = Flight.includes(:plane, :from, :to, :crew_members).paginate :per_page => 5, :page => params[:page], :order => 'created_at DESC'
@@ -112,7 +166,13 @@ class FlightsController < ApplicationController
     respond_to do |format|
       if @flight.save
         flash[:notice] = 'Flight was successfully created.'
-        format.html { redirect_to(edit_flight_path(@flight)) }
+        format.html do
+          unless request.xhr?
+            redirect_to(flight_path(@flight))
+          else
+            render :action => :show, :layout => false
+          end
+        end
         format.json  { render :json => @flight, :status => :created, :location => @flight }
       else
         format.html { render :action => "new", :layout => !request.xhr? }
@@ -128,7 +188,13 @@ class FlightsController < ApplicationController
     respond_to do |format|
       if @flight.update_attributes(params[:flight])
         flash[:notice] = 'Flight was successfully updated.'
-        format.html { redirect_to(@flight) }
+        format.html do
+          unless request.xhr?
+            redirect_to(flight_path(@flight))
+          else
+            render :action => :show, :layout => false
+          end
+        end
         format.json  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -1,5 +1,3 @@
-%h1 New plane
-
+%h1= t "views.create", :name => Plane.l
 = render :partial => "planes/form", :locals => { :plane => @plane }
-
-= link_to 'Back', planes_path
+= link_to t('views.back'), planes_path

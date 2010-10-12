@@ -1,0 +1,13 @@
+body {
+   size: landscape;
+}
+
+.header, .please_wait, #ui-datepicker-div, .hidden, .print_off, .no_print {
+  display: none;
+}
+
+.content {
+  border: 0;
+  width: 100%;
+  margin: 0;
+}

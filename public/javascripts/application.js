@@ -32,7 +32,7 @@ var Parse = {
   date_to_s: function(str) {
     matches = this.date_pattern_to_s.exec(str);
     if(matches != null && matches.length == 4) {
-      return new Date(this.integer(matches[1]), this.integer(matches[2]), this.integer(matches[3]));
+      return new Date(this.integer(matches[1]), this.integer(matches[2]) - 1, this.integer(matches[3]));
     } else {
       return false;
     }
@@ -152,3 +152,42 @@ var urlParams = {};
     while (e = r.exec(q))
        urlParams[d(e[1])] = d(e[2]);
 })();
+
+jQuery.fn.sortElements = (function(){
+    var sort = Array.prototype.sort;
+    return function(comparator, getSortable) {
+        getSortable = getSortable || function(){return this;};
+        var placements = this.map(function(){
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+                // Since the element itself will change position, we have
+                // to have some way of storing its original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+            return function() {
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+            };
+        });
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+    };
+})();
+
+$(function() {
+  $('a.facebox').live('click', function(e) { jQuery.facebox({ ajax: e.target.href }); return false; });
+  $('body').ajaxError(function(e, xhr, o, exception) {
+    jQuery.facebox("An error occurred. Please try reloading the page.");
+  });
+});

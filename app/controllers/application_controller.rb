@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :parse_json
   before_filter :parse_date_time
   before_filter { javascript; stylesheet; true }
-  before_filter { @current_path = request.path }
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -19,7 +18,7 @@ class ApplicationController < ActionController::Base
   #  logged_in_basic? || verified_request? || raise(ActionController::InvalidAuthenticityToken)
   #end
 
-  helper_method :current_account  
+  helper_method :current_account, :current_path
     
 private  
   def current_account_session  
@@ -29,7 +28,11 @@ private
 
   def current_account  
     @current_account = current_account_session && current_account_session.record  
-  end  
+  end
+
+  def current_path
+    request.path
+  end
   
   def parse_after
     @after = Time.at(params[:after].to_i).utc rescue nil if params.has_key? :after

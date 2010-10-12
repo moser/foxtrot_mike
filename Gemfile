@@ -7,19 +7,23 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "haml"
 gem "uuidtools"
 gem "paper_trail"
-gem "simple_form"
+#gem "simple_form"
+gem "simple_form", :path => "~/code/rails/simple_form"
 gem "will_paginate", '>=3.0.pre2'
 gem "authlogic"
 
 group :test do
-  gem "rspec", "2.0.0.beta.22"
-  gem "rspec-rails", "2.0.0.beta.22"
+  gem "rspec", "2.0.0.rc"
+  gem "rspec-rails", "2.0.0.rc"
+  gem 'cucumber-rails'
+  gem 'cucumber'
   gem "shoulda"
   gem "factory_girl"
   gem "webrat"
   gem 'remarkable', '>=4.0.0.alpha4'
   gem 'remarkable_activemodel', '>=4.0.0.alpha4'
   gem 'remarkable_activerecord', '>=4.0.0.alpha4'
+  gem 'firewatir'
 end
 
 #gem "acts_as_revisable", :require => "acts_as_revisable"

@@ -12,35 +12,6 @@ div.group div.sum span.duration {
   margin-left: 58em;
 }
 
-div.flight_format span {
-  display: inline-block;
-  overflow: hidden;
-}
-
-div.flight_format span.date {
-  width: 6em;
-}
-
-div.flight_format span.plane {
-  width: 5em;
-}
-
-div.flight_format span.seat {
-  width: 10.5em;
-}
-
-div.flight_format span.airfield {
-  width: 10.5em;
-}
-
-div.flight_format span.time {
-  width: 4em;
-}
-
-div.flight_format span.duration {
-  width: 3.5em;
-}
-
 div.group div.flight.hide_when_collapsed {
   margin-left: 0.1em;
   font-style: italic;

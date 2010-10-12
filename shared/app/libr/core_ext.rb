@@ -69,3 +69,20 @@ class ActiveRecord::Base
     end
   end
 end
+
+class Array
+  # Returns a Hash. The given block is called with any element, the returns are used as 
+  # the keys in the hash.
+  #  a = Date.parse("2010-09-01")
+  #  b = Date.parse("2010-10-01")
+  #  [a, b].group_by(&:year) # => {2010 => [a, b]}
+  #  [a, b].group_by { |d| d.month } # => {9 => [a], 10 => [b]}
+  def group_by(&block)
+    keys = self.map(&block).uniq #.reject(&:'nil?')
+    Hash[
+      keys.map do |k|
+        [k, self.select { |e| block.call(e) == k }]
+      end
+    ]
+  end
+end

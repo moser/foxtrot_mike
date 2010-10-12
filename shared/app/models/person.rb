@@ -81,4 +81,12 @@ class Person < ActiveRecord::Base
   def flights
     Flight.where(:id => [ Trainee.where(:person_id => id), PilotInCommand.where(:person_id => id)].flatten.map(&:abstract_flight_id))
   end
+
+  def <=>(other)
+    "#{lastname}, #{firstname}" <=> "#{other.lastname}, #{other.firstname}"
+  end
+
+  def info
+    "#{group.name}"
+  end
 end

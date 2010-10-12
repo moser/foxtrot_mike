@@ -23,7 +23,7 @@
 - application config:
   - currency
   - units for height (tow lvl)
-  - ...
+  - home airfield
 - tow_levels as integer -> altitude, is ceil'd to next higher available lvl
 - OR: remove/hide tow lvl stuff...
 - add concept of a update event (bundles all changes of automatic update thru a client)

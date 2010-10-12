@@ -1,0 +1,30 @@
+.group {
+  margin: 1em 1em;
+}
+
+.group .head {
+  height: 25px;
+}
+
+.group .head h1 {
+  display: inline;
+  margin: 0;
+  padding: 2px;
+}
+
+.head {
+  border-bottom: 1px solid black;
+}
+
+.foot {
+  border-top: 1px solid black;
+}
+
+.group.collapsed .items {
+  display: none;
+}
+
+.group .flight:nth-child(even) {
+  background: #f3f3f3;
+} 
+

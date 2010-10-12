@@ -1,0 +1,4 @@
+%h1= t "views.editing", :name => LegalPlaneClass.l
+= render :partial => "legal_plane_classes/form", :locals => { :legal_plane_class => @legal_plane_class }
+= link_to t('views.show'), legal_plane_class_path(@legal_plane_class)
+= link_to t('views.back'), legal_plane_classes_path

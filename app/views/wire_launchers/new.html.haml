@@ -1,5 +1,3 @@
-%h1
-
+%h1= t 'views.create', :name => WireLauncher.l
 = render :partial => "wire_launchers/form", :locals => { :wire_launcher => @wire_launcher }
-
-= link_to 'Back', wire_launchers_path
+= link_to t('views.back'), wire_launchers_path

@@ -1,4 +1,2 @@
 #navigation
-  %ul
-    - navigation_items.each do |k,v|
-      %li{ :class => /^\/#{k}/ =~ @current_path ? "active" : "" }= link_to t("#{k}.index.title"), v
+  =h navigation

@@ -1,1 +1,18 @@
-= render :partial => "licenses/list", :locals => { :person => @nested }
+- if @nested
+  = render :partial => "licenses/list", :locals => { :person => @nested }
+- else
+  %h1= t('.title')
+  %table
+    %tr
+      %th= License.l(:name)
+      %th= License.l(:holder)
+      %th= License.l(:valid_from)
+      %th= License.l(:valid_to)
+    - (@models.sort_by { |l| l.valid_to || 1.day.ago }).each do |license|
+      %tr
+        %td= link_to license.name, license
+        %td= link_to license.person.name, license.person
+        %td= l(license.valid_from)
+        %td= l(license.valid_to) rescue t('views.dates.infinity')
+        %td= link_to License.l(:book), polymorphic_path([license, :flights])
+        
