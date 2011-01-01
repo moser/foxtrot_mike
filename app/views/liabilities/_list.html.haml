@@ -3,6 +3,7 @@
     - flight.liabilities.each do |l|
       %li.inline_form_hide_context.flight_format
         %span.seat= l.person.name
+        %span.time= l.proportion
         %span.time= "#{(flight.proportion_for(l) * 100.0).to_i}%"
         %span= format_currency(l.value)
         %span= edit_link l, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([flight]) }
