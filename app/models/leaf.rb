@@ -1,7 +1,7 @@
 class Leaf
   attr_reader :data
 
-  def initialize(data = nil)
+  def initialize(data = {})
     @data = data
   end
 

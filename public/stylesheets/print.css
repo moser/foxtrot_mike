@@ -1,5 +1,28 @@
-body {
-   size: landscape;
+@page {
+  size: A4 landscape;
+  margin: 40pt 30pt 40pt 30pt;
+  @top-right {
+    font-family: verdana, arial, helvetica, sans-serif;
+	  content: string(header);
+  }
+  @bottom-right {
+    font-family: verdana, arial, helvetica, sans-serif;
+    content: string(footer);
+  }
+}
+
+h1.page_title {
+  display: inline;
+  font-size: 1.1em;
+  font-weight: bold;
+  string-set: header content();
+}
+
+h2.page_sub_title {
+  display: inline;
+  font-size: 1.1em;
+  font-weight: normal;
+  string-set: footer content();
 }
 
 .header, .please_wait, #ui-datepicker-div, .hidden, .print_off, .no_print {
@@ -10,4 +33,9 @@ body {
   border: 0;
   width: 100%;
   margin: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #000;
 }

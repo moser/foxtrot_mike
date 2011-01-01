@@ -38,6 +38,7 @@ ul.versions li {
 
 #navigation {
   margin: auto;
+  position: relative;
 }
 
 #navigation ul {
@@ -53,9 +54,16 @@ ul.versions li {
   margin-left: 0.2em;
 }
 
+#navigation li.logout {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 #navigation li a {
   text-decoration: none;
   margin: 0.5em;
+  width: 100%;
 }
 
 #navigation li {
@@ -188,7 +196,7 @@ ul.scroll {
 /*************FORMS**************/
 .input label {
   display: inline-block;
-  width: 12em;
+  width: 10em;
   color: #999;
 }
 
@@ -202,13 +210,64 @@ ul.scroll {
   width: 14em;
 }
 
-/*.input textarea {*/
-/*  width: 20em;*/
-/*  height: 10em;*/
-/*}*/
+.field_with_errors input,
+.field_with_errors select {
+  
+}
+
+.input textarea {
+  width: 20em;
+  height: 10em;
+}
 
 .simple_form input[type=submit] {
-  margin-left: 12em;
+  margin-left: 10em;
+}
+
+.simple_form .error {
+  margin-left: 1em;
+  font-size: 0.9em;
+  color: #D00;
+  font-style: italic;
+}
+
+.simple_form .hint {
+  margin-left: 1em;
+  font-size: 0.9em;
+  color: #555;
+  font-style: italic;
+}
+
+
+.choice input[type=radio] + .hide_if_unchecked {
+  display: none;
+}
+
+.choice input[type=radio]:checked + .hide_if_unchecked {
+  display: block;
+}
+
+form.button_to {
+  display: inline;
+}
+
+form.button_to div {
+  display: inline;
+}
+
+input[type=submit].delete {
+  border: none;
+  background: none;
+  font-family:verdana,arial;
+  font-size: 13px;
+  color:#000077;
+  text-decoration: underline;
+  padding: 0;
+  line-height: 18px;
+}
+
+input[type=submit].delete:hover {
+  color:#660000;
 }
 
 
@@ -216,33 +275,40 @@ ul.scroll {
 
 
 
-
-div.flight_format span {
+.flight_format span {
   display: inline-block;
   overflow: hidden;
 }
 
-div.flight_format span.date {
+.flight_format span.date {
   width: 6em;
 }
 
-div.flight_format span.plane {
+.flight_format span.plane {
   width: 5em;
 }
 
-div.flight_format span.seat {
+.flight_format span.seat {
   width: 10.5em;
 }
 
-div.flight_format span.airfield {
-  width: 10.5em;
+.flight_format span.launch_type {
+  width: 1.5em;
 }
 
-div.flight_format span.time {
+.flight_format span.purpose {
+  width: 1.5em;
+}
+
+.flight_format span.airfield {
+  width: 5em;
+}
+
+.flight_format span.time {
   width: 4em;
 }
 
-div.flight_format span.duration {
+.flight_format span.duration {
   width: 3.5em;
 }
 
@@ -252,17 +318,97 @@ div.flight_format span.duration {
 
 .controls {
   float: right;
-  display: none;
   border: 1px solid #ccc;
   padding: 0.2em;  
+}
+
+div.hover_controls .controls {
+  display: none;
 }
 
 div.hover_controls:hover .controls {
   display: inline;
 }
 
+.alternate .alternate_color:nth-child(even) {
+  background: #f3f3f3;
+}
+
+h2.page_sub_title {
+  display: none;
+}
 
 
+.show_on_startup {
+  display: none;
+}
+
+.dc {
+  height: 400px;
+  width: 110px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
 
 
+.dc .mark {
+  border-bottom: 1px solid black;
+  text-align: right;
+  position: relative;
+  font-size: 0.8em;
+  height: 16px;
+  padding-right: 2px;
+}
 
+.dc .day {
+  height: 4px;
+}
+
+.dc .day a {
+  position: absolute;
+  display: none;
+  text-decoration: none;
+  color: #000;
+}
+
+.dc img {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.dc .day:hover,
+.dc .day.current {
+  height: 16px;
+  font-size: 0.9em;
+  background: #fa0;
+  position: relative;
+}
+
+.dc .day:hover a,
+.dc .day.current a {  
+  display: inline-block;
+  width: 100%;
+}
+
+.dc .day:hover img,
+.dc .day.current img {
+  display: none;
+}
+
+.col {
+  position: absolute;
+  top: 0;
+}
+
+.colspace {
+  position: relative;
+}
+
+.col.left {
+  left: 0;
+}
+
+.col.right {
+  right: 0;
+}

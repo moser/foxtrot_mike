@@ -1,0 +1,3 @@
+%h1= t "views.create", :name => WireLauncherCostCategory.model_name.human
+= render :partial => "wire_launcher_cost_categories/form", :locals => { :wire_launcher_cost_category => @wire_launcher_cost_category } 
+= back_link(WireLauncherCostCategory)

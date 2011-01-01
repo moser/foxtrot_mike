@@ -1,0 +1,5 @@
+= t(".launch_for")
+.flight_format
+  = render :partial => "flights/flight_spans", :locals => { :flight => @flight }
+= render :partial => "launches/edit", :locals => { :flight => @flight }
+= back_link(@flight)

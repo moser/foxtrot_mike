@@ -1,1 +1,0 @@
-../../db/migrate/20100503214014_create_liabilities.rb

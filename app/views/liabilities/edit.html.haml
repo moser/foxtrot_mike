@@ -1,0 +1,6 @@
+= simple_form_for(@liability) do |f|
+  = f.association :flight, :as => :hidden
+  = f.association :person
+  = f.input :proportion
+  = f.button :submit
+= link_to t('views.cancel'), @liability.flight, :class => "inline_form_hide"

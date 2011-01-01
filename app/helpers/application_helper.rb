@@ -1,31 +1,37 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def navigation_items
-    @navigation_items ||= Tree.new do |t|
-      t.children << Leaf.new({:name => "dashboard", :path => dashboard_path})
-      t.children << Leaf.new({:name => "flights", :path => flights_path})
-      t.children << Tree.new({:name => "people", :path => people_path}) do |k|
-        k.children << Leaf.new({:name => "licenses", :path => licenses_path})
-      end
-      t.children << Tree.new({:name => "machines"}) do |k|
-        k.children << Leaf.new({:name => "planes", :path => planes_path})
-        k.children << Leaf.new({:name => "wire_launchers", :path => wire_launchers_path})
-      end
-      t.children << Leaf.new({:name => "airfields", :path => airfields_path})
-      t.children << Tree.new({ :name => "categories" }) do |k|
-        k.children << Leaf.new({:name => "groups", :path => groups_path})
-        k.children << Leaf.new({:name => "legal_plane_classes", :path => legal_plane_classes_path})
-        k.children << Tree.new({ :name => "cost_categories" }) do |j|
-          j.children << Leaf.new({:name => "person_cost_categories", :path => person_cost_categories_path})
-          j.children << Leaf.new({:name => "plane_cost_categories", :path => plane_cost_categories_path})
-          j.children << Leaf.new({:name => "wire_launcher_cost_categories", :path => wire_launcher_cost_categories_path})
+    Tree.new do |t|
+      t.children << Leaf.new({:name => "dashboard", :path => dashboard_path}) if can?(:read, :dashboards)
+      t.children << Leaf.new({:name => "flights", :path => flights_path})  if can?(:read, Flight)
+      if can?(:read, Plane) || can?(:read, WireLauncher) || can?(:read, Airfield) || can?(:read, Person)
+        t.children << Tree.new({ :name => "master_data" }) do |m|
+          m.children << Leaf.new({:name => "planes", :path => planes_path})  if can?(:read, Plane)
+          m.children << Leaf.new({:name => "wire_launchers", :path => wire_launchers_path})  if can?(:read, WireLauncher)
+          m.children << Leaf.new({:name => "airfields", :path => airfields_path}) if can?(:read, Airfield)
+          if can?(:read, Person)
+            m.children << Tree.new({:name => "people", :path => people_path}) do |k|
+              k.children << Leaf.new({:name => "licenses", :path => licenses_path}) if can?(:read, License)
+              k.children << Leaf.new({:name => "accounts", :path => accounts_path}) if can?(:read, Account)
+            end
+          end
         end
       end
-      t.children << Tree.new({ :name => "cost" }) do |k|
-        k.children << Leaf.new({:name => "plane_cost_rules", :path => plane_cost_rules_path})
-        k.children << Leaf.new({:name => "wire_launcher_cost_rules", :path => wire_launcher_cost_rules_path})
+      if can?(:read, Group) || can?(:read, LegalPlaneClass) || can?(:read, PersonCostCategory) || can?(:read, PlaneCostCategory) || can?(:read, WireLauncherCostCategory)
+        t.children << Tree.new({ :name => "categories" }) do |k|
+          k.children << Leaf.new({:name => "groups", :path => groups_path}) if can?(:read, Group)
+          k.children << Leaf.new({:name => "legal_plane_classes", :path => legal_plane_classes_path}) if can?(:read, LegalPlaneClass)
+          if can?(:read, PersonCostCategory) || can?(:read, PlabeCostCategory) || can?(:read, WireLauncherCostCategory)
+            k.children << Tree.new({ :name => "cost_categories" }) do |j|
+              j.children << Leaf.new({:name => "person_cost_categories", :path => person_cost_categories_path}) if can?(:read, PersonCostCategory)
+              j.children << Leaf.new({:name => "plane_cost_categories", :path => plane_cost_categories_path}) if can?(:read, PlaneCostCategory)
+              j.children << Leaf.new({:name => "wire_launcher_cost_categories", :path => wire_launcher_cost_categories_path}) if can?(:read, WireLauncherCostCategory)
+            end
+          end
+        end
       end
-      t.children << Leaf.new({:name => "accounts", :path => accounts_path})
+      t.children << Leaf.new({:name => "cost_rules", :path => cost_rules_path}) if can?(:read, :cost_rules)
+      t.children << Leaf.new({:name => "logout", :path => "/logout", :class => "logout"})
     end
   end
 
@@ -34,7 +40,7 @@ module ApplicationHelper
       navigation(navigation_items)
     else
       r = "#{navigation_data(tree.data)}\n"
-      x = tree.children.map { |t| content_tag(:li, navigation(t), :class => t.current?(current_path) ? "current" : "") }
+      x = tree.children.map { |t| content_tag(:li, navigation(t), :class => (t.current?(current_path) ? "current " : "") + (t.data[:class] || "")) }
       if x.size > 0
         r << content_tag(:ul, x.join("\n").html_safe)
       end
@@ -43,9 +49,12 @@ module ApplicationHelper
   end
 
   def navigation_data(data)
-    if data
-      link_to t("#{data[:name]}.index.title"), data[:path] || '#'
-      #link_to data[:name], data[:path] || '#'
+    if data[:name]
+      if data[:name] == "logout"
+        link_to t("#{data[:name]}.index.title", :name => current_account.person.name), data[:path] || '#'
+      else
+        link_to t("#{data[:name]}.index.title"), data[:path] || '#'
+      end
     end
   end
   
@@ -63,6 +72,42 @@ module ApplicationHelper
   
   def format_currency(i)
     "€ #{i/100},#{i%100 < 10 ? "0" : ""}#{i%100}" unless i.nil? #TODO i18n/configurable
+  end
+
+  def back_link(obj, options = {})
+    link_to t('views.back'), obj, *[options] if can?(:read, obj)
+  end
+
+  def show_link(obj, str = nil, options = {})
+    unless str
+      link_to t('views.show'), obj, *[options] if can?(:read, obj)
+    else
+      link_to_unless cannot?(:read, obj), str, obj, *[options]
+    end
+  end
+
+  def edit_link(obj, str = nil, options = {})
+    unless str
+      link_to t('views.edit'), polymorphic_path(obj, :action => :edit), *[options] if can?(:update, obj)
+    else
+      link_to_unless cannot?(:update, obj), str, polymorphic_path(obj, :action => :edit), *[options]
+    end
+  end
+
+  def new_link(klass, str = nil, options = {})
+    unless str
+      link_to t('views.new'), polymorphic_path(klass, :action => :new), *[options] if can?(:create, klass)
+    else
+      link_to_unless cannot?(:create, klass), str, polymorphic_path(klass, :action => :new), *[options]
+    end
+  end
+
+  def add_link(klass, options = {})
+    link_to t('views.add'), polymorphic_path(klass, :action => :new), *[options] if can?(:create, [klass].flatten.last)
+  end
+
+  def destroy_link(obj, options = {})
+    #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can?(:destroy, obj)
   end
 
   class CustomLinkRenderer < WillPaginate::ViewHelpers::LinkRenderer 

@@ -1,5 +1,3 @@
-%h1 New time cost rule
-
+%h1= t "views.create", :name => TimeCostRule.model_name.human
 = render :partial => "time_cost_rules/form", :locals => { :time_cost_rule => @time_cost_rule }
-    
-= link_to 'Back', time_cost_rules_path 
+= back_link(TimeCostRule)

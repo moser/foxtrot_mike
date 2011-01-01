@@ -2,6 +2,7 @@
   # ENV['RSPEC'] = "true"
 
 Server::Application.configure do
+  config.active_support.deprecation = :stderr
   # Settings specified here will take precedence over those in config/environment.rb
 
   # The test environment is used exclusively to run your application's

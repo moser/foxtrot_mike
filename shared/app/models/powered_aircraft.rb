@@ -1,2 +1,0 @@
-class PoweredAircraft < Plane
-end

@@ -5,6 +5,6 @@
   - @legal_plane_classes.each do |legal_plane_class|
     %tr
       %td= h legal_plane_class.name
-      %td= link_to t('views.show'), legal_plane_class
-      %td= link_to t('views.edit'), edit_legal_plane_class_path(legal_plane_class)
-= link_to t('views.new'), new_legal_plane_class_path
+      %td= show_link(legal_plane_class)
+      %td= edit_link(legal_plane_class)
+= new_link(LegalPlaneClass)

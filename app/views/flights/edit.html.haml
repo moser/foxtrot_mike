@@ -2,5 +2,5 @@
   %h1= t "views.editing", :name => Flight.model_name.human
   = render :partial => "flights/form", :locals => { :flight => @flight }
 
-  = link_to t('views.show'), @flight, :class => "sop show"
-  = link_to t('views.back'), flights_path, :class => "sop back"
+  = show_link(@flight, nil, {:class => "sop show"})
+  = back_link(Flight, {:class => "sop back"})

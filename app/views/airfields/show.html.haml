@@ -5,5 +5,5 @@
   %tr
     %th= Airfield.l(:name)
     %td=h @airfield.name 
-= link_to t('views.edit'), edit_airfield_path(@airfield)
-= link_to t('views.back'), airfields_path
+= edit_link(@airfield)
+= back_link(Airfield)

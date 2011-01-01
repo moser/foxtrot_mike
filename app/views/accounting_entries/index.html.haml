@@ -1,0 +1,13 @@
+%table
+  %tr
+    %th
+      Von
+    %th
+      An
+    %th
+      Betrag
+  - @flight.accounting_entries.each do |e|
+    %tr
+      %td= e.from.name
+      %td= e.to.name
+      %td= format_currency(e.value)

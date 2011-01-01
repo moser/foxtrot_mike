@@ -8,5 +8,6 @@
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
 
-= link_to t('views.edit'), edit_person_path(@person)
-= link_to t('views.back'), people_path
+= show_link([@person, :flights], Person.l(:book))
+= edit_link(@person)
+= back_link(Person)

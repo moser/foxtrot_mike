@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100930203507) do
+ActiveRecord::Schema.define(:version => 20101230120615) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",              :limit => 36
@@ -18,10 +18,11 @@ ActiveRecord::Schema.define(:version => 20100930203507) do
     t.string   "from_id",         :limit => 36
     t.string   "to_id",           :limit => 36
     t.string   "controller_id",   :limit => 36
+    t.string   "launch_id",       :limit => 36
+    t.string   "launch_type"
     t.datetime "departure"
     t.integer  "duration"
     t.integer  "engine_duration"
-    t.string   "purpose"
     t.text     "comment"
     t.string   "type"
     t.datetime "created_at"
@@ -29,6 +30,13 @@ ActiveRecord::Schema.define(:version => 20100930203507) do
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
+
+  create_table "account_roles", :force => true do |t|
+    t.integer  "account_id"
+    t.string   "role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "accounting_entries", :force => true do |t|
     t.integer  "from_id"
@@ -103,19 +111,6 @@ ActiveRecord::Schema.define(:version => 20100930203507) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "launches", :id => false, :force => true do |t|
-    t.string   "id",                 :limit => 36
-    t.string   "abstract_flight_id", :limit => 36
-    t.string   "tow_flight_id",      :limit => 36
-    t.string   "wire_launcher_id",   :limit => 36
-    t.integer  "tow_level_id"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "launches", ["id"], :name => "index_launches_on_id", :unique => true
 
   create_table "legal_plane_classes", :force => true do |t|
     t.string   "name"
@@ -332,5 +327,14 @@ ActiveRecord::Schema.define(:version => 20100930203507) do
   end
 
   add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true
+
+  create_table "wire_launches", :id => false, :force => true do |t|
+    t.string   "id",               :limit => 36
+    t.string   "wire_launcher_id", :limit => 36
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "wire_launches", ["id"], :name => "index_wire_launches_on_id", :unique => true
 
 end

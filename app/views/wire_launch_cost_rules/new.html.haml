@@ -1,0 +1,3 @@
+%h1= t "views.create", :name => WireLaunchCostRule.l
+= render :partial => "wire_launch_cost_rules/form", :locals => { :wire_launch_cost_rule => @wire_launch_cost_rule }
+= back_link(WireLaunchCostRule)

@@ -1,18 +1,18 @@
 class CreateAbstractFlights < ActiveRecord::Migration
   def self.up
     create_table :abstract_flights, :id => false do |t|
-      t.string      :id,        :limit => 36
-      t.string      :plane_id,        :limit => 36
-      t.string      :from_id,        :limit => 36
+      t.string      :id,           :limit => 36
+      t.string      :plane_id,     :limit => 36
+      t.string      :from_id,      :limit => 36
       t.string      :to_id,        :limit => 36
-      t.string      :controller_id,        :limit => 36
+      t.string      :controller_id,:limit => 36
+      t.string      :launch_id,    :limit => 36 #nil || wire_launch.id || abstract_flight.id
+      t.string      :launch_type
       t.datetime    :departure
       t.integer     :duration, :engine_duration
-      t.string      :purpose #TODO what purposes are needed, how to save them (enum?)
       t.text        :comment
       
       t.string      :type
-      #TODO controller_id => person
       t.timestamps
     end
     add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true

@@ -14,5 +14,5 @@
       %ul.scroll.no_bullet
         - @group.planes.each do |p|
           %li= link_to p.registration, p
-= link_to t('views.edit'), edit_group_path(@group)
-= link_to t('views.back'), groups_path
+= edit_link(@group)
+= back_link(Group)

@@ -1,0 +1,28 @@
+%form.no_print.submit_when_changed
+  %input{ :type => 'hidden', :value => 'controller_log', :name => 'as' }
+  .input.date
+    = date_select :filter, :date, :default => @date
+  = submit_tag 'Ok', :class => 'hide_on_startup'
+- unless @controllers.count == 0
+  .controller_log
+    Dienstbeginn: 
+    %input.timepicker.linked{ :value => l(@controllers.first[:from], :format => :time), 'data-link-group' => 0 }
+    Dienstende: 
+    %input.timepicker.linked{ :value => l(@controllers.last[:to], :format => :time), 'data-link-group' => @controllers.count }
+    %table
+      %tr
+        %th Flugleiter
+        %th Von
+        %th Bis
+        %th Unterschrift
+      - i = 0
+      - @controllers.each do |c|
+        %tr
+          %td= c[:person].name rescue "NONE"
+          %td
+            %input.timepicker.linked{ :value => l(c[:from], :format => :time), 'data-link-group' => i }
+          %td
+            %input.timepicker.linked{ :value => l(c[:to], :format => :time), 'data-link-group' => i + 1 }
+        - i += 1
+- else
+  = t('.no_flights')

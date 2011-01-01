@@ -7,7 +7,7 @@
     %tr
       %td=h airfield.registration
       %td=h airfield.name
-      %td= link_to t('views.show'), airfield_path(airfield)
-      %td= link_to t('views.edit'), edit_airfield_path(airfield)
-      %td= link_to t('views.destroy'), airfield_path(airfield), :confirm => t('views.areusure'), :method => :delete
-= link_to t('views.new'), new_airfield_path 
+      %td= show_link(airfield)
+      %td= edit_link(airfield)
+      %td= destroy_link(airfield)
+= new_link(Airfield)

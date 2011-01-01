@@ -328,6 +328,7 @@
 
 			this.formattedDateTime = formattedDateTime;
 			this.$input.val(formattedDateTime);
+      this.$input.trigger("change");
 		},
 		
 		setDefaults: function(settings) {

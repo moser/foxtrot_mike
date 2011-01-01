@@ -1,18 +1,20 @@
 %span.date= l flight.departure.to_date
 %span.plane
   - unless flight.plane.nil?
-    = link_to flight.plane.to_s, plane_path(flight.plane)
+    = show_link(flight.plane, flight.plane.to_s)
 %span.seat
   - unless flight.seat1.nil?
-    = link_to flight.seat1.to_s, person_path(flight.seat1.person)
+    = show_link(flight.seat1.person, flight.seat1.person.to_s)
 %span.seat
   - unless flight.seat2.nil?
     - if flight.seat2.is_a?(PersonCrewMember)
-      = link_to flight.seat2.to_s, person_path(flight.seat2.person)
+      = show_link(flight.seat2.person, flight.seat2.person.to_s)
     - else
       = flight.seat2.to_s
-%span.airfield= flight.from
-%span.airfield= flight.to
+%span.launch_type{ :title => flight.launch_type }= flight.launch_type_short
+%span.purpose{ :title => flight.purpose }= flight.purpose.short
+%span.airfield{ :title => flight.from.name }= flight.from
+%span.airfield{ :title => flight.to.name }= flight.to
 %span.time= l(flight.departure, :format => :time)
 %span.time= flight.arrival.nil? ? '-' : l(flight.arrival, :format => :time)
 %span.duration= format_minutes(flight.duration) || "0:00"

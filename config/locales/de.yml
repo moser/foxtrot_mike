@@ -10,6 +10,8 @@ de:
       create: "Erstellen"
       update: "Ok"
   views:
+    flightbooks: Flugbücher
+    bordbooks: Bordbücher
     editing: "%{name} bearbeiten"
     create: "%{name} erstellen"
     add: "Hinzufügen"
@@ -28,7 +30,7 @@ de:
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
-  main_flight_book: "Hauptflugbuch %{airfield}"
+  main_flight_book: "Hauptflugbuch %{airfield} (%{date})"
   accounts:
     index:
       title: Benutzerkonten
@@ -52,6 +54,9 @@ de:
       title: "Flüge"
     show:
       selflaunch: Eigenstart
+  filtered_flights:
+    index:
+      title: "Flüge für %{for}"
   groups:
     index:
       title: "Gruppen"
@@ -61,15 +66,18 @@ de:
   licenses:
     index:
       title: "Lizenzen"
-  machines:
+  logout:
     index:
-      title: "Geräte"
+      title: "Abmelden (%{name})"
+  master_data:
+    index:
+      title: "Stammdaten"
   plane_cost_categories:
     index:
       title: "Flugzeugkategorien"
-  plane_cost_rules:
+  cost_rules:
     index:
-      title: "Flugzeugkosten"
+      title: "Kosten"
       not_valid_anymore_hint: "Keine Änderung möglich."
       valid_hint: "Nur das Enddatum der Gültigkeit kann bearbeitet werden."
       not_yet_valid_hint: "Alle Änderung möglich."
@@ -101,7 +109,11 @@ de:
       flight: Flug
       tow_flight: Schleppflug
       plane: Flugzeug
+      plane_cost_category: Flugzeugkategorie
+      person: Person
+      person_cost_category: Personenkategorie
       time_cost_rule: Zeitkostenregel
+      wire_launcher_cost_category: Windenkategorie
     attributes:
       account:
         password: Passwort
@@ -130,6 +142,30 @@ de:
         versions: Änderungen
         tow_plane: Schleppflugzeug
         data: Daten
+        purpose: Zweck
+        purpose_short: Z
+        purposes:
+          training:
+            long: Schulung
+            short: S
+          exercise:
+            long: Übung
+            short: Ü
+          tow:
+            long: F-Schlepp
+            short: F
+        launch_type: Startart
+        launch_type_short: S
+        launch_types:
+          tow_flight:
+            short: F
+            long: F-Schlepp
+          wire_launch:
+            short: W
+            long: Windenstart
+          self:
+            short: E
+            long: Eigenstart
       license:
         name: Bezeichnung
         level: Stufe
@@ -139,9 +175,10 @@ de:
       plane:
         registration: Kennzeichen
         make: Typ
-        book: "Bordbuch"
+        book: "Bordbuch"        
       person:
         name: Name
+        book: "Flugbuch"
       wire_launcher:
         registration: Kennzeichen
       time_cost_rule:
@@ -162,6 +199,7 @@ de:
     error_notification:
       default_message: "Es wurden Fehler gefunden:"        
     hints:
-      account:
+      flight:
+        engine_duration: "Wird ignoriert, wenn nicht zutreffend."
     labels:
       account:

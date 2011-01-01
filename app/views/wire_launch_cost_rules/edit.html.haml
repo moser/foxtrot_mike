@@ -1,0 +1,5 @@
+.cost_rule.wire_launch_cost_rule{ :id => "wire-launch-cost-rule-#{@wire_launch_cost_rule.id}" }
+  %h1= t "views.editing", :name => WireLaunchCostRule.model_name.human
+  = render :partial => "wire_launch_cost_rules/form", :locals => { :wire_launch_cost_rule => @wire_launch_cost_rule }
+  = show_link(@wire_launch_cost_rule)
+  = back_link(WireLaunchCostRule)

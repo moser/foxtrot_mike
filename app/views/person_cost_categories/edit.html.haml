@@ -2,6 +2,6 @@
 
 = render :partial => "person_cost_categories/form", :locals => { :person_cost_category => @person_cost_category }
   
-= link_to t('views.show'), person_cost_category_path(@person_cost_category)
-= link_to t('views.back'), person_cost_categories_path
+= show_link(@person_cost_category)
+= back_link(PersonCostCategory)
 

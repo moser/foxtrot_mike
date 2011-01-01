@@ -1,0 +1,11 @@
+.inline_form_replace_context
+  %ul.no_bullet
+    - flight.liabilities.each do |l|
+      %li.inline_form_hide_context.flight_format
+        %span.seat= l.person.name
+        %span.time= "#{(flight.proportion_for(l) * 100.0).to_i}%"
+        %span= format_currency(l.value)
+        %span= edit_link l, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([flight]) }
+        %span= button_to t('views.destroy'), polymorphic_path([flight, l]), :method => :delete, :class => "delete", :"data-replace" =>  polymorphic_path(flight)
+  = link_to t('views.add'), polymorphic_path([flight, Liability], :action => :new), :class => "inline_form_show", :"data-replace" => polymorphic_path(flight)
+  = add_link([flight, Liability], { :class => "inline_form_show", :"data-replace" => polymorphic_path(flight) })

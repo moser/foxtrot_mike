@@ -1,0 +1,12 @@
+= form_for(:launch, :url => [flight, :launch], :html => { :class => "simple_form" } ) do |f|
+  .choice
+    = radio_button_tag "launch_type", "nil", flight.launch.nil?
+    = t(".selflaunch")
+  - [TowFlight, WireLaunch].each do |lt|
+    .choice
+      = radio_button_tag "launch_type", lt.to_s, flight.launch.is_a?(lt)
+      = lt.l
+      .hide_if_unchecked
+        = render :partial => "launches/form_#{lt.name.underscore}", :locals => { :f => f, :launch => flight.launch.is_a?(lt) ? flight.launch : lt.new(:abstract_flight => flight) }
+  = f.submit
+= link_to t('views.cancel'), [flight, :launch], :class => "inline_form_hide"

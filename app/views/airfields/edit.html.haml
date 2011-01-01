@@ -2,6 +2,6 @@
 
 = render :partial => "airfields/form", :locals => { :airfield => @airfield }
   
-= link_to t('views.show'), airfield_path(@airfield)
-= link_to t('views.back'), airfields_path
+= show_link(@airfield)
+= back_link(Airfield)
 

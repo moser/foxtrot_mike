@@ -1,1 +1,0 @@
-../../db/migrate/20100325172332_create_groups.rb

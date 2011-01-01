@@ -12,6 +12,6 @@
     %th= Plane.l(:legal_plane_class)
     %td= @plane.legal_plane_class.name
 = render :partial => "common/memberships", :locals => { :object => @plane, :group => :plane_cost_category }
-= link_to Plane.l(:book), plane_flights_path(@plane)
-= link_to t('views.edit'), edit_plane_path(@plane)
-= link_to t('views.back'), planes_path
+= show_link([@plane, :flights], Plane.l(:book))
+= edit_link(@plane)
+= back_link(Plane)

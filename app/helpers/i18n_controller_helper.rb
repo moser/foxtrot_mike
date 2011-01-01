@@ -1,2 +1,0 @@
-module I18nControllerHelper
-end

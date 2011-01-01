@@ -7,7 +7,8 @@
     %tr
       %td=h person.firstname
       %td=h person.lastname  
-      %td= link_to t('views.show'), person_path(person)
-      %td= link_to t('views.edit'), edit_person_path(person)
-      %td= link_to t('views.destroy'), person_path(person), :confirm => t('views.areusure'), :method => :delete
-= link_to t('views.new'), new_person_path 
+      %td= show_link(person)
+      %td= show_link([person, :flights], Person.l(:book))
+      %td= edit_link(person)
+      %td= destroy_link(person)
+= new_link(Person)

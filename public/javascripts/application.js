@@ -188,6 +188,25 @@ jQuery.fn.sortElements = (function(){
 $(function() {
   $('a.facebox').live('click', function(e) { jQuery.facebox({ ajax: e.target.href }); return false; });
   $('body').ajaxError(function(e, xhr, o, exception) {
-    jQuery.facebox("An error occurred. Please try reloading the page.");
+    if(xhr.status == 500) {
+      jQuery.facebox("An error occurred. Please try reloading the page.");
+    }
+  });
+  $('.hide_on_startup').hide();
+  $('.show_on_startup').show();
+  $('form.submit_when_changed').find('input').live('change', function() {
+    var form = $(this).parents('form.submit_when_changed');
+    form.submit();
+  });
+
+  $('a.print_pdf').live('click', function() {
+    $.ajax({  url: '/pdfs', 
+              type: 'POST', 
+              data: { html: '<html>' + $('html').html() + '</html>' }, 
+              success: function(data) {
+                window.location.href = data + "?name=" + (window.location.pathname.slice(1).replace(/\//g, "-"));
+              }
+            });
+    return false;
   });
 });

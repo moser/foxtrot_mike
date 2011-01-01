@@ -1,7 +1,7 @@
 class Tree
   attr_reader :children, :data
   
-  def initialize(data = nil)
+  def initialize(data = {})
     @data = data
     @children = []
     yield(self) if block_given?

@@ -1,0 +1,132 @@
+.person_cost_categories {
+
+}
+
+.plane_cost_categories {
+
+}
+
+#not_valid_anymore .controls a.edit {
+  display: none;
+}
+
+#not_valid_anymore .controls a.delete {
+  display: none;
+}
+
+#valid .controls a.delete {
+  display: none;
+}
+
+.cost_rule {
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5em;
+}
+
+.cost_rule h3 {
+  margin: 0 0;
+}
+
+#cost_rules {
+  border-color: #99f;
+  border-style: solid;
+  border-width: 3px;
+  padding: 10px;
+  
+}
+
+.middle {
+  margin: 0 16em;
+  min-height: 10em;
+}
+
+.col.side {
+  width: 15em;
+  margin: 1em;
+}
+
+.col h3 {
+  margin: 0 1em;
+}
+
+.tablist {
+  padding: 3px 0;
+  margin-left: 0;
+  margin-bottom: 0;
+  margin-top: 0.1em;
+  font: bold 12px Verdana;
+  border-bottom: 3px solid #99f;
+}
+
+.tablist li{
+  list-style: none;
+  display: inline;
+  margin: 0;
+}
+
+.tablist li a{
+  text-decoration: none;
+  padding: 3px 0.5em;
+  margin-right: 3px;
+  border: 1px solid #778;
+  border-bottom: none;
+  background: white;
+}
+
+.tablist li a:link, #tablist li a:visited{
+  color: black;
+}
+
+.tablist li a:hover{
+  color: black;
+}
+
+.tablist li.current a {
+  background: #99f;
+  border: none;
+}
+
+ul.categories {
+  padding: 0;
+}
+
+.categories li {
+  list-style: none;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.categories li a {
+  text-decoration: none;
+  width: 100%;
+  display: inline-block;
+}
+
+.categories li.current{
+  background: #99f;
+}
+
+.col.right .categories li {
+  border: 1px solid #778;
+  border-left: none;
+  padding-left: 8px;
+}
+
+.col.right .categories li.current {
+  border: none;
+}
+
+.col.left .categories li {
+  border: 1px solid #778;
+  border-right: none;
+  padding-right: 8px;
+}
+
+.col.left .categories li.current {
+  border: none;
+}
+
+.col.left .categories li a {
+  text-align: right;
+}

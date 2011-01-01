@@ -2,10 +2,11 @@
 %table
   %tr
     %th= Account.l(:login)
+    %th= Account.l(:person)
   - @accounts.each do |account|
     %tr
       %td=h account.login
-      %td= link_to t('views.show'), account_path(account)
-      %td= link_to t('views.edit'), edit_account_path(account)
-      %td= link_to t('views.destroy'), account_path(account), :confirm => t('views.areusure'), :method => :delete
-= link_to t('views.new'), new_account_path 
+      %td= show_link(account.person, account.person.name)
+      %td= edit_link(account)
+      %td= destroy_link(account)
+= new_link(Account)

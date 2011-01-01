@@ -7,6 +7,6 @@
     %td
       %ul.scroll.no_bullet
         - @legal_plane_class.planes.each do |p|
-          %li= link_to p.registration, p
-= link_to t('views.edit'), edit_legal_plane_class_path(@legal_plane_class)
-= link_to t('views.back'), legal_plane_classes_path
+          %li= show_link(p, p.registration)
+= edit_link(@legal_plane_class)
+= back_link(LegalPlaneClass)

@@ -1,7 +1,7 @@
-%h1 Editing plane_cost_category
+%h1= t "views.editing", :name => PlaneCostCategory.l
 
 = render :partial => "plane_cost_categories/form", :locals => { :plane_cost_category => @plane_cost_category }
   
-= link_to 'Show', plane_cost_category_path(@plane_cost_category)
-= link_to 'Back', plane_cost_categories_path
+= show_link(@plane_cost_category)
+= back_link(PlaneCostCategory)
 

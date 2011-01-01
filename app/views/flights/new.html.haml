@@ -1,4 +1,4 @@
 .item
   %h1= t "views.create", :name => Flight.model_name.human
   = render :partial => "flights/form", :locals => { :flight => @flight }
-  = link_to t('views.back'), flights_path, :class => "sop back"
+  = back_link(Flight, {:class => "sop back"})

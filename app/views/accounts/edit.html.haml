@@ -2,5 +2,5 @@
 
 = render :partial => "accounts/form", :locals => { :account => @account }
   
-= link_to t('views.show'), account_path(@account)
-= link_to t('views.back'), accounts_path
+= show_link(@account)
+= back_link(Account)

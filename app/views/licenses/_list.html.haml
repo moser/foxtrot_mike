@@ -25,7 +25,7 @@
                   \-
                   = l(l.valid_to) rescue t('views.dates.infinity')
                   = l.name
-                  = link_to t('views.edit'), polymorphic_path(l, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])
+                  = edit_link(l, nil, {:class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])})
                   = link_to License.l(:book), polymorphic_path([l, :flights])
     - if person.future_licenses.count > 0
       %tr
@@ -39,7 +39,7 @@
                   \-
                   = l(l.valid_to) rescue t('views.dates.infinity')
                   = l.name
-                  = link_to t('views.edit'), polymorphic_path(l, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])
+                  = edit_link(l, nil, {:class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])})
     %tr
       %td
-      %td= link_to t('views.add'), polymorphic_path([person, License], :action => :new), :class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])
+      %td= add_link([person, License], {:class => "inline_form_show", :"data-replace" => polymorphic_path([person, License])})

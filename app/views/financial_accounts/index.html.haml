@@ -5,6 +5,6 @@
   - @financial_accounts.each do |financial_account|
     %tr
       %td= h financial_account.name
-      %td= link_to t('views.show'), financial_account
-      %td= link_to t('views.edit'), edit_financial_account_path(financial_account)
-= link_to t('views.new'), new_financial_account_path
+      %td= show_link(financial_account)
+      %td= edit_link(financial_account)
+= new_link(FinancialAccount)

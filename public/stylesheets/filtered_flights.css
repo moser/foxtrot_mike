@@ -1,5 +1,6 @@
 .group {
   margin: 1em 1em;
+  page-break-inside: avoid;
 }
 
 .group .head {
@@ -23,8 +24,4 @@
 .group.collapsed .items {
   display: none;
 }
-
-.group .flight:nth-child(even) {
-  background: #f3f3f3;
-} 
 

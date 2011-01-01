@@ -1,0 +1,25 @@
+%h1 Plane cost rules
+.colspace
+  .person_cost_categories.col.left.side
+    %h3= PersonCostCategory.l
+    %ul.categories
+      - @person_cost_categories.each do |c|
+        %li{:id => "person_cost_category_id-#{c.id}", :class => (c == @current_person_cost_category ? "current" : "")}
+          = select_cost_parameter_link(c.name, c.id, :person_cost_category_id)
+
+  .middle
+    #cost_rules
+      = render :partial => "#{@current_cost_rule_klass.name.pluralize.underscore}/list", :locals => { :not_valid_anymore => @not_valid_anymore, :valid => @valid, :not_yet_valid => @not_yet_valid, :person_cost_category_id => @current_person_cost_category.id, :"#{@current_other_cost_category.class.name.underscore}_id" => @current_other_cost_category.id }
+  .other_cost_categories.col.right.side
+    %h3= PlaneCostCategory.l
+    %ul.categories.plane_cost_categories
+      - @plane_cost_categories.each do |c|
+        %li{:id => "plane_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "current" : "")}
+          = select_cost_parameter_link(c.name, c.id, :plane_cost_category_id)
+    %h3= WireLauncherCostCategory.l
+    %ul.categories.wire_launcher_cost_categories
+      - @wire_launcher_cost_categories.each do |c|
+        %li{:id => "wire_launcher_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "current" : "")}
+          = select_cost_parameter_link(c.name, c.id, :wire_launcher_cost_category_id)
+  .clear
+  

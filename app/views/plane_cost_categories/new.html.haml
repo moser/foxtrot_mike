@@ -1,5 +1,3 @@
-%h1 New plane_cost_category
-
-= render :partial => "plane_cost_categories/form", :locals => { :plane_cost_category => @plane_cost_category }
-    
-= link_to 'Back', plane_cost_categories_path 
+%h1= t "views.create", :name => PlaneCostCategory.model_name.human
+= render :partial => "plane_cost_categories/form", :locals => { :plane_cost_category => @plane_cost_category } 
+= back_link(PlaneCostCategory)

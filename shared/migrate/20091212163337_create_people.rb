@@ -1,1 +1,0 @@
-../../db/migrate/20091212163337_create_people.rb

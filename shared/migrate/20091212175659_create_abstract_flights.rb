@@ -1,1 +1,0 @@
-../../db/migrate/20091212175659_create_abstract_flights.rb

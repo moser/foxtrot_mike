@@ -17,6 +17,7 @@ class ResourceController < ApplicationController
 
   def index
     model_all_or_after
+    authorize! :read, model_class
     if nested && params[:"#{nested}_id"]
       @models = @models.where(:"#{nested}_id" => params[:"#{nested}_id"])
       @nested = instance_values[nested.to_s] = nested.to_s.camelize.constantize.find(params[:"#{nested}_id"])
@@ -40,11 +41,13 @@ class ResourceController < ApplicationController
 
   def show
     model_by_id
+    authorize! :read, model_class
     render :layout => !request.xhr?
   end
 
   def new
     model_new
+    authorize! :create, @model
     if nested && params[:"#{nested}_id"]
       @model.send(:"#{nested}=", nested.to_s.camelize.constantize.find(params[:"#{nested}_id"]))
     end
@@ -54,12 +57,13 @@ class ResourceController < ApplicationController
 
   def edit
     model_by_id
-
+    authorize! :update, @model
     render :layout => !request.xhr?
   end
 
   def create
     model_new
+    authorize! :create, @model
     if nested && params[:"#{nested}_id"]
       @model.send(:"#{nested}=", nested.to_s.camelize.constantize.find(params[:"#{nested}_id"]))
     end
@@ -74,6 +78,7 @@ class ResourceController < ApplicationController
 
   def update
     model_by_id
+    authorize! :update, @model
     if @model.update_attributes(params[model_name.underscore.to_sym])
       redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model))
     else
@@ -83,6 +88,7 @@ class ResourceController < ApplicationController
   
   def destroy
     model_by_id
+    authorize! :destroy, @model
     if destroy_check
       @model.destroy
     end

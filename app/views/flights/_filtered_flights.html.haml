@@ -1,8 +1,0 @@
-- flights.each do |f|
-  .flight.groupable.flight_format{ :id => f.id, 'data-planes' => "(#{f.plane_id})", 
-                 'data-groups' => f.grouping_groups.map { |e| "(#{e.id})"}.join(','),
-                 'data-people' => f.grouping_people.map { |e| "(#{e.id})"}.join(','),
-                 'data-licenses' => f.grouping_licenses.map { |e| "(#{e.id})"}.join(','),
-                 'data-duration' => (f.duration > -1 ? f.duration : 0),
-                 'data-sort' => f.sort,
-                 'data-departure' => f.departure.to_date.to_s }= render :partial => "flights/flight_spans", :locals => { :flight => f }

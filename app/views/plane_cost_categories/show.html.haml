@@ -1,7 +1,6 @@
-%p
-  %b Name:
-  =h @plane_cost_category.name 
-
-
-= link_to 'Edit', edit_plane_cost_category_path(@plane_cost_category)
-= link_to 'Back', plane_cost_categories_path
+%table.data
+  %tr
+    %th= PlaneCostCategory.l(:name)
+    %td=h @plane_cost_category.name 
+= edit_link(@plane_cost_category)
+= back_link(PlaneCostCategory)

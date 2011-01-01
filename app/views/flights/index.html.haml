@@ -1,24 +1,25 @@
 .list
   %h1= t '.title'
-  %table
-    %tr
-      %th
-        Date
-      %th= Flight.l(:plane)
-      %th
-        Crew1
-      %th
-        Crew2
-      %th= Flight.l(:to)
-      %th= Flight.l(:from)
-      %th= Flight.l(:departure)
-      %th= Flight.l(:arrival)
-      %th= Flight.l(:duration)
-    - @flights.each do |flight|
-      %tr
-        = render :partial => "flights/table_content", :locals => { :flight => flight }
-        %td= link_to t('views.show'), flight, :class => "sop show"
-        %td= link_to t('views.edit'), edit_flight_path(flight), :class => "sop edit"
-  = will_paginate @flights, :renderer => ApplicationHelper::CustomLinkRenderer
   = link_to 'Reload', flights_path, :class => "sop reload"
   = link_to 'New flight', new_flight_path, :class => "sop new"
+  .colspace
+    = render :partial => "flights/title_spans"
+    .flights.group_container.alternate{ :style => "margin-right: 115px;" }
+      - @flights.each do |flight|
+        .flight.groupable.flight_format.alternate_color
+          = render :partial => "flights/flight_spans", :locals => { :flight => flight }
+          %span= show_link(flight, nil, {:class => "sop show"})
+          %span= edit_link(flight, nil, {:class => "sop edit"})
+    = link_to "next", flights_path(:page => @flights.next_page), :class => "wide"
+    - if @dates
+      .dc.col.right
+        - df = @flights.first.departure_date
+        - d = Date.parse(@dates.first[0])
+        - 365.times do
+          - if d == d.end_of_month
+            .mark
+              = l(d, :format => :month)
+          .day{ :class => ((df == d) ? "current" : "") }
+            = image_tag "dc/gray-#{[9, (@dates[d.to_s] || 0)].min}.png"
+            = link_to l(d), flights_path(:goto_parse_date => d)
+          - d = d - 1.day

@@ -8,9 +8,9 @@
           %ul.no_bullet
             - object.send("previous_#{group}_memberships").each do |m|
               %li
-                = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                = l(m.valid_from) rescue t('views.dates.minus_infinity')
                 \-
-                = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
+                = l(m.valid_to) rescue t('views.dates.infinity')
                 = m.send(group).name
     - if object.send("current_#{group}_memberships").count > 0
       %tr
@@ -19,11 +19,11 @@
           %ul.no_bullet
             - object.send("current_#{group}_memberships").each do |m|
               %li
-                = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                = l(m.valid_from) rescue t('views.dates.minus_infinity')
                 \-
-                = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
-                = link_to m.send(group).name, m.send(group)
-                = link_to t('views.edit'), polymorphic_path(m, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])
+                = l(m.valid_to) rescue t('views.dates.infinity')
+                = show_link(m.send(group), m.send(group).name)
+                = edit_link(m, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize]) })
     - if object.send("future_#{group}_memberships").count > 0
       %tr
         %th= t('views.future')
@@ -32,11 +32,11 @@
             - object.send("future_#{group}_memberships").each do |m|
               %li
                 %span.inline_form_hide_context
-                  = l(m.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+                  = l(m.valid_from) rescue t('views.dates.minus_infinity')
                   \-
-                  = l(m.valid_to, :format => :short) rescue t('views.dates.infinity')
-                  = link_to m.send(group).name, m.send(group)
-                  = link_to t('views.edit'), polymorphic_path(m, :action => :edit), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])
+                  = l(m.valid_to) rescue t('views.dates.infinity')
+                  = show_link(m.send(group), m.send(group).name)
+                  = edit_link(m, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize]) })
     %tr
       %td
-      %td= link_to t('views.add'), polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize], :action => :new), :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize])
+      %td= add_link([object, "#{group}_membership".to_s.camelize.constantize], { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, "#{group}_membership".to_s.camelize.constantize]) })

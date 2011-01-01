@@ -1,0 +1,13 @@
+= f.simple_fields_for(launch) do |tf|
+  = tf.association :plane
+  = tf.input :seat1_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
+  = tf.input :seat2_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
+  = tf.association :to
+  .input.time.optional.replaced
+    %label.time.optional>= Flight.l(:departure)
+    = l(launch.abstract_flight.departure, :format => :time)
+  .input.time.optional.replaced
+    %label.time.optional{ :for => "arrival" }>= Flight.l(:arrival)
+    = text_field_tag :arrival, (launch.arrival.strftime("%H:%M") rescue ""), :class => "timepicker"
+  = tf.input :duration, :wrapper_html => { :class => "duration" }
+  = tf.input :comment

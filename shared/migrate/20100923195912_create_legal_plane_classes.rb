@@ -1,1 +1,0 @@
-../../db/migrate/20100923195912_create_legal_plane_classes.rb

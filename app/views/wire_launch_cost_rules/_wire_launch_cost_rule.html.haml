@@ -1,0 +1,20 @@
+.cost_rule.wire_launch_cost_rule.hover_controls{ :id => "wire_launch-cost-rule-#{rule.id}" }
+  .controls
+    %a.edit{:href => "#", :"data-wire_launch_cost_rule_id" => rule.id} edit
+    %a.copy{:href => "#", :"data-wire_launch_cost_rule_id" => rule.id} copy
+    %a.delete{:href => "#", :"data-wire_launch_cost_rule_id" => rule.id} delete 
+  %h3= rule.name
+  %table.data
+    %tr
+      %th= WireLaunchCostRule.l(:cost)
+      %td= format_currency(rule.cost)
+    %tr
+      %th= t('views.validity')
+      %td
+        = l(rule.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
+        \-
+        = l(rule.valid_to, :format => :short) rescue t('views.dates.infinity')
+    -# unless rule.comment.nil? || rule.comment == ''
+    -#  %tr
+    -#    %th= WireLaunchCostRule.l(:comment)
+    -#    %td= rule.comment #TODO add comment

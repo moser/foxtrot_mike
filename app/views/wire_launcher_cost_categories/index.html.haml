@@ -1,0 +1,13 @@
+%h1= t '.title'
+%table
+  %tr
+    %th= WireLauncherCostCategory.human_attribute_name(:name)
+  - @wire_launcher_cost_categories.each do |wire_launcher_cost_category|
+    %tr
+      %td=h wire_launcher_cost_category.name
+  
+      %td= show_link(wire_launcher_cost_category)
+      %td= edit_link(wire_launcher_cost_category)
+      %td= destroy_link(wire_launcher_cost_category)
+    
+= new_link(WireLauncherCostCategory)

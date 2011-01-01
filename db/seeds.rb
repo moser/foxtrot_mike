@@ -31,7 +31,7 @@ PersonCostCategoryMembership.create! :valid_from => 1.year.ago, :valid_to => 1.y
 mosr = Person.create!(:firstname => 'martin', :lastname => 'mosr', :group => ssv, :financial_account => ppl)
 acc = Account.create!(:login => 'moser', :password => 'lalala', :password_confirmation => 'lalala', :person => mosr)
 
-Airfield.create!(:name => "Cham")
+cham = Airfield.create!(:name => "Cham")
 Airfield.create!(:registration => "EDNB", :name => "Arnbruck")
 Airfield.create!(:registration => "EDMS", :name => "Straubing")
 
@@ -64,10 +64,9 @@ WireLaunchCostRule.create! :name => "4€ for a winch launch", :person_cost_cate
                           :wire_launcher_cost_category => catWinch, :cost => 400, :valid_from => 1.day.ago
                           
 f = Flight.create! :seat1 => t, :seat2 => i, :plane => ask13, :departure => 1.hour.ago, :duration => 20, 
-                   :controller => mosr
-tf = TowFlight.create! :tow_launch => TowLaunch.create!(:abstract_flight => f)
-tf.update_attributes :seat1 => n, :duration => 9, :plane => sh
+               :controller => mosr, :from => cham, :to => cham
+TowFlight.create! :seat1 => n, :duration => 9, :plane => sh, :abstract_flight => f, :to => cham
 
 f = Flight.create! :seat1 => n, :plane => fm, :departure => 2.hours.ago, :duration => 65, 
-                   :controller => mosr
+                   :controller => mosr, :from => cham, :to => cham
 WireLaunch.create! :abstract_flight => f, :wire_launcher => winch

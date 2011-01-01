@@ -19,8 +19,7 @@ class ApplicationController < ActionController::Base
   #end
 
   helper_method :current_account, :current_path
-    
-private  
+     
   def current_account_session  
     return @current_account_session if defined?(@current_account_session)  
     @current_account_session = AccountSession.find  
@@ -28,6 +27,10 @@ private
 
   def current_account  
     @current_account = current_account_session && current_account_session.record  
+  end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_account)
   end
 
   def current_path
@@ -132,8 +135,8 @@ private
     eval "@model = @#{model_name.underscore} = #{model_class}.find(params[:id])"
   end
   
-  def model_all
-    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.order()"
+  def model_all(conditions = nil)
+    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions).order()"
   end
   
   def model_all_or_after
@@ -149,10 +152,22 @@ private
   end
   
   def model_name
-    @model_name = self.class.name.gsub("Controller", "").singularize
+    @model_name ||= self.class.name.gsub("Controller", "").singularize
   end
   
   def model_class
     model_name.constantize
+  end  
+
+  def parse_date(h, k)
+    Date.new(h["#{k}(1i)"].to_i, h["#{k}(2i)"].to_i, h["#{k}(3i)"].to_i) rescue nil
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    if current_account  
+      redirect_to "/403.html"
+    else
+      redirect_to "/login"
+    end
   end
 end

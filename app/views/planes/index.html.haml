@@ -6,8 +6,8 @@
   - @planes.each do |plane|
     %tr
       %td=h plane.registration
-      %td= link_to t('views.show'), plane
-      %td= link_to Plane.l(:book), plane_flights_path(plane)
-      %td= link_to t('views.edit'), edit_plane_path(plane)
-      %td= link_to t('views.destroy'), plane, :confirm => 'Are you sure?', :method => :delete
-= link_to t('views.new'), new_plane_path
+      %td= show_link(plane)
+      %td= show_link([plane, :flights], Plane.l(:book))
+      %td= edit_link(plane)
+      %td= destroy_link(plane)
+= new_link(Plane)

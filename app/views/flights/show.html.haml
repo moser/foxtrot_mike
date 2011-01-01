@@ -1,4 +1,4 @@
-.item
+.item.inline_form_replace_context
   %table.categories
     %tr
       %th= Flight.l(:data)
@@ -48,7 +48,8 @@
             %td= @flight.comment
     %tr
       %th= Flight.l(:launch)
-      %td= @flight.launch.nil? ? t('.selflaunch') : render(:partial => "flights/#{@flight.launch.class.name.underscore}", :locals => { :launch => @flight.launch })
+      %td
+        = render(:partial => "launches/show", :locals => { :flight => @flight })   
     %tr
       %th
         = Flight.l(:cost)
@@ -60,27 +61,20 @@
                 %th= Flight.l("cost_#{tc.attribute}".to_sym)
                 %td= link_to tc.cost_rule.name, tc.cost_rule, :class => "facebox"
                 %td= format_currency(tc.value)
-          - unless true || @flight.cost.launch_cost.nil?
+          - unless @flight.launch.nil? || @flight.launch.cost.nil?
             %tr
               %th= Flight.l(:launch_cost)
-              %td= @flight.cost.launch_cost.cost_rule.name
-              %td= format_currency(@flight.cost.launch_cost.value)
+              %td
+              %td= format_currency(@flight.launch.cost.value)
           %tr
             %th= Flight.l(:sum)
             %td= ' '
             %td= format_currency(@flight.cost.sum)
-    - unless @flight.is_a? TowFlight    
+    - unless @flight.is_a?(TowFlight)
       %tr
         %th= Flight.l(:liabilities)
         %td
-          %table.data
-            - @flight.liabilities.each do |l|
-              %tr
-                %th= l.person.name
-                %td
-                  = (@flight.proportion_for(l) * 100.0).to_i
-                  \%
-                %td= format_currency(l.value)
+          = render :partial => "liabilities/list", :locals => { :flight => @flight }
     - unless @flight.soft_validate
       %tr
         %th= Flight.l(:problems)
@@ -98,5 +92,5 @@
               = Account.find(v.whodunnit).person unless v.whodunnit.nil?
               - #TODO ^ change to person?
 
-  = link_to t('views.edit'), edit_flight_path(@flight), :class => "sop edit"
-  = link_to t('views.back'), flights_path, :class => "sop back"
+  = edit_link(@flight, nil, {:class => "sop edit"})
+  = back_link(Flight, {:class => "sop back"})

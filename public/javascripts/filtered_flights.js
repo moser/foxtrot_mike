@@ -234,6 +234,7 @@ var Book = {
       Book.show_range = range;
       Book.hide_flights();
     }
+    $('h2.page_sub_title').text(Format.date_short(range.from) + " - " + Format.date_short(range.to));
   },
 
   load_and_show_flights: function(range) {
