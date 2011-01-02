@@ -9,9 +9,14 @@ class WireLaunch < ActiveRecord::Base
 
   validates_presence_of :wire_launcher
   
-  
   def cost
-    WireLaunchCost.new(self)
+    candidates = WireLaunchCostRule.for(self.abstract_flight).map { |cr| cr.apply_to(self) }
+    candidates = candidates.sort_by { |a| a.free_sum }
+    candidates.first
+  end
+
+  def free_cost_sum
+    cost.free_sum
   end
   
   def shared_attributes

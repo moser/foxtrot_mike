@@ -49,27 +49,38 @@
     %tr
       %th= Flight.l(:launch)
       %td
-        = render(:partial => "launches/show", :locals => { :flight => @flight })   
-    %tr
-      %th
-        = Flight.l(:cost)
-      %td
-        %table.data
-          - @flight.cost.time_costs.each do |tc|
-            - unless tc.cost_rule.nil?
+        = render(:partial => "launches/show", :locals => { :flight => @flight })  
+      %tr
+        %th
+          = Flight.l(:cost)
+        %td
+          %table.data
+            - if @flight.cost 
               %tr
-                %th= Flight.l("cost_#{tc.attribute}".to_sym)
-                %td= link_to tc.cost_rule.name, tc.cost_rule, :class => "facebox"
-                %td= format_currency(tc.value)
-          - unless @flight.launch.nil? || @flight.launch.cost.nil?
+                %th= FlightCostRule.human_name
+                %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
+              - @flight.cost.items.each do |i|
+                %tr
+                  %td= i.cost_item.name
+                  %td= i.financial_account || ""
+                  %td= format_currency(i.value)
+            - if @flight.launch_cost
+              %tr
+                %th= @flight.launch_cost.cost_rule.class.human_name
+                %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
+              - @flight.launch_cost.items.each do |i|
+                %tr
+                  %td= i.cost_item.name
+                  %td= i.financial_account || ""
+                  %td= format_currency(i.value)
             %tr
-              %th= Flight.l(:launch_cost)
+              %td= Flight.l(:cost_sum)
               %td
-              %td= format_currency(@flight.launch.cost.value)
-          %tr
-            %th= Flight.l(:sum)
-            %td= ' '
-            %td= format_currency(@flight.cost.sum)
+              %td= format_currency(@flight.cost_sum)
+            %tr
+              %td= Flight.l(:free_cost_sum)
+              %td
+              %td= format_currency(@flight.free_cost_sum)
     - unless @flight.is_a?(TowFlight)
       %tr
         %th= Flight.l(:liabilities)

@@ -44,7 +44,7 @@ Server::Application.routes.draw do
   resources :plane_cost_category_memberships
   resources :liabilities
   resources :wire_launcher_cost_category_memberships
-  resources :time_cost_rules
+  resources :flight_cost_rules
   resources :tow_cost_rules
   resources :wire_launch_cost_rules
   resources :cost_rules

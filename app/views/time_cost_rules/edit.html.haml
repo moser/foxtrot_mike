@@ -1,5 +1,0 @@
-.cost_rule.time_cost_rule{ :id => "time-cost-rule-#{@time_cost_rule.id}" }
-  %h1= t "views.editing", :name => TimeCostRule.model_name.human
-  = render :partial => "time_cost_rules/form", :locals => { :time_cost_rule => @time_cost_rule }
-  = show_link(@time_cost_rule)
-  = back_link(TimeCostRule)

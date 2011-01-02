@@ -34,4 +34,12 @@ class Purpose
   def id
     str
   end
+
+  def ==(that)
+    if that.is_a?(String)
+      id == that
+    else
+      id == that.id
+    end
+  end
 end

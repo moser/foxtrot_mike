@@ -281,12 +281,8 @@ describe AbstractFlight do
   end
   
   describe "cost" do
-    it "should not be nil if there is no crew" do
-      @f.cost.should_not be_nil
-    end
-    
-    it "should cache the object" do
-      @f.cost.should == @f.cost
+    it "should be nil if there is no crew" do
+      @f.cost.should be_nil
     end
   end
   

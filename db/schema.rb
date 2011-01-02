@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101230120615) do
+ActiveRecord::Schema.define(:version => 20110102152531) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",              :limit => 36
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20101230120615) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "cost_hint_id"
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
@@ -88,6 +89,25 @@ ActiveRecord::Schema.define(:version => 20101230120615) do
 
   add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true
 
+  create_table "cost_hints", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cost_rule_conditions", :force => true do |t|
+    t.integer  "cost_rule_id"
+    t.integer  "cost_hint_id"
+    t.integer  "condition_value_i"
+    t.string   "condition_field"
+    t.string   "condition_operator"
+    t.string   "condition_value_s"
+    t.string   "cost_rule_type"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "crew_members", :id => false, :force => true do |t|
     t.string   "id",                 :limit => 36
     t.string   "abstract_flight_id"
@@ -102,6 +122,29 @@ ActiveRecord::Schema.define(:version => 20101230120615) do
 
   create_table "financial_accounts", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "flight_cost_items", :force => true do |t|
+    t.integer  "value"
+    t.integer  "additive_value"
+    t.integer  "financial_account_id"
+    t.string   "depends_on"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "flight_cost_rule_id"
+  end
+
+  create_table "flight_cost_rules", :force => true do |t|
+    t.string   "name"
+    t.string   "flight_type"
+    t.integer  "plane_cost_category_id"
+    t.integer  "person_cost_category_id"
+    t.date     "valid_from"
+    t.date     "valid_to"
+    t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -292,13 +335,22 @@ ActiveRecord::Schema.define(:version => 20101230120615) do
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
+  create_table "wire_launch_cost_items", :force => true do |t|
+    t.string   "name"
+    t.integer  "value"
+    t.integer  "financial_account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "wire_launch_cost_rule_id"
+  end
+
   create_table "wire_launch_cost_rules", :force => true do |t|
     t.integer  "person_cost_category_id"
     t.integer  "wire_launcher_cost_category_id"
-    t.integer  "cost"
     t.string   "name"
     t.date     "valid_from"
     t.date     "valid_to"
+    t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

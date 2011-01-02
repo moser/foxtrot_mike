@@ -1,0 +1,20 @@
+#not_valid_anymore
+  %h3 Old rules 
+  .hint
+    = t('cost_rules.index.not_valid_anymore_hint')
+  - not_valid_anymore.each do |r|
+    = render :partial => "flight_cost_rules/flight_cost_rule", :locals => { :rule => r }
+#valid
+  %h3 Current rules
+  .hint
+    = t('cost_rules.index.valid_hint')
+  - valid.each do |r|
+    = render :partial => "flight_cost_rules/flight_cost_rule", :locals => { :rule => r }
+#not_yet_valid
+  %h3 Future rules
+  .hint
+    = t('cost_rules.index.not_yet_valid_hint')
+  - not_yet_valid.each do |r|
+    = render :partial => "flight_cost_rules/flight_cost_rule", :locals => { :rule => r }
+  .form
+    %a.new{:href => new_flight_cost_rule_path(:person_cost_category_id => person_cost_category_id, :plane_cost_category_id => plane_cost_category_id )}= t('views.new')

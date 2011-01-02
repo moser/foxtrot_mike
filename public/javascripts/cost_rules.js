@@ -1,7 +1,7 @@
 var CostRules = {
   cost_rule_type: function(other_cost_category_parameter) {
     if(other_cost_category_parameter == 'plane_cost_category_id') {
-      return 'time_cost_rules';
+      return 'flight_cost_rules';
     } else {
       return 'wire_launch_cost_rules';
     }
@@ -51,8 +51,8 @@ var CostRules = {
     return false;
   },
   remote_form: function(e) {
-    $.ajax({url: $('#new_time_cost_rule').attr('action'),
-      data: $('#new_time_cost_rule').serialize(),
+    $.ajax({url: $('#new_flight_cost_rule').attr('action'),
+      data: $('#new_flight_cost_rule').serialize(),
       type: 'POST',
       success: function(html, status, xhr) {
         jQuery(document).trigger('close.facebox');
@@ -79,7 +79,7 @@ var CostRules = {
       return false;
     });
     $('a.update_selection').live('click', CostRules.update);
-    $('#new_time_cost_rule').live('submit', CostRules.remote_form);
+    $('#new_flight_cost_rule').live('submit', CostRules.remote_form);
     person_cost_category_id = $('.person_cost_categories li.current a').attr('data-value');
     plane_cost_category_id = $('.plane_cost_categories li.current a').attr('data-value');
     wire_launcher_cost_category_id = $('.wire_launcher_cost_categories li.current a').attr('data-value');

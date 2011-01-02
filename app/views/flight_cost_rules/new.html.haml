@@ -1,0 +1,3 @@
+%h1= t "views.create", :name => FlightCostRule.model_name.human
+= render :partial => "flight_cost_rules/form", :locals => { :flight_cost_rule => @flight_cost_rule }
+= back_link(FlightCostRule)

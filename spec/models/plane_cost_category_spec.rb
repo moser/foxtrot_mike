@@ -9,13 +9,22 @@ describe PlaneCostCategory do
   end
   
   it { should have_many :plane_cost_category_memberships }
-  it { should have_many :time_cost_rules }
-  it { should have_many :tow_cost_rules }
+  it { should have_many :flight_cost_rules }
 
   it { should validate_presence_of :name }
-  it { should validate_inclusion_of :tow_cost_rule_type, :in => ["", "TowCostRule", "TimeCostRule"] }
 
   it "should create a new instance given valid attributes" do
     PlaneCostCategory.create!(@valid_attributes)
+  end
+
+  it "should only match a flight when the plane is a member at the departure time" do
+    c = PlaneCostCategory.generate!
+    f = Flight.generate!
+    c.matches?(f).should be_false
+    f.plane = p = Plane.generate!
+    c.plane_cost_category_memberships.create :plane => p, :valid_from => 1.day.ago
+    c.matches?(f).should be_true
+    f.plane = Plane.generate!
+    c.matches?(f).should be_false
   end
 end

@@ -26,7 +26,6 @@ describe Flight do
     it "should calculate the values for liabilities" do
       @f.liabilities.create(:person => Person.generate, :proportion => 100)
       @f.should_receive(:cost).at_least(:once).and_return(stub("cost", :sum => 400))
-      p @f.liabilities.first
       @f.proportion_for(@f.liabilities.first).should == 1.0
       @f.value_for(@f.liabilities.first).should == 400
       
@@ -65,11 +64,15 @@ describe Flight do
     PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => plane)
     PersonCostCategoryMembership.generate!(:person_cost_category_id => (b = PersonCostCategory.generate!.id), :person_id => person)
     WireLauncherCostCategoryMembership.generate!(:wire_launcher_cost_category_id => (c = WireLauncherCostCategory.generate!.id), :wire_launcher_id => wl)
-    TimeCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => b)
-    WireLaunchCostRule.generate!(:wire_launcher_cost_category_id => c, :person_cost_category_id => b)
+    r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => b)
+    r.flight_cost_items.create :depends_on => "duration", :value => 1
+    r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
+    r = WireLaunchCostRule.generate!(:wire_launcher_cost_category_id => c, :person_cost_category_id => b)
+    r.wire_launch_cost_items.create :value => 100
+    r.wire_launch_cost_items.create :value => 10, :financial_account => fa
     
     f = Flight.create(:plane_id => plane, :seat1_id => person, :duration => 10, :departure => DateTime.now)
-    f.launch = WireLaunch.create(:wire_launcher_id => wl)
+    f.launch = WireLaunch.create(:wire_launcher_id => wl, :abstract_flight => f)
     f.save
     
     Liability.create(:flight_id => f.id, :person_id => person, :proportion => 1)

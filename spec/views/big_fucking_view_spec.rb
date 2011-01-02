@@ -10,7 +10,7 @@ fourTemplates = [ :accounts, :airfields, :financial_accounts, :groups, :people,
                   :wire_launcher_cost_category_memberships, :wire_launchers ]
 nested = { :person_cost_category_memberships => "Person", :plane_cost_category_memberships => "Plane", :wire_launcher_cost_category_memberships => "WireLauncher" }
 
-specs = { :flights => [ :show, :edit, :new ], :time_cost_rules => [ :show, :edit, :new ], :wire_launch_cost_rules => [ :show, :edit, :new ] }
+specs = { :flights => [ :show, :edit, :new ], :flight_cost_rules => [ :show, :edit, :new ], :wire_launch_cost_rules => [ :show, :edit, :new ] }
 fourTemplates.each do |c|
   specs[c] = [ :edit, :index, :new, :show ]
 end

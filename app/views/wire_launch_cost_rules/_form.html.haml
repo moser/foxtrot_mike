@@ -14,8 +14,7 @@
       = f.input :wire_launcher_cost_category_id, :as => :hidden, :value => wire_launch_cost_rule.wire_launcher_cost_category_id
   - else
     = f.association :wire_launcher_cost_category, :required => true
-  = f.input :cost, :required => true
   = f.input :valid_from, :required => true, :include_blank => true
   = f.input :valid_to, :include_blank => true
-  - #f.input :comment #TODO add comment
+  = f.input :comment
   = f.button :submit

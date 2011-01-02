@@ -1,20 +1,27 @@
 class Flight < AbstractFlight   
   has_many :liabilities
+  belongs_to :cost_hint
   
   def accounting_entries
     launch_account = launch.nil? ? nil : launch.financial_account
     plane_account = plane.financial_account
-    launch_cost = launch.cost.value
-    flight_cost = cost.value
+    launch_sum = launch_cost.free_sum if launch_cost
+    flight_sum = cost.free_sum if cost
     b = liabilities_with_default.map do |l|
       e = []
-      unless launch_account.nil?
-        e = [ AccountingEntry.new(:from => l.person.financial_account, :to => launch_account, 
-                                    :value => (proportion_for(l) * launch_cost).round, :item => launch) ]
+      unless launch_cost.nil? || launch_account.nil?
+        e << AccountingEntry.new(:from => l.person.financial_account, :to => launch_account, 
+                                    :value => (proportion_for(l) * launch_sum).round, :item => launch)
       end 
-      e << AccountingEntry.new(:from => l.person.financial_account, :to => plane_account, 
-                                 :value => (proportion_for(l) * flight_cost).round, :item => self)
+      unless cost.nil?
+        e << AccountingEntry.new(:from => l.person.financial_account, :to => plane_account, 
+                                   :value => (proportion_for(l) * flight_sum).round, :item => self)
+      end
     end
+    b << cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => plane_account,
+                                          :value => i.value, :item => self) } if cost
+    b << launch_cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => launch_account,
+                                          :value => i.value, :item => launch) } if launch_cost
     b.flatten
   end
 

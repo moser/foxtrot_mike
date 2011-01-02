@@ -1,7 +1,7 @@
 class CostRulesController < ApplicationController
   javascript :cost_rules, :timepicker
   stylesheet :cost_rules
-  COST_RULE_TYPES = { PlaneCostCategory => TimeCostRule, WireLauncherCostCategory => WireLaunchCostRule }
+  COST_RULE_TYPES = { PlaneCostCategory => FlightCostRule, WireLauncherCostCategory => WireLaunchCostRule }
 
   def index
     @person_cost_categories = PersonCostCategory.all

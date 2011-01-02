@@ -6,15 +6,12 @@
   %h3= rule.name
   %table.data
     %tr
-      %th= WireLaunchCostRule.l(:cost)
-      %td= format_currency(rule.cost)
-    %tr
       %th= t('views.validity')
       %td
         = l(rule.valid_from, :format => :short) rescue t('views.dates.minus_infinity')
         \-
         = l(rule.valid_to, :format => :short) rescue t('views.dates.infinity')
-    -# unless rule.comment.nil? || rule.comment == ''
-    -#  %tr
-    -#    %th= WireLaunchCostRule.l(:comment)
-    -#    %td= rule.comment #TODO add comment
+    - unless rule.comment.nil? || rule.comment == ''
+      %tr
+        %th= WireLaunchCostRule.l(:comment)
+        %td= rule.comment

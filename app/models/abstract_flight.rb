@@ -64,8 +64,28 @@ class AbstractFlight < ActiveRecord::Base
     I18n.t("activerecord.attributes.flight.launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.short")
   end
   
+#  def cost
+#    @cost ||= FlightCost.new(self)
+#  end
+
   def cost
-    @cost ||= FlightCost.new(self)
+    candidates = FlightCostRule.for(self).map { |cr| cr.apply_to(self) }
+    candidates = candidates.sort_by { |a| a.free_sum }
+    candidates.first
+  end
+
+  def launch_cost
+    unless launch.nil?
+      launch.cost
+    end
+  end
+
+  def cost_sum
+    [ (cost || Cost.new(nil)), (launch_cost || Cost.new(nil)) ].map { |c| c.sum }.sum
+  end
+
+  def free_cost_sum
+    [ (cost || Cost.new(nil)), (launch_cost || Cost.new(nil)) ].map { |c| c.free_sum }.sum
   end
   
   def cost_responsible
