@@ -45,10 +45,9 @@ Server::Application.routes.draw do
   resources :liabilities
   resources :wire_launcher_cost_category_memberships
   resources :flight_cost_rules
-  resources :tow_cost_rules
   resources :wire_launch_cost_rules
   resources :cost_rules
-  resources :wire_launcher_cost_rules
+  resources :cost_hints
   resources :licenses do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
     resource :timeline, :only => [:show]

@@ -21,6 +21,7 @@ module ApplicationHelper
         t.children << Tree.new({ :name => "categories" }) do |k|
           k.children << Leaf.new({:name => "groups", :path => groups_path}) if can?(:read, Group)
           k.children << Leaf.new({:name => "legal_plane_classes", :path => legal_plane_classes_path}) if can?(:read, LegalPlaneClass)
+          k.children << Leaf.new({:name => "cost_hints", :path => cost_hints_path}) if can?(:read, CostHint)
           if can?(:read, PersonCostCategory) || can?(:read, PlabeCostCategory) || can?(:read, WireLauncherCostCategory)
             k.children << Tree.new({ :name => "cost_categories" }) do |j|
               j.children << Leaf.new({:name => "person_cost_categories", :path => person_cost_categories_path}) if can?(:read, PersonCostCategory)

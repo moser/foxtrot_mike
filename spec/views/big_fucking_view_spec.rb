@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 fourTemplates = [ :accounts, :airfields, :financial_accounts, :groups, :people,
                   :person_cost_categories, :person_cost_category_memberships, 
                   :plane_cost_categories, :plane_cost_category_memberships, :planes,
-                  :wire_launcher_cost_categories,
+                  :wire_launcher_cost_categories, :cost_hints,
                   :wire_launcher_cost_category_memberships, :wire_launchers ]
 nested = { :person_cost_category_memberships => "Person", :plane_cost_category_memberships => "Plane", :wire_launcher_cost_category_memberships => "WireLauncher" }
 

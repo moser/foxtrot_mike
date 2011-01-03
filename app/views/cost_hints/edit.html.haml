@@ -1,0 +1,4 @@
+%h1= t "views.editing", :name => CostHint.l
+= render :partial => "cost_hints/form", :locals => { :cost_hint => @cost_hint }
+= show_link(@cost_hint)
+= back_link(CostHint)

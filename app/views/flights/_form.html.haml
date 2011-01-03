@@ -13,5 +13,7 @@
   - if @flight.plane.nil? || @flight.plane.engine_duration_possible?
     = f.input :engine_duration, :wrapper_html => { :class => "duration" }
   = f.association :controller
+  - unless @flight.is_a?(TowFlight)
+    = f.association :cost_hint
   = f.input :comment
   = f.button :submit

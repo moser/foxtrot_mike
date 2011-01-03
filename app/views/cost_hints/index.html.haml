@@ -1,0 +1,10 @@
+%h1= t '.title'
+%table
+  %tr
+    %th= CostHint.l(:name)
+  - @cost_hints.each do |cost_hint|
+    %tr
+      %td= h cost_hint.name
+      %td= show_link(cost_hint)
+      %td= edit_link(cost_hint)
+= new_link(CostHint)

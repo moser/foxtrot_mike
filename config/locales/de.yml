@@ -43,6 +43,9 @@ de:
   cost_categories:
     index:
       title: "Kostenkategorien"
+  cost_hints:
+    index:
+      title: "Kostengruppen"
   cost:
     index:
       title: "Kosten"
@@ -106,6 +109,7 @@ de:
     models:
       account: Benutzerkonto
       airfield: Flugplatz
+      cost_hint: Kostengruppe
       flight: Flug
       tow_flight: Schleppflug
       plane: Flugzeug

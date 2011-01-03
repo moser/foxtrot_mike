@@ -43,6 +43,10 @@
             %tr
               %th= Flight.l(:engine_duration)
               %td= format_minutes(@flight.engine_duration) || '-'
+          - unless @flight.is_a?(TowFlight)
+            %tr
+              %th= Flight.l(:cost_hint)
+              %td= @flight.cost_hint
           %tr
             %th= Flight.l(:comment)
             %td= @flight.comment

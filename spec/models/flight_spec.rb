@@ -10,6 +10,7 @@ describe Flight do
   end
   
   it { should have_many :liabilities }
+  it { should belong_to :cost_hint }
 
   describe "liabilities" do
     it "should create a default liability if none other present" do

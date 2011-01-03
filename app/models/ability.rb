@@ -22,7 +22,7 @@ class Ability
                         PersonCostCategory, PlaneCostCategory, WireLauncherCostCategory,
                         FinancialAccount, :cost_rules, TimeCostRule, WireLaunchCostRule,
                         PersonCostCategoryMembership, PlaneCostCategoryMembership,
-                        WireLauncherCostCategoryMembership]       
+                        WireLauncherCostCategoryMembership, CostHint]       
         end
         if account.role?(:license_official)
           can :manage, [Person, License, LegalPlaneClass]
