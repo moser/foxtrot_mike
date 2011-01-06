@@ -14,13 +14,13 @@ class Ability
           can :read, [Flight, :dashboards, :filtered_flights]
         end
         if account.role?(:controller)
-          can [:read, :create], [Person, Plane, Airfield, Flight]
+          can [:read, :create], [Person, Plane, Airfield, Flight, TowFlight]
           can :update, Flight
         end
         if account.role?(:treasurer)
-          can :manage, [Person, Plane, Airfield, Flight, Group, 
+          can :manage, [Person, Plane, Airfield, Flight, TowFlight, Group, 
                         PersonCostCategory, PlaneCostCategory, WireLauncherCostCategory,
-                        FinancialAccount, :cost_rules, TimeCostRule, WireLaunchCostRule,
+                        FinancialAccount, :cost_rules, FlightCostRule, WireLaunchCostRule,
                         PersonCostCategoryMembership, PlaneCostCategoryMembership,
                         WireLauncherCostCategoryMembership, CostHint]       
         end
