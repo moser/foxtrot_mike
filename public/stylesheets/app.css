@@ -14,7 +14,6 @@ table.data th {
   width: 120px;
   color: #999;
   font-size: 13px;
-  
 }
 
 table.categories th {
@@ -298,11 +297,11 @@ input[type=submit].delete:hover {
 }
 
 .flight_format span.launch_type {
-  width: 1.5em;
+  width: 1em;
 }
 
 .flight_format span.purpose {
-  width: 1.5em;
+  width: 1em;
 }
 
 .flight_format span.airfield {
@@ -349,7 +348,6 @@ h2.page_sub_title {
 }
 
 .dc {
-  height: 400px;
   width: 110px;
   overflow: hidden;
   float: right;
@@ -443,21 +441,15 @@ h2.page_sub_title {
 
 /* root element for scrollable */
 .scrollable {
-
-	/* required settings */
 	position:relative;
-	overflow:hidden;
-
-	/* vertical scrollables have typically larger height than width but not now */
-	height: 270px;
-/*	width: 700px;*/
+	overflow: scroll;
+  overflow-x: hidden; 
+  /* this is overwritten by "overflow: hidden" when javascript is active */
+	height: 360px;
 }
 
 /* root element for scrollable items */
 .scrollable .items {
 	position:absolute;
-
-	/* this time we have very large space for the height */
-	height:20000em;
 }
 

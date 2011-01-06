@@ -181,7 +181,7 @@ function Day(dom) {
 }
 
 var Flights = {
-  per_page: 15,
+  per_page: 20,
   days: new Days(),
   init: function() {
     $("a.down").live("click", function(e) { 
@@ -216,6 +216,7 @@ var Flights = {
   },
   goto_day: function(key) {
     var f = function(d, highlight) { 
+      console.log(d);
       if(d) {
         if(!highlight || Flights.current_day.key == d.key) {
           Flights.current_day = d;
@@ -244,7 +245,7 @@ var Flights = {
 
 
 $(function() {
-  if($(".list").size() > 0) {
+  if($(".list").size() > 0) { //only on flights#index
     $(".dc .scrollable").scrollable({vertical : true, mousewheel: true, item: ".day_link", speed: 200});
     Flights.init();
     $('a.sop.show').live('click', function(e) { if(!e.ctrlKey) {
