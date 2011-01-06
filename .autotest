@@ -1,5 +1,6 @@
 #require 'autotest/growl'
 #Autotest::Growl::clear_terminal = false
+require 'autotest/timestamp'
 
 Autotest.add_hook :initialize do |at|
 #  at.add_mapping(%r%shared/app/models/(.*).rb$%) { |_, m|
@@ -17,6 +18,9 @@ Autotest.add_hook :initialize do |at|
   # Ignore files in tmp/
   at.add_exception %r%^\./tmp%
   at.add_exception %r%rerun.txt$%
+  %w{.git .svn .hg .DS_Store ._* vendor tmp log doc *~ *.js}.each do |exception|
+    at.add_exception(exception)
+  end
 end
 
 
