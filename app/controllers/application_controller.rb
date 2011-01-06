@@ -49,19 +49,21 @@ class ApplicationController < ActionController::Base
   SE = { "datetime" => {:min => "5i", :hour => "4i", :day => "3i", :month => "2i", :year => "1i"},
          "date" => {:day => "3i", :month => "2i", :year => "1i"},
          "time" => {:min => "5i", :hour => "4i"}}
+  CL = { "date" => Date, "datetime" => DateTime, "time" => DateTime }
   
   def parse_date_time_rec(h)
     h.each do |k, v|
       if v.is_a?(Hash)
         parse_date_time_rec(v)
       elsif v.is_a?(String) && m = k.to_s.match(/^(.*)_parse_(datetime|date|time)$/)
-        p m
-        p PA[m[2]].gsub(/(%d|%m|%H|%M)/, "\\d{2}").gsub(/%Y/, "\\d{4}")
         h.delete(k)
+        d = nil
         if v =~ Regexp.new(PA[m[2]].gsub(/(%d|%m|%H|%M)/, "\\d{2}").gsub(/%Y/, "\\d{4}"))
           d = DateTime.strptime(v, PA[m[2]])
-          p d
-          p SE[m[2]]
+        else
+          d = CL[m[2]].parse(v) rescue nil
+        end
+        if d
           SE[m[2]].each do |k,v|
             h["#{m[1]}(#{v})".to_sym] = d.send(k).to_s
           end
