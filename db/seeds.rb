@@ -1,3 +1,8 @@
+[ PersonCostCategory, WireLauncherCostCategory, LegalPlaneClass, Group,
+  FinancialAccount, Person, License, PersonCostCategoryMembership, Account, Airfield,
+  Plane, WireLauncher, PlaneCostCategory, WireLauncherCostCategoryMembership,
+  FlightCostRule, WireLaunchCostRule, Flight, TowFlight, WireLaunch ].reverse.map { |c| c.delete_all }
+
 catA = PersonCostCategory.create! :name => "A"
 catGlider = PlaneCostCategory.create! :name => "Glider", :tow_cost_rule_type => ""
 catTowPlane = PlaneCostCategory.create! :name => "TowPlane", :tow_cost_rule_type => "TimeCostRule"
@@ -29,7 +34,8 @@ PersonCostCategoryMembership.create! :valid_from => 1.year.ago, :valid_to => 1.y
                                      :person_cost_category => catA, :person => n
 
 mosr = Person.create!(:firstname => 'martin', :lastname => 'mosr', :group => ssv, :financial_account => ppl)
-acc = Account.create!(:login => 'moser', :password => 'lalala', :password_confirmation => 'lalala', :person => mosr)
+acc = Account.create!(:login => 'admin', :password => 'admin', :password_confirmation => 'admin', :person => mosr)
+acc.account_roles.create :role => "admin"
 
 cham = Airfield.create!(:name => "Cham")
 Airfield.create!(:registration => "EDNB", :name => "Arnbruck")
@@ -54,15 +60,18 @@ WireLauncherCostCategoryMembership.create! :valid_from => 1.year.ago, :valid_to 
                                           :wire_launcher_cost_category => catWinch,
                                           :wire_launcher => winch
                                           
-TimeCostRule.create! :name => "2€ pre minute (tow)", :person_cost_category => catA, 
-                    :plane_cost_category => catTowPlane, :depends_on => 'duration',
-                    :cost => 200, :flight_type => "TowFlight", :valid_from => 1.day.ago
-TimeCostRule.create! :name => "10ct pre minute", :person_cost_category => catA, 
-                    :plane_cost_category => catGlider, :depends_on => 'duration',
-                    :cost => 10, :flight_type => "Flight"      , :valid_from => 1.day.ago    
-WireLaunchCostRule.create! :name => "4€ for a winch launch", :person_cost_category => catA, 
-                          :wire_launcher_cost_category => catWinch, :cost => 400, :valid_from => 1.day.ago
-                          
+r = FlightCostRule.create! :name => "Schleppflug Mitglieder", :person_cost_category => catA, 
+                    :plane_cost_category => catTowPlane, :valid_from => 1.day.ago, :flight_type => "TowFlight" 
+r.flight_cost_items.create :name => "2€ pro Minute", :depends_on => 'duration', :value => 200
+
+r = FlightCostRule.create! :name => "Segelflug normal", :person_cost_category => catA, 
+                    :plane_cost_category => catGlider, :flight_type => "Flight", :valid_from => 1.day.ago 
+r.flight_cost_items.create :name => "10ct pro Minute", :depends_on => 'duration', :value => 10  
+ 
+r = WireLaunchCostRule.create! :name => "Windenstart Mitglieder", :person_cost_category => catA, 
+                          :wire_launcher_cost_category => catWinch, :valid_from => 1.day.ago
+r.wire_launch_cost_items.create :name => "4€", :value => 400
+
 f = Flight.create! :seat1 => t, :seat2 => i, :plane => ask13, :departure => 1.hour.ago, :duration => 20, 
                :controller => mosr, :from => cham, :to => cham
 TowFlight.create! :seat1 => n, :duration => 9, :plane => sh, :abstract_flight => f, :to => cham
