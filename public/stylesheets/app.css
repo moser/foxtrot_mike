@@ -1,5 +1,10 @@
+a img {
+  border: none;
+}
+
 div.flight {
   position: relative;
+  height: 18px;
 }
 
 table.data th {
@@ -346,8 +351,8 @@ h2.page_sub_title {
 .dc {
   height: 400px;
   width: 110px;
-  overflow: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
+  float: right;
 }
 
 
@@ -360,39 +365,45 @@ h2.page_sub_title {
   padding-right: 2px;
 }
 
-.dc .day {
-  height: 4px;
+.dc img {
+  margin: 0;
 }
 
-.dc .day a {
+.dc .day_link {
+  height: 4px;
+  position: relative;
+}
+
+.dc .day_link a {
   position: absolute;
   display: none;
   text-decoration: none;
   color: #000;
 }
 
-.dc img {
+.dc .day_link img {
   width: 100%;
   height: 100%;
   z-index: -1;
+  position: absolute;
 }
 
-.dc .day:hover,
-.dc .day.current {
+.dc .day_link:hover,
+.dc .day_link.current {
   height: 16px;
   font-size: 0.9em;
   background: #fa0;
   position: relative;
 }
 
-.dc .day:hover a,
-.dc .day.current a {  
+.dc .day_link:hover a,
+.dc .day_link.current a {  
   display: inline-block;
   width: 100%;
 }
 
-.dc .day:hover img,
-.dc .day.current img {
+.dc .day_link:hover img,
+.dc .day_link.current img {
   display: none;
 }
 
@@ -412,3 +423,41 @@ h2.page_sub_title {
 .col.right {
   right: 0;
 }
+
+
+.disabler {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  background-image: url('/images/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: .6;
+  z-index: 100;
+}
+
+
+
+/* root element for scrollable */
+.scrollable {
+
+	/* required settings */
+	position:relative;
+	overflow:hidden;
+
+	/* vertical scrollables have typically larger height than width but not now */
+	height: 270px;
+/*	width: 700px;*/
+}
+
+/* root element for scrollable items */
+.scrollable .items {
+	position:absolute;
+
+	/* this time we have very large space for the height */
+	height:20000em;
+}
+

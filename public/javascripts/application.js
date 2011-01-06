@@ -62,7 +62,7 @@ var Parse = {
 
 var Format = {
   date_to_s: function(date) {
-    var m = date.getMonth();
+    var m = date.getMonth() + 1;
     var d = date.getDate();
     return date.getFullYear() + '-' +  (m < 10 ? '0': '') + m + '-' + (d < 10 ? '0': '') + d;
   },
@@ -106,11 +106,7 @@ UI.Disabler = function(el) {
 };
 UI.Disabler.prototype = {
   disable: function() {
-    this.element.append('<div class="disabler"><a href="#" class="stop_load">'+ I18n.t('stop') +'</a>');
-    $('.stop_load', this.element).bind('click', {self: this}, function(e) {
-      event.preventDefault();
-      e.data.self.enable();
-    });
+    this.element.append('<div class="disabler"/>');
   },
   enable: function() {
     $('.disabler', this.element).remove();
@@ -119,6 +115,13 @@ UI.Disabler.prototype = {
 
 var PleaseWait = {
   n: 0,
+  modal_n: 0,
+  disabler: function() {
+    if(!this.da) {
+      this.da = new UI.Disabler(".content");
+    }
+    return this.da;
+  },
   vote_show: function() {
     this.n++;
     $('.please_wait').show();
@@ -127,6 +130,15 @@ var PleaseWait = {
     this.n--;
     if(this.n < 0) { this.n = 0; }
     if(this.n == 0) { $('.please_wait').hide(); }
+  },
+  vote_modal_show: function() {
+    this.modal_n++;
+    this.disabler().disable();
+  },
+  vote_modal_hide: function() {
+    this.modal_n--;
+    if(this.modal_n < 0) { this.modal_n = 0; }
+    if(this.modal_n == 0) { this.disabler().enable(); }
   }
 };
 

@@ -9,13 +9,40 @@ class FlightsController < ApplicationController
   # GET /flights.xml
   def index
     authorize! :read, Flight
-    javascript :stay_on_page, :lala
+    javascript :lala
+    @current_day = AbstractFlight.latest_departure.to_date
+    @current_day = Date.new(*(["day(1i)", "day(2i)", "day(3i)"].map { |e| params[e].to_i })) if params["day(1i)"]    
     if !request.xhr?
       @dates = AbstractFlight.group("date(departure)").order("date(departure) DESC").count
+      @flights = AbstractFlight.include_all.where("departure < ? and departure > ?", @current_day + 1.day, @current_day).order("departure DESC, duration DESC")
+    else
+      from = @current_day
+      to = @current_day + 1.day
+      if params[:minus_days]
+        from = Date.parse(AbstractFlight.group("date(departure)").order("date(departure) DESC").
+                                where("departure < ?", @current_day).limit(params[:minus_days]).
+                                count.keys.min) rescue @current_day
+      end
+      if params[:plus_days]
+        to = Date.parse(AbstractFlight.group("date(departure)").order("date(departure) ASC").
+                          where("departure > ?", @current_day + 1.day).limit(params[:plus_days]).
+                          count.keys.max) + 1.day rescue @current_day + 1.day
+      end
+      @days = AbstractFlight.include_all.where("departure > ? and departure < ?", from, to).order("departure DESC, duration DESC").group_by { |f| f.departure_date }
+      unless @days.empty?
+        (from..to).each do |d|
+          @days[d] ||= []
+        end
+      end
     end
-    @flights = AbstractFlight.include_all.paginate :per_page => 25, :page => params[:page], :order => 'departure DESC, created_at DESC'
+    
+    
     respond_to do |format|
-      format.html { render :layout => !request.xhr? }
+      format.html do 
+        if request.xhr?          
+          render :partial => "flights/days", :locals => { :days => @days, :terminators => [ AbstractFlight.latest_departure.to_date, AbstractFlight.oldest_departure.to_date ] }
+        end
+      end
       format.json { render :json => @flights }
     end
   end  

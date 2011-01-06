@@ -2,24 +2,47 @@
   %h1= t '.title'
   = link_to 'Reload', flights_path, :class => "sop reload"
   = link_to 'New flight', new_flight_path, :class => "sop new"
-  .colspace
-    = render :partial => "flights/title_spans"
-    .flights.group_container.alternate{ :style => "margin-right: 115px;" }
-      - @flights.each do |flight|
-        .flight.groupable.flight_format.alternate_color
-          = render :partial => "flights/flight_spans", :locals => { :flight => flight }
-          %span= show_link(flight, nil, {:class => "sop show"})
-          %span= edit_link(flight, nil, {:class => "sop edit"})
-    = link_to "next", flights_path(:page => @flights.next_page), :class => "wide"
-    - if @dates
-      .dc.col.right
-        - df = @flights.first.departure_date
-        - d = Date.parse(@dates.first[0])
-        - 365.times do
-          - if d == d.end_of_month
-            .mark
-              = l(d, :format => :month)
-          .day{ :class => ((df == d) ? "current" : "") }
-            = image_tag "dc/gray-#{[9, (@dates[d.to_s] || 0)].min}.png"
-            = link_to l(d), flights_path(:goto_parse_date => d)
-          - d = d - 1.day
+  %br
+  %a.up.day_link{ :href => flights_path(:day_parse_date => (@current_day + 1.day)), 
+                    :"data-date" => (@current_day + 1.day) }
+    %img{ :src => "images/bt/bt-margin-right.png" }<
+    %img{ :src => "images/bt/bt-body.png", :width => 410, :height => 20 }<>
+    %img{ :src => "images/bt/bt-body-up.png" }<>
+    %img{ :src => "images/bt/bt-body.png", :width => 410, :height => 20 }<>
+    %img{ :src => "images/bt/bt-margin-left.png" }>
+  - if @dates && !@dates.empty?
+    .dc
+      %a.scroll_days_up{ :href => "#" }
+        %img{ :src => "images/bt/bt-margin-right.png" }<
+        %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
+        %img{ :src => "images/bt/bt-body-up.png" }<>
+        %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
+        %img{ :src => "images/bt/bt-margin-left.png" }>
+      .scrollable
+        .items
+          - d = Date.parse(@dates.first[0])
+          - 365.times do
+            - if d == d.end_of_month
+              .mark.item
+                = l(d, :format => :month)
+            .day_link.item{ :class => ((@current_day   == d) ? "current" : ""), :"data-date" => d }
+              = image_tag "dc/gray-#{[9, (@dates[d.to_s] || 0)].min}.png"
+              = link_to l(d), flights_path(:day_parse_date => d), :"data-date" => d
+            - d = d - 1.day
+      %a.scroll_days_down{ :href => "#" }
+        %img{ :src => "images/bt/bt-margin-right.png" }<
+        %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
+        %img{ :src => "images/bt/bt-body-down.png" }<>
+        %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
+        %img{ :src => "images/bt/bt-margin-left.png" }>
+  = render :partial => "flights/title_spans"
+  .flights{ :style => "margin-right: 115px;" }
+    = render :partial => "flights/days", :locals => { :days => { @current_day => @flights } }
+  %a.down.day_link{ :href => flights_path(:day_parse_date => (@current_day - 1.day)), 
+                    :"data-date" => (@current_day - 1.day) }
+    %img{ :src => "images/bt/bt-margin-right.png" }<
+    %img{ :src => "images/bt/bt-body.png", :width => 410, :height => 20 }<>
+    %img{ :src => "images/bt/bt-body-down.png" }<>
+    %img{ :src => "images/bt/bt-body.png", :width => 410, :height => 20 }<>
+    %img{ :src => "images/bt/bt-margin-left.png" }>
+  .clear

@@ -371,6 +371,10 @@ class AbstractFlight < ActiveRecord::Base
     rel.order('departure DESC').limit(1).first.departure rescue DateTime.now
   end
   
+  def self.oldest_departure(rel = AbstractFlight)
+    rel.order('departure ASC').limit(1).first.departure rescue DateTime.now
+  end
+  
 protected
   def rational_day_to_minutes(r)
     (r * 1440).to_i
