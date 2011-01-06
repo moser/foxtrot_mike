@@ -12,4 +12,8 @@ class Liability < ActiveRecord::Base
   def value
     flight.value_for(self)
   end
+
+  def default?
+    false
+  end
 end

@@ -26,7 +26,7 @@ describe Flight do
   describe "cost" do    
     it "should calculate the values for liabilities" do
       @f.liabilities.create(:person => Person.generate, :proportion => 100)
-      @f.should_receive(:cost).at_least(:once).and_return(stub("cost", :sum => 400))
+      @f.should_receive(:free_cost_sum).at_least(:once).and_return(400)
       @f.proportion_for(@f.liabilities.first).should == 1.0
       @f.value_for(@f.liabilities.first).should == 400
       

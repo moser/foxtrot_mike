@@ -8,13 +8,14 @@
     = stylesheet_link_tag 'scaffold', 'app', 'jquery-ui-1.8.5.custom', 'facebox', :media => 'all'
     = stylesheet_link_tag 'print', :media => 'print'
     = stylesheet_link_tag @include_stylesheet_files, :media => 'all'
-    = javascript_include_tag 'jquery-1.4.4.min', 'jquery.ba-bbq.min', 'application', '/i18n.js', 'jquery-ui-1.8.5.custom', 'jquery-ui-timepicker-addon-0.6.js', 'facebox', 'jquery.tools.min'
+    = javascript_include_tag 'jquery-1.4.4.min', 'jquery.ba-bbq.min', 'jquery-ui-1.8.5.custom', 'jquery-ui-timepicker-addon-0.6.js', 'facebox', 'jquery.tools.min'
+    = javascript_include_tag 'application'
     = javascript_include_tag @include_javascript_files
-    %body
-      .header
-        - #= render :partial => "common/account_bar"
-        = render :partial => "common/navigation_bar"
-      .please_wait
-        = image_tag "ajax-loader.gif"
-      .content
-        = yield
+  %body
+    .header
+      - #= render :partial => "common/account_bar"
+      = render :partial => "common/navigation_bar"
+    .please_wait
+      = image_tag "ajax-loader.gif"
+    .content
+      = yield

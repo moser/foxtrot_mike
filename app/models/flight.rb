@@ -35,7 +35,7 @@ class Flight < AbstractFlight
   end
   
   def value_for(liability)
-    (proportion_for(liability) * cost.sum.to_f).round
+    (proportion_for(liability) * free_cost_sum.to_f).round
   end
   
   def proportion_for(liability)

@@ -12,4 +12,12 @@ class DefaultLiability
   def proportion
     1
   end
+
+  def value
+    flight.value_for(self)
+  end
+
+  def default?
+    true
+  end
 end

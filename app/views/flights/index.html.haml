@@ -12,7 +12,7 @@
     %img{ :src => "images/bt/bt-margin-left.png" }>
   - if @dates && !@dates.empty?
     .dc
-      %a.scroll_days_up{ :href => "#" }
+      %a.scroll_days_up.show_on_startup{ :href => "#" }
         %img{ :src => "images/bt/bt-margin-right.png" }<
         %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
         %img{ :src => "images/bt/bt-body-up.png" }<>
@@ -29,7 +29,7 @@
               = image_tag "dc/gray-#{[9, (@dates[d.to_s] || 0)].min}.png"
               = link_to l(d), flights_path(:day_parse_date => d), :"data-date" => d
             - d = d - 1.day
-      %a.scroll_days_down{ :href => "#" }
+      %a.scroll_days_down.show_on_startup{ :href => "#" }
         %img{ :src => "images/bt/bt-margin-right.png" }<
         %img{ :src => "images/bt/bt-body.png", :width => 31, :height => 20 }<>
         %img{ :src => "images/bt/bt-body-down.png" }<>
