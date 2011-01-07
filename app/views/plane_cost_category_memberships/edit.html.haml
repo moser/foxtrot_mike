@@ -2,7 +2,7 @@
   .input
     = f.label :plane_cost_category
     = @plane_cost_category_membership.plane_cost_category.name
-  - if @plane_cost_category_membership.valid_at_booking_now?
+  - if @plane_cost_category_membership.in_effect?
     .input
       = f.label :valid_from
       %input{ :value => l(@plane_cost_category_membership.valid_from), :disabled => "true" }

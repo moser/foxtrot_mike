@@ -16,8 +16,15 @@ module ValidityCheck
     !valid_from.nil? && valid_from > time
   end
 
-  def valid_at_booking_now?
-    valid_at?(Booking.now)
+  # The rule could be in use and thus must not be changed anymore
+  # The only change allowed is to set the valid_to date (must be after
+  # AccountingSession.booking_now).
+  def in_effect?
+    valid_at?(AccountingSession.booking_now)
+  end
+
+  def outdated?
+    not_valid_anymore_at?(AccountingSession.booking_now)
   end
 
   def self.included(base)

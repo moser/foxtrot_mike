@@ -2,7 +2,7 @@
   .input
     = f.label :wire_launcher_cost_category
     = @wire_launcher_cost_category_membership.wire_launcher_cost_category.name
-  - if @wire_launcher_cost_category_membership.valid_at_booking_now?
+  - if @wire_launcher_cost_category_membership.in_effect?
     .input
       = f.label :valid_from
       %input{ :value => l(@wire_launcher_cost_category_membership.valid_from, :format => :short), :disabled => "true" }
