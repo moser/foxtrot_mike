@@ -1,3 +1,4 @@
-%h1= t "views.create", :name => WireLaunchCostRule.l
-= render :partial => "wire_launch_cost_rules/form", :locals => { :wire_launch_cost_rule => @wire_launch_cost_rule }
-= back_link(WireLaunchCostRule)
+.cost_rule.wire_launch_cost_rule
+  %h1= t "views.create", :name => WireLaunchCostRule.model_name.human
+  = render :partial => "wire_launch_cost_rules/form", :locals => { :wire_launch_cost_rule => @wire_launch_cost_rule }
+  = link_to t('views.cancel'), @wire_launch_cost_rule, :class => "inline_form_hide"

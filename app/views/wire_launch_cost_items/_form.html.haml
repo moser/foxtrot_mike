@@ -1,0 +1,6 @@
+- simple_form_for(wire_launch_cost_item) do |f|
+  = f.hidden_field :wire_launch_cost_rule_id
+  = f.association :financial_account
+  = f.input :value
+  = f.submit
+

@@ -1,0 +1,27 @@
+.inline_form_replace_context
+  %h3= wire_launch_cost_rule.name
+  %table.categories
+    %tr
+      %th= Flight.l(:data)
+      %td
+        .inline_form_hide_context
+          %table.data
+            %tr
+              %th= t('views.validity')
+              %td
+                = l(wire_launch_cost_rule.valid_from) rescue t('views.dates.minus_infinity')
+                \-
+                = l(wire_launch_cost_rule.valid_to) rescue t('views.dates.infinity')
+            - unless wire_launch_cost_rule.comment.nil? || wire_launch_cost_rule.comment == ''
+              %tr
+                %th= WireLaunchCostRule.l(:comment)
+                %td= wire_launch_cost_rule.comment
+          = edit_link(wire_launch_cost_rule, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path(wire_launch_cost_rule)}) unless wire_launch_cost_rule.outdated?
+    %tr
+      %th= WireLaunchCostRule.l(:conditions)
+      %td
+        = render :partial => "cost_rule_conditions/list", :locals => { :cost_rule => wire_launch_cost_rule }
+      %tr
+      %th= WireLaunchCostRule.l(:cost_items)
+      %td
+        = render :partial => "wire_launch_cost_items/list", :locals => { :cost_rule => wire_launch_cost_rule }

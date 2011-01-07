@@ -1,0 +1,19 @@
+= simple_form_for(@wire_launch_cost_rule) do |f|
+  .input.string.required
+    = f.label :name
+    = @wire_launch_cost_rule.name
+  .input.string.required
+    = f.label :person_cost_category
+    = @wire_launch_cost_rule.person_cost_category.name
+  .input.string.required
+    = f.label :wire_launcher_cost_category
+    = @wire_launch_cost_rule.wire_launcher_cost_category.name
+  .input.string.required
+    = f.label :valid_from
+    = l(@wire_launch_cost_rule.valid_from)
+  = f.input :valid_to, :include_blank => true
+  .input.string.required
+    = f.label :comment
+    = @wire_launch_cost_rule.comment
+  = f.button :submit
+= link_to t('views.cancel'), @wire_launch_cost_rule, :class => "inline_form_hide"

@@ -1,20 +1,24 @@
-#not_valid_anymore
-  %h3 Old rules 
-  .hint
-    = t('cost_rules.index.not_valid_anymore_hint')
-  - not_valid_anymore.each do |r|
-    = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
-#valid
-  %h3 Current rules
-  .hint
-    = t('cost_rules.index.valid_hint')
-  - valid.each do |r|
-    = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
-#not_yet_valid
-  %h3 Future rules
-  .hint
-    = t('cost_rules.index.not_yet_valid_hint')
-  - not_yet_valid.each do |r|
-    = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
+.inline_form_replace_context  
+  #not_valid_anymore
+    %h3= t('cost_rules.index.old_rules')
+    .hint
+      = t('cost_rules.index.not_valid_anymore_hint')
+    - not_valid_anymore.each do |r|
+      = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
+  #valid
+    %h3= t('cost_rules.index.current_rules')
+    .hint
+      = t('cost_rules.index.valid_hint')
+    - valid.each do |r|
+      = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
+  #not_yet_valid
+    %h3= t('cost_rules.index.future_rules')
+    .hint
+      = t('cost_rules.index.not_yet_valid_hint')
+    - not_yet_valid.each do |r|
+      = render :partial => "wire_launch_cost_rules/wire_launch_cost_rule", :locals => { :rule => r }
   .form
-    %a.new{:href => new_wire_launch_cost_rule_path(:person_cost_category_id => person_cost_category_id, :wire_launcher_cost_category_id => wire_launcher_cost_category_id )}= t('views.new')
+    = link_to t('views.new'), 
+              new_wire_launch_cost_rule_path(:person_cost_category_id => person_cost_category_id, 
+                                              :wire_launcher_cost_category_id => wire_launcher_cost_category_id ), 
+              :class => "inline_form_show", :"data-replace" => wire_launch_cost_rules_path(:person_cost_category_id => person_cost_category_id, :wire_launcher_cost_category_id => wire_launcher_cost_category_id)

@@ -52,8 +52,12 @@ Server::Application.routes.draw do
   resources :cost_rule_conditions
   resources :cost_hint_conditions, :controller => "cost_rule_conditions"
   resources :number_cost_rule_conditions, :controller => "cost_rule_conditions"
-  
-  resources :wire_launch_cost_rules
+  resources :wire_launch_cost_rules do
+    resources :cost_rule_conditions
+    resources :wire_launch_cost_items
+  end
+  resources :wire_launch_cost_items
+
   resources :cost_rules
   resources :cost_hints
   resources :licenses do
