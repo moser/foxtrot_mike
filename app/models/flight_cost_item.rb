@@ -1,6 +1,13 @@
 class FlightCostItem < ActiveRecord::Base
+  def self.valid_fields
+    [ nil, "duration", "engine_duration" ]
+  end
+
   belongs_to :flight_cost_rule
   belongs_to :financial_account
+
+  validates_inclusion_of :depends_on, :in => valid_fields
+  validates_presence_of :flight_cost_rule
 
   def apply_to(flight)
     v = [ apply_depending_value(flight) + additive_value, 0 ].max

@@ -39,7 +39,7 @@ class Purpose
     if that.is_a?(String)
       id == that
     else
-      id == that.id
+      id == that.id #TODO why warning?
     end
   end
 end

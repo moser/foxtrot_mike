@@ -1,5 +1,2 @@
-.cost_rule.flight_cost_rule{ :id => "flight-cost-rule-#{@flight_cost_rule.id}" }
-  %h1= t "views.editing", :name => FlightCostRule.model_name.human
-  = render :partial => "flight_cost_rules/form", :locals => { :flight_cost_rule => @flight_cost_rule }
-  = show_link(@flight_cost_rule)
-  = back_link(FlightCostRule)
+= render :partial => "flight_cost_rules/form", :locals => { :flight_cost_rule => @flight_cost_rule }
+= link_to t('views.cancel'), @flight_cost_rule, :class => "inline_form_hide"

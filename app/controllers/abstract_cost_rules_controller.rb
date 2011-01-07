@@ -40,7 +40,8 @@ class AbstractCostRulesController < ApplicationController
 
   def show
     model_by_id
-    render :partial => "#{model_name.underscore.pluralize}/#{model_name.underscore}", :locals => { :rule => @model }
+    #render :partial => "#{model_name.underscore.pluralize}/#{model_name.underscore}", :locals => { :rule => @model }
+    render :layout => !request.xhr?
   end
 
   def new
@@ -49,9 +50,7 @@ class AbstractCostRulesController < ApplicationController
     @model.send("#{other_cost_category}=", other_cost_category_class.find(params["#{other_cost_category}_id"])) if params["#{other_cost_category}_id"]
     respond_to do |format|
       format.html do
-        if request.xhr?
-          render :layout => false
-        end
+        render :layout => !request.xhr?
       end
     end
   end
@@ -79,9 +78,11 @@ class AbstractCostRulesController < ApplicationController
   def edit
     model_by_id
     if @model.not_valid_anymore_at?(now)
-      render :partial => "#{model_name.underscore.pluralize}/#{model_name.underscore}", :locals => { :rule => @model }
-    elsif @time_cost_rule.valid_at?(now)
-      render :template => "#{model_name.underscore.pluralize}/edit_only_valid_to"
+      render :partial => "#{model_name.underscore.pluralize}/#{model_name.underscore}", :locals => { :rule => @model }, :layout => !request.xhr?
+    elsif @model.valid_at?(now)
+      render :template => "#{model_name.underscore.pluralize}/edit_only_valid_to", :layout => !request.xhr?
+    else
+      render :layout => !request.xhr?
     end
   end
 

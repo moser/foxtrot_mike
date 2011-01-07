@@ -44,7 +44,15 @@ Server::Application.routes.draw do
   resources :plane_cost_category_memberships
   resources :liabilities
   resources :wire_launcher_cost_category_memberships
-  resources :flight_cost_rules
+  resources :flight_cost_rules do
+    resources :cost_rule_conditions
+    resources :flight_cost_items
+  end
+  resources :flight_cost_items
+  resources :cost_rule_conditions
+  resources :cost_hint_conditions, :controller => "cost_rule_conditions"
+  resources :number_cost_rule_conditions, :controller => "cost_rule_conditions"
+  
   resources :wire_launch_cost_rules
   resources :cost_rules
   resources :cost_hints

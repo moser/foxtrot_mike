@@ -1,5 +1,5 @@
 class CostHintCondition < CostRuleCondition
-  attr_accessible :cost_hint, :cost_rule
+  attr_accessible :cost_hint, :cost_rule, :cost_rule_id
 
   belongs_to :cost_hint
   validates_presence_of :cost_hint

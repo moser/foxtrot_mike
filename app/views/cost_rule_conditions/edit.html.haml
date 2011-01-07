@@ -1,0 +1,4 @@
+- simple_form_for(@cost_rule_condition) do |f|
+  = render :partial => "cost_rule_conditions/fields_#{@cost_rule_condition.class.name.underscore}", :locals => { :f => f, :cost_rule_condition => @cost_rule_condition }
+  = f.submit
+= link_to t('views.cancel'), @cost_rule_condition.cost_rule, :class => "inline_form_hide"

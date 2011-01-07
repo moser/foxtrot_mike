@@ -5,6 +5,11 @@ de:
     group: Gruppe
     name: "Name"
     comment: Kommentar
+    cost_hint: Kostengruppe
+    person_cost_category: Personenkategorie
+    plane_cost_category: Flugzeugkategorie
+    conditions: Bedingungen
+    cost_items: Kostenpositionen
   helpers:
     submit:
       create: "Erstellen"
@@ -81,6 +86,9 @@ de:
   cost_rules:
     index:
       title: "Kosten"
+      old_rules: "Alte Regeln"
+      current_rules: "Derzeitige Regeln"
+      future_rules: "Zukünftige Regeln"
       not_valid_anymore_hint: "Keine Änderung möglich."
       valid_hint: "Nur das Enddatum der Gültigkeit kann bearbeitet werden."
       not_yet_valid_hint: "Alle Änderung möglich."
@@ -110,7 +118,10 @@ de:
       account: Benutzerkonto
       airfield: Flugplatz
       cost_hint: Kostengruppe
+      cost_hint_condition: Einschränkung auf Kostengruppe
       flight: Flug
+      flight_cost_rule: Kostenregel für Flüge
+      number_cost_rule_condition: Bedingung auf Dauer
       tow_flight: Schleppflug
       plane: Flugzeug
       plane_cost_category: Flugzeugkategorie
@@ -170,12 +181,18 @@ de:
           self:
             short: E
             long: Eigenstart
+      flight_cost_rule:
+        flight_type: Flugart
       license:
         name: Bezeichnung
         level: Stufe
         normal: "Normal"
         instructor: "Lehrberechtigung"
         book: "Flugbuch"
+      number_cost_rule_condition:
+        condition_field: Feld
+        condition_operator: Operator
+        condition_value_i: Wert
       plane:
         registration: Kennzeichen
         make: Typ

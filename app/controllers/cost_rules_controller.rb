@@ -1,5 +1,5 @@
 class CostRulesController < ApplicationController
-  javascript :cost_rules, :timepicker
+  javascript :cost_rules, :timepicker, :lala
   stylesheet :cost_rules
   COST_RULE_TYPES = { PlaneCostCategory => FlightCostRule, WireLauncherCostCategory => WireLaunchCostRule }
 

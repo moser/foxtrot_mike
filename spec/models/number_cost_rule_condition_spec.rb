@@ -9,4 +9,11 @@ describe NumberCostRuleCondition do
     f.duration = 19
     c.matches?(f).should be_false
   end
+
+  it { should validate_presence_of :condition_field }
+  it { should validate_presence_of :condition_operator }
+  it { should validate_presence_of :condition_value_i }
+  it { should validate_numericality_of :condition_value_i }
+  it { should validate_inclusion_of :condition_field, :in => NumberCostRuleCondition.valid_fields }
+  it { should validate_inclusion_of :condition_operator, :in => NumberCostRuleCondition.valid_operators }
 end

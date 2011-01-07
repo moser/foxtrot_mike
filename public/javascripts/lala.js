@@ -13,7 +13,7 @@ var IF = {
             type: 'POST',
             success: function(html, status, xhr) {
               $.get($(link).attr('data-replace'), function(html) {
-                target.parents('.inline_form_replace_context').replaceWith(html);
+                target.closest('.inline_form_replace_context').replaceWith(html);
                 DomInsertionWatcher.notify_listeners($('.inline_form_replace_context'));
                 PleaseWait.vote_hide();
               });
@@ -33,7 +33,7 @@ var IF = {
   load: function(e) {   
     var target = $(e.target);
     if($(target).parents('.inline_form_hide_context').length > 0) {
-      target = $(target).parents('.inline_form_hide_context');
+      target = $(target).closest('.inline_form_hide_context');
     }
     $.get(e.target.href, function(html) {
       var h = $('<div class="inline_form">' + html + '</div>');
@@ -56,7 +56,7 @@ var IF = {
             type: 'POST',
             success: function(html, status, xhr) {
               $.get(form.find("input[type=submit]").attr('data-replace'), function(html) {
-                form.parents('.inline_form_replace_context').replaceWith(html);
+                form.closest('.inline_form_replace_context').replaceWith(html);
                 DomInsertionWatcher.notify_listeners($('.inline_form_replace_context'));
                 PleaseWait.vote_hide();
               });

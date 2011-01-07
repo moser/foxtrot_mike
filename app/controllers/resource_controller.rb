@@ -7,6 +7,14 @@ class ResourceController < ApplicationController
     self.class.nested
   end
 
+  def nested_id
+    params[:"#{nested}_id"]
+  end
+
+  def find_nested
+    @nested = instance_values[nested.to_s] = nested.to_s.camelize.constantize.find(nested_id)
+  end
+
   def self.redirect_to_index(x = false)
     @redirect_to_index ||= x
   end
@@ -18,10 +26,9 @@ class ResourceController < ApplicationController
   def index
     model_all_or_after
     authorize! :read, model_class
-    if nested && params[:"#{nested}_id"]
-      @models = @models.where(:"#{nested}_id" => params[:"#{nested}_id"])
-      @nested = instance_values[nested.to_s] = nested.to_s.camelize.constantize.find(params[:"#{nested}_id"])
-      #eval '@#{nested} = @nested'
+    if nested && nested_id
+      find_nested
+      @models = @nested.send(model_name.pluralize.underscore)
     end
     render_index
   end
@@ -48,8 +55,8 @@ class ResourceController < ApplicationController
   def new
     model_new
     authorize! :create, @model
-    if nested && params[:"#{nested}_id"]
-      @model.send(:"#{nested}=", nested.to_s.camelize.constantize.find(params[:"#{nested}_id"]))
+    if nested && nested_id
+      @model.send(:"#{nested}=", find_nested)
     end
     
     render :layout => !request.xhr?
@@ -64,14 +71,14 @@ class ResourceController < ApplicationController
   def create
     model_new
     authorize! :create, @model
-    if nested && params[:"#{nested}_id"]
-      @model.send(:"#{nested}=", nested.to_s.camelize.constantize.find(params[:"#{nested}_id"]))
+    if nested && nested_id
+      @model.send(:"#{nested}=", find_nested)
     end
     @model.id = params[model_name.underscore.to_sym][:id] unless params[model_name.underscore.to_sym].nil? || params[model_name.underscore.to_sym][:id].nil?
     if @model.save
       redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model))
     else
-      p @model.errors
+      #p @model.errors
       render :action => :new, :layout => !request.xhr?, :status => 422
     end
   end

@@ -1,0 +1,22 @@
+= simple_form_for(@flight_cost_rule) do |f|
+  .input.string.required
+    = f.label :name
+    = @flight_cost_rule.name
+  .input.string.required
+    = f.label :person_cost_category
+    = @flight_cost_rule.person_cost_category.name
+  .input.string.required
+    = f.label :plane_cost_category
+    = @flight_cost_rule.plane_cost_category.name
+  .input.string.required
+    = f.label :flight_type
+    = @flight_cost_rule.flight_type
+  .input.string.required
+    = f.label :valid_from
+    = l(@flight_cost_rule.valid_from)
+  = f.input :valid_to, :include_blank => true
+  .input.string.required
+    = f.label :comment
+    = @flight_cost_rule.comment
+  = f.button :submit
+= link_to t('views.cancel'), @flight_cost_rule, :class => "inline_form_hide"

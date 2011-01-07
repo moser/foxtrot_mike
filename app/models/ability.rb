@@ -18,11 +18,13 @@ class Ability
           can :update, Flight
         end
         if account.role?(:treasurer)
-          can :manage, [Person, Plane, Airfield, Flight, TowFlight, Group, 
-                        PersonCostCategory, PlaneCostCategory, WireLauncherCostCategory,
-                        FinancialAccount, :cost_rules, FlightCostRule, WireLaunchCostRule,
-                        PersonCostCategoryMembership, PlaneCostCategoryMembership,
-                        WireLauncherCostCategoryMembership, CostHint]       
+          can :manage, [  Person, Plane, Airfield, Flight, TowFlight, Group, 
+                          PersonCostCategory, PlaneCostCategory, WireLauncherCostCategory,
+                          FinancialAccount, :cost_rules, CostHint,
+                          FlightCostRule, WireLaunchCostRule, 
+                          CostRuleCondition, FlightCostItem, WireLaunchCostItem,
+                          PersonCostCategoryMembership, PlaneCostCategoryMembership,
+                          WireLauncherCostCategoryMembership ]
         end
         if account.role?(:license_official)
           can :manage, [Person, License, LegalPlaneClass]

@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe FlightCostItem do
+  it { should validate_inclusion_of :depends_on, :in => FlightCostItem.valid_fields }
+  it { should validate_presence_of :flight_cost_rule }
+  
   it "should create a free cost item" do
     f = Flight.generate!
     f.duration = 10
