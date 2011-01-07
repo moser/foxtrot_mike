@@ -64,7 +64,7 @@ function Days() {
   this.modalWaitingFor = {};
   this.preLoadCount = 10;
   this.preLoadDistance = 5; //distance to the next gap when the gap should be closed by preloading
-  this.reloadAge = 30000; //age of day obj in milliseconds when it should be reloaded
+  this.reloadAge = 300000; //age of day obj in milliseconds when it should be reloaded
   this.preLoading = {};
   this.elements = {};
   this.callbackFor = function(key) {
@@ -101,6 +101,7 @@ function Days() {
     if((new Date() - this.elements[key].loaded) > this.reloadAge) {
       this.reload(key, callback);
     }
+    console.log(this.elements[key].dom.html().length);
     return this.elements[key];
   };
   this.add = function(day) {
@@ -165,7 +166,7 @@ function Days() {
 }
 
 function Day(dom) {
-  this.dom = $(dom);
+  this.dom = dom;
   this.loaded = new Date();
   this.key = dom.attr("id");
   this.keyDate = Parse.date_to_s(this.key);
@@ -183,76 +184,9 @@ function Day(dom) {
 var Flights = {
   per_page: 20,
   days: new Days(),
+  rootDayKey: "",
   init: function() {
-    $("a.down").live("click", function(e) { 
-      if(!e.ctrlKey) {
-        if(Flights.scrollable.getIndex() > Flights.scrollable.getSize() - Flights.per_page) {
-          Flights.goto_day(Flights.current_day.prev_key);
-        } else {
-          Flights.scrollable.move(1);
-        }
-        return false;
-      }
-    });
-    $("a.up").live("click", function(e) {
-      if(!e.ctrlKey) {
-        if(Flights.scrollable.getIndex() == 0) {
-          Flights.goto_day(Flights.current_day.next_key);
-        } else {
-          Flights.scrollable.move(-1);
-        }
-        return false;
-      }
-    });
-    $(".day_link a").live("click", function(e) {
-      if(!e.ctrlKey) {
-        Flights.goto_day($(e.target).attr("data-date"));
-        return false;
-      }
-    });
-    Flights.days.extract($(".flights"));
-    Flights.current_day = Flights.days.get($(".flights .day").first().attr("id"));
-    Flights.goto_day(Flights.current_day.key);
-  },
-  goto_day: function(key) {
-    var f = function(d, highlight) { 
-      console.log(d);
-      if(d) {
-        if(!highlight || Flights.current_day.key == d.key) {
-          Flights.current_day = d;
-          $(".flights").empty();
-          $(".flights").append(d.dom);
-          if(highlight) { $(".flights .day .flight").effect("highlight", {}, 3000); }
-          $(".dc div.day_link.current").removeClass("current");
-          $('.dc .scrollable').data('scrollable').seekTo(
-            $('.dc .scrollable').data('scrollable').getItems().
-              index($(".dc div.day_link[data-date=" + d.key + "]").addClass("current")));
-          Flights.scrollable = $(".flights .day").scrollable({vertical : true, mousewheel: true, item: ".flight", onBeforeSeek: function(e, i) {
-            if(i > (e.target.getSize() - Flights.per_page + 1)) {
-              if(e.target.getIndex() < (e.target.getSize() - Flights.per_page + 1)) {
-                e.target.seekTo(e.target.getSize() - Flights.per_page + 1);
-              }
-              return false;
-            }
-	        }, speed: 200}).data("scrollable");
-          Flights.scrollable.begin();
-        };
-      }
-    };
-    f(Flights.days.get(key, f));
-  }
-};
-
-
-$(function() {
-  if($(".list").size() > 0) { //only on flights#index
     $(".dc .scrollable").scrollable({vertical : true, mousewheel: true, item: ".day_link", speed: 200});
-    Flights.init();
-    $('a.sop.show').live('click', function(e) { if(!e.ctrlKey) {
-        jQuery.facebox({ ajax: e.target.href }); 
-        return false; 
-      }
-    });
     $('a.scroll_days_down').live('click', function(e) {
       var s = $('.dc .scrollable').data('scrollable');
       if(s.getIndex() > s.getSize() - 15) {
@@ -271,6 +205,109 @@ $(function() {
       }
       return false;
     });
+
+    $("a.down").live("click", function(e) { 
+      if(!e.ctrlKey) {
+        if(Flights.scrollable.getIndex() > Flights.scrollable.getSize() - Flights.per_page) {
+          Flights.goto_day(Flights.current_day.prev_key, true);
+        } else {
+          Flights.scrollable.move(1);
+        }
+        return false;
+      }
+    });
+    $("a.up").live("click", function(e) {
+      if(!e.ctrlKey) {
+        if(Flights.scrollable.getIndex() == 0) {
+          Flights.goto_day(Flights.current_day.next_key, true);
+        } else {
+          Flights.scrollable.move(-1);
+        }
+        return false;
+      }
+    });
+
+    $(".day_link a").live("click", function(e) {
+      if(!e.ctrlKey) {
+        Flights.goto_day($(e.target).attr("data-date"), true);
+        return false;
+      }
+    });
+    window.onpopstate = function(e) {
+      if(e.state && e.state.day) {
+        console.log("nav to " + e.state.day);
+        Flights.goto_day(e.state.day); 
+      } else if(e.state && e.state.path) { //use the url fragment
+        Flights.goto_url(e.state.path);
+      }
+    };
+    Flights.days.extract($(".flights"));
+    Flights.current_day = Flights.days.get($(".flights .day").first().attr("id"));
+    Flights.goto_day(Flights.current_day.key, true);
+  },
+  goto_day: function(key, doState) {
+    if(doState) { window.history.pushState({ day: key }, "Flights on "+ key +" TODO i18n", "/flights/day/" + key); }
+    var f = function(d, highlight) { 
+      if(d) {
+        $(".item").hide();
+        $(".list").show();
+        if(!highlight || Flights.current_day.key == d.key) {
+          Flights.current_day = d;
+          console.log(d.dom.html().length);
+          $(".flights .day").remove();
+          console.log(d.dom.html().length);
+          $(".flights").html(d.dom);
+          console.log(d.dom.html().length);
+          if(highlight) { $(".flights .day .flight").effect("highlight", {}, 3000); }
+          $(".dc div.day_link.current").removeClass("current");
+          $('.dc .scrollable').data('scrollable').seekTo(
+            $('.dc .scrollable').data('scrollable').getItems().
+              index($(".dc div.day_link[data-date=" + d.key + "]").addClass("current")));
+          Flights.scrollable = $(".flights .day").scrollable({vertical : true, mousewheel: true, item: ".flight", onBeforeSeek: function(e, i) {
+            if(i > (e.target.getSize() - Flights.per_page + 1)) {
+              if(e.target.getIndex() < (e.target.getSize() - Flights.per_page + 1)) {
+                e.target.seekTo(e.target.getSize() - Flights.per_page + 1);
+              }
+              return false;
+            }
+	        }, speed: 200}).data("scrollable");
+          Flights.scrollable.begin();
+        };
+      }
+    };
+    f(Flights.days.get(key, f), false);
+  },
+  goto_url: function(url, doState) {
+    PleaseWait.vote_modal_show();
+    $.get(url, function(html) {
+      $(".item").html(html);
+      $(".list").hide();
+      $(".item").show();
+      if(doState) { window.history.pushState({ path: url }, "lala", url); }
+      PleaseWait.vote_modal_hide();
+    });
+  }
+};
+
+
+$(function() {
+  if($(".list").size() > 0) { //only on flights#index
+    Flights.init();
+    var f = function(e) { if(!e.ctrlKey) {
+        Flights.goto_url(this.href, true);
+        return false; 
+      }
+    };
+    $('a.sop.show').live('click', f);
+    $('a.sop.new').live('click', f);
+    $('a.sop.edit').live('click', f);
+    $('a.sop.back.index').live('click', function(e) { if(!e.ctrlKey) {
+        Flights.goto_day(Flights.current_day.key, true);
+        return false; 
+      }
+    });
+    
+    
   }
 });
 

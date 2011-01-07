@@ -67,6 +67,7 @@ Server::Application.routes.draw do
   resources :legal_plane_classes  
   
   root :to => 'dashboards#show'
-  
+
+  match "/flights/day/:day_parse_date", :controller => "flights", :action => "index"
   match "/:controller(/:action(/:id))(.:format)"
 end

@@ -29,10 +29,8 @@ class FlightsController < ApplicationController
                           count.keys.max) + 1.day rescue @current_day + 1.day
       end
       @days = AbstractFlight.include_all.where("departure > ? and departure < ?", from, to).order("departure DESC, duration DESC").group_by { |f| f.departure_date }
-      unless @days.empty?
-        (from..to).each do |d|
-          @days[d] ||= []
-        end
+      (from..(to - 1.day)).each do |d|
+        @days[d] ||= []
       end
     end
     
