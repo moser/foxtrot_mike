@@ -1,6 +1,10 @@
-.item
-  %h1= t "views.editing", :name => Flight.model_name.human
-  = render :partial => "flights/form", :locals => { :flight => @flight }
+- if @dates
+  .list{ :style => "display: none;" }
+    = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
+.item_container
+  .item
+    %h1= t "views.editing", :name => Flight.model_name.human
+    = render :partial => "flights/form", :locals => { :flight => @flight }
 
-  = show_link(@flight, nil, {:class => "sop show"})
-  = back_link(Flight, {:class => "sop back index"})
+    = show_link(@flight, nil, {:class => "sop show"})
+    = back_link(Flight, {:class => "sop back index"})

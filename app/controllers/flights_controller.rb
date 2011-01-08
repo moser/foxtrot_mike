@@ -4,17 +4,22 @@ class FlightsController < ApplicationController
   javascript :flights, :timepicker
   #stylesheet :flights
   #before_filter :login_required
+
+  def dates
+    @dates ||= AbstractFlight.group("date(departure)").order("date(departure) DESC").count unless request.xhr?
+  end
   
   # GET /flights
   # GET /flights.xml
   def index
     authorize! :read, Flight
     javascript :lala
-    @current_day = AbstractFlight.latest_departure.to_date
-    @current_day = Date.new(*(["day(1i)", "day(2i)", "day(3i)"].map { |e| params[e].to_i })) if params["day(1i)"]    
+    @current_day = Date.new(*(["day(1i)", "day(2i)", "day(3i)"].map { |e| params[e].to_i })) if params["day(1i)"]
+    @current_day ||= AbstractFlight.latest_departure.to_date
+    dates
     if !request.xhr?
-      @dates = AbstractFlight.group("date(departure)").order("date(departure) DESC").count
-      @flights = AbstractFlight.include_all.where("departure < ? and departure > ?", @current_day + 1.day, @current_day).order("departure DESC, duration DESC")
+      @flights = AbstractFlight.include_all.where("departure < ? and departure > ?", @current_day + 1.day, @current_day).
+                                  order("departure DESC, duration DESC")
     else
       from = @current_day
       to = @current_day + 1.day
@@ -28,7 +33,8 @@ class FlightsController < ApplicationController
                           where("departure > ?", @current_day + 1.day).limit(params[:plus_days]).
                           count.keys.max) + 1.day rescue @current_day + 1.day
       end
-      @days = AbstractFlight.include_all.where("departure > ? and departure < ?", from, to).order("departure DESC, duration DESC").group_by { |f| f.departure_date }
+      @days = AbstractFlight.include_all.where("departure > ? and departure < ?", from, to).
+                               order("departure DESC, duration DESC").group_by { |f| f.departure_date }
       (from..(to - 1.day)).each do |d|
         @days[d] ||= []
       end
@@ -38,7 +44,7 @@ class FlightsController < ApplicationController
     respond_to do |format|
       format.html do 
         if request.xhr?          
-          render :partial => "flights/days", :locals => { :days => @days, :terminators => [ AbstractFlight.latest_departure.to_date, AbstractFlight.oldest_departure.to_date ] }
+          render :partial => "flights/days", :locals => { :days => @days} #TODO? , :terminators => [ AbstractFlight.latest_departure.to_date, AbstractFlight.oldest_departure.to_date ] }
         end
       end
       format.json { render :json => @flights }
@@ -51,6 +57,7 @@ class FlightsController < ApplicationController
     javascript :lala
     @flight = AbstractFlight.find(params[:id], :include => [:plane, :from, :to, :crew_members])
     authorize! :read, @flight
+    dates
     respond_to do |format|
       format.html { render :layout => !request.xhr? }
       format.json { render :json => @flight }
@@ -62,6 +69,8 @@ class FlightsController < ApplicationController
   def new
     @flight = Flight.new
     authorize! :create, Flight
+    dates
+    @current_day = AbstractFlight.latest_departure.to_date
     respond_to do |format|
       format.html { render :layout => !request.xhr? }
       format.json { render :json => @flight }
@@ -72,6 +81,7 @@ class FlightsController < ApplicationController
   def edit
     @flight = AbstractFlight.find(params[:id])
     authorize! :update, @flight
+    dates
     if request.xhr?
       render :layout => false
     end

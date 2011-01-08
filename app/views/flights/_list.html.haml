@@ -1,0 +1,48 @@
+%h1= t '.title'
+= link_to 'Reload TODO', flights_path, :class => "sop reload"
+= link_to 'New flight', new_flight_path, :class => "sop new"
+%br
+%a.up.day_link{ :href => "#{flights_path}/day/#{(current_day + 1.day)}", 
+                  :"data-date" => (current_day + 1.day) }
+  %img{ :src => "/images/bt/bt-margin-right.png" }<
+  %img{ :src => "/images/bt/bt-body.png", :width => 410, :height => 20 }<>
+  %img{ :src => "/images/bt/bt-body-up.png" }<>
+  %img{ :src => "/images/bt/bt-body.png", :width => 410, :height => 20 }<>
+  %img{ :src => "/images/bt/bt-margin-left.png" }>
+- if dates && !dates.empty?
+  .dc
+    %a.scroll_days_up.show_on_startup{ :href => "#" }
+      %img{ :src => "/images/bt/bt-margin-right.png" }<
+      %img{ :src => "/images/bt/bt-body.png", :width => 31, :height => 20 }<>
+      %img{ :src => "/images/bt/bt-body-up.png" }<>
+      %img{ :src => "/images/bt/bt-body.png", :width => 31, :height => 20 }<>
+      %img{ :src => "/images/bt/bt-margin-left.png" }>
+    .scrollable
+      .items
+        - d = Date.parse(dates.first[0])
+        - 365.times do
+          - if d == d.end_of_month
+            .mark
+              = l(d, :format => :month)
+          .day_link{ :class => ((current_day   == d) ? "current" : ""), :"data-date" => d }
+            = #image_tag "dc/gray-#{[9, (dates[d.to_s] || 0)].min}.png"
+            = image_tag "blue1x1.jpg", :style => "width: #{[100 , (dates[d.to_s] || 0.2) * 10].min}%;"
+            = link_to l(d), "#{flights_path}/day/#{d}", :"data-date" => d
+          - d = d - 1.day
+    %a.scroll_days_down.show_on_startup{ :href => "#" }
+      %img{ :src => "/images/bt/bt-margin-right.png" }<
+      %img{ :src => "/images/bt/bt-body.png", :width => 31, :height => 20 }<>
+      %img{ :src => "/images/bt/bt-body-down.png" }<>
+      %img{ :src => "/images/bt/bt-body.png", :width => 31, :height => 20 }<>
+      %img{ :src => "/images/bt/bt-margin-left.png" }>
+= render :partial => "flights/title_spans"
+.flights{ :style => "margin-right: 115px;", :"data-current_day" => current_day }
+  = render :partial => "flights/days", :locals => { :days => { current_day => flights } } if current_day && flights
+%a.down.day_link{ :href => "#{flights_path}/day/#{(current_day - 1.day)}", 
+                  :"data-date" => (current_day - 1.day) }
+  %img{ :src => "/images/bt/bt-margin-right.png" }<
+  %img{ :src => "/images/bt/bt-body.png", :width => 410, :height => 20 }<>
+  %img{ :src => "/images/bt/bt-body-down.png" }<>
+  %img{ :src => "/images/bt/bt-body.png", :width => 410, :height => 20 }<>
+  %img{ :src => "/images/bt/bt-margin-left.png" }>
+.clear

@@ -1,111 +1,115 @@
-.item.inline_form_replace_context
-  %table.categories
-    %tr
-      %th= Flight.l(:data)
-      %td
-        %table.data
-          %tr
-            %th= Flight.l(:date)
-            %td= l  @flight.departure_date
-          %tr
-            %th= Flight.l(:plane)
-            %td
-              - unless @flight.plane.nil?
-                = link_to @flight.plane.to_s, plane_path(@flight.plane)
-              - else
-                = "-"
-          %tr
-            %th= Flight.l(:crew)
-            %td
-              - unless @flight.seat1.nil?
-                = @flight.seat1.value.to_s 
-                = @flight.seat1.short
-                %br
-              - unless @flight.seat2.nil?
-                = @flight.seat2.value.to_s 
-                = @flight.seat2.short
-          %tr
-            %th= Flight.l(:from)
-            %td= @flight.from || '-'
-          %tr
-            %th= Flight.l(:to)
-            %td= @flight.to || '-'
-          %tr
-            %th= Flight.l(:departure)
-            %td= l(@flight.departure, :format => :time)
-          %tr
-            %th= Flight.l(:arrival)
-            %td= @flight.arrival.nil? ? '-' : l(@flight.arrival, :format => :time)
-          %tr
-            %th= Flight.l(:duration)
-            %td= format_minutes(@flight.duration) || '-'
-          - if @flight.plane && @flight.plane.engine_duration_possible?
-            %tr
-              %th= Flight.l(:engine_duration)
-              %td= format_minutes(@flight.engine_duration) || '-'
-          - unless @flight.is_a?(TowFlight)
-            %tr
-              %th= Flight.l(:cost_hint)
-              %td= @flight.cost_hint
-          %tr
-            %th= Flight.l(:comment)
-            %td= @flight.comment
-    %tr
-      %th= Flight.l(:launch)
-      %td
-        = render(:partial => "launches/show", :locals => { :flight => @flight })  
+- if @dates
+  .list{ :style => "display: none;" }
+    = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
+.item_container
+  .item.inline_form_replace_context
+    %table.categories
       %tr
-        %th
-          = Flight.l(:cost)
+        %th= Flight.l(:data)
         %td
           %table.data
-            - if @flight.cost 
-              %tr
-                %th= FlightCostRule.human_name
-                %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
-              - @flight.cost.items.each do |i|
-                %tr
-                  %td= i.cost_item.name
-                  %td= i.financial_account || ""
-                  %td= format_currency(i.value)
-            - if @flight.launch_cost
-              %tr
-                %th= @flight.launch_cost.cost_rule.class.human_name
-                %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
-              - @flight.launch_cost.items.each do |i|
-                %tr
-                  %td= i.cost_item.name
-                  %td= i.financial_account || ""
-                  %td= format_currency(i.value)
             %tr
-              %td= Flight.l(:cost_sum)
-              %td
-              %td= format_currency(@flight.cost_sum)
+              %th= Flight.l(:date)
+              %td= l  @flight.departure_date
             %tr
-              %td= Flight.l(:free_cost_sum)
+              %th= Flight.l(:plane)
               %td
-              %td= format_currency(@flight.free_cost_sum)
-    - unless @flight.is_a?(TowFlight)
+                - unless @flight.plane.nil?
+                  = link_to @flight.plane.to_s, plane_path(@flight.plane)
+                - else
+                  = "-"
+            %tr
+              %th= Flight.l(:crew)
+              %td
+                - unless @flight.seat1.nil?
+                  = @flight.seat1.value.to_s 
+                  = @flight.seat1.short
+                  %br
+                - unless @flight.seat2.nil?
+                  = @flight.seat2.value.to_s 
+                  = @flight.seat2.short
+            %tr
+              %th= Flight.l(:from)
+              %td= @flight.from || '-'
+            %tr
+              %th= Flight.l(:to)
+              %td= @flight.to || '-'
+            %tr
+              %th= Flight.l(:departure)
+              %td= l(@flight.departure, :format => :time)
+            %tr
+              %th= Flight.l(:arrival)
+              %td= @flight.arrival.nil? ? '-' : l(@flight.arrival, :format => :time)
+            %tr
+              %th= Flight.l(:duration)
+              %td= format_minutes(@flight.duration) || '-'
+            - if @flight.plane && @flight.plane.engine_duration_possible?
+              %tr
+                %th= Flight.l(:engine_duration)
+                %td= format_minutes(@flight.engine_duration) || '-'
+            - unless @flight.is_a?(TowFlight)
+              %tr
+                %th= Flight.l(:cost_hint)
+                %td= @flight.cost_hint
+            %tr
+              %th= Flight.l(:comment)
+              %td= @flight.comment
       %tr
-        %th= Flight.l(:liabilities)
+        %th= Flight.l(:launch)
         %td
-          = render :partial => "liabilities/list", :locals => { :flight => @flight }
-    - unless @flight.soft_validate
+          = render(:partial => "launches/show", :locals => { :flight => @flight })  
+        %tr
+          %th
+            = Flight.l(:cost)
+          %td
+            %table.data
+              - if @flight.cost 
+                %tr
+                  %th= FlightCostRule.human_name
+                  %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
+                - @flight.cost.items.each do |i|
+                  %tr
+                    %td= i.cost_item.name
+                    %td= i.financial_account || ""
+                    %td= format_currency(i.value)
+              - if @flight.launch_cost
+                %tr
+                  %th= @flight.launch_cost.cost_rule.class.human_name
+                  %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
+                - @flight.launch_cost.items.each do |i|
+                  %tr
+                    %td= i.cost_item.name
+                    %td= i.financial_account || ""
+                    %td= format_currency(i.value)
+              %tr
+                %td= Flight.l(:cost_sum)
+                %td
+                %td= format_currency(@flight.cost_sum)
+              %tr
+                %td= Flight.l(:free_cost_sum)
+                %td
+                %td= format_currency(@flight.free_cost_sum)
+      - unless @flight.is_a?(TowFlight)
+        %tr
+          %th= Flight.l(:liabilities)
+          %td
+            = render :partial => "liabilities/list", :locals => { :flight => @flight }
+      - unless @flight.soft_validate
+        %tr
+          %th= Flight.l(:problems)
+          %td
+            %ul
+              - @flight.problems.each do |col, str|
+                %li= Flight.l(col) + " " + str
       %tr
-        %th= Flight.l(:problems)
+        %th= Flight.l(:versions)
         %td
-          %ul
-            - @flight.problems.each do |col, str|
-              %li= Flight.l(col) + " " + str
-    %tr
-      %th= Flight.l(:versions)
-      %td
-        %ul.versions
-          - @flight.all_versions.each do |v|
-            %li
-              = l(v.created_at) + ' ' + v.item_type
-              = Account.find(v.whodunnit).person unless v.whodunnit.nil?
-              - #TODO ^ change to person?
+          %ul.versions
+            - @flight.all_versions.each do |v|
+              %li
+                = l(v.created_at) + ' ' + v.item_type
+                = Account.find(v.whodunnit).person unless v.whodunnit.nil?
+                - #TODO ^ change to person?
 
-  = edit_link(@flight, nil, {:class => "sop edit"})
-  = back_link(Flight, {:class => "sop back index"})
+    = edit_link(@flight, nil, {:class => "sop edit"})
+    = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date
