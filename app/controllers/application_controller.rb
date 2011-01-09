@@ -52,6 +52,7 @@ class ApplicationController < ActionController::Base
   CL = { "date" => Date, "datetime" => DateTime, "time" => DateTime }
   
   def parse_date_time_rec(h)
+    add = {}
     h.each do |k, v|
       if v.is_a?(Hash)
         parse_date_time_rec(v)
@@ -65,15 +66,16 @@ class ApplicationController < ActionController::Base
         end
         if d
           SE[m[2]].each do |k,v|
-            h["#{m[1]}(#{v})".to_sym] = d.send(k).to_s
+            add["#{m[1]}(#{v})".to_sym] = d.send(k).to_s
           end
         else
           SE[m[2]].each do |k,v|
-            h["#{m[1]}(#{v})".to_sym] = ''
+            add["#{m[1]}(#{v})".to_sym] = ''
           end
         end
       end
     end
+    add.each { |k, v| h[k] = v }
   end
   
   def parse_json

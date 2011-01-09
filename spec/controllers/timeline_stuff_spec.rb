@@ -14,7 +14,7 @@ describe "TimelineStuff" do
   describe "setup_scope" do
     it "should set a default scope" do
       @instance.setup_scope(nil)
-      @instance.scope.should != "day"
+      @instance.scope.should == "day"
     end
     
     it "should set scopes from zoom_in and zoom_out" do
