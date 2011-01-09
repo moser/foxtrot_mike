@@ -25,20 +25,6 @@ describe WireLaunchCostRule do
     cost.items.size.should == 2
   end
 
-  xit "should aggregate costs with same financial account" do
-    l = WireLaunch.generate!
-    cr = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
-                                 :wire_launcher_cost_category => WireLauncherCostCategory.generate!, :valid_from => 1.day.ago
-    cr.wire_launch_cost_items.create :value => 10
-    cr.wire_launch_cost_items.create :value => 5
-    cr.wire_launch_cost_items.create :value => 5, :financial_account => fa = FinancialAccount.generate!
-    cr.wire_launch_cost_items.create :value => 1, :financial_account => fa
-    cost = cr.apply_to(l.abstract_flight)
-    cost.items.size.should == 2
-    cost.items.find { |c| c.value == 15 && c.financial_account.nil? }.should_not be_nil
-    cost.items.find { |c| c.value == 6 && c.financial_account == fa }.should_not be_nil
-  end
-
   it "should evaluate all of its conditions" do
     l = WireLaunch.generate!
     cr = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  

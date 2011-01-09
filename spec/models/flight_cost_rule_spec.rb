@@ -26,21 +26,6 @@ describe FlightCostRule do
     cost.items.size.should == 2
   end
 
-  xit "should aggregate costs with same financial account" do
-    f = Flight.generate!
-    f.duration = 10
-    cr = FlightCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
-                                 :plane_cost_category => PlaneCostCategory.generate!, :valid_from => 1.day.ago
-    cr.flight_cost_items.create :value => 10, :depends_on => "duration"
-    cr.flight_cost_items.create :additive_value => 11
-    cr.flight_cost_items.create :additive_value => 5, :financial_account => fa = FinancialAccount.generate!
-    cr.flight_cost_items.create :value => 1, :depends_on => "duration", :financial_account => fa
-    cost = cr.apply_to(f)
-    cost.items.size.should == 2
-    cost.items.find { |c| c.value == 111 && c.financial_account.nil? }.should_not be_nil
-    cost.items.find { |c| c.value == 15 && c.financial_account == fa }.should_not be_nil
-  end
-
   it "should evaluate all of its conditions" do
     f = Flight.generate!    
     cr = FlightCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
