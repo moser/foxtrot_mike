@@ -112,26 +112,4 @@ module ApplicationHelper
   def destroy_link(obj, options = {})
     #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can?(:destroy, obj)
   end
-
-  class CustomLinkRenderer < WillPaginate::ViewHelpers::LinkRenderer 
-    
-
-  protected
-    def page_number(page)
-      unless page == current_page
-        link(page, page, :rel => rel_value(page), :"data-page" => page, :class => "page")
-      else
-        tag(:em, page)
-      end
-    end
-    
-    def previous_or_next_page(page, text, classname)
-      if page
-        link(text, page, :class => classname + ' page', :"data-page" => page)
-      else
-        tag(:span, text, :class => classname + ' page disabled', :"data-page" => page)
-      end
-    end
-
-  end
 end

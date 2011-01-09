@@ -8,9 +8,7 @@ gem 'pg', :require => 'pg'
 gem "haml"
 gem "uuidtools"
 gem "paper_trail"
-#gem "simple_form"
-gem "simple_form", :path => "~/code/rails/simple_form"
-gem "will_paginate", '>=3.0.pre2'
+gem "simple_form"
 gem "authlogic"
 gem "cancan"
 
@@ -33,8 +31,3 @@ end
 group :development, :test do
   gem 'railroady'
 end
-
-#gem "acts_as_revisable", :require => "acts_as_revisable"
-#gem "formtastic-rails3", "1.0.0.beta3", :require => "formtastic"
-#gem 'formtastic', '>=1.1.0'
-#gem "json"
