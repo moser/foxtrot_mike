@@ -17,4 +17,33 @@ describe Liability do
     l.stub :flight => flight
     l.value
   end
+
+  def non_editable_flight(f = nil)
+    f ||= Flight.generate!
+    f.accounting_session = a = AccountingSession.generate!
+    f.save
+    a.update_attributes(:finished_at => 1.hour.ago)
+    Flight.find(f.id)
+  end
+
+  it "should validate that flight is editable before creation" do
+    f = non_editable_flight
+
+    l = f.liabilities.create(:person => Person.generate!, :proportion => 1)
+    l.should be_new_record
+    l.errors.should include(:flight)
+    l = Liability.create(:person => Person.generate!, :proportion => 1, :flight => f)
+    l.should be_new_record
+    l.errors.should include(:flight)
+  end
+
+  it "should validate that flight is editable before save" do
+    f = Flight.generate!
+    l = f.liabilities.create(:person => Person.generate!, :proportion => 1)
+    f = non_editable_flight(f)
+    l.reload
+
+    l.proportion = 5
+    l.save.should be_false
+  end
 end

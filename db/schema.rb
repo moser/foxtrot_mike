@@ -10,15 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110102152531) do
+ActiveRecord::Schema.define(:version => 20110111182226) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
-    t.string   "id",              :limit => 36
-    t.string   "plane_id",        :limit => 36
-    t.string   "from_id",         :limit => 36
-    t.string   "to_id",           :limit => 36
-    t.string   "controller_id",   :limit => 36
-    t.string   "launch_id",       :limit => 36
+    t.string   "id",                    :limit => 36
+    t.string   "plane_id",              :limit => 36
+    t.string   "from_id",               :limit => 36
+    t.string   "to_id",                 :limit => 36
+    t.string   "controller_id",         :limit => 36
+    t.string   "launch_id",             :limit => 36
     t.string   "launch_type"
     t.datetime "departure"
     t.integer  "duration"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20110102152531) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cost_hint_id"
+    t.integer  "accounting_session_id"
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true

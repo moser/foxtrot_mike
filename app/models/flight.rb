@@ -1,6 +1,13 @@
 class Flight < AbstractFlight   
   has_many :liabilities
   belongs_to :cost_hint
+  belongs_to :accounting_session
+
+  before_save :check_editability
+
+  validate do |f|
+    errors.add(:base, I18n.t("activerecord.errors.not_editable")) unless f.editable?
+  end
   
   def accounting_entries
     launch_account = launch.nil? ? nil : launch.financial_account
@@ -68,5 +75,15 @@ class Flight < AbstractFlight
     if new_record?
       self.departure ||= Date.today
     end
+  end
+
+  def editable?
+    accounting_session.nil? || !accounting_session.finished? 
+  end
+
+private
+  def check_editability
+    #raise "not editable" unless editable?
+    editable?
   end
 end

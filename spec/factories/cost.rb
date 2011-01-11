@@ -29,3 +29,7 @@ Factory.define :wire_launch_cost_rule do |r|
   r.association :wire_launcher_cost_category, :factory => :wire_launcher_cost_category
   r.association :person_cost_category, :factory => :person_cost_category
 end
+
+Factory.define(:accounting_session) do |s|
+  s.sequence(:name) { |n| "accounting_session #{n} #{DateTime.now}" }
+end

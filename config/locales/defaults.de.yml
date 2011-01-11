@@ -134,6 +134,7 @@ de:
         body: "Bitte überprüfen Sie die folgenden Felder:"
 
       messages:
+        not_editable: "kann nicht geändert werden"
         inclusion: "ist kein gültiger Wert"
         exclusion: "ist nicht verfügbar"
         invalid: "ist nicht gültig"

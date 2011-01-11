@@ -11,6 +11,7 @@ describe Flight do
   
   it { should have_many :liabilities }
   it { should belong_to :cost_hint }
+  it { should belong_to :accounting_session }
 
   describe "liabilities" do
     it "should create a default liability if none other present" do
@@ -96,5 +97,27 @@ describe Flight do
 #      puts r.class
 #    }
     #TODO
+  end
+
+  it "should be editable until it belongs to a finished accounting session" do
+    f = Flight.generate!
+    f.editable?.should be_true
+    f.accounting_session = AccountingSession.new
+    f.editable?.should be_true
+    f.accounting_session = AccountingSession.new(:finished_at => 1.hour.ago)
+    f.editable?.should be_false
+  end
+
+  it "should deny any changes when not editable" do
+    f = Flight.generate!
+    f.accounting_session = a = AccountingSession.generate!
+    f.save
+    a.update_attributes(:finished_at => 1.hour.ago)
+    f = Flight.find(f.id)
+    f.save.should be_false
+    f.errors.keys.should include(:base)
+    lambda { f.save! }.should raise_error
+    f.save(:validate => false).should be_false
+    f.errors.keys.should include(:base)
   end
 end
