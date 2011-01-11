@@ -18,7 +18,7 @@ class AbstractFlight < ActiveRecord::Base
   #accepts_nested_attributes_for :crew_members
   #accepts_nested_attributes_for :launch
   
-  has_paper_trail # :meta => { :abstract_flight_id => Proc.new { |flight| flight.id } }
+  has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.abstract_flight.id unless l.nil? || !l.is_a?(TowFlight) || l.new_record? || l.abstract_flight.nil? } }
   send(:include, SoftValidation::Validation)
   soft_validates_presence_of 1, :duration
   soft_validates_presence_of 1, :departure
