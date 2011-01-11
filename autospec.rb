@@ -1,10 +1,5 @@
 require "open3"
 
-trap('INT') do
-  puts "\nQuitting..."
-  exit
-end
-
 def build_mtimes_hash(globs)
   files = {}
   globs.each { |g|
@@ -36,6 +31,20 @@ end
              /^spec\/(.*)_spec.rb$/ => lambda { |m| "spec/#{m[1]}_spec.rb" } }
 @run_all = true
 @run_all_when_green = false
+
+@int_count = 0
+
+trap('INT') do
+  if @int_count == 0
+    puts "\nInterrupt again to quit"
+    @int_count = 1
+    sleep(2)
+    @int_count = 0
+    @run_all = true
+  else
+    exit
+  end
+end
 
 loop do
   changed_files = @files.find_all { |file, last_changed|
