@@ -60,6 +60,8 @@ de:
   flights:
     index:
       title: "Flüge"
+    list:
+      title: "Flüge"
     show:
       selflaunch: Eigenstart
   filtered_flights:
