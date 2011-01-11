@@ -18,11 +18,38 @@ unless defined?(SetupSpec)
   require 'factory_girl/syntax/generate'
 
   class ActionView::TestCase::TestController
-    def current_user
+    def current_account
       return @current_account if defined?(@current_account)  
       @current_account = Account.generate!
       @current_account.account_roles.create :role => :admin 
       @current_account
+    end
+
+    def current_ability
+      Class.new { 
+        include CanCan::Ability
+        def initialize(*a)
+          can :manage, :all
+        end
+      }.new
+    end
+  end
+
+  class ApplicationController
+    def current_account
+      return @current_account if defined?(@current_account)  
+      @current_account = Account.generate!
+      @current_account.account_roles.create :role => :admin 
+      @current_account
+    end
+
+    def current_ability
+      Class.new { 
+        include CanCan::Ability
+        def initialize(*a)
+          can :manage, :all
+        end
+      }.new
     end
   end
 
