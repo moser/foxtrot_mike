@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end  
 
   def current_account  
-    @current_account = current_account_session && current_account_session.record  
+    @current_account ||= current_account_session && current_account_session.record  
   end
 
   def current_ability
