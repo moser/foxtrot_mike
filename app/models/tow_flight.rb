@@ -23,7 +23,7 @@ class TowFlight < AbstractFlight
 #  end
 
   def purpose
-    @purpose ||= Purpose.new('tow')
+    @purpose ||= Purpose.get('tow')
   end
   
   def initialize(*args)

@@ -1,7 +1,13 @@
 class Purpose
   attr_reader :str
+  private_class_method :new
 
   ALL = %w(training exercise tow)
+  
+  def self.get(str)
+    @all ||= {}
+    @all[str] ||= new(str)
+  end
 
   def initialize(s)
     @str = s
@@ -24,7 +30,7 @@ class Purpose
   end
 
   def self.all
-    ALL.map { |p| Purpose.new(p) }
+    ALL.map { |p| Purpose.get(p) }
   end
 
   def info

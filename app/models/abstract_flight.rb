@@ -315,9 +315,9 @@ class AbstractFlight < ActiveRecord::Base
 
   def purpose
     if seat1.is_a?(Trainee)
-      Purpose.new('training')
+      Purpose.get('training')
     else
-      Purpose.new('exercise')
+      Purpose.get('exercise')
     end 
   end
   
