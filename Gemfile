@@ -11,6 +11,7 @@ gem "paper_trail"
 gem "simple_form"
 gem "authlogic"
 gem "cancan"
+gem "fastercsv"
 
 group :test do
   gem "rspec"

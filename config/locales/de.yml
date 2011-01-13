@@ -15,6 +15,8 @@ de:
       create: "Erstellen"
       update: "Ok"
   views:
+    as_pdf: "PDF"
+    as_csv: "CSV"
     flightbooks: Flugbücher
     bordbooks: Bordbücher
     editing: "%{name} bearbeiten"
@@ -67,6 +69,7 @@ de:
   filtered_flights:
     index:
       title: "Flüge für %{for}"
+      group_by: "Gruppieren nach"
   groups:
     index:
       title: "Gruppen"
@@ -82,9 +85,15 @@ de:
   master_data:
     index:
       title: "Stammdaten"
+  none:
+    index:
+      title: "nichts"
   plane_cost_categories:
     index:
       title: "Flugzeugkategorien"
+  purposes:
+    index:
+      title: "Zweck"
   cost_rules:
     index:
       title: "Kosten"
@@ -146,7 +155,10 @@ de:
         from: Von
         to: Nach
         departure: Abflug
+        departure_date: Datum
+        departure_time: Abflug
         arrival: Ankunft
+        arrival_time: Ankunft
         duration: Dauer
         engine_duration: Motorlaufzeit
         crew: Besatzung

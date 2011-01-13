@@ -113,6 +113,67 @@ UI.Disabler.prototype = {
   }
 };
 
+// parseUri 1.2.2
+// (c) Steven Levithan <stevenlevithan.com>
+// MIT License
+
+function parseUri(str) {
+	var	o   = parseUri.options,
+		m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		uri = {},
+		i   = 14;
+
+	while (i--) uri[o.key[i]] = m[i] || "";
+
+	uri[o.q.name] = {};
+	uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+		if ($1) uri[o.q.name][$1] = $2;
+	});
+	
+	
+	uri.params = {}
+	uri.query.split("&").forEach(function(e, i) {
+	  if(/=/.exec(e)) {
+	    s = e.split("=");
+	    var value = s[1];
+	    r = /^([a-zA-z0-9_\-]+)\[([\[\]a-zA-z0-9_\-]+)\]$/;
+	    var f = function(str, to) {
+	      m = r.exec(str);
+	      if(m) {
+	        if(!to[m[1]]) { to[m[1]] = {}; }
+          f(m[2], to[m[1]]);
+	      } else {
+	        to[str] = value;
+	      }
+	    }
+	    f(s[0], uri.params);
+	  } else {
+	    uri.params[e] = true;
+	  }
+	});
+	
+	uri.reconstruct = function() {
+	  return this.protocol + "://" + this.authority + this.path + "?" + decodeURIComponent($.param(this.params));
+	};
+
+	return uri;
+};
+
+parseUri.options = {
+	strictMode: false,
+	key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+	q:   {
+		name:   "queryKey",
+		parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+	},
+	parser: {
+		strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+		loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+	}
+};
+
+// --parseUri 1.2.2
+
 var PleaseWait = {
   n: 0,
   modal_n: 0,
@@ -213,16 +274,5 @@ $(function() {
   $('form.submit_when_changed').find('input').live('change', function() {
     var form = $(this).parents('form.submit_when_changed');
     form.submit();
-  });
-
-  $('a.print_pdf').live('click', function() {
-    $.ajax({  url: '/pdfs', 
-              type: 'POST', 
-              data: { html: '<html>' + $('html').html() + '</html>' }, 
-              success: function(data) {
-                window.location.href = data + "?name=" + (window.location.pathname.slice(1).replace(/\//g, "-"));
-              }
-            });
-    return false;
   });
 });

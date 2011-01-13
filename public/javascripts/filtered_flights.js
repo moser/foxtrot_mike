@@ -73,9 +73,8 @@ var Groupable = {
 
   change_group_by: function(group_by) {
     if(Groupable.current_group != null) {
-      $('.duplicate').remove();
-      $('.duplicated').removeClass('duplicated');
-      $('.group_container').append($('.groupable')).find('.group').remove();
+      $('.group_container').append($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first")).find('.group').remove();
+      
     }
     Groupable.current_group = group_by;
     if(group_by != 'none') {
@@ -109,7 +108,7 @@ var Groupable = {
         groupables.each(function (i, e) {
           if($(e).parents('.group').length > 0) {
             var id = $(e).attr('id');
-            div.append($(e).addClass('duplicated').clone().removeClass('duplicated').addClass('duplicate'));
+            div.append($(e).clone());
           } else {
             div.append(e);
           }
@@ -141,90 +140,7 @@ var Groupable = {
 var Book = {
   dates: {},
   loaded_range: null,
-//  last_group_id: 0,
-//  collapsed: {},
   
-//  is_collapsed: function(group_id) {
-//    if(this.collapsed[group_id] == null) { this.collapsed[group_id] = true; }
-//    return this.collapsed[group_id];
-//  },
-//  
-//  next_group_id: function() {
-//    Book.last_group_id++;
-//    return '' + Book.last_group_id;
-//  },
-//  
-//  ungroup: function(e) {
-//    var old_id = $(e.target).parents('.flight').attr('data-group-id');
-//    $(e.target).parents('.flight').attr('data-group-id', 'none');
-//    var new_ids = [ Book.next_group_id(), Book.next_group_id() ]
-//    $(e.target).parents('.flight').prevAll('.flight').attr('data-group-id', new_ids[0]);
-//    $(e.target).parents('.flight').nextAll('.flight').attr('data-group-id', new_ids[1]);
-//    Book.collapsed[new_ids[0]] = Book.collapsed[old_id];
-//    Book.collapsed[new_ids[1]] = Book.collapsed[old_id];
-//    Book.update_groups();
-//    return false;
-//  },
-  
-//  group: function(e) {    
-//    var parent = $(e.target).parents('.group');
-//    if(parent.length == 0) {
-//      var flight = $(e.target).parents('.flight')[e.data]('.flight:not(.hidden)');      
-//      if(flight.length == 1) {
-//        var id = flight.attr('data-group-id'); id = (id == 'none' ? Book.next_group_id() : id);
-//        $(e.target).parents('.flight').attr('data-group-id', id);
-//        flight.attr('data-group-id', id);
-//      } else {
-//        var group = $(e.target).parents('.flight')[e.data]('.group').first();
-//        if(group.length == 1) {          
-//          $(e.target).parents('.flight').attr('data-group-id', group.attr('id'));
-//        }
-//      }
-//      Book.update_groups();
-//    }
-//    return false;
-//  },
-
-//  update_groups: function() {
-//    $('span.time').removeClass('marked');  
-//    
-//    $('.group').each(function(i, e) {
-//      $(e).before($(e).find('.flight').removeClass('hide_when_collapsed')).remove();
-//    });
-//    
-//    var visited = { none: true };
-//    $('.flight:not(.hidden)').map(function(i, e) { 
-//      return $(e).attr("data-group-id"); 
-//    }).each(function(i, e) {
-//      if(!visited[e]) {
-//        visited[e] = true;
-//        var el = $('.flight[data-group-id=' + e + ']:not(.hidden)')
-//        if(el.length > 1) {
-//          el.wrapAll('<div class="group '+ (Book.is_collapsed(e) ? 'collapsed' : '') +'" id="'+ e +'" />');
-//        }
-//      }
-//    });
-//    
-//    $('.group').each(function(i, e) {    
-//      var n = $(e).find('.flight').length;
-//      var sum = 0;
-//      $(e).find('.flight').each(function(i, e) {
-//        sum = sum + parseInt($(e).attr('data-duration'));
-//        if(i == 0) {
-//          $(e).removeClass('hide_when_collapsed').children('.time:eq(0)').addClass('marked');
-//        } else if(i == n - 1) {
-//          $(e).removeClass('hide_when_collapsed').children('.time:eq(1)').addClass('marked');
-//        } else {
-//          if(i == 1) {
-//            $(e).before('<a href="#" class="toggle_collapsed"></a>');
-//          }
-//          $(e).addClass('hide_when_collapsed');
-//        }
-//      });
-//      $(e).append('<div class="sum"><span class="duration">' + Format.duration(sum) + '</span></div>');        
-//    });
-//  },
-
   update_flights: function(range) {    
     if(Book.loaded_range.lt(range)) {
       var diff = range.minus(Book.loaded_range);
@@ -261,11 +177,10 @@ var Book = {
     }
     Groupable.items_changed();
     var sum = 0;
-    $('.content > .foot .count .number').text($('.flight:not(.hidden):not(.duplicate)').each(function(i, e) {
+    $('.content > .foot .count .number').text($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first").filter('.flight:not(.hidden)').each(function(i, e) {
       sum = sum + parseInt($(e).attr('data-duration'));
     }).length);
     $('.content > .foot .sum .number').text(Format.duration(sum));
-//    Book.update_groups();
   },
 
   find_dates: function() {
@@ -274,18 +189,8 @@ var Book = {
       Book.dates[$(this).attr('id')] = d;
     });
   },
-  
-//  toggle_collapsed: function(e) {
-//    var group_id = $(e.target).parent('.group').toggleClass('collapsed').attr('id');
-//    Book.collapsed[group_id] = !Book.collapsed[group_id];
-//    return false;
-//  },
 
   init: function() {
-//    $('a.group_up').live('click', 'prev', Book.group);
-//    $('a.group_down').live('click', 'next', Book.group);
-//    $('a.ungroup').live('click', Book.ungroup);
-//    $('a.toggle_collapsed').live('click', Book.toggle_collapsed);
     $('.hasDatepicker').datepicker("option", {
       onSelect: function(dateText, inst) {
         Book.update_flights(new Range($('#filter_from').datepicker("getDate"), $('#filter_to').datepicker("getDate")));
@@ -295,11 +200,18 @@ var Book = {
     Book.show_range = Book.loaded_range;
     Book.find_dates();
     Book.update_flights(Book.loaded_range);
-//    Book.update_groups();
   }
 };
 
 $(function() {
+  $('a.change_params').live('click', function() {
+    var uri = parseUri(this.href);
+    uri.params.group_by = Groupable.current_group;
+    uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
+    uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
+    this.href = uri.reconstruct();
+    //return false;
+  });
   Groupable.init(function() {
     var sum = 0;
     this.find('.flight').each(function (i, e) {

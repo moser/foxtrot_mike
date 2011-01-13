@@ -32,7 +32,7 @@ GEM
     authlogic (2.1.6)
       activesupport
     builder (2.1.2)
-    cancan (1.4.1)
+    cancan (1.5.0)
     commonwatir (1.6.5)
       user-choices
     cucumber (0.10.0)
@@ -46,7 +46,8 @@ GEM
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    factory_girl (1.3.2)
+    factory_girl (1.3.3)
+    fastercsv (1.5.4)
     firewatir (1.6.5)
       activesupport
       commonwatir (= 1.6.5)
@@ -65,7 +66,7 @@ GEM
       selenium-rc (>= 2.1.0)
     json (1.4.6)
     json_pure (1.4.6)
-    mail (2.2.13)
+    mail (2.2.14)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -80,7 +81,7 @@ GEM
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.6)
+    rack-test (0.5.7)
       rack (>= 1.0)
     railroady (0.11.2)
     rails (3.0.3)
@@ -91,7 +92,7 @@ GEM
       activesupport (= 3.0.3)
       bundler (~> 1.0)
       railties (= 3.0.3)
-    rails3-generators (0.17.0)
+    rails3-generators (0.17.1)
       railties (>= 3.0.0)
     railties (3.0.3)
       actionpack (= 3.0.3)
@@ -109,19 +110,19 @@ GEM
       remarkable (~> 4.0.0.alpha4)
       remarkable_activemodel (~> 4.0.0.alpha4)
       rspec (>= 2.0.0.alpha11)
-    rspec (2.3.0)
-      rspec-core (~> 2.3.0)
-      rspec-expectations (~> 2.3.0)
-      rspec-mocks (~> 2.3.0)
-    rspec-core (2.3.1)
-    rspec-expectations (2.3.0)
+    rspec (2.4.0)
+      rspec-core (~> 2.4.0)
+      rspec-expectations (~> 2.4.0)
+      rspec-mocks (~> 2.4.0)
+    rspec-core (2.4.0)
+    rspec-expectations (2.4.0)
       diff-lcs (~> 1.1.2)
-    rspec-mocks (2.3.0)
-    rspec-rails (2.3.1)
+    rspec-mocks (2.4.0)
+    rspec-rails (2.4.1)
       actionpack (~> 3.0)
       activesupport (~> 3.0)
       railties (~> 3.0)
-      rspec (~> 2.3.0)
+      rspec (~> 2.4.0)
     s4t-utils (1.0.4)
       hoe (>= 1.3.0)
     selenium-client (1.2.18)
@@ -141,7 +142,7 @@ GEM
       s4t-utils (>= 1.0.3)
       xml-simple (>= 1.0.11)
     uuidtools (2.1.1)
-    webrat (0.7.2)
+    webrat (0.7.3)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
@@ -156,6 +157,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   factory_girl
+  fastercsv
   firewatir
   haml
   jasmine

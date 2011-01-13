@@ -1,6 +1,6 @@
-.controls
-  %a.print_pdf.show_on_startup{ :href => '#' } print as pdf
-  = link_to "as csv", @obj.is_a?(Struct) ? filtered_flights_path(:format => :csv, :filter => { :from_parse_date => l(@from), :to_parse_date => l(@to) }) : polymorphic_path([@obj, :flights], :format => :csv, :filter => { :from_parse_date => l(@from), :to_parse_date => l(@to) })
+.controls.no_print
+  = link_to t("views.as_pdf"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :pdf), :class => "change_params"
+  = link_to t("views.as_csv"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :csv), :class => "change_params"
 
 %h1.page_title= t('.title', :for => @obj.to_s)
 %h2.page_sub_title= "#{l(@from)} - #{l(@to)}"
@@ -14,16 +14,13 @@
   = submit_tag 'Ok', :class => 'hide_on_startup'
 
 .no_print
-  %a{ :href => "?", 'data-group_by' => 'none', :class => "group_by" } none
-  %a{ :href => "?group_by=groups", 'data-group_by' => 'groups', :class => "group_by" } groups
-  %a{ :href => "?group_by=planes", 'data-group_by' => 'planes', :class => "group_by" } planes
-  %a{ :href => "?group_by=people", 'data-group_by' => 'people', :class => "group_by" } people
-  %a{ :href => "?group_by=licenses", 'data-group_by' => 'licenses', :class => "group_by" } licenses
-  %a{ :href => "?group_by=purposes", 'data-group_by' => 'purposes', :class => "group_by" } purposes
-= render :partial => "flights/title_spans"
+  = t(".group_by")
+  - [ "none", "groups", "planes", "people", "licenses", "purposes" ].each do |g|
+    = link_to t("#{g}.index.title"), generate_filtered_flights_path(@obj, @from, @to, g), 'data-group_by' => g, :class => "group_by"
+= render :partial => "flights/title_spans.html.haml"
 .flights.group_container.alternate
   - if @flights.is_a?(Array)
-    = render :partial => "filtered_flights/index", :locals => { :flights => @flights }
+    = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights }
   - elsif @flights.is_a?(Hash)
     - @flights.keys.each do |k|
       .group
@@ -31,20 +28,20 @@
           %h1.title= k.to_s
           %em.hint= k.make rescue ''
         .items.alternate
-          = render :partial => "filtered_flights/index", :locals => { :flights => @flights[k] }
+          = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights[k] }
         .foot
           .count
             = t('flights.index.title') + ':'
             %span.number= @flights[k].count
           .sum
-            %span.number= @flights[k].map { |f| f.duration > 0 ? f.duration : 0 }.sum
+            %span.number= format_minutes(@flights[k].map { |f| f.duration > 0 ? f.duration : 0 }.sum)
 .foot
   - all = @flights.is_a?(Hash) ? @flights.values.flatten.uniq : @flights
   .count
     = t('flights.index.title') + ':'
     %span.number= all.count
   .sum
-    %span.number= all.map { |f| f.duration > 0 ? f.duration : 0 }.sum
+    %span.number= format_minutes(all.map { |f| f.duration > 0 ? f.duration : 0 }.sum)
 
 .hidden
   #group-prototype

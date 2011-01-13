@@ -6,4 +6,4 @@
                  'data-purposes' => f.grouping_purposes.map { |e| "(#{e.str})"}.join(','),
                  'data-duration' => (f.duration > -1 ? f.duration : 0),
                  'data-sort' => f.sort,
-                 'data-departure' => f.departure.to_date.to_s }= render :partial => "flights/flight_spans", :locals => { :flight => f }
+                 'data-departure' => f.departure.to_date.to_s }= render :partial => "flights/flight_spans.html.haml", :locals => { :flight => f }
