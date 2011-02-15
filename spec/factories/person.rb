@@ -14,3 +14,9 @@ Factory.define :person_cost_category_membership do |m|
   m.association :person, :factory => :person
   m.association :person_cost_category, :factory => :person_cost_category
 end
+
+Factory.define :license do |l|
+  l.name "LALA"
+  l.valid_from 1.year.ago
+  l.association :person, :factory => :person
+end

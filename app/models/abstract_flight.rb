@@ -18,7 +18,11 @@ class AbstractFlight < ActiveRecord::Base
   #accepts_nested_attributes_for :crew_members
   #accepts_nested_attributes_for :launch
   
-  has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.abstract_flight.id unless l.nil? || !l.is_a?(TowFlight) || l.new_record? || l.abstract_flight.nil? } }
+  has_paper_trail :meta => { :abstract_flight_id => Proc.new do |l| 
+            unless l.nil? || !l.is_a?(TowFlight) || l.new_record? || l.abstract_flight.nil?
+              l.abstract_flight.id  
+            end
+          end }
   send(:include, SoftValidation::Validation)
   soft_validates_presence_of 1, :duration
   soft_validates_presence_of 1, :departure
@@ -295,8 +299,9 @@ class AbstractFlight < ActiveRecord::Base
   def launch_attributes=(attrs)
     unless attrs.nil?
       obj = attrs.delete(:type).constantize.new(attrs)
-      obj.id = attrs[:id]
       obj.save
+      self.launch = obj
+      save
     end
   end
 

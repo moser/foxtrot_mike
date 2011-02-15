@@ -1,0 +1,2 @@
+module AccountingSessionFlightsHelper
+end

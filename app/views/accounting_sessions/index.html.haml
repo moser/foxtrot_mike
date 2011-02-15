@@ -1,0 +1,13 @@
+%h1= t(".title")
+%table
+  %tr
+    %th= AccountingSession.l(:name)
+    %th= AccountingSession.l(:start_date)
+    %th= AccountingSession.l(:end_date)
+  - @accounting_sessions.each do |s|
+    %tr
+      %td=h s.name
+      %td= l(s.start_date)
+      %td= l(s.end_date)
+      %td= show_link(s)
+= new_link(AccountingSession)  

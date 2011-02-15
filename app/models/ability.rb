@@ -10,12 +10,13 @@ class Ability
       if account.role? :admin
         can :manage, :all
       else
-        if account.role?(:reader) || account.role?(:controller) || account.role?(:treasurer) || account.role?(:license_official) 
+        if account.role?(:reader) || account.role?(:controller) || account.role?(:treasurer) || 
+           account.role?(:license_official) 
           can :read, [Flight, :dashboards, :filtered_flights]
         end
         if account.role?(:controller)
-          can [:read, :create], [Person, Plane, Airfield, Flight, TowFlight]
-          can :update, Flight
+          can [:read, :create], [Person, Plane, Airfield, WireLauncher, Flight, TowFlight]
+          can :update, [Flight, TowFlight]
         end
         if account.role?(:treasurer)
           can :manage, [  Person, Plane, Airfield, Flight, TowFlight, Group, 

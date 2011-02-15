@@ -1,22 +1,19 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
   layout 'application'
   helper :all # include all helpers, all the time
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  #include AuthenticatedSystem
+
   before_filter :parse_after
   before_filter :parse_json
   before_filter :parse_date_time
   before_filter { javascript; stylesheet; true }
-
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
-  #def verify_authenticity_token
-    #TODO ...
-  #  logged_in_basic? || verified_request? || raise(ActionController::InvalidAuthenticityToken)
-  #end
+  before_filter do
+    if request.format == Mime::JSON && !current_account_session
+      authenticate_or_request_with_http_basic do |u, pass|
+        @current_account_session = AccountSession.find  
+      end
+    end
+  end
 
   helper_method :current_account, :current_path
      
@@ -173,5 +170,10 @@ class ApplicationController < ActionController::Base
     else
       redirect_to "/login"
     end
+  end
+  
+private
+  def date_from_is(hash, key)
+    Date.new(*[hash["#{key}(1i)"], hash["#{key}(2i)"], hash["#{key}(3i)"]].map { |e| e.to_i })
   end
 end

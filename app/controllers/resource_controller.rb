@@ -76,10 +76,15 @@ class ResourceController < ApplicationController
     end
     @model.id = params[model_name.underscore.to_sym][:id] unless params[model_name.underscore.to_sym].nil? || params[model_name.underscore.to_sym][:id].nil?
     if @model.save
-      redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model))
+      respond_to do |f|
+        f.html { redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model)) }
+        f.json { render :text => "OK"}
+      end
     else
-      #p @model.errors
-      render :action => :new, :layout => !request.xhr?, :status => 422
+      respond_to do |f|
+        f.html { render :action => :new, :layout => !request.xhr?, :status => 422 }
+        f.json { render :text => "FAIL"}
+      end
     end
   end
 

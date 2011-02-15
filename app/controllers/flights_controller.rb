@@ -105,11 +105,11 @@ class FlightsController < ApplicationController
             render :action => :show, :layout => false
           end
         end
-        format.json  { render :json => @flight, :status => :created, :location => @flight }
+        format.json  { render :json => "OK" }
       else
         p @flight.errors
         format.html { render :action => "new", :layout => !request.xhr? }
-        format.json  { render :json => @flight.errors, :status => :unprocessable_entity }
+        format.json  { render :json => "FAIL" }
       end
     end
   end

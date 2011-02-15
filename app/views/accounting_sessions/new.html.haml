@@ -1,0 +1,5 @@
+= simple_form_for(@accounting_session) do |f|
+  = f.input :name
+  = l(@accounting_session.start_date)
+  = f.input :end_date
+  = f.submit

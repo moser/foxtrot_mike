@@ -1,0 +1,15 @@
+%h1= @accounting_session.name
+= l(@accounting_session.end_date)
+= l(@accounting_session.start_date)
+.flights
+  = render :partial => "flights/title_spans"
+  - @accounting_session.flights.each do |f|
+    .flight_format
+      = render :partial => "flights/flight_spans", :locals => { :flight => f }
+.accounting_entries
+  - @accounting_session.flights.each do |f|
+    - f.accounting_entries.each do |e|
+      .accounting_entry
+        = e.from.name
+        = e.to.name
+        = format_currency(e.value)

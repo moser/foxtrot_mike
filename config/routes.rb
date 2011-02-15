@@ -6,7 +6,6 @@ Server::Application.routes.draw do
   match '/login', :to => 'account_sessions#new'
   match 'dashboard', :to => 'dashboards#show'
 
-  resources :pdfs, :only => [:show, :create]
   resources :filtered_flights, :only => [:index]
   resources :groups do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
@@ -18,11 +17,14 @@ Server::Application.routes.draw do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
   end
   resources :accounts
-  resources :account_sessions
+  resources :account_sessions 
   resources :flights do 
     resource :launch
     resources :liabilities
     resources :accounting_entries
+  end
+  resources :accounting_sessions do
+    resources :flights, :controller => 'accounting_session_flights'
   end
   resources :tow_flights, :controller => 'flights'
   resources :planes do
