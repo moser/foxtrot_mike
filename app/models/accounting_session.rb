@@ -1,39 +1,47 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights
-  validates_presence_of :name
-#  validate do |f|
-#    errors.add(:end_date, I18n.t("activerecord.errors.greater_than", :count => AccountingSession.latest_session_end)) unless f.end_date > AccountingSession.latest_session_end
-#  end
+  validates_presence_of :name, :start_date, :end_date
+  
+  #TODO make all other flights methods unaccessible
+  def flights_with_default
+    if finished?
+      flights_without_default
+    else
+      Flight.include_all.where(AbstractFlight.arel_table[:departure].gteq(start_date)).
+                            where(AbstractFlight.arel_table[:departure].lteq(end_date)).
+                            order('departure ASC').all
+    end
+  end
+  
+  alias_method_chain :flights, :default
 
   def initialize(*args)
     super(*args)
-    if new_record? && end_date.nil?
+    if new_record? && start_date.nil? && end_date.nil?
+      self.start_date = AccountingSession.latest_session_end + 1.day
       self.end_date = start_date.end_of_month
     end
     
   end
+  
+  def start_date=(d)
+    d = d.to_date if d.respond_to?(:to_date)
+    write_attribute(:start_date, d)
+  end
 
   def end_date=(d)
-    d = d.to_date
+    d = d.to_date if d.respond_to?(:to_date)
     write_attribute(:end_date, d)
   end
 
   def finished?
     !finished_at.nil?
   end
-  
-  def previous
-    AccountingSession.where("end_date < ?", self.end_date).order("end_date DESC").limit(1).first
-  end
-  
-  def start_date
-    (previous && previous.end_date || AccountingSession.latest_session_end) + 1.day
-  end
 
-  def self.booking_now
-    DateTime.now
-  end
+#  def self.booking_now
+#    DateTime.now
+#  end
   
   # The end date of the latest accounting session.
   # If there are no accounting sessions, the day before the first flight.

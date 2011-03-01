@@ -20,11 +20,11 @@ module ValidityCheck
   # The only change allowed is to set the valid_to date (must be after
   # AccountingSession.booking_now).
   def in_effect?
-    valid_at?(AccountingSession.booking_now)
+    valid_at?(AccountingSession.latest_session_end)
   end
 
   def outdated?
-    not_valid_anymore_at?(AccountingSession.booking_now)
+    not_valid_anymore_at?(AccountingSession.latest_session_end)
   end
 
   def self.included(base)

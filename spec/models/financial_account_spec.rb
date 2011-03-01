@@ -1,5 +1,8 @@
 require 'spec_helper'
 
 describe FinancialAccount do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should return name on to_s" do
+    f = FinancialAccount.generate!(:name => "lala")
+    f.to_s.should == "lala"
+  end
 end

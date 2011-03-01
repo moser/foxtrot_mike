@@ -3,6 +3,8 @@ require 'spec_helper'
 describe AccountingSession do
   it { should have_many :accounting_entries }
   it { should validate_presence_of :name }
+  it { should validate_presence_of :start_date }
+  it { should validate_presence_of :end_date }
 
   it "should not be finished unless the finished_at date is present" do
     s = AccountingSession.new
@@ -29,17 +31,11 @@ describe AccountingSession do
     AccountingSession.latest_session_end.should == (AbstractFlight.oldest_departure.to_date - 1.day)
   end
   
-  it "should be aware of its predecessor" do
+  it "should have a sensible default for start_date" do
     AccountingSession.destroy_all
-    a = AccountingSession.generate!(:end_date => 3.days.ago)
-    b = AccountingSession.generate!(:end_date => 1.days.ago)
-    b.previous.should == a
-  end
-  
-  it "should always have a start_date" do
-    AccountingSession.destroy_all
+    d = AccountingSession.latest_session_end
     a = AccountingSession.generate!(:end_date => 5.days.ago)
-    a.start_date.should == (AccountingSession.latest_session_end + 1.day)
+    a.start_date.should == (d + 1.day)
     b = AccountingSession.generate!(:end_date => 3.days.ago)
     b.start_date.should == (a.end_date + 1.day)
   end
@@ -48,5 +44,6 @@ describe AccountingSession do
     AccountingSession.destroy_all
     a = AccountingSession.generate!(:end_date => ((Date.today - 1.month).end_of_month))
     AccountingSession.new.end_date.should == Date.today.end_of_month
-  end
+  end  
+  
 end

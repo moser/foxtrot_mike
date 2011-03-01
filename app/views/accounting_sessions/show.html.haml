@@ -1,15 +1,26 @@
 %h1= @accounting_session.name
-= l(@accounting_session.end_date)
 = l(@accounting_session.start_date)
+= l(@accounting_session.end_date)
 .flights
   = render :partial => "flights/title_spans"
   - @accounting_session.flights.each do |f|
     .flight_format
       = render :partial => "flights/flight_spans", :locals => { :flight => f }
-.accounting_entries
-  - @accounting_session.flights.each do |f|
-    - f.accounting_entries.each do |e|
-      .accounting_entry
-        = e.from.name
-        = e.to.name
-        = format_currency(e.value)
+      = show_link(f)
+      .accounting_entries
+        - f.accounting_entries.each do |e|
+          .accounting_entry
+            = e.from
+            = e.to
+            = format_currency(e.value)
+.aggregated_entries
+  - entries = @accounting_session.flights.map { |f| f.accounting_entries }.flatten
+  - grouped0 = entries.group_by { |e| e.from }
+  - grouped1 = {}
+  - grouped0.each { |k, v| grouped1[k] = v.group_by { |e| e.to } }
+  - grouped1.each do |k, hs|
+    .aggregated_entry
+      = k
+      - hs.each do |k, es|
+        = k
+        = format_currency(es.map { |e| e.value }.sum)

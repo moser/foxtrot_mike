@@ -6,4 +6,8 @@ class FinancialAccount < ActiveRecord::Base
   def owners
     [planes, people, wire_launchers].flatten
   end
+  
+  def to_s
+    name
+  end
 end

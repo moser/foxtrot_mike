@@ -10,26 +10,31 @@ class Flight < AbstractFlight
   end
   
   def accounting_entries
-    launch_account = launch.nil? ? nil : launch.financial_account
-    plane_account = plane.financial_account
-    launch_sum = launch_cost.free_sum if launch_cost
-    flight_sum = cost.free_sum if cost
-    b = liabilities_with_default.map do |l|
-      e = []
-      unless launch_cost.nil? || launch_account.nil?
-        e << AccountingEntry.new(:from => l.person.financial_account, :to => launch_account, 
-                                    :value => (proportion_for(l) * launch_sum).round, :item => launch)
-      end 
-      unless cost.nil?
-        e << AccountingEntry.new(:from => l.person.financial_account, :to => plane_account, 
-                                   :value => (proportion_for(l) * flight_sum).round, :item => self)
+    #TODO create entries in a background job
+    if @ae.nil?
+      launch_account = launch.nil? ? nil : launch.financial_account
+      plane_account = plane.financial_account
+      launch_sum = launch_cost.free_sum if launch_cost
+      flight_sum = cost.free_sum if cost
+      b = liabilities_with_default.map do |l|
+        e = []
+        unless launch_cost.nil? || launch_account.nil?
+          e << AccountingEntry.new(:from => l.person.financial_account, :to => launch_account, 
+                                      :value => (proportion_for(l) * launch_sum).round, :item => launch)
+        end 
+        unless cost.nil?
+          e << AccountingEntry.new(:from => l.person.financial_account, :to => plane_account, 
+                                     :value => (proportion_for(l) * flight_sum).round, :item => self)
+        end
+        e
       end
+      b << cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => plane_account,
+                                            :value => i.value, :item => self) } if cost
+      b << launch_cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => launch_account,
+                                            :value => i.value, :item => launch) } if launch_cost
+      @ae = b.flatten
     end
-    b << cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => plane_account,
-                                          :value => i.value, :item => self) } if cost
-    b << launch_cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => launch_account,
-                                          :value => i.value, :item => launch) } if launch_cost
-    b.flatten
+    @ae
   end
 
   def liabilities_with_default
