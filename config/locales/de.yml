@@ -10,6 +10,7 @@ de:
     plane_cost_category: Flugzeugkategorie
     conditions: Bedingungen
     cost_items: Kostenpositionen
+    financial_account: Buchhaltungskonto
   helpers:
     submit:
       create: "Erstellen"
@@ -70,6 +71,9 @@ de:
     index:
       title: "Flüge für %{for}"
       group_by: "Gruppieren nach"
+  financial_accounts:
+    index:
+      title: Buchhaltungskonten
   groups:
     index:
       title: "Gruppen"
@@ -132,6 +136,7 @@ de:
       cost_hint_condition: Einschränkung auf Kostengruppe
       flight: Flug
       flight_cost_rule: Kostenregel für Flüge
+      financial_account: Buchhaltungskonto
       number_cost_rule_condition: Bedingung auf Dauer
       tow_flight: Schleppflug
       plane: Flugzeug
@@ -197,6 +202,8 @@ de:
             long: Eigenstart
       flight_cost_rule:
         flight_type: Flugart
+      financial_account:
+        owners: Besitzer
       license:
         name: Bezeichnung
         level: Stufe

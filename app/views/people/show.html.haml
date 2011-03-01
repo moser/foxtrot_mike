@@ -4,7 +4,10 @@
     %td=h @person.name
   %tr
     %th= Person.l(:group)
-    %td=h @person.group.name
+    %td= show_link(@person.group, @person.group.to_s)
+  %tr
+    %th= Person.l(:financial_account)
+    %td= show_link(@person.financial_account, @person.financial_account.to_s)
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
 
