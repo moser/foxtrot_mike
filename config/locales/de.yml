@@ -11,6 +11,8 @@ de:
     conditions: Bedingungen
     cost_items: Kostenpositionen
     financial_account: Buchhaltungskonto
+    start_date: Anfangsdatum
+    end_date: Enddatum
   helpers:
     submit:
       create: "Erstellen"
@@ -42,6 +44,12 @@ de:
   accounts:
     index:
       title: Benutzerkonten
+  accounting:
+    index:
+      title: Buchhaltung
+  accounting_sessions:
+    index:
+      title: Buchungssitzungen
   airfields:
     index:
       title: "Flugplätze"
@@ -79,7 +87,7 @@ de:
       title: "Gruppen"
   legal_plane_classes:
     index:
-      title: "Flugzeuggruppen"
+      title: "Flugzeugklassen"
   licenses:
     index:
       title: "Lizenzen"
@@ -137,6 +145,7 @@ de:
       flight: Flug
       flight_cost_rule: Kostenregel für Flüge
       financial_account: Buchhaltungskonto
+      legal_plane_class: Flugzeugklasse
       number_cost_rule_condition: Bedingung auf Dauer
       tow_flight: Schleppflug
       plane: Flugzeug
@@ -217,7 +226,8 @@ de:
       plane:
         registration: Kennzeichen
         make: Typ
-        book: "Bordbuch"        
+        book: "Bordbuch"
+        legal_plane_class: Flugzeugklasse      
       person:
         name: Name
         book: "Flugbuch"

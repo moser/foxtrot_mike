@@ -11,6 +11,7 @@ module ApplicationHelper
           m.children << Leaf.new({:name => "planes", :path => planes_path})  if can?(:read, Plane)
           m.children << Leaf.new({:name => "wire_launchers", :path => wire_launchers_path})  if can?(:read, WireLauncher)
           m.children << Leaf.new({:name => "airfields", :path => airfields_path}) if can?(:read, Airfield)
+          m.children << Leaf.new({:name => "financial_accounts", :path => financial_accounts_path}) if can?(:read, FinancialAccount)
           if can?(:read, Person)
             m.children << Tree.new({:name => "people", :path => people_path}) do |k|
               k.children << Leaf.new({:name => "licenses", :path => licenses_path}) if can?(:read, License)
@@ -33,7 +34,12 @@ module ApplicationHelper
           end
         end
       end
-      t.children << Leaf.new({:name => "cost_rules", :path => cost_rules_path}) if can?(:read, :cost_rules)
+      if can?(:read, :cost_rules) || can?(:read, AccountingSession)
+        t.children << Tree.new({ :name => "accounting" }) do |k|
+          k.children << Leaf.new({:name => "cost_rules", :path => cost_rules_path}) if can?(:read, :cost_rules)
+          k.children << Leaf.new({:name => "accounting_sessions", :path => accounting_sessions_path}) if can?(:read, AccountingSession)
+        end
+      end
       t.children << Leaf.new({:name => "logout", :path => "/logout", :class => "logout"})
     end
   end
