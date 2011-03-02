@@ -73,9 +73,12 @@ class AbstractFlight < ActiveRecord::Base
 #  end
 
   def cost
-    candidates = FlightCostRule.for(self).map { |cr| cr.apply_to(self) }
-    candidates = candidates.sort_by { |a| a.free_sum }
-    candidates.first
+    unless @cost
+      candidates = FlightCostRule.for(self).map { |cr| cr.apply_to(self) }
+      candidates = candidates.sort_by { |a| a.free_sum }
+      @cost = candidates.first
+    end
+    @cost
   end
 
   def launch_cost

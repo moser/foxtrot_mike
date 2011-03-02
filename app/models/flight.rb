@@ -11,7 +11,7 @@ class Flight < AbstractFlight
   
   def accounting_entries
     #TODO create entries in a background job
-    if @ae.nil?
+    unless @ae
       launch_account = launch.nil? ? nil : launch.financial_account
       plane_account = plane.financial_account
       launch_sum = launch_cost.free_sum if launch_cost
