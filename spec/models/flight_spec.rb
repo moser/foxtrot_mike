@@ -45,8 +45,8 @@ describe Flight do
   
   describe "l" do
     it "should translate FLIGHT" do
-      Flight.l.should == "Flight"
-      Flight.l(:duration).should == "Duration"
+      Flight.l.should == "Flug"
+      Flight.l(:duration).should == "Dauer"
     end
   end
 
