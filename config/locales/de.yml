@@ -37,6 +37,7 @@ de:
     current: "Aktuell"
     future: "Zukünftig"
     validity: "Gültigkeit"
+    accounting_entry: "%{from} an %{to} %{value}"
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
