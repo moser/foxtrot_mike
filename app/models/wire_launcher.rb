@@ -6,7 +6,8 @@ class WireLauncher < ActiveRecord::Base
 
   has_many :wire_launcher_cost_category_memberships
   membership :wire_launcher_cost_category_memberships
-  belongs_to :financial_account  
+  belongs_to :financial_account
+  has_many :wire_launches
 
   validates_presence_of :registration
   
