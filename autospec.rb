@@ -28,7 +28,8 @@ end
               lambda { |m| ["spec/views/big_fucking_view_spec.rb", "spec/views/#{m[1]}/#{m[2]}.html.haml_spec.rb"] },
              /^app\/(.*)\/(.*)\.rb$/ =>
               lambda { |m| "spec/#{m[1]}/#{m[2]}_spec.rb" },
-             /^spec\/(.*)_spec.rb$/ => lambda { |m| "spec/#{m[1]}_spec.rb" } }
+             /^spec\/(.*)_spec.rb$/ => lambda { |m| "spec/#{m[1]}_spec.rb" },
+             /^lib\/launch_accounting_entries.rb$/ => lambda { |m| ["spec/models/tow_flight_spec.rb", "spec/models/wire_launch_spec.rb"] } }
 @run_all = true
 @run_all_when_green = false
 
@@ -65,7 +66,7 @@ loop do
         c = @specs.join(' ') 
         @run_all = false
       else
-        c = changed_files.map { |f| specs_for(f) }.flatten.join(' ')
+        c = changed_files.map { |f| specs_for(f) }.flatten.uniq.join(' ')
       end
       15.times { puts }
       puts "\e[34m##############################################################################\e[0m"
