@@ -3,11 +3,14 @@ class WireLaunch < ActiveRecord::Base
 
   has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.abstract_flight.id unless l.nil? || l.new_record? || l.abstract_flight.nil? } }
 
+  has_many :accounting_entries, :as => :item
   belongs_to :wire_launcher
   has_one :abstract_flight, :as => :launch
   has_one :manual_cost, :as => :item
 
   validates_presence_of :wire_launcher
+  
+  include LaunchAccountingEntries
   
   def cost
     unless @cost

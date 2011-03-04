@@ -1,6 +1,8 @@
 class TowFlight < AbstractFlight
   before_validation :set_departure
   has_one :abstract_flight, :as => :launch #the towed flight
+  
+  include LaunchAccountingEntries
 
   def cost_hint
     abstract_flight.cost_hint

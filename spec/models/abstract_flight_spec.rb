@@ -10,6 +10,7 @@ describe AbstractFlight do
   it { should belong_to :to }
   
   it { should have_many :crew_members }
+  it { should have_many :accounting_entries }
   it { should belong_to :launch }
   
   describe "arrival" do

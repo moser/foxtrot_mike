@@ -9,33 +9,35 @@ class Flight < AbstractFlight
     errors.add(:base, I18n.t("activerecord.errors.not_editable")) unless f.editable?
   end
   
-  def accounting_entries
-    #TODO create entries in a background job
-    unless @ae
-      launch_account = launch.nil? ? nil : launch.financial_account
+  def create_accounting_entries
+    accounting_entries_without_validity_check.delete_all
+    if cost
       plane_account = plane.financial_account
-      launch_sum = launch_cost.free_sum if launch_cost
-      flight_sum = cost.free_sum if cost
-      b = liabilities_with_default.map do |l|
-        e = []
-        unless launch_cost.nil? || launch_account.nil?
-          e << AccountingEntry.new(:from => l.person.financial_account, :to => launch_account, 
-                                      :value => (proportion_for(l) * launch_sum).round, :item => launch)
-        end 
-        unless cost.nil?
-          e << AccountingEntry.new(:from => l.person.financial_account, :to => plane_account, 
-                                     :value => (proportion_for(l) * flight_sum).round, :item => self)
-        end
-        e
+      flight_sum = cost.free_sum 
+      liabilities_with_default.map do |l|
+          AccountingEntry.create(:from => l.person.financial_account, :to => plane_account, 
+                                   :value => (proportion_for(l) * flight_sum).round, :item => self)
       end
-      b << cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => plane_account,
-                                            :value => i.value, :item => self) } if cost
-      b << launch_cost.bound_items.map { |i| AccountingEntry.new(:from => i.financial_account, :to => launch_account,
-                                            :value => i.value, :item => launch) } if launch_cost
-      @ae = b.flatten
+      cost.bound_items.map { |i| AccountingEntry.create(:from => i.financial_account, :to => plane_account,
+                                                          :value => i.value, :item => self) }
     end
-    @ae
+    update_attribute :accounting_entries_valid, true
   end
+  
+  def invalidate_accounting_entries
+    update_attribute :accounting_entries_valid, false
+    delay.create_accounting_entries
+    launch.invalidate_accounting_entries if launch
+  end
+  
+  def accounting_entries_with_validity_check
+    unless accounting_entries_valid?
+      create_accounting_entries
+    end
+    accounting_entries_without_validity_check(true) + (launch.nil? ? [] : launch.accounting_entries)
+  end
+  
+  alias_method_chain :accounting_entries, :validity_check
 
   def liabilities_with_default
     liabilities.count == 0 ? [ DefaultLiability.new(self) ] : liabilities

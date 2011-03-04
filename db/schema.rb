@@ -10,15 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302184006) do
+ActiveRecord::Schema.define(:version => 20110303193051) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
-    t.string   "id",                    :limit => 36
-    t.string   "plane_id",              :limit => 36
-    t.string   "from_id",               :limit => 36
-    t.string   "to_id",                 :limit => 36
-    t.string   "controller_id",         :limit => 36
-    t.string   "launch_id",             :limit => 36
+    t.string   "id",                       :limit => 36
+    t.string   "plane_id",                 :limit => 36
+    t.string   "from_id",                  :limit => 36
+    t.string   "to_id",                    :limit => 36
+    t.string   "controller_id",            :limit => 36
+    t.string   "launch_id",                :limit => 36
     t.string   "launch_type"
     t.datetime "departure"
     t.integer  "duration"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20110302184006) do
     t.datetime "updated_at"
     t.integer  "cost_hint_id"
     t.integer  "accounting_session_id"
+    t.boolean  "accounting_entries_valid",               :default => false
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
@@ -399,10 +400,11 @@ ActiveRecord::Schema.define(:version => 20110302184006) do
   add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true
 
   create_table "wire_launches", :id => false, :force => true do |t|
-    t.string   "id",               :limit => 36
-    t.string   "wire_launcher_id", :limit => 36
+    t.string   "id",                       :limit => 36
+    t.string   "wire_launcher_id",         :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "accounting_entries_valid",               :default => false
   end
 
   add_index "wire_launches", ["id"], :name => "index_wire_launches_on_id", :unique => true

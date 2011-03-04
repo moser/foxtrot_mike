@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/shared_examples_for_accounting_entries')
 
 describe Flight do
+  it_behaves_like "an accounting entry factory"
   before(:each) do
     @valid_attributes = {
       :duration => 1,
@@ -57,28 +59,25 @@ describe Flight do
   it "should be revisable" do
     Flight.new.should respond_to :versions
   end
-
-  it "should create bookings" do
-    plane = Plane.generate!(:financial_account => FinancialAccount.generate!(:name => "plane")).id
-    person = Person.generate!(:financial_account => FinancialAccount.generate!(:name => "person")).id
-    person2 = Person.generate!(:financial_account => FinancialAccount.generate!(:name => "person2")).id
-    wl = WireLauncher.generate!(:financial_account => FinancialAccount.generate!(:name => "wl")).id
-    PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => plane)
-    PersonCostCategoryMembership.generate!(:person_cost_category_id => (b = PersonCostCategory.generate!.id), :person_id => person)
-    WireLauncherCostCategoryMembership.generate!(:wire_launcher_cost_category_id => (c = WireLauncherCostCategory.generate!.id), :wire_launcher_id => wl)
-    r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => b)
-    r.flight_cost_items.create :depends_on => "duration", :value => 1
-    r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
-    r = WireLaunchCostRule.generate!(:wire_launcher_cost_category_id => c, :person_cost_category_id => b)
-    r.wire_launch_cost_items.create :value => 100
-    r.wire_launch_cost_items.create :value => 10, :financial_account => fa
+  
+  describe "accounting_entries" do
+    it "should invalidate accounting_entries and start a delayed job for their creation" do
+      f = Flight.generate!
+      f.accounting_entries
+      f.accounting_entries_valid?.should be_true
+      f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
+      launch = mock("launch")
+      launch.should_receive(:invalidate_accounting_entries)
+      f.should_receive(:launch).at_least(1).and_return(launch)
+      f.invalidate_accounting_entries
+      f.accounting_entries_valid?.should be_false
+    end
     
-    f = Flight.create(:plane_id => plane, :seat1_id => person, :duration => 10, :departure => DateTime.now)
-    f.launch = WireLaunch.create(:wire_launcher_id => wl, :abstract_flight => f)
-    f.save
-    
-    Liability.create(:flight_id => f.id, :person_id => person, :proportion => 1)
-    p f.accounting_entries
+    it "should create accounting entries if invalid" do
+      f = Flight.generate!
+      f.should_receive(:create_accounting_entries)
+      f.accounting_entries
+    end  
   end
   
   it "should have a complete history" do
