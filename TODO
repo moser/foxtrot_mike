@@ -20,6 +20,9 @@
   + aggregate all accounting_entries
   - export them as DATEV,...
   
+- accounting_entries
+  - invalidation on changes to other models which could influence cost and accounting entries
+  
 RUBY 1.9:
  - NotImplementedError in Filtered flightsController#index
    Please switch to Ruby 1.9's standard CSV library.  It's FasterCSV plus support for Ruby 1.9's m17n encoding engine.
