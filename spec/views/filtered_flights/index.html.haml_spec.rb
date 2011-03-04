@@ -10,14 +10,14 @@ describe "/filtered_flights/index.html.haml" do
 
   it "renders a list of flights" do
     render
-    response.should have_tag("span.number", :content => "0:15")
+    rendered.should have_tag("span.number", :content => "0:15")
   end
   
   it "renders a list for each person" do
     @flights = @flights.group_by &:grouping_people
     @group_by = "people"
     render
-    response.should have_tag("span.number", :content => "0:05")
-    response.should have_tag("span.number", :content => "0:10")
+    rendered.should have_tag("span.number", :content => "0:05")
+    rendered.should have_tag("span.number", :content => "0:10")
   end
 end
