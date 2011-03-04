@@ -24,6 +24,7 @@ class Flight < AbstractFlight
     update_attribute :accounting_entries_valid, true
   end
   
+  #TODO call in after_save??
   def invalidate_accounting_entries
     update_attribute :accounting_entries_valid, false
     delay.create_accounting_entries

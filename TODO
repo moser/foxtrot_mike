@@ -1,19 +1,9 @@
 - locking for editing (optimistic?) (obj.versions.count?)
 - locking when stuff is booked
-- define a "booking now" = 1 second after last booking
-  - rules can be edited if they were not yet valid @booking now
-  - a rule's valid_to date can be edited if it is after booking now
-    - for these rules there should be a "end & replace by copy (editable)" feature
-  - new rules must have a valid_from date >= booking now
+
 - column disabled on planes, people + before_destroy => false (=> no more graveyard)
 - no destroying (people|planes|airfields), just "disable"
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
-- metaprogram/inherit cost rules controller
-- extract immutability into module
-- liabilities:
-  - remove bookedat
-- what if there is the posibility to create tow costs both time and level based?
-  - remove tow level stuff!
 - ValidityCheck:
   - configure module of what is now (time.now, booking.now)
 - application config:
@@ -24,46 +14,19 @@
   - add possibility to undo all changes
   - show changes of such an event
 - accounting session
-  - create
-  - add flights
+  + create
+  + add flights
   - add manual accounting_entries
-  - aggregate all accounting_entries
+  + aggregate all accounting_entries
   - export them as DATEV,...
+  
+RUBY 1.9:
+ - NotImplementedError in Filtered flightsController#index
+   Please switch to Ruby 1.9's standard CSV library.  It's FasterCSV plus support for Ruby 1.9's m17n encoding engine.
 
 PAPER_TRAIL:
   - item_type should be the real class, not the superclass (STI)
     - add column real_type and keep track of the real class there
   - show diffs or something in views
   
-IN PROGRESS:
 
-
-
-DONE:
-- views: 
-  - Hauptflugbuch (von/nach Heimatflugplatz)
-  - Flugleiterdienstbuch
-- bordbuch
-- liabilities: create default one if none exists (Trainee/PIC 100%) when booking
-- refactor and improve FlightCost, LaunchCost. common interface with manual cost
-- interface to fibu
-  - save accounts (financial ones) on planes, wire_launchers and people
-- formtastic?
-- substitue auth plugin?
-- replace marker css classes by data-* attributes
-- wire launch: +operator
-- flight: duration == -1 <=> still flying <=> arrival == nil
-- license stuff? get information on situation in other countries (segelflug.de?)
-  - create "LawPlaneGroup" n-1 "Planes"
-  - table LawPlaneGroupPeople:
-    - no entry => Trainee
-    - entry instructor = false => Normal Pilot
-    - entry instructor = true => Instructor
-  - controller & sync needed
-- time_cost_rule: conditions (duration (<|>) x) && additive costs (+/-)
-- STI <=> actsasrevisable TowFlight...
-- keep track of controller (flugleiter)
-- payments (map person with a percentage to a flight)
-- remove Make*Revisable migrations
-- substitute acts as revisable by paper_trail
-- cost for Flight/TowFlight (tow rules must not be used for normal flights)
