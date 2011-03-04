@@ -453,3 +453,18 @@ h2.page_sub_title {
 	position:absolute;
 }
 
+
+table.controllers {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.controllers td, table.controllers th { 
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+}
+
+table.controllers td.signature {
+  width: 280px
+}

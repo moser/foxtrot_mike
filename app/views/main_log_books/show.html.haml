@@ -1,12 +1,12 @@
 .controls.no_print
-  %a.print_pdf.show_on_startup{ :href => '#' } print as pdf
+  = link_to t("views.as_pdf"), airfield_main_log_book_path(@airfield, :filter => { :date_parse_date => @date }, :format =>:pdf)
 
 %h1.page_title= t('main_flight_book', :airfield =>  @airfield.name, :date => l(@date))
 %form.no_print.submit_when_changed
   .input.date
     = date_select :filter, :date, :default => @date
   = submit_tag 'Ok', :class => 'hide_on_startup'
-= render :partial => "flights/title_spans"
+= render :partial => "flights/title_spans.html.haml"
 .flights.alternate
   - @flights.each do |flight|
-    .flight_format.alternate_color= render :partial => "flights/flight_spans", :locals => { :flight => flight }
+    .flight_format.alternate_color= render :partial => "flights/flight_spans.html.haml", :locals => { :flight => flight }

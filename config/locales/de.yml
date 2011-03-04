@@ -38,6 +38,10 @@ de:
     future: "Zukünftig"
     validity: "Gültigkeit"
     accounting_entry: "%{from} an %{to} %{value}"
+    from: "Von"
+    to: "Bis"
+    signature: "Unterschrift"
+    controller: "Flugleiter"
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
