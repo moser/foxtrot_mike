@@ -96,6 +96,9 @@ de:
   legal_plane_classes:
     index:
       title: "Flugzeugklassen"
+  liabilities:
+    list:
+      default: "Standard - Wird durch neue Zahlungsverpflichtungen überschrieben."
   licenses:
     index:
       title: "Lizenzen"

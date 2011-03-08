@@ -6,6 +6,6 @@ class LiabilitiesController < ResourceController
     model_by_id
     @nested = Flight.find(params[:flight_id])
     @model.destroy
-    redirect_to(polymorphic_path(@nested))
+    redirect_to(flight_liabilities_path(@nested))
   end  
 end
