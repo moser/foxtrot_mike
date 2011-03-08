@@ -93,6 +93,9 @@ de:
   groups:
     index:
       title: "Gruppen"
+  launches:
+    edit:
+      selflaunch: Eigenstart
   legal_plane_classes:
     index:
       title: "Flugzeugklassen"
@@ -184,7 +187,9 @@ de:
         plane: Flugzeug
         date: Datum
         seat1: Sitz 1
+        seat1_id: Sitz 1
         seat2: Sitz 2
+        seat2_id: Sitz 2
         from: Von
         to: Nach
         departure: Abflug
@@ -197,6 +202,7 @@ de:
         crew: Besatzung
         launch: Start
         cost: Kosten
+        controller: Flugleiter
         lauch_cost: Startkosten
         sum: Summe
         liabilities: Zahlungsverpflichtungen
