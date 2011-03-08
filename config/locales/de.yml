@@ -18,30 +18,33 @@ de:
       create: "Erstellen"
       update: "Ok"
   views:
-    as_pdf: "PDF"
-    as_csv: "CSV"
-    flightbooks: Flugbücher
-    bordbooks: Bordbücher
-    editing: "%{name} bearbeiten"
-    create: "%{name} erstellen"
-    add: "Hinzufügen"
-    copy: Kopieren
-    edit: "Bearbeiten"
-    cancel: "Abbrechen"
-    new: "Erstellen"
-    show: "Anzeigen"
-    back: "Zurück"
-    destroy: "Löschen"
-    areusure: "Sind Sie sicher?"
-    previous: "Ehemalig"
-    current: "Aktuell"
-    future: "Zukünftig"
-    validity: "Gültigkeit"
     accounting_entry: "%{from} an %{to} %{value}"
-    from: "Von"
-    to: "Bis"
-    signature: "Unterschrift"
+    add: "Hinzufügen"
+    areusure: "Sind Sie sicher?"
+    as_csv: "CSV"
+    as_pdf: "PDF"
+    back: "Zurück"
+    bordbooks: Bordbücher
+    cancel: "Abbrechen"
     controller: "Flugleiter"
+    controller_log: "Flugleiterdienstbuch"
+    copy: Kopieren
+    create: "%{name} erstellen"
+    current: "Aktuell"
+    date: Datum
+    destroy: "Löschen"
+    edit: "Bearbeiten"
+    editing: "%{name} bearbeiten"
+    flightbooks: Flugbücher
+    from: "Von"
+    future: "Zukünftig"
+    main_flight_book: "Hauptflugbuch"
+    new: "Erstellen"
+    previous: "Ehemalig"
+    show: "Anzeigen"
+    signature: "Unterschrift"
+    to: "Bis"
+    validity: "Gültigkeit"
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
@@ -102,6 +105,12 @@ de:
   master_data:
     index:
       title: "Stammdaten"
+  main_log_books:
+    controller_log:
+      end_time: Dienstende
+      start_time: Dienstbeginn
+      sunrise: Sonnenaufgang
+      sunset: Sonnenuntergang
   none:
     index:
       title: "nichts"

@@ -11,6 +11,8 @@
   }
 }
 
+body { background-color: #fff; color: #000; }
+
 h1.page_title {
   display: inline;
   font-size: 1.1em;
@@ -29,6 +31,10 @@ h2.page_sub_title {
   display: none;
 }
 
+.only_print {
+  display: block;
+}
+
 .content {
   border: 0;
   width: 100%;
@@ -38,4 +44,9 @@ h2.page_sub_title {
 a, a:visited {
   text-decoration: none;
   color: #000;
+}
+
+input {
+  border: 0;
+  width: 100px;
 }

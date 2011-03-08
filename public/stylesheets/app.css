@@ -1,3 +1,7 @@
+.only_print {
+  display: none;
+}
+
 a img {
   border: none;
 }
@@ -461,8 +465,6 @@ table.controllers {
 
 table.controllers td, table.controllers th { 
   border: 1px solid black;
-  margin: 0;
-  padding: 0;
 }
 
 table.controllers td.signature {

@@ -7,8 +7,8 @@
   .views
     %h2 Ansichten
     %ul
-      %li= link_to 'Kladde', airfield_main_log_book_path(AppConfig::HomeAirfield)
-      %li= link_to 'Flugleiterdienstbuch', airfield_main_log_book_path(AppConfig::HomeAirfield, :as => "controller_log")
+      %li= link_to t("views.main_flight_book"), airfield_main_log_book_path(AppConfig::HomeAirfield)
+      %li= link_to t("views.controller_log"), airfield_main_log_book_path(AppConfig::HomeAirfield, :as => "controller_log")
   .flightbooks
     %h2= t('views.flightbooks')
     %ul
