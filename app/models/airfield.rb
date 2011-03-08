@@ -28,4 +28,8 @@ class Airfield < ActiveRecord::Base
   def flights
     AbstractFlight.include_all.where(AbstractFlight.arel_table[:from_id].eq(id).or(AbstractFlight.arel_table[:to_id].eq(id)))
   end
+  
+  def srss
+    @srss ||= SRSS.new(lat, long)
+  end
 end

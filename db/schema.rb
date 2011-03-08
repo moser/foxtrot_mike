@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110304165236) do
+ActiveRecord::Schema.define(:version => 20110308141054) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(:version => 20110304165236) do
     t.boolean  "disabled",                   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "lat",                        :default => 0.0
+    t.float    "long",                       :default => 0.0
   end
 
   add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true

@@ -36,4 +36,10 @@ describe Airfield do
   it "should return shared_attributes" do
     Airfield.generate!.shared_attributes.keys.to_set.should == Airfield.shared_attribute_names.map { |n| n.to_s }.to_set
   end
+  
+  it "should return a sunrise/sunset calculator" do
+    a = Airfield.generate!(:lat => 11.0, :long => 13.0)
+    a.srss.should respond_to(:sunrise)
+    a.srss.should respond_to(:sunset)
+  end
 end
