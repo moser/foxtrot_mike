@@ -166,6 +166,8 @@ de:
         login: Loginname
       airfield:
         registration: Kennung
+        lat: geog. Breite (+ = Nord)
+        long: geog. Länge (+ = Ost)
       flight:
         plane: Flugzeug
         date: Datum

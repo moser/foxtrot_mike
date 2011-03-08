@@ -4,6 +4,12 @@
     %td=h @airfield.registration 
   %tr
     %th= Airfield.l(:name)
-    %td=h @airfield.name 
+    %td=h @airfield.name
+  %tr
+    %th= Airfield.l(:lat)
+    %td=h @airfield.lat
+  %tr
+    %th= Airfield.l(:long)
+    %td=h @airfield.long 
 = edit_link(@airfield)
 = back_link(Airfield)
