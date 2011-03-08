@@ -2,7 +2,7 @@
   .list{ :style => "display: none;" }
     = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @current_day, :dates => @dates }
 .item_container
-  .item
+  .item.flight_form
     %h1= t "views.create", :name => Flight.model_name.human
     = render :partial => "flights/form", :locals => { :flight => @flight }
     = back_link(Flight, {:class => "sop back index"})

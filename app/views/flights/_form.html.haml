@@ -5,10 +5,8 @@
   = f.input :seat2_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
   = f.association :from
   = f.association :to
-  = f.input :departure, :as => :time
-  .input.time.optional.replaced
-    %label.time.optional{ :for => "arrival"}>= Flight.l(:arrival)
-    = text_field_tag :arrival, (@flight.arrival.strftime("%H:%M") rescue ""), :class => "timepicker"
+  = f.input :departure, :as => :time, :wrapper_html => { :class => "departure no_replace" }
+  = f.input :arrival, :as => :time, :wrapper_html => { :class => "arrival no_replace" }
   = f.input :duration, :wrapper_html => { :class => "duration" }
   - if @flight.plane.nil? || @flight.plane.engine_duration_possible?
     = f.input :engine_duration, :wrapper_html => { :class => "duration" }

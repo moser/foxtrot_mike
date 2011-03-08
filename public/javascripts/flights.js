@@ -1,21 +1,32 @@
 function ArrivalHelper(el) {
+  var self = this;
   this.flight_div = $(el);
-  this.departure_h = $("#flight_departure_4i", this.flight_div);
-  this.departure_m = $("#flight_departure_5i", this.flight_div);
-  this.arrival = $("#arrival", this.flight_div);
+  DateTimePickers.replaceAndAttachPickersManually($(".input.time.departure", this.flight_div), "time",
+                  function(e) {
+                    self.departure = e;
+                    e.timepicker({ onClose: function() { 
+                      self.recalc_departure({ data: { self: self } });
+                    }, constrainInput: false });
+                    return e;
+                  });
+  DateTimePickers.replaceAndAttachPickersManually($(".input.time.arrival", this.flight_div), "time",
+                  function(e) {
+                    self.arrival = e;
+                    e.timepicker({ onClose: function() { 
+                      self.recalc_arrival({ data: { self: self } });
+                    }, constrainInput: false });
+                    return e;
+                  });
   this.duration_hidden = $("#flight_duration", this.flight_div);
-  this.duration_hidden.css("display", "none");
+  this.duration_hidden.hide();
   this.duration = $('<input id="flight_duration_show" value="'+ Format.duration(this.duration_hidden.val()) +'"/>')
   this.duration.insertAfter(this.duration_hidden)
-  this.departure_h.bind("blur", {self: this}, this.recalc_departure);
-  this.departure_m.bind("blur", {self: this}, this.recalc_departure);
-  this.arrival.bind("blur", {self: this}, this.recalc_arrival);
   this.duration.bind("blur", {self: this}, this.recalc_duration);
 }
 ArrivalHelper.prototype = {
   recalc: function(e, caller) {
     var self = e.data.self;
-    var departure = {h: Parse.integer(String(self.departure_h.val())), m: Parse.integer(String(self.departure_m.val()))}
+    var departure = Parse.time(self.departure.val());
     var arrival = Parse.time(self.arrival.val());
     if(caller == "arrival" || caller == "departure") {
       if(departure && arrival) {
@@ -51,12 +62,6 @@ ArrivalHelper.prototype = {
 function DateHelper(el) {
   
 }
-
-$(function() {
-  $('div.flight').each(function(i, el) {
-    new ArrivalHelper(el);
-  });
-});
 
 function Days() {
   var self = this;
@@ -361,5 +366,12 @@ $(function() {
     });
     
   }
+  var f = function() {
+    $('div.flight_form').each(function(i, el) {
+      new ArrivalHelper(el);
+    });
+  };
+  DomInsertionWatcher.register(f);
+  f();
 });
 

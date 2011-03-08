@@ -271,6 +271,10 @@ $(function() {
   });
   $('.hide_on_startup').hide();
   $('.show_on_startup').show();
+  DomInsertionWatcher.register(function() {
+    $('.hide_on_startup').hide();
+    $('.show_on_startup').show();
+  });
   $('form.submit_when_changed').find('input').live('change', function() {
     var form = $(this).parents('form.submit_when_changed');
     form.submit();
