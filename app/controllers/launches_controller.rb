@@ -34,7 +34,11 @@ class LaunchesController < ApplicationController
 
     if r
       #@flight = AbstractFlight.find(params[:flight_id], :include => [:plane, :from, :to, :crew_members])
-      render :action => :show
+      unless request.xhr?
+        render :action => :show
+      else
+        render :text => "ok"
+      end
     else
       if request.xhr?
         render :partial => "launches/edit", :locals => { :flight => @flight }, :layout => false, :status => 422

@@ -6,17 +6,22 @@ var IF = {
       return false;
     }).end().find('form').bind('submit', function(e) {
       var form = $(e.target);
-      PleaseWait.vote_show(); //TODO remove when async again
+      //PleaseWait.vote_show(); //TODO remove when async again
       $.ajax({url: form.attr('action'),
-            async: false, //TODO watch error http://forum.jquery.com/topic/problem-with-ajax-and-redirect-since-jquery-1-4-2
+            //async: false, //TODO watch error http://forum.jquery.com/topic/problem-with-ajax-and-redirect-since-jquery-1-4-2
             data: form.serialize(),
             type: 'POST',
             success: function(html, status, xhr) {
-              $.get($(link).attr('data-replace'), function(html) {
+              var f = function(html) {
                 target.closest('.inline_form_replace_context').replaceWith(html);
                 DomInsertionWatcher.notify_listeners($('.inline_form_replace_context'));
                 PleaseWait.vote_hide();
-              });
+              };
+              if($(link).attr('data-replace')) {
+                $.get($(link).attr('data-replace'), f);
+              } else {
+                f(html);
+              }
             },
             error: function(xhr, status) {
               h.html($(xhr.responseText));
@@ -26,7 +31,7 @@ var IF = {
               return false;
             }
       });
-      //PleaseWait.vote_show(); //TODO uncomment when async again
+      PleaseWait.vote_show(); //TODO uncomment when async again
       return false;
     });
   },

@@ -3,11 +3,12 @@
     = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
 .item_container
   .item.inline_form_replace_context
+    = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date
     %table.categories
       %tr
         %th= Flight.l(:data)
         %td
-          %table.data
+          %table.data.inline_form_hide_context
             %tr
               %th= Flight.l(:date)
               %td= l  @flight.departure_date
@@ -54,6 +55,8 @@
             %tr
               %th= Flight.l(:comment)
               %td= @flight.comment
+            %tr
+              %td= edit_link(@flight, nil, {:class => "inline_form_show" })
       %tr
         %th= Flight.l(:launch)
         %td
@@ -110,6 +113,4 @@
                 = l(v.created_at) + ' ' + v.item_type
                 = Account.find(v.whodunnit).person unless v.whodunnit.nil?
                 - #TODO ^ change to person?
-
-    = edit_link(@flight, nil, {:class => "sop edit"})
     = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date

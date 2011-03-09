@@ -267,6 +267,7 @@ $(function() {
   $('body').ajaxError(function(e, xhr, o, exception) {
     if(xhr.status == 500) {
       jQuery.facebox("An error occurred. Please try reloading the page.");
+      PleaseWait.vote_hide();
     }
   });
   $('.hide_on_startup').hide();
