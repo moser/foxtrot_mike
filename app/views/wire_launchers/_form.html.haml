@@ -1,4 +1,4 @@
 = simple_form_for(wire_launcher) do |f|
   = f.input :registration
-  = f.association :financial_account
+  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] }
   = f.button :submit

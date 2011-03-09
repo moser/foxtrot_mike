@@ -1,0 +1,41 @@
+.financial_accounts.inline_form_replace_context
+  %h3= Plane.l(:financial_accounts)
+  %table.data
+    - if object.previous_financial_account_ownerships.count > 0
+      %tr
+        %th= t('views.previous')
+        %td
+          %ul.no_bullet
+            - object.previous_financial_account_ownerships.each do |o|
+              %li
+                = l(o.valid_from) rescue t('views.dates.minus_infinity')
+                \-
+                = l(o.valid_to) rescue t('views.dates.infinity')
+                = o.financial_account.name
+    %tr
+      %th= t('views.current')
+      %td
+        %ul.no_bullet
+          %li
+            %span.inline_form_hide_context
+              = l(object.current_financial_account_ownership.valid_from) rescue t('views.dates.minus_infinity')
+              \-
+              = l(object.current_financial_account_ownership.valid_to) rescue t('views.dates.infinity')
+              = object.current_financial_account_ownership.financial_account.name
+    - if object.future_financial_account_ownerships.count > 0
+      %tr
+        %th= t('views.future')
+        %td
+          %ul.no_bullet
+            - object.future_financial_account_ownerships.each do |o|
+              %li
+                %span.inline_form_hide_context
+                  = l(o.valid_from) rescue t('views.dates.minus_infinity')
+                  \-
+                  = l(o.valid_to) rescue t('views.dates.infinity')
+                  = o.financial_account.name
+                  = edit_link(o, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) })
+                  = button_to t('views.destroy'), polymorphic_path(o), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership])
+    %tr
+      %td
+      %td= add_link([object, FinancialAccountOwnership], { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) })

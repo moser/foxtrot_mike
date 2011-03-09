@@ -1,12 +1,14 @@
 class Person < ActiveRecord::Base
   include UuidHelper
   include Membership
+  include Current
 
   has_paper_trail
 
   has_many :accounts
-  belongs_to :financial_account
   has_many :crew_members
+  has_many :financial_account_ownerships, :as => :owner, :autosave => true
+  has_one_current :financial_account_ownership
   has_many :person_cost_category_memberships
   has_many :liabilities
   has_many :licenses
@@ -14,9 +16,17 @@ class Person < ActiveRecord::Base
   belongs_to :group
   membership :person_cost_category_memberships
   
-  validates_presence_of :firstname, :lastname, :group
+  validates_presence_of :firstname, :lastname, :group, :financial_account
 
-  #added methods may rely on associations
+  def financial_account
+    current_financial_account_ownership && current_financial_account_ownership.financial_account 
+  end
+  
+  def financial_account=(fa)
+    if new_record?
+      financial_account_ownerships << FinancialAccountOwnership.create(:financial_account => fa, :owner => self)
+    end
+  end
   
   def self.find_all_by_name(str)
     find :all, 

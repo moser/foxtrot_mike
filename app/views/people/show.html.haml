@@ -5,15 +5,12 @@
   %tr
     %th= Person.l(:group)
     %td= show_link(@person.group, @person.group.to_s)
-  %tr
-    %th= Person.l(:financial_account)
-    %td= show_link(@person.financial_account, @person.financial_account.to_s)
   - if @person.disabled
     %tr
       %td= Person.l(:disabled_long)
+= render :partial => "financial_account_ownerships/list", :locals => { :object => @person }
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
-
 = show_link([@person, :flights], Person.l(:book))
 = edit_link(@person)
 = back_link(Person)

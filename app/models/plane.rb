@@ -1,17 +1,29 @@
 class Plane < ActiveRecord::Base
   include UuidHelper  
   include Membership
+  include Current
 
   has_paper_trail
 
-  belongs_to :financial_account 
   has_many :flights, :include => [:from, :to, :crew_members], :class_name => "AbstractFlight"
   has_many :plane_cost_category_memberships, :order => "valid_from ASC"  
+  has_many :financial_account_ownerships, :as => :owner
+  has_one_current :financial_account_ownership
   belongs_to :legal_plane_class
   belongs_to :group
   membership :plane_cost_category_memberships
 
-  validates_presence_of :legal_plane_class, :group
+  validates_presence_of :legal_plane_class, :group, :financial_account
+  
+  def financial_account
+    current_financial_account_ownership && current_financial_account_ownership.financial_account
+  end
+  
+  def financial_account=(fa)
+    if new_record?
+      financial_account_ownerships << FinancialAccountOwnership.create(:financial_account => fa, :owner => self)
+    end
+  end
   
   def to_s
     registration || ""

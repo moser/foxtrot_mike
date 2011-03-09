@@ -22,6 +22,14 @@ class ResourceController < ApplicationController
   def redirect_to_index
     self.class.redirect_to_index
   end
+  
+  def self.redirect_to_after_save(x = false)
+    @redirect_to_index ||= x
+  end
+  
+  def redirect_to_after_save
+    self.class.redirect_to_after_save
+  end
 
   def index
     model_all_or_after
@@ -74,10 +82,17 @@ class ResourceController < ApplicationController
     if nested && nested_id
       @model.send(:"#{nested}=", find_nested)
     end
+    p @model
     @model.id = params[model_name.underscore.to_sym][:id] unless params[model_name.underscore.to_sym].nil? || params[model_name.underscore.to_sym][:id].nil?
     if @model.save
       respond_to do |f|
-        f.html { redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model)) }
+        f.html do 
+          unless request.xhr?
+            redirect_to_index ? redirect_to(polymorphic_path(model_class)) : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_to(polymorphic_path(@model)))
+          else
+            render :text => "ok"
+          end
+        end
         f.json { render :text => "OK"}
       end
     else
@@ -92,7 +107,11 @@ class ResourceController < ApplicationController
     model_by_id
     authorize! :update, @model
     if @model.update_attributes(params[model_name.underscore.to_sym])
-      redirect_to_index ? redirect_to(polymorphic_path(model_class)) : redirect_to(polymorphic_path(@model))
+      unless request.xhr?
+        redirect_to_index ? redirect_to(polymorphic_path(model_class)) : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_to(polymorphic_path(@model)))
+      else
+        render :text => "ok"
+      end
     else
       render :action => :edit, :layout => !request.xhr?, :status => 422
     end

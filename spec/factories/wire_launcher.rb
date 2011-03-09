@@ -7,6 +7,7 @@ end
 
 Factory.define :wire_launcher do |p|
   p.sequence(:registration) {|n| "BY-#{n} #{DateTime.now}" }
+  p.financial_account { FinancialAccount.generate! }
 end
 
 Factory.define :wire_launcher_cost_category do |c|

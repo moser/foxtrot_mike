@@ -2,7 +2,7 @@
   = f.input :registration
   = f.input :make
   = f.association :group
-  = f.association :financial_account
+  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] }
   = f.association :legal_plane_class
   = f.input :has_engine
   = f.input :can_tow

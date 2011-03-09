@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308141054) do
+ActiveRecord::Schema.define(:version => 20110309161846) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -141,6 +141,15 @@ ActiveRecord::Schema.define(:version => 20110308141054) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "financial_account_ownerships", :force => true do |t|
+    t.string   "owner_id"
+    t.string   "owner_type"
+    t.integer  "financial_account_id"
+    t.date     "valid_from"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "financial_accounts", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -219,7 +228,7 @@ ActiveRecord::Schema.define(:version => 20110308141054) do
   add_index "manual_costs", ["id"], :name => "index_manual_costs_on_id", :unique => true
 
   create_table "people", :id => false, :force => true do |t|
-    t.string   "id",                   :limit => 36
+    t.string   "id",               :limit => 36
     t.string   "lastname"
     t.string   "firstname"
     t.date     "birthdate"
@@ -236,18 +245,17 @@ ActiveRecord::Schema.define(:version => 20110308141054) do
     t.string   "email"
     t.text     "comment"
     t.integer  "group_id"
-    t.boolean  "disabled",                           :default => false
+    t.boolean  "disabled",                       :default => false
     t.boolean  "in_training"
     t.string   "fibunr"
     t.string   "lvbnr"
-    t.boolean  "primary_member",                     :default => true
+    t.boolean  "primary_member",                 :default => true
     t.text     "description"
     t.date     "entry_date"
     t.string   "ssv_member_state"
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "financial_account_id"
   end
 
   add_index "people", ["id"], :name => "index_people_on_id", :unique => true
@@ -300,7 +308,6 @@ ActiveRecord::Schema.define(:version => 20110308141054) do
     t.boolean  "disabled",                             :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "financial_account_id"
   end
 
   add_index "planes", ["id"], :name => "index_planes_on_id", :unique => true
@@ -391,11 +398,10 @@ ActiveRecord::Schema.define(:version => 20110308141054) do
   end
 
   create_table "wire_launchers", :id => false, :force => true do |t|
-    t.string   "id",                   :limit => 36
+    t.string   "id",           :limit => 36
     t.string   "registration"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "financial_account_id"
   end
 
   add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true

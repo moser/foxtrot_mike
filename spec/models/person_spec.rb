@@ -1,6 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Person do  
+  it { should have_many :financial_account_ownerships }
+  it { should validate_presence_of :financial_account }
+  
+  it "should have one current financial_account_ownership" do
+    p = Person.new
+    p.should respond_to(:current_financial_account_ownership)
+    m = mock("ownership")
+    m.should_receive(:financial_account).at_least(:once).and_return(1)
+    p.should_receive(:current_financial_account_ownership).at_least(:once).and_return(m)
+    p.financial_account.should == 1
+  end
+  
   it "should find people by their name" do
     martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
     tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")

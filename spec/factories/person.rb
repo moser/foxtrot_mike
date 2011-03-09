@@ -2,6 +2,12 @@ Factory.define :person do |p|
   p.lastname 'foo'
   p.firstname 'bar'
   p.association :group, :factory => :group
+  p.financial_account { FinancialAccount.generate! }
+end
+
+Factory.define :financial_account_ownership do |o|
+  o.valid_from 1.year.ago
+  o.association :financial_account, :factory => :financial_account
 end
 
 Factory.define :person_cost_category do |c|

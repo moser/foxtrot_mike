@@ -15,6 +15,7 @@ Server::Application.routes.draw do
     resources :person_cost_category_memberships
     resources :licenses
     resources :flights, :controller => 'filtered_flights', :only => [:index]
+    resources :financial_account_ownerships
   end
   resources :accounts
   resources :account_sessions 
@@ -31,12 +32,14 @@ Server::Application.routes.draw do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
     resource :timeline, :only => [:show]
     resources :plane_cost_category_memberships
+    resources :financial_account_ownerships
   end
   resources :airfields do
     resource :main_log_book, :only => [:show]
   end
   resources :wire_launchers do
     resources :wire_launcher_cost_category_memberships
+    resources :financial_account_ownerships
   end
   
   resources :person_cost_categories
@@ -59,6 +62,7 @@ Server::Application.routes.draw do
     resources :wire_launch_cost_items
   end
   resources :wire_launch_cost_items
+  resources :financial_account_ownerships
 
   resources :cost_rules
   resources :cost_hints

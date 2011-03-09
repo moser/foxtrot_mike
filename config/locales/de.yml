@@ -13,6 +13,7 @@ de:
     financial_account: Buchhaltungskonto
     start_date: Anfangsdatum
     end_date: Enddatum
+    financial_accounts: Buchhaltungskonten
   helpers:
     submit:
       create: "Erstellen"

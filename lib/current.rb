@@ -5,11 +5,15 @@ module Current
       association = singular.pluralize
       class_eval <<-END
         def previous_#{association}
-          #{association}.reject { |e| e.valid_at?(Time.now) }
+          #{association}.where("valid_from < ? OR valid_from = NULL", Time.now).reject { |e| e.valid_at?(Time.now) }
         end
         
         def current_#{singular}
           #{association}.select { |e| e.valid_at?(Time.now) }.first
+        end
+        
+        def future_#{association}
+          #{association}.where("valid_from > ?", Time.now)
         end
         
         def current_#{singular}=(new)

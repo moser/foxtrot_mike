@@ -2,13 +2,17 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 shared_examples_for "an accounting entry factory" do
   before(:each) do 
-    plane = Plane.generate!(:financial_account => FinancialAccount.generate!(:name => "plane")).id
-    person = Person.generate!(:financial_account => FinancialAccount.generate!(:name => "person")).id
-    person2 = Person.generate!(:financial_account => FinancialAccount.generate!(:name => "person2")).id
-    wl = WireLauncher.generate!(:financial_account => FinancialAccount.generate!(:name => "wl")).id
-    PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => plane)
-    PersonCostCategoryMembership.generate!(:person_cost_category_id => (@b = PersonCostCategory.generate!.id), :person_id => person)
-    WireLauncherCostCategoryMembership.generate!(:wire_launcher_cost_category_id => (c = WireLauncherCostCategory.generate!.id), :wire_launcher_id => wl)
+    plane = Plane.generate!
+    FinancialAccountOwnership.generate!(:owner => plane)
+    person = Person.generate!
+    FinancialAccountOwnership.generate!(:owner => person)
+    person2 = Person.generate!
+    FinancialAccountOwnership.generate!(:owner => person2)
+    wl = WireLauncher.generate!
+    FinancialAccountOwnership.generate!(:owner => wl)
+    PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => plane.id)
+    PersonCostCategoryMembership.generate!(:person_cost_category_id => (@b = PersonCostCategory.generate!.id), :person_id => person.id)
+    WireLauncherCostCategoryMembership.generate!(:wire_launcher_cost_category_id => (c = WireLauncherCostCategory.generate!.id), :wire_launcher_id => wl.id)
     r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => @b)
     r.flight_cost_items.create :depends_on => "duration", :value => 1
     r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
@@ -16,8 +20,8 @@ shared_examples_for "an accounting entry factory" do
     r.wire_launch_cost_items.create :value => 100
     r.wire_launch_cost_items.create :value => 10, :financial_account => fa
     
-    @f = Flight.create(:plane_id => plane, :seat1_id => person, :duration => 10, :departure => DateTime.now, :controller_id => person2, :from => Airfield.generate!, :to => Airfield.generate!)
-    @f.launch = WireLaunch.create(:wire_launcher_id => wl, :abstract_flight => @f)
+    @f = Flight.create(:plane_id => plane.id, :seat1_id => person.id, :duration => 10, :departure => DateTime.now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
+    @f.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @f)
     @f.save!
   end
   
@@ -46,13 +50,15 @@ shared_examples_for "an accounting entry factory" do
   
   describe "tow_flight" do
     it "should create accounting entries" do
-      tow_pilot = Person.generate!.id
-      tow_plane = Plane.generate!(:financial_account => FinancialAccount.generate!(:name => "tow plane")).id
-      PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => tow_plane)
+      tow_pilot = Person.generate!
+      FinancialAccountOwnership.generate!(:owner => tow_pilot)
+      tow_plane = Plane.generate!
+      FinancialAccountOwnership.generate!(:owner => tow_plane)
+      PlaneCostCategoryMembership.generate!(:plane_cost_category_id => (a = PlaneCostCategory.generate!.id), :plane_id => tow_plane.id)
       r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => @b, :flight_type => "TowFlight")
       r.flight_cost_items.create :depends_on => "duration", :value => 200
       r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
-      @f.launch = TowFlight.create(:plane_id => tow_plane, :seat1_id => tow_pilot, :duration => 5, :to => @f.to, :abstract_flight => @f)
+      @f.launch = TowFlight.create(:plane_id => tow_plane.id, :seat1_id => tow_pilot.id, :duration => 5, :to => @f.to, :abstract_flight => @f)
       @f.save!
       @f.launch.accounting_entries.should_not be_empty
     end

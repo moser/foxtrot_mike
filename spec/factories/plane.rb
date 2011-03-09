@@ -2,6 +2,7 @@ Factory.define :plane do |p|
   p.sequence(:registration) {|n| "D-#{n} #{DateTime.now}" }
   p.association :group, :factory => :group
   p.association :legal_plane_class, :factory => :legal_plane_class
+  p.financial_account { FinancialAccount.generate! }
 end
 
 Factory.define :plane_cost_category do |c|

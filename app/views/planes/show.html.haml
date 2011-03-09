@@ -9,9 +9,6 @@
     %th= Plane.l(:group)
     %td= show_link(@plane.group, @plane.group.to_s)
   %tr
-    %th= Plane.l(:financial_account)
-    %td= show_link(@plane.financial_account, @plane.financial_account.to_s)
-  %tr
     %th= Plane.l(:legal_plane_class)
     %td= show_link(@plane.legal_plane_class, @plane.legal_plane_class.to_s)
   %tr
@@ -24,7 +21,7 @@
   - if @plane.disabled
     %tr
       %td= Plane.l(:disabled_long)
-  
+= render :partial => "financial_account_ownerships/list", :locals => { :object => @plane }
 = render :partial => "common/memberships", :locals => { :object => @plane, :group => :plane_cost_category }
 = show_link([@plane, :flights], Plane.l(:book))
 = edit_link(@plane)

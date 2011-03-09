@@ -1,0 +1,6 @@
+= simple_form_for(@financial_account_ownership) do |f|
+  = f.input :owner_id, :as => :hidden
+  = f.input :owner_type, :as => :hidden
+  = f.association :financial_account
+  = f.input :valid_from
+  = f.button :submit
