@@ -342,6 +342,10 @@ div.hover_controls:hover .controls {
   background: #f3f3f3;
 }
 
+.strike {
+  text-decoration: line-through;
+}
+
 h2.page_sub_title {
   display: none;
 }

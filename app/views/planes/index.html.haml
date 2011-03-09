@@ -1,13 +1,23 @@
 %h1= t('.title')
-%table
-  %tr
-    %th
-      = Plane.l :registration
-  - @planes.each do |plane|
-    %tr
-      %td=h plane.registration
-      %td= show_link(plane)
-      %td= show_link([plane, :flights], Plane.l(:book))
-      %td= edit_link(plane)
-      %td= destroy_link(plane)
+%table.filtered{ :"data-filter-by" => "group_id,filter_string" }
+  %tr.no_filter.show_on_startup
+    %th= t("views.filter_search")
+    %th= t("views.filter_group")
+  %tr.no_filter.show_on_startup
+    %td= text_field_tag "filter_string"
+    %td= select :group, "id", Group.all.map { |g| [g.name, g.id] }, { :include_blank => true }
+  %tr.no_filter
+    %th= Plane.l :registration
+    %th= Plane.l :make
+    %th= Plane.l :group
+  %tbody.alternate
+    - @planes.each do |plane|
+      %tr.alternate_color{ :"data-filter_string" => "#{plane.registration} #{plane.make}".downcase, :"data-group_id" => plane.group_id }
+        %td{ :class => plane.disabled ? "strike" : "" }=h plane.registration
+        %td=h plane.make
+        %td=h plane.group.name
+        %td= show_link(plane)
+        %td= show_link([plane, :flights], Plane.l(:book))
+        %td= edit_link(plane)
+        %td= destroy_link(plane)
 = new_link(Plane)

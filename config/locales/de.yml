@@ -45,6 +45,8 @@ de:
     signature: "Unterschrift"
     to: "Bis"
     validity: "Gültigkeit"
+    filter_group: Nach Gruppe filtern
+    filter_search: Suchen
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
