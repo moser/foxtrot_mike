@@ -106,7 +106,13 @@ class ResourceController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to(polymorphic_path(model_class)) }
+      format.html do 
+        unless request.xhr?
+          redirect_to(polymorphic_path(model_class)) 
+        else
+          render :text => "ok"
+        end
+      end
       format.json { head :ok }
     end
   end  
