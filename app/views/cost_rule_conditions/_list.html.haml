@@ -3,5 +3,6 @@
     - cost_rule.cost_rule_conditions.each do |c|
       .cost_rule_condition
         = render :partial => "cost_rule_conditions/show_#{c.class.name.underscore}", :locals => { :cost_rule_condition => c }
-        = edit_link(c, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :cost_rule_conditions])})  unless cost_rule.in_effect?
+        = edit_link(c, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :cost_rule_conditions])}) unless cost_rule.in_effect?
+        = button_to t('views.destroy'), polymorphic_path(c), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([cost_rule, :cost_rule_conditions]) unless cost_rule.in_effect?
   = add_link([cost_rule, :cost_rule_condition], {:class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :cost_rule_conditions])}) unless cost_rule.in_effect?

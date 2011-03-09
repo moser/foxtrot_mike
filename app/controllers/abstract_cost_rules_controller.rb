@@ -85,9 +85,29 @@ class AbstractCostRulesController < ApplicationController
       render :layout => !request.xhr?
     end
   end
+  
+  def destroy
+    model_by_id
+    authorize! :destroy, @model
+    @model.destroy
+    respond_to do |format|
+      format.html do 
+        unless request.xhr?
+          if @model.is_a?(FlightCostRule)
+            redirect_to(flight_cost_rules_path(:person_cost_category_id => @model.person_cost_category_id, :plane_cost_category_id => @model.plane_cost_category_id)) 
+          else
+            redirect_to(wire_launch_cost_rules_path(:person_cost_category_id => @model.person_cost_category_id, :wire_launcher_cost_category_id => @model.wire_launcher_cost_category_id)) 
+          end
+        else
+          render :text => "ok"
+        end
+      end
+      format.json { head :ok }
+    end
+  end
 
 private
   def now
-    Time.zone.now #TODO booking now
+    AccountingSession.latest_session_end
   end
 end

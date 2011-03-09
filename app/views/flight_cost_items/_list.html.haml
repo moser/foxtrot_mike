@@ -12,4 +12,5 @@
           +
           = format_currency(c.additive_value)
         = edit_link(c, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :flight_cost_items])}) unless cost_rule.in_effect?
+        = button_to t('views.destroy'), polymorphic_path(c), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([cost_rule, :flight_cost_items]) unless cost_rule.in_effect?
   = add_link([cost_rule, :flight_cost_item], {:class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :flight_cost_items])})  unless cost_rule.in_effect?

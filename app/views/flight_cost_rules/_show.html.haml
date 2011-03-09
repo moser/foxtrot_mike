@@ -28,3 +28,4 @@
       %th= FlightCostRule.l(:cost_items)
       %td
         = render :partial => "flight_cost_items/list", :locals => { :cost_rule => flight_cost_rule }
+= button_to t('views.destroy'), polymorphic_path(flight_cost_rule), :method => :delete, :class => "delete", :"data-replace" => flight_cost_rules_path(:person_cost_category_id => flight_cost_rule.person_cost_category_id, :plane_cost_category_id => flight_cost_rule.plane_cost_category_id) unless flight_cost_rule.in_effect?

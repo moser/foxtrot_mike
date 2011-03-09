@@ -6,4 +6,5 @@
           = show_link(c.financial_account, c.financial_account.name)
         = format_currency(c.value)
         = edit_link(c, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :wire_launch_cost_items])}) unless cost_rule.in_effect?
+        = button_to t('views.destroy'), polymorphic_path(c), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([cost_rule, :wire_launch_cost_items]) unless cost_rule.in_effect?
   = add_link([cost_rule, :wire_launch_cost_item], {:class => "inline_form_show", :"data-replace" => polymorphic_path([cost_rule, :wire_launch_cost_items])})  unless cost_rule.in_effect?
