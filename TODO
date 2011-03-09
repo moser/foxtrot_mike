@@ -1,15 +1,9 @@
 - locking for editing (optimistic?) (obj.versions.count?)
 - locking when stuff is booked
 
-- column disabled on planes, people + before_destroy => false (=> no more graveyard)
-- no destroying (people|planes|airfields), just "disable"
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
 - ValidityCheck:
   - configure module of what is now (time.now, booking.now)
-- application config:
-  - currency
-  - units for height (tow lvl)
-  - home airfield
 - add concept of a update event (bundles all changes of automatic update thru a client)
   - add possibility to undo all changes
   - show changes of such an event
@@ -22,6 +16,9 @@
   
 - accounting_entries
   - invalidation on changes to other models which could influence cost and accounting entries
+  
+- check seeds file
+  - better random seeds
   
 RUBY 1.9:
  - NotImplementedError in Filtered flightsController#index
