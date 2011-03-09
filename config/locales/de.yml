@@ -252,10 +252,18 @@ de:
         registration: Kennzeichen
         make: Typ
         book: "Bordbuch"
-        legal_plane_class: Flugzeugklasse      
+        legal_plane_class: Flugzeugklasse
+        can_be_towed: Kann im F-Schlepp gestartet werden.
+        can_be_wire_launched: Kann an der Winde starten.
+        can_tow: Kann schleppen.
+        can_fly_without_engine: Kann motorlos fliegen.
+        has_engine: Ist motorisiert.
+        disabled: Deaktiviert
+        disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
       person:
-        name: Name
         book: "Flugbuch"
+        disabled: Deaktiviert
+        disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
       wire_launcher:
         registration: Kennzeichen
       time_cost_rule:
