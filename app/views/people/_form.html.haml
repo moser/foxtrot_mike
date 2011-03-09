@@ -5,4 +5,5 @@
   = f.input :email
   = f.association :group
   = f.association :financial_account
+  = f.input :disabled unless person.new_record?
   = f.button :submit
