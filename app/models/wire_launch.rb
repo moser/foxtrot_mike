@@ -7,6 +7,20 @@ class WireLaunch < ActiveRecord::Base
   belongs_to :wire_launcher
   has_one :abstract_flight, :as => :launch
   has_one :manual_cost, :as => :item
+  
+  class << self
+    def between(from, to)
+      joins(:abstract_flight).where("abstract_flights.departure >= ? AND abstract_flights.departure < ?", from, to)
+    end
+    
+    def after(from)
+      joins(:abstract_flight).where("abstract_flights.departure >= ?", from)
+    end
+    
+    def before(to)
+      joins(:abstract_flight).where("abstract_flights.departure < ?", to)
+    end
+  end
 
   validates_presence_of :wire_launcher
   

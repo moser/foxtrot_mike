@@ -16,6 +16,20 @@ class AbstractFlight < ActiveRecord::Base
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
   
+  class << self
+    def between(from, to)
+      where("departure >= ? AND departure < ?", from, to)
+    end
+    
+    def after(from)
+      where("departure >= ?", from)
+    end
+    
+    def before(to)
+      where("departure < ?", to)
+    end
+  end
+  
   #accepts_nested_attributes_for :crew_members
   #accepts_nested_attributes_for :launch
   

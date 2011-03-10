@@ -13,6 +13,24 @@ describe AbstractFlight do
   it { should have_many :accounting_entries }
   it { should belong_to :launch }
   
+  it "should be able to return flights for a given date range" do
+    a, b = 10.days.ago, 1.day.ago
+    AbstractFlight.should_receive(:where).with("departure >= ? AND departure < ?", a, b)
+    AbstractFlight.between(a, b)
+  end
+  
+  it "should be able to return flights after a given date" do
+    a = 10.days.ago
+    AbstractFlight.should_receive(:where).with("departure >= ?", a)
+    AbstractFlight.after(a)
+  end
+  
+  it "should be able to return flights before a given date" do
+    a = 10.days.ago
+    AbstractFlight.should_receive(:where).with("departure < ?", a)
+    AbstractFlight.before(a)
+  end
+  
   describe "arrival" do
     it "should return the arrival time" do
       @f.arrival.should be_nil
