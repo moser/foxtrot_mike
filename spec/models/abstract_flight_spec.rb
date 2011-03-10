@@ -19,6 +19,25 @@ describe AbstractFlight do
     AbstractFlight.between(a, b)
   end
   
+  describe "between should forward calls with nil" do
+    it "to after" do
+      a = 10.days.ago
+      AbstractFlight.should_receive(:after).with(a)
+      AbstractFlight.between(a, nil)
+    end
+    
+    it "to before" do
+      a = 10.days.ago
+      AbstractFlight.should_receive(:before).with(a)
+      AbstractFlight.between(nil, a)
+    end
+    
+    it "to where(1=1)" do
+      AbstractFlight.should_receive(:where).with("1 = 1")
+      AbstractFlight.between(nil, nil)
+    end
+  end
+  
   it "should be able to return flights after a given date" do
     a = 10.days.ago
     AbstractFlight.should_receive(:where).with("departure >= ?", a)

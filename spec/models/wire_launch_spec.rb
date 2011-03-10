@@ -16,6 +16,25 @@ describe WireLaunch do
     WireLaunch.between(a, b)
   end
   
+  describe "between should forward calls with nil" do
+    it "to after" do
+      a = 10.days.ago
+      WireLaunch.should_receive(:after).with(a)
+      WireLaunch.between(a, nil)
+    end
+    
+    it "to before" do
+      a = 10.days.ago
+      WireLaunch.should_receive(:before).with(a)
+      WireLaunch.between(nil, a)
+    end
+    
+    it "to where(1=1)" do
+      WireLaunch.should_receive(:where).with("1 = 1")
+      WireLaunch.between(nil, nil)
+    end
+  end
+  
   it "should be able to return wire launches after a given date" do
     a = 10.days.ago
     m = mock("relation")
