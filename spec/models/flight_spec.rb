@@ -67,10 +67,23 @@ describe Flight do
       f.accounting_entries_valid?.should be_true
       f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
       launch = mock("launch")
-      launch.should_receive(:invalidate_accounting_entries)
-      f.should_receive(:launch).at_least(1).and_return(launch)
+      launch.should_receive(:invalidate_accounting_entries).at_least(:once)
+      f.should_receive(:launch).at_least(:once).and_return(launch)
       f.invalidate_accounting_entries
       f.accounting_entries_valid?.should be_false
+    end
+    
+    it "should create accounting entries without a delayed job, if called with delayed = false" do
+      f = Flight.generate!
+      f.accounting_entries
+      f.accounting_entries_valid?.should be_true
+      f.should_not_receive(:delay)
+      launch = mock("launch")
+      launch.should_receive(:invalidate_accounting_entries).at_least(:once)
+      f.should_receive(:launch).at_least(:once).and_return(launch)
+      f.should_receive(:create_accounting_entries)
+      f.invalidate_accounting_entries(false)
+      f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
     end
     
     it "should create accounting entries if invalid" do

@@ -31,4 +31,31 @@ describe WireLaunch do
     WireLaunch.should_receive(:joins).with(:abstract_flight).and_return(m)
     WireLaunch.before(a)
   end
+  
+  describe "accounting_entries" do
+    it "should invalidate accounting_entries and start a delayed job for their creation" do
+      f = WireLaunch.generate!
+      f.accounting_entries
+      f.accounting_entries_valid?.should be_true
+      f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
+      f.invalidate_accounting_entries
+      f.accounting_entries_valid?.should be_false
+    end
+    
+    it "should create accounting entries without a delayed job, if called with delayed = false" do
+      f = WireLaunch.generate!
+      f.accounting_entries
+      f.accounting_entries_valid?.should be_true 
+      f.should_not_receive(:delay)
+      f.should_receive(:create_accounting_entries)
+      f.invalidate_accounting_entries(false)
+      f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
+    end
+    
+    it "should create accounting entries if invalid" do
+      f = WireLaunch.generate!
+      f.should_receive(:create_accounting_entries)
+      f.accounting_entries
+    end  
+  end
 end

@@ -13,9 +13,9 @@ module LaunchAccountingEntries
     update_attribute :accounting_entries_valid, true
   end
   
-  def invalidate_accounting_entries
+  def invalidate_accounting_entries(delayed = true)
     update_attribute :accounting_entries_valid, false
-    delay.create_accounting_entries
+    (delayed ? delay : self).create_accounting_entries
   end
   
   def accounting_entries_with_validity_check
