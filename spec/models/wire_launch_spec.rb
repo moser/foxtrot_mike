@@ -52,6 +52,16 @@ describe WireLaunch do
       f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
     end
     
+    it "should not invalidate accounting_entries if not editable" do
+      f = WireLaunch.generate!
+      f.accounting_entries
+      f.abstract_flight.should_receive(:"editable?").exactly(2).times.and_return(false)
+      f.should_not_receive(:delay) 
+      f.should_not_receive(:create_accounting_entries)
+      f.invalidate_accounting_entries(true)
+      f.invalidate_accounting_entries(false)
+    end
+    
     it "should create accounting entries if invalid" do
       f = WireLaunch.generate!
       f.should_receive(:create_accounting_entries)

@@ -26,9 +26,11 @@ class Flight < AbstractFlight
   
   #TODO call in after_save??
   def invalidate_accounting_entries(delayed = true)
-    update_attribute :accounting_entries_valid, false
-    (delayed ? delay : self).create_accounting_entries
-    launch.invalidate_accounting_entries(delayed) if launch
+    if editable?
+      update_attribute :accounting_entries_valid, false
+      (delayed ? delay : self).create_accounting_entries
+      launch.invalidate_accounting_entries(delayed) if launch
+    end
   end
   
   def accounting_entries_with_validity_check
