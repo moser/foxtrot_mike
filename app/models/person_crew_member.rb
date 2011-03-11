@@ -1,13 +1,8 @@
 class PersonCrewMember < CrewMember  
-
-  validates_presence_of :person
+  include Immutability
   
-  #default_scope includes(:person)
-
-  def person=(obj)
-    raise ImmutableObjectException unless person.nil?
-    write_attribute(:person_id, obj.id) unless obj.nil?
-  end
+  validates_presence_of :person
+  immutable :person
   
   def to_s
     person.to_s

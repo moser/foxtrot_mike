@@ -16,7 +16,7 @@ unless defined?(SetupSpec)
 
   require 'shoulda'
   require 'factory_girl/syntax/generate'
-
+  
   class ActionView::TestCase::TestController
     def current_account
       return @current_account if defined?(@current_account)  
