@@ -1,4 +1,5 @@
 require "open3"
+require "date"
 
 def build_mtimes_hash(globs)
   files = {}
@@ -31,6 +32,7 @@ end
              /^spec\/(.*)_spec.rb$/ => lambda { |m| "spec/#{m[1]}_spec.rb" },
              /^lib\/launch_accounting_entries.rb$/ => lambda { |m| ["spec/models/tow_flight_spec.rb", "spec/models/wire_launch_spec.rb"] } }
 @run_all = true
+@last_time_all = DateTime.now
 @run_all_when_green = false
 
 @int_count = 0
@@ -65,6 +67,7 @@ loop do
       if @run_all
         c = @specs.join(' ') 
         @run_all = false
+        @last_time_all = DateTime.now
       else
         c = changed_files.map { |f| specs_for(f) }.flatten.uniq.join(' ')
       end
@@ -84,7 +87,7 @@ loop do
           elsif l =~ /([0-9]*) examples*, 0 failures/
             `notify-send '#{$1} example#{$1 == "1" ? "" : "s"} passed' -i ~/code/foxtrot_mike/.notify-img/passed.png &> /dev/null`
             notified = true
-            if @run_all_when_green 
+            if @run_all_when_green && ((DateTime.now - @last_time_all) * 1440) > 5 #only run all after green every 5 minutes
               @run_all = true 
               @run_all_when_green = false
             end
