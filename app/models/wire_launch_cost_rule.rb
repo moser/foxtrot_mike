@@ -35,4 +35,8 @@ class WireLaunchCostRule < ActiveRecord::Base
       []
     end
   end
+  
+  def find_concerned_accounting_entry_owners
+    wire_launcher_cost_category.find_concerned_accounting_entry_owners { |r| r.between(valid_from, valid_to) }
+  end
 end

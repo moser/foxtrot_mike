@@ -15,6 +15,15 @@ def person_with_cost_category(cc)
 end
 
 describe WireLaunchCostRule do
+  it "should find concerned accounting entry owners" do
+    r = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
+                                 :wire_launcher_cost_category => WireLauncherCostCategory.generate!, :valid_from => 1.day.ago
+    m = mock("relation")
+    m.should_receive(:between).with(r.valid_from, nil)
+    r.wire_launcher_cost_category.should_receive(:find_concerned_accounting_entry_owners).and_yield(m)
+    r.find_concerned_accounting_entry_owners
+  end
+  
   it "should apply all of its items to a wire launch" do
     l = WireLaunch.generate!
     cr = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  

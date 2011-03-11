@@ -7,6 +7,15 @@ describe WireLauncherCostCategory do
     @c.wire_launcher_cost_category_memberships.create :wire_launcher => @wl, :valid_from => 2.days.ago
     @wl.reload
   end
+  
+  it "should find concerned accounting entry owners" do
+    o = mock("owner")
+    o.should_receive(:lala)
+    m = mock("membership")
+    m.should_receive(:find_concerned_accounting_entry_owners).and_yield(o)
+    @c.stub(:wire_launcher_cost_category_memberships).and_return([m])
+    @c.find_concerned_accounting_entry_owners { |o| o.lala }
+  end
 
   it "should only match a launch when the wire launcher is a member at the departure time" do
     f = Flight.generate!

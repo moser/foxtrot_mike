@@ -15,4 +15,14 @@ describe WireLauncherCostCategoryMembership do
   
   it { should belong_to :wire_launcher_cost_category }
   it { should belong_to :wire_launcher }
+  
+  it "should find concerned accounting entry owners" do
+    m = WireLauncherCostCategoryMembership.create!(@valid_attributes)
+    rel = mock("relation")
+    rel.should_receive(:between).with(m.valid_from, nil)
+    wl = mock("wire_launcher")
+    wl.should_receive("find_concerned_accounting_entry_owners").and_yield(rel)
+    m.should_receive(:wire_launcher).and_return(wl)
+    m.find_concerned_accounting_entry_owners { |r| r }
+  end
 end

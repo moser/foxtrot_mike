@@ -27,6 +27,10 @@ class WireLauncher < ActiveRecord::Base
     registration
   end
   
+  def find_concerned_accounting_entry_owners(&blk)
+    blk.call(wire_launches)
+  end
+  
   def self.shared_attribute_names
     [ :id, :registration ]
   end

@@ -13,4 +13,8 @@ class WireLauncherCostCategory < ActiveRecord::Base
       false
     end
   end
+  
+  def find_concerned_accounting_entry_owners(&blk)
+    wire_launcher_cost_category_memberships.map { |m| m.find_concerned_accounting_entry_owners(&blk) }.flatten.uniq
+  end
 end

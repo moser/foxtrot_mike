@@ -15,4 +15,12 @@ describe WireLauncher do
     p.should_receive(:current_financial_account_ownership).at_least(:once).and_return(m)
     p.financial_account.should == 1
   end
+  
+  it "should find concerned accounting entry owners" do
+    m = mock("make sure the block is executed")
+    m.should_receive(:lala)
+    wl = WireLauncher.create
+    wl.should_receive("wire_launches").and_return([1])
+    wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
+  end
 end
