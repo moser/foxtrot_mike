@@ -1,7 +1,11 @@
 class WireLauncherCostCategoryMembership < ActiveRecord::Base
+  include ValidityCheck
+  include AccountingEntryInvalidation
+  include Immutability
+  
   belongs_to :wire_launcher
   belongs_to :wire_launcher_cost_category
-  include ValidityCheck
+  immutable :wire_launcher, :wire_launcher_cost_category
 
   validates_presence_of :wire_launcher_cost_category, :wire_launcher
   

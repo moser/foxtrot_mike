@@ -8,6 +8,9 @@ describe WireLauncherCostCategoryMembership do
       :wire_launcher => WireLauncher.generate!
     }
   end
+  
+  it { should ensure_immutability_of(:wire_launcher) }
+  it { should ensure_immutability_of(:wire_launcher_cost_category) }
 
   it "should create a new instance given valid attributes" do
     WireLauncherCostCategoryMembership.create!(@valid_attributes)
