@@ -15,6 +15,9 @@ def person_with_cost_category(cc)
 end
 
 describe WireLaunchCostRule do
+  it { should ensure_immutability_of(:person_cost_category) }
+  it { should ensure_immutability_of(:wire_launcher_cost_category) }
+  
   it "should find concerned accounting entry owners" do
     r = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
                                  :wire_launcher_cost_category => WireLauncherCostCategory.generate!, :valid_from => 1.day.ago

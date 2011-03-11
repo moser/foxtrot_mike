@@ -2,13 +2,14 @@ class WireLauncher < ActiveRecord::Base
   include UuidHelper
   include Membership
   include Current
+  include AccountingEntryInvalidation
   
   has_paper_trail
 
   has_many :wire_launcher_cost_category_memberships
   membership :wire_launcher_cost_category_memberships
   has_many :wire_launches
-  has_many :financial_account_ownerships, :as => :owner
+  has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed
   has_one_current :financial_account_ownership
 
   validates_presence_of :registration, :financial_account
@@ -36,10 +37,16 @@ class WireLauncher < ActiveRecord::Base
   end
   
   def find_concerned_accounting_entry_owners(&blk)
+    blk ||= lambda { |r| r }
     blk.call(wire_launches)
   end
   
   def self.shared_attribute_names
     [ :id, :registration ]
   end
+  
+private
+    def association_changed(obj = nil)
+      delay.invalidate_concerned_accounting_entries
+    end
 end
