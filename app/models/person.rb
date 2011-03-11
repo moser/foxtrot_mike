@@ -28,6 +28,14 @@ class Person < ActiveRecord::Base
     end
   end
   
+  def financial_account_id
+    financial_account && financial_account.id
+  end
+  
+  def financial_account_id=(fa)
+    self.financial_account = FinancialAccount.find(fa)
+  end
+  
   def self.find_all_by_name(str)
     find :all, 
          :conditions => 
