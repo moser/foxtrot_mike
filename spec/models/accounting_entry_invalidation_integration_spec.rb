@@ -63,4 +63,83 @@ describe "Accounting entry invalidation" do
       end
     end
   end
+  
+  describe "flight" do
+    before(:each) do
+      @plm = PlaneCostCategoryMembership.generate!(:valid_to => nil)
+      @plane = @plm.plane
+      @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
+      @person = @pm.person
+      @cr = FlightCostRule.create!(:plane_cost_category => @plm.plane_cost_category,
+                                     :person_cost_category => @pm.person_cost_category,
+                                     :name => "foo", :valid_from => 1.month.ago,
+                                     :flight_type => "Flight")
+      @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
+      @f = Flight.generate!(:plane_id => @plane.id, :seat1_id => @person.id, :duration => 20)
+      [ @plm, @plane, @pm, @person, @cr, @f ].each { |e| e.reload }
+    end
+    
+    def check_change
+      old_ids = @f.accounting_entries.map(&:id)
+      yield
+      @f.reload
+      @f.accounting_entries.map(&:id).should_not include(*old_ids)
+    end
+    
+    describe "FlightCostRule" do
+      it "should invalidate accounting entries when changed" do
+        check_change do
+          @cr.update_attribute :valid_to, 1.year.from_now
+        end
+      end
+      
+      it "should invalidate accounting entries when a cost item is added" do
+        check_change do
+          @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        end
+      end
+    end
+    
+    describe "PlaneCostCategoryMembership" do
+      it "should invalidate accounting entries when changed" do
+        check_change do
+          @plm.update_attribute :valid_to, 1.year.from_now
+        end
+      end
+    end
+    
+    describe "Plane" do
+      it "should invalidate accounting entries when financial account is changed" do
+        check_change do
+          @plane.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
+        end
+      end
+    end
+    
+    describe "Flight" do
+      it "should invalidate accounting entries when changed" do
+        check_change do
+          @f.update_attribute :duration, 100
+        end
+        check_change do
+          @f.update_attribute :plane, Plane.generate!
+        end
+      end
+      
+      it "should invalidate accounting entries when a crew member is changed" do
+        check_change do
+          @f.seat1 = Person.generate!
+        end
+      end
+      
+      it "should invalidate accounting entries when a liability is added or removed" do
+        check_change do
+          @f.liabilities.create :person => Person.generate!, :proportion => 1
+        end
+        check_change do
+          @f.liabilities.clear
+        end
+      end
+    end
+  end
 end

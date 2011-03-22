@@ -2,12 +2,13 @@ class Plane < ActiveRecord::Base
   include UuidHelper  
   include Membership
   include Current
+  include AccountingEntryInvalidation
 
   has_paper_trail
 
   has_many :flights, :include => [:from, :to, :crew_members], :class_name => "AbstractFlight"
   has_many :plane_cost_category_memberships, :order => "valid_from ASC"  
-  has_many :financial_account_ownerships, :as => :owner
+  has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
   belongs_to :legal_plane_class
   belongs_to :group
@@ -57,5 +58,15 @@ class Plane < ActiveRecord::Base
 
   def info
     "#{make}, #{group.name}"
+  end
+  
+  def find_concerned_accounting_entry_owners(&blk)
+    blk ||= lambda { |r| r }
+    blk.call(flights)
+  end
+  
+private
+  def association_changed(obj = nil)
+    delay.invalidate_concerned_accounting_entries
   end
 end

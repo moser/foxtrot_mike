@@ -1,9 +1,11 @@
 class Flight < AbstractFlight   
-  has_many :liabilities
+  has_many :liabilities, :after_add => :association_changed, :after_remove => :association_changed
   belongs_to :cost_hint
   belongs_to :accounting_session
 
   before_save :check_editability
+  before_update :before_update_invalidate_accounting_entries
+  after_update :after_update_invalidate_accounting_entries
 
   validate do |f|
     errors.add(:base, I18n.t("activerecord.errors.not_editable")) unless f.editable?
@@ -11,7 +13,7 @@ class Flight < AbstractFlight
   
   def create_accounting_entries
     accounting_entries_without_validity_check.delete_all
-    if cost
+    if cost && cost_responsible
       plane_account = plane.financial_account
       flight_sum = cost.free_sum 
       liabilities_with_default.map do |l|
@@ -95,5 +97,24 @@ private
   def check_editability
     #raise "not editable" unless editable?
     editable?
+  end
+  
+  def invalidation_necessary?
+    !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure", "duration", "engine_duration", "cost_hint_id"]).empty?
+  end
+
+  def before_update_invalidate_accounting_entries
+    self.accounting_entries_valid = false if invalidation_necessary? && editable?
+    true
+  end
+  
+  def after_update_invalidate_accounting_entries
+    delay.create_accounting_entries if invalidation_necessary? && editable? && !Rails.env.test? #HACK...
+    # delay = false in test env sucks here, because when this is executed immediatly we get an infinite loop here.
+    # this should work in test and other envs.
+  end
+  
+  def association_changed(obj)
+    delay.invalidate_accounting_entries
   end
 end

@@ -42,4 +42,12 @@ describe Plane do
   it "should be revisable" do
     Plane.new.should respond_to :versions
   end
+  
+  it "should find concerned accounting entry owners" do
+    m = mock("make sure the block is executed")
+    m.should_receive(:lala)
+    wl = Plane.create
+    wl.should_receive("flights").and_return([1])
+    wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
+  end
 end

@@ -1,11 +1,16 @@
 class FlightCostRule < ActiveRecord::Base
+  include ValidityCheck
+  include Immutability
+  include AccountingEntryInvalidation
+  
+  after_save :after_save_invalidate_accounting_entries
+  
   belongs_to :person_cost_category
   belongs_to :plane_cost_category
+  immutable :person_cost_category, :plane_cost_category
 
-  has_many :cost_rule_conditions, :as => :cost_rule
-  has_many :flight_cost_items
-
-  include ValidityCheck
+  has_many :cost_rule_conditions, :as => :cost_rule, :after_add => :association_changed, :after_remove => :association_changed
+  has_many :flight_cost_items, :after_add => :association_changed, :after_remove => :association_changed
 
   validates_presence_of :person_cost_category, :plane_cost_category
 
@@ -26,6 +31,10 @@ class FlightCostRule < ActiveRecord::Base
       conditions.empty? || (conditions[0].matches?(flight) && matches?(flight, conditions[1..-1]))
     end
   end
+  
+  def find_concerned_accounting_entry_owners(from = valid_from, to = valid_to)
+    plane_cost_category.find_concerned_accounting_entry_owners { |r| r.between(min_date(valid_from, from), max_date(valid_to, to)) }
+  end
 
   def self.for(flight)
     unless flight.plane.nil? || flight.cost_responsible.nil? || flight.duration < 0
@@ -33,5 +42,19 @@ class FlightCostRule < ActiveRecord::Base
     else
       []
     end
+  end
+  
+private
+  def after_save_invalidate_accounting_entries
+    created = changes.keys.include?("id")
+    if created
+      delay.invalidate_concerned_accounting_entries
+    else
+      delay.invalidate_concerned_accounting_entries(old_or_current(:valid_from), old_or_current(:valid_to))
+    end
+  end
+  
+  def association_changed(obj)
+    delay.invalidate_concerned_accounting_entries
   end
 end

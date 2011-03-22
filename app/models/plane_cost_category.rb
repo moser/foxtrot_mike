@@ -13,4 +13,8 @@ class PlaneCostCategory < ActiveRecord::Base
       false
     end
   end
+  
+  def find_concerned_accounting_entry_owners(&blk)
+    plane_cost_category_memberships.map { |m| m.find_concerned_accounting_entry_owners(&blk) }.flatten.uniq
+  end
 end

@@ -15,6 +15,18 @@ def person_with_cost_category(cc)
 end
 
 describe FlightCostRule do
+  it { should ensure_immutability_of(:person_cost_category) }
+  it { should ensure_immutability_of(:plane_cost_category) }
+  
+  it "should find concerned accounting entry owners" do
+    r = FlightCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
+                                 :plane_cost_category => PlaneCostCategory.generate!, :valid_from => 1.day.ago
+    m = mock("relation")
+    m.should_receive(:between).with(r.valid_from, nil)
+    r.plane_cost_category.should_receive(:find_concerned_accounting_entry_owners).and_yield(m)
+    r.find_concerned_accounting_entry_owners
+  end
+  
   it "should apply all of its items to a flight" do
     f = Flight.generate!
     f.duration = 10
