@@ -11,13 +11,16 @@ describe WireLauncherCostCategoryMembership do
   
   it { should ensure_immutability_of(:wire_launcher) }
   it { should ensure_immutability_of(:wire_launcher_cost_category) }
+  
+  it { should belong_to :wire_launcher_cost_category }
+  it { should belong_to :wire_launcher }
+  
+  it { should validate_presence_of :wire_launcher_cost_category }
+  it { should validate_presence_of :wire_launcher }
 
   it "should create a new instance given valid attributes" do
     WireLauncherCostCategoryMembership.create!(@valid_attributes)
   end
-  
-  it { should belong_to :wire_launcher_cost_category }
-  it { should belong_to :wire_launcher }
   
   it "should find concerned accounting entry owners" do
     m = WireLauncherCostCategoryMembership.create!(@valid_attributes)
