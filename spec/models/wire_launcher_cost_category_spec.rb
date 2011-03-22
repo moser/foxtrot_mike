@@ -8,6 +8,11 @@ describe WireLauncherCostCategory do
     @wl.reload
   end
   
+  it { should have_many :wire_launcher_cost_category_memberships }
+  it { should have_many :wire_launch_cost_rules }
+
+  it { should validate_presence_of :name }
+  
   it "should find concerned accounting entry owners" do
     o = mock("owner")
     o.should_receive(:lala)
