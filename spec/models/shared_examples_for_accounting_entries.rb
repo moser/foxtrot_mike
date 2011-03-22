@@ -14,7 +14,7 @@ shared_examples_for "an accounting entry factory" do
     PersonCostCategoryMembership.generate!(:person_cost_category_id => (@b = PersonCostCategory.generate!.id), :person_id => person.id)
     WireLauncherCostCategoryMembership.generate!(:wire_launcher_cost_category_id => (c = WireLauncherCostCategory.generate!.id), :wire_launcher_id => wl.id)
     r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => @b)
-    r.flight_cost_items.create :depends_on => "duration", :value => 1
+    r.flight_cost_items.create :depends_on => "duration", :value => 2
     r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
     r = WireLaunchCostRule.generate!(:wire_launcher_cost_category_id => c, :person_cost_category_id => @b)
     r.wire_launch_cost_items.create :value => 100
@@ -23,6 +23,10 @@ shared_examples_for "an accounting entry factory" do
     @f = Flight.create(:plane_id => plane.id, :seat1_id => person.id, :duration => 10, :departure => DateTime.now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
     @f.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @f)
     @f.save!
+  end
+  
+  it "should create 4 accounting entries" do #launch and flight each have 1 free and 1 bound cost item
+    @f.accounting_entries.count.should == 4
   end
   
   it "should set accounting_entries_valid to true" do
