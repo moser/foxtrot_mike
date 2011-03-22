@@ -9,7 +9,7 @@ class WireLauncher < ActiveRecord::Base
   has_many :wire_launcher_cost_category_memberships
   membership :wire_launcher_cost_category_memberships
   has_many :wire_launches
-  has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed
+  has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
 
   validates_presence_of :registration, :financial_account
@@ -46,7 +46,7 @@ class WireLauncher < ActiveRecord::Base
   end
   
 private
-    def association_changed(obj = nil)
-      delay.invalidate_concerned_accounting_entries
-    end
+  def association_changed(obj = nil)
+    delay.invalidate_concerned_accounting_entries
+  end
 end
