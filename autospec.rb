@@ -25,12 +25,16 @@ end
 @specs = @specs.map { |e| Dir[e] }.flatten
 
 @sf = {}
-@mappings = { /^app\/views\/(.*)\/(.*)\.html.haml$/ => 
+@mappings = { /^app\/views\/(.*)\/(.*)\.html\.haml$/ => 
               lambda { |m| ["spec/views/big_fucking_view_spec.rb", "spec/views/#{m[1]}/#{m[2]}.html.haml_spec.rb"] },
              /^app\/(.*)\/(.*)\.rb$/ =>
               lambda { |m| "spec/#{m[1]}/#{m[2]}_spec.rb" },
-             /^spec\/(.*)_spec.rb$/ => lambda { |m| "spec/#{m[1]}_spec.rb" },
-             /^lib\/launch_accounting_entries.rb$/ => lambda { |m| ["spec/models/tow_flight_spec.rb", "spec/models/wire_launch_spec.rb"] } }
+             /^spec\/(.*)_spec\.rb$/ => 
+             lambda { |m| "spec/#{m[1]}_spec.rb" },
+             /^(lib\/launch_accounting_entries|spec\/models\/shared_examples_for_accounting_entries)\.rb$/ => 
+             lambda { |m| ["spec/models/flight_spec.rb", "spec/models/tow_flight_spec.rb", "spec/models/wire_launch_spec.rb"] },
+             /^app\/models\/((.*)_cost_category(.*)|plane|wire_launcher|flight|wire_launch|tow_flight|(.*)_cost_rule)\.rb$/ => 
+             lambda { |m| ["spec/models/accounting_entry_invalidation_integration_spec.rb"] } }
 @run_all = true
 @last_time_all = DateTime.now
 @run_all_when_green = false
@@ -64,7 +68,7 @@ loop do
   if !changed_files.empty? || @run_all
       notified = false 
       err = ""
-      if @run_all
+      if @run_all && changed_files.empty? #do not run all, if there are changed files
         c = @specs.join(' ') 
         @run_all = false
         @last_time_all = DateTime.now
