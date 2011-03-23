@@ -14,9 +14,6 @@
   + aggregate all accounting_entries
   - export them as DATEV,...
   
-- accounting_entries
-  - invalidation on changes to other models which could influence cost and accounting entries
-  
 - check seeds file
   - better random seeds
   
