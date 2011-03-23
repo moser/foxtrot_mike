@@ -1,5 +1,7 @@
 class TowFlight < AbstractFlight
   before_validation :set_departure
+  before_update :before_update_invalidate_accounting_entries
+  after_update :after_update_invalidate_accounting_entries
   has_one :abstract_flight, :as => :launch #the towed flight
   
   include LaunchAccountingEntries
@@ -42,5 +44,20 @@ private
       self.from = abstract_flight.from
       self.controller = abstract_flight.controller
     end
+  end
+  
+  def invalidation_necessary?
+    !(changes.keys & ["plane_id", "departure", "duration", "engine_duration", "cost_hint_id"]).empty?
+  end
+
+  def before_update_invalidate_accounting_entries
+    self.accounting_entries_valid = false if invalidation_necessary? && abstract_flight.editable?
+    true
+  end
+  
+  def after_update_invalidate_accounting_entries
+    delay.create_accounting_entries if invalidation_necessary? && abstract_flight.editable? && !Rails.env.test? #HACK...
+    # delay = false in test env sucks here, because when this is executed immediatly we get an infinite loop here.
+    # this should work in test and other envs.
   end
 end

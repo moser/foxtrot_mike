@@ -2,12 +2,13 @@ class Person < ActiveRecord::Base
   include UuidHelper
   include Membership
   include Current
+  include AccountingEntryInvalidation
 
   has_paper_trail
 
   has_many :accounts
   has_many :crew_members
-  has_many :financial_account_ownerships, :as => :owner, :autosave => true
+  has_many :financial_account_ownerships, :as => :owner, :autosave => true, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
   has_many :person_cost_category_memberships
   has_many :liabilities
@@ -99,8 +100,14 @@ class Person < ActiveRecord::Base
     self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
   end
 
-  def flights
-    AbstractFlight.include_all.where(:id => [Trainee.where(:person_id => id), PilotInCommand.where(:person_id => id)].flatten.map(&:abstract_flight_id))
+  def flights(relation = nil)
+    relation ||= AbstractFlight.include_all
+    relation.where(:id => [Trainee.where(:person_id => id), PilotInCommand.where(:person_id => id)].flatten.map(&:abstract_flight_id))
+  end
+  
+  def flights_liable_for(relation = nil)
+    relation ||= Flight.include_all
+    relation.joins(:liabilities).where("liabilities.person_id = ?", self.id)
   end
 
   def <=>(other)
@@ -109,5 +116,15 @@ class Person < ActiveRecord::Base
 
   def info
     "#{group.name}"
+  end
+  
+  def find_concerned_accounting_entry_owners(&blk)
+    blk ||= lambda { |r| r }
+    blk.call(flights) + blk.call(flights_liable_for)
+  end
+  
+private
+  def association_changed(obj = nil)
+    delay.invalidate_concerned_accounting_entries
   end
 end

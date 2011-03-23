@@ -79,6 +79,26 @@ describe Person do
   end
 
   it "should return a persons flights" do
-    Person.generate!.flights
+    p = Person.generate!
+    f = Flight.generate! :seat1 => p
+    p.flights.should include(f)
+  end
+  
+  it "should return flights a person is liable for" do
+    p = Person.generate!
+    f = Flight.generate!
+    f2 = Flight.generate!
+    f.liabilities.create :person => p, :proportion => 1
+    p.flights_liable_for.should include(f)
+    p.flights_liable_for.should_not include(f2)
+  end
+  
+  it "should find concerned accounting entry owners" do
+    m = mock("make sure the block is executed")
+    m.should_receive(:lala).twice
+    p = Person.create
+    p.should_receive("flights").and_return([1])
+    p.should_receive("flights_liable_for").and_return([2])
+    p.find_concerned_accounting_entry_owners { |r| m.lala; r }.should include(1, 2)
   end
 end
