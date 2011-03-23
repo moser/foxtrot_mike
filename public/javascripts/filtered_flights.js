@@ -72,7 +72,7 @@ var Groupable = {
   },
 
   change_group_by: function(group_by) {
-    if(Groupable.current_group != null) {
+    if(Groupable.current_group != null && $(".flight").length > 0) {
       $('.group_container').append($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first")).find('.group').remove();
       
     }
