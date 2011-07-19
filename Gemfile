@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'rails'
 gem 'rails3-generators'
 gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'pg', :require => 'pg'
 
 gem "haml"
 gem "uuidtools"
@@ -13,6 +12,11 @@ gem "authlogic"
 gem "cancan"
 gem "fastercsv"
 gem "delayed_job"
+gem "wicked_pdf"
+
+group :production do
+  gem 'pg', :require => 'pg'
+end
 
 group :test do
   gem "rspec"

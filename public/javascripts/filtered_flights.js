@@ -101,7 +101,7 @@ var Groupable = {
         var group = groups[i];
         var group_div = $('#group-prototype .group').clone();
         var div = group_div.find('.items');
-        var groupables = $(':not(.hidden).groupable[data-' + group_by + '*=(' + group + ')]');
+        var groupables = $(':not(.hidden).groupable[data-' + group_by + '*="(' + group + ')"]');
         group_div.find('.foot .count .number').text(groupables.length);
         group_div.find('.head .title').text(h[group].title);
         group_div.find('.head .hint').text(h[group].line);
