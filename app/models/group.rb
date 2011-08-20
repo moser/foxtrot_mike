@@ -19,4 +19,8 @@ class Group < ActiveRecord::Base
                                where(Person.arel_table[:group_id].eq(self.id)).
                                project(CrewMember.arel_table[:abstract_flight_id]).to_sql})")
   end
+
+  def to_json
+    { :id => id.to_s, :name => name }.to_json
+  end
 end
