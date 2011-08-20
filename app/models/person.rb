@@ -17,7 +17,7 @@ class Person < ActiveRecord::Base
   belongs_to :group
   membership :person_cost_category_memberships
   
-  validates_presence_of :firstname, :lastname, :group, :financial_account
+  validates_presence_of :firstname, :lastname, :group
 
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account 
