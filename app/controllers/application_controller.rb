@@ -77,11 +77,13 @@ class ApplicationController < ActionController::Base
   
   def parse_json
     if params[:json]
+      add = {}
       params.each do |k, v|
         if m = k.to_s.match(/(.*)_json/)
-          params[m[1].to_sym] = parse_json_dates(ActiveSupport::JSON.decode(v))
+          add[m[1].to_sym] = parse_json_dates(ActiveSupport::JSON.decode(v))
         end
       end
+      add.each { |k, v| params[k] = v }
     end
   end
   
