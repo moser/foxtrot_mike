@@ -98,5 +98,7 @@ var CostRules = {
 };
 
 $(function() {
-  CostRules.init();
+  if($('.cost_rules').length > 0) {
+    CostRules.init();
+  }
 });

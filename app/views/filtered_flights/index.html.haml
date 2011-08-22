@@ -1,61 +1,62 @@
-.controls.no_print
-  = link_to t("views.as_pdf"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :pdf), :class => "change_params"
-  = link_to t("views.as_csv"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :csv), :class => "change_params"
+.filtered_flights
+  .controls.no_print
+    = link_to t("views.as_pdf"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :pdf), :class => "change_params"
+    = link_to t("views.as_csv"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :csv), :class => "change_params"
 
-%h1.page_title= t('.title', :for => @obj.to_s)
-%h2.page_sub_title= "#{l(@from)} - #{l(@to)}"
+  %h1.page_title= t('.title', :for => @obj.to_s)
+  %h2.page_sub_title= "#{l(@from)} - #{l(@to)}"
 
-%form.no_print
-  %input{ :type => :hidden, :name => 'group_by', :value => @group_by }
-  .input.date
-    = date_select :filter, :from, :default => @from
-  .input.date
-    = date_select :filter, :to, :default => @to
-  = submit_tag 'Ok', :class => 'hide_on_startup'
+  %form.no_print
+    %input{ :type => :hidden, :name => 'group_by', :value => @group_by }
+    .input.date
+      = date_select :filter, :from, :default => @from
+    .input.date
+      = date_select :filter, :to, :default => @to
+    = submit_tag 'Ok', :class => 'hide_on_startup'
 
-.no_print
-  = t(".group_by")
-  - [ "none", "groups", "planes", "people", "licenses", "purposes" ].each do |g|
-    = link_to t("#{g}.index.title"), generate_filtered_flights_path(@obj, @from, @to, g), 'data-group_by' => g, :class => "group_by"
-= render :partial => "flights/title_spans.html.haml"
-.flights.group_container.alternate
-  - if @flights.is_a?(Array)
-    = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights }
-  - elsif @flights.is_a?(Hash)
-    - @flights.keys.each do |k|
-      .group
+  .no_print
+    = t(".group_by")
+    - [ "none", "groups", "planes", "people", "licenses", "purposes" ].each do |g|
+      = link_to t("#{g}.index.title"), generate_filtered_flights_path(@obj, @from, @to, g), 'data-group_by' => g, :class => "group_by"
+  = render :partial => "flights/title_spans.html.haml"
+  .flights.group_container.alternate
+    - if @flights.is_a?(Array)
+      = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights }
+    - elsif @flights.is_a?(Hash)
+      - @flights.keys.each do |k|
+        .group
+          .head
+            %h1.title= k.to_s
+            %em.hint= k.make rescue ''
+          .items.alternate
+            = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights[k] }
+          .foot
+            .count
+              = t('flights.index.title') + ':'
+              %span.number= @flights[k].count
+            .sum
+              %span.number= format_minutes(@flights[k].map { |f| f.duration > 0 ? f.duration : 0 }.sum)
+  .foot
+    - all = @flights.is_a?(Hash) ? @flights.values.flatten.uniq : @flights
+    .count
+      = t('flights.index.title') + ':'
+      %span.number= all.count
+    .sum
+      %span.number= format_minutes(all.map { |f| f.duration > 0 ? f.duration : 0 }.sum)
+
+  .hidden
+    #group-prototype
+      .group.hover_controls
         .head
-          %h1.title= k.to_s
-          %em.hint= k.make rescue ''
+          %h1.title
+          %em.hint
+          .controls
+            %a.control.toggle_no_print{ :href => '#' } Print (on/off)
+            %a.control.toggle_collapsed{ :href => '#' } Collapse
         .items.alternate
-          = render :partial => "filtered_flights/index.html.haml", :locals => { :flights => @flights[k] }
         .foot
           .count
             = t('flights.index.title') + ':'
-            %span.number= @flights[k].count
+            %span.number
           .sum
-            %span.number= format_minutes(@flights[k].map { |f| f.duration > 0 ? f.duration : 0 }.sum)
-.foot
-  - all = @flights.is_a?(Hash) ? @flights.values.flatten.uniq : @flights
-  .count
-    = t('flights.index.title') + ':'
-    %span.number= all.count
-  .sum
-    %span.number= format_minutes(all.map { |f| f.duration > 0 ? f.duration : 0 }.sum)
-
-.hidden
-  #group-prototype
-    .group.hover_controls
-      .head
-        %h1.title
-        %em.hint
-        .controls
-          %a.control.toggle_no_print{ :href => '#' } Print (on/off)
-          %a.control.toggle_collapsed{ :href => '#' } Collapse
-      .items.alternate
-      .foot
-        .count
-          = t('flights.index.title') + ':'
-          %span.number
-        .sum
-          %span.number
+            %span.number

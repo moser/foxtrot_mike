@@ -204,20 +204,22 @@ var Book = {
 };
 
 $(function() {
-  $('a.change_params').live('click', function() {
-    var uri = parseUri(this.href);
-    uri.params.group_by = Groupable.current_group;
-    uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
-    uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
-    this.href = uri.reconstruct();
-    //return false;
-  });
-  Groupable.init(function() {
-    var sum = 0;
-    this.find('.flight').each(function (i, e) {
-      sum = sum + parseInt($(e).attr('data-duration'));
+  if($('.filtered_flights').length > 0) {
+    $('a.change_params').live('click', function() {
+      var uri = parseUri(this.href);
+      uri.params.group_by = Groupable.current_group;
+      uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
+      uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
+      this.href = uri.reconstruct();
+      //return false;
     });
-    this.find('.foot .sum .number').text(Format.duration(sum));
-  });
-  Book.init();
+    Groupable.init(function() {
+      var sum = 0;
+      this.find('.flight').each(function (i, e) {
+        sum = sum + parseInt($(e).attr('data-duration'));
+      });
+      this.find('.foot .sum .number').text(Format.duration(sum));
+    });
+    Book.init();
+  }
 });
