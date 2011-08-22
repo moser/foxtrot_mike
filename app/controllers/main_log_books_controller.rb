@@ -20,7 +20,7 @@ class MainLogBooksController < ApplicationController
             @controllers << { :person => f.controller, :from => f.departure, :to => f.departure }
           end
         end
-        @controllers.last[:to] = (@flights.map(&:arrival).select { |a| !a.nil? }).max
+        @controllers.last[:to] = (@flights.map(&:arrival).select { |a| !a.nil? }).max || @airfield.srss.sunset(@date)
       end
       template = "main_log_books/controller_log"
       orientation = "Portrait"
