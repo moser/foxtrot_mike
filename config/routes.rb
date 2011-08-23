@@ -30,7 +30,6 @@ Server::Application.routes.draw do
   resources :tow_flights, :controller => 'flights'
   resources :planes do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
-    resource :timeline, :only => [:show]
     resources :plane_cost_category_memberships
     resources :financial_account_ownerships
   end
@@ -68,7 +67,6 @@ Server::Application.routes.draw do
   resources :cost_hints
   resources :licenses do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
-    resource :timeline, :only => [:show]
   end
   resources :legal_plane_classes  
   

@@ -1,9 +1,0 @@
-%h2= t('views.book')
-= render :partial => "common/timeline", :locals => @timeline_locals
-.book
-  = render :partial => "flights/title_spans"
-  .flights
-    = render :partial => "flights/bordbook", :locals => { :calculated_flights => @calculated_flights }
-  %span.base_url.hidden= polymorphic_url(@url_obj)
-  %span.hidden.from= @from
-  %span.hidden.to= @to
