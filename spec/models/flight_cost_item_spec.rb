@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FlightCostItem do
-  it { should validate_inclusion_of :depends_on, :in => FlightCostItem.valid_fields }
+  it { should ensure_inclusion_of(:depends_on).in_range(FlightCostItem.valid_fields) }
   it { should validate_presence_of :flight_cost_rule }
   
   it "should create a free cost item" do

@@ -5,7 +5,6 @@ unless defined?(SetupSpec)
   ENV["RAILS_ENV"] ||= 'test'
   require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
   require 'rspec/rails'
-  require 'remarkable/active_record'
 
   # Requires supporting files with custom matchers and macros, etc,
   # in ./support/ and its subdirectories.
@@ -14,7 +13,6 @@ unless defined?(SetupSpec)
   Dir["#{::Rails.root}/shared/spec/factories/**/*.rb"].each {|f| require f}
   Dir["#{::Rails.root}/spec/factories/**/*.rb"].each {|f| require f}
 
-  require 'shoulda'
   require 'factory_girl/syntax/generate'
   
   class ActionView::TestCase::TestController
