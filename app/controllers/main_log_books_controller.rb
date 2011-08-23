@@ -3,9 +3,9 @@ class MainLogBooksController < ApplicationController
   def show
     @airfield = Airfield.find(params[:airfield_id])
     @date = parse_date(params[:filter], :date) || AbstractFlight.latest_departure(@airfield.flights).to_date
-    @flights = @airfield.flights.where(AbstractFlight.arel_table[:departure].gteq(@date.to_datetime)).
-                       where(AbstractFlight.arel_table[:departure].lt((@date + 1.day).to_datetime)).
-                       order("departure ASC").all
+    @flights = @airfield.flights.where(AbstractFlight.arel_table[:departure_date].gteq(@date.to_datetime)).
+                       where(AbstractFlight.arel_table[:departure_date].lt((@date + 1.day).to_datetime)).
+                       order("departure_date ASC, departure_i ASC").all
     if params[:as] == 'controller_log'
       javascript :controller_log
       @controllers = []

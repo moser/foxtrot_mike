@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe DashboardsController, "show" do
   it "should authorize the user" do
+    p self.class
     controller.should_receive("authorize!").with(:read, :dashboards)
     get :show
   end

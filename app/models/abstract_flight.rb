@@ -19,7 +19,7 @@ class AbstractFlight < ActiveRecord::Base
   class << self
     def between(from, to)
       if from && to
-        where("departure >= ? AND departure < ?", from, to)
+        where("departure_date >= ? AND departure_date < ?", from, to)
       elsif from
         after(from)
       elsif to
@@ -30,11 +30,11 @@ class AbstractFlight < ActiveRecord::Base
     end
     
     def after(from)
-      where("departure >= ?", from)
+      where("departure_date >= ?", from)
     end
     
     def before(to)
-      where("departure < ?", to)
+      where("departure_date < ?", to)
     end
   end
   
@@ -47,8 +47,9 @@ class AbstractFlight < ActiveRecord::Base
             end
           end }
   send(:include, SoftValidation::Validation)
-  soft_validates_presence_of 1, :duration
-  soft_validates_presence_of 1, :departure
+  soft_validates_presence_of 1, :departure_date
+  soft_validates_presence_of 1, :departure_i
+  soft_validates_presence_of 1, :arrival_i
   soft_validate 1 do |r|
     r.problems['crew_members'] = 'No Crew specified' if r.crew_members.size == 0
   end
@@ -134,81 +135,65 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
   
-  def arrival
-    unless departure.nil? || duration.nil? || duration < 0
-      departure + duration.minutes
+  def departure_date=(d)
+    unless d.nil?
+      write_attribute(:departure_date, d.to_date)
     end
   end
   
-  def arrival=(time)
-    #if time.respond to "to_datetime"
-    if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
-      time = time.to_datetime.utc
-      unless departure.nil?
-        self.duration = rational_day_to_minutes(time - self.departure.to_datetime)
-      else #won't happen
-        self.departure = time
-        self.duration = 0
+  # Departure as DateTime
+  def departure
+    (departure_date + [0, departure_i].max.minutes).to_datetime
+  end
+  
+  def departure=(time)
+    self.departure_date = time.to_date if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
+    self.departure_time = time
+  end
+  
+  # Arrival as DateTime
+  def arrival
+    if arrival_i >= 0 && departure_i >= 0
+      if arrival_i > departure_i
+        (departure_date + arrival_i.minutes).to_datetime
+      else
+        (departure_date + arrival_i.minutes + 1.day).to_datetime
       end
     end
   end
   
-  def departure_date
-    departure.to_date #rescue nil
-  end
-  
-  def departure_date=(date)
-    date = date.to_date
-    if departure.nil? #won't happen
-      self.departure = date
-    else
-      self.departure = DateTime.new(date.year, date.month, date.day, departure.hour, departure.min, 0, 0)
-    end
-  end
-  
-  def departure_day_time
+  def departure_time
     @departure_day_time ||= DayTime.new(departure_time)
     @departure_day_time.minutes = departure_time
     @departure_day_time
   end
   
-  def departure_time
-    departure.hour * 60 + departure.min
-  end
-  
-  def departure_time=(i)
-    self.departure = DateTime.now if departure.nil? #won't happen
-    self.departure = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes
-  end
-  
-  def arrival_day_time
-    @arrival_day_time ||= DayTime.new(arrival_time)
-    @arrival_day_time.minutes = arrival_time
-    @arrival_day_time
+  def departure_time=(time)
+    set_time(:departure_i, time)
   end
   
   def arrival_time
-    unless arrival.nil?
-      arrival.hour * 60 + arrival.min
-    end
+    @arrival_day_time ||= DayTime.new(arrival_i)
+    @arrival_day_time.minutes = arrival_i
+    @arrival_day_time
   end
   
-  def arrival_time=(i)
-    unless i.nil?
-      self.arrival = DateTime.new(departure.year, departure.month, departure.day, 0, 0, 0, 0) + i.minutes + (i < departure_time ? 1 : 0).days
+  def arrival_time=(time)
+    set_time(:arrival_i, time)
+  end
+  alias_method "arrival=", "arrival_time="
+  
+  def duration
+    if departure_i < 0 || arrival_i < 0 
+      -1
     else
-      self.duration = -1
+      (arrival_i - departure_i) % 1440
     end
   end
   
-  def departure=(time)
-    if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
-      time = time.to_datetime.utc
-      unless departure.nil? || duration.nil? || duration < 0
-        delta = rational_day_to_minutes(self.departure.to_datetime - time)
-        self.duration = duration + delta if delta.abs < 1440
-      end
-      write_attribute(:departure, DateTime.new(time.year, time.month, time.day, time.hour, time.min, 0, 0))
+  def duration=(i)
+    unless departure_i < 0
+      self.arrival_i = (departure_i + i) % 1440
     end
   end
   
@@ -218,16 +203,8 @@ class AbstractFlight < ActiveRecord::Base
     @duration_time_span
   end
   
-  # Any negative duration means that a flight has not ended yet
-  def duration=(i)
-    i = i.to_i unless i.is_a? Integer
-    i = -1 if i < 0
-    i = i % 1440 unless i < 0 #no flights > 24h
-    write_attribute(:duration, i)
-  end
-  
   def landed?
-    !duration.nil? && duration >= 0 #there are flights with duration 0 minutes
+    arrival_i > 0
   end
 
   def seat1
@@ -399,16 +376,59 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def self.latest_departure(rel = AbstractFlight)
-    rel.order('departure DESC').limit(1).first.departure rescue DateTime.now
+    rel.order('departure_date DESC, departure_i DESC').limit(1).first.departure rescue DateTime.now
   end
   
   def self.oldest_departure(rel = AbstractFlight)
-    rel.order('departure ASC').limit(1).first.departure rescue DateTime.now
+    rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue DateTime.now
   end
-  
+
+=begin
+  def to_j
+    { :id => id,
+      :plane =>
+        { :id => plane_id,
+          :registration => plane.registration },
+      :seat1 => 
+        { :person => 
+          { :id => seat1.person.id,
+            :name => seat1.person.name },
+          :type => seat1.type,
+          :pic => seat1.is_a?(PilotInCommand) || (seat1.is_a?(Trainee) && seat2.nil?) },
+      :seat2 => 
+        { :person => 
+          { :id => seat2.person.id,
+            :name => seat2.person.name },
+          :type => seat2.type,
+          :pic => !seat1.is_a?(PilotInCommand) && (!seat1.is_a?(Trainee) || !seat2.nil?) },
+      :from => 
+        { :id => from_id,
+          :name => from.name,
+          :re
+    }
+  end
+=end
+
 protected
   def rational_day_to_minutes(r)
     (r * 1440).to_i
+  end
+  
+  def time_to_minutes(t)
+    t.hour * 60 + t.min
+  end
+  
+  def set_time(method, time)
+    if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
+      time = time.to_datetime.utc
+      send("#{method}=", time_to_minutes(time))
+    elsif Integer === time
+      send("#{method}=", time)
+    elsif String === time
+      #TODO
+    else
+      send("#{method}=", -1)
+    end
   end
 
 private

@@ -5,7 +5,8 @@ Factory.define :flight do |p|
   p.association :from, :factory => :airfield
   p.association :to, :factory => :airfield
   #p.departure { 20.minutes.ago }
-  p.duration 1
+  p.departure_i 10
+  p.arrival_i 11
 end
 
 Factory.define :non_editable_flight, :class => Flight do |p|
@@ -14,8 +15,9 @@ Factory.define :non_editable_flight, :class => Flight do |p|
   p.association :controller, :factory => :person
   p.association :from, :factory => :airfield
   p.association :to, :factory => :airfield
-  p.departure { 20.minutes.ago }
-  p.duration 1
+  p.departure_date { Date.today }
+  p.departure_i 10
+  p.arrival_i 11
   p.after_create do |flight|
     flight.accounting_session = AccountingSession.generate!
     flight.save
@@ -31,10 +33,12 @@ Factory.define :tow_flight do |p|
   p.association :from, :factory => :airfield
   p.association :to, :factory => :airfield
   p.association :abstract_flight, :factory => :flight
-  p.duration 1
+  p.departure_i 10
+  p.arrival_i 11
 end
 
 Factory.define :abstract_flight do |p|
-  p.departure { 20.minutes.ago }
-  p.duration 1
+  p.departure_date { Date.today }
+  p.departure_i 10
+  p.arrival_i 11
 end

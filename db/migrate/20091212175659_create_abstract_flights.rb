@@ -8,8 +8,8 @@ class CreateAbstractFlights < ActiveRecord::Migration
       t.string      :controller_id,:limit => 36
       t.string      :launch_id,    :limit => 36 #nil || wire_launch.id || abstract_flight.id
       t.string      :launch_type
-      t.datetime    :departure
-      t.integer     :duration, :engine_duration
+      t.date        :departure_date
+      t.integer     :departure_i, :arrival_i, :engine_duration, :default => -1
       t.text        :comment
       
       t.string      :type

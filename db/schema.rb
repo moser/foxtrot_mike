@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -20,9 +21,10 @@ ActiveRecord::Schema.define(:version => 20110309161846) do
     t.string   "controller_id",            :limit => 36
     t.string   "launch_id",                :limit => 36
     t.string   "launch_type"
-    t.datetime "departure"
-    t.integer  "duration"
-    t.integer  "engine_duration"
+    t.date     "departure_date"
+    t.integer  "departure_i",                            :default => -1
+    t.integer  "arrival_i",                              :default => -1
+    t.integer  "engine_duration",                        :default => -1
     t.text     "comment"
     t.string   "type"
     t.datetime "created_at"

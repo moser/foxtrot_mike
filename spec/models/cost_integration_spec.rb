@@ -101,10 +101,10 @@ describe "Costs" do
   end
   
   it "should calculate costs for a towed flight" do
-    flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => Time.now, 
+    flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => t = Time.now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
-    flight.launch = TowFlight.create! :plane => @tow_plane, :seat1 => Person.generate!, :duration => 6, 
+    flight.launch = TowFlight.create! :plane => @tow_plane, :seat1 => Person.generate!, :arrival => (t + 6.minutes), 
                                        :abstract_flight => flight, :from => Airfield.generate!, :to => Airfield.generate!,
                                        :controller => Person.generate!
     flight.launch.cost_responsible.should == @pilot_a

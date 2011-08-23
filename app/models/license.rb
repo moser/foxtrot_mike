@@ -29,8 +29,8 @@ class License < ActiveRecord::Base
   end
 
   def flights
-    AbstractFlight.include_all.where(AbstractFlight.arel_table[:departure].gteq(valid_from).
-                             and(AbstractFlight.arel_table[:departure].lteq(valid_to || 1.day.from_now.to_date))).
+    AbstractFlight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(valid_from).
+                             and(AbstractFlight.arel_table[:departure_date].lteq(valid_to || 1.day.from_now.to_date))).
            joins(:crew_members).
            where('crew_members.type' => to_crew_member_types.map(&:to_s), 
                  'crew_members.person_id' => person_id).joins(:plane).

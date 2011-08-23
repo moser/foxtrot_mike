@@ -5,11 +5,15 @@ class DayTime
   end
   
   def to_s
-    unless @minutes.nil?
+    unless @minutes < 0
       h, m = [@minutes / 60, @minutes % 60]
       "#{h < 10 ? "0" : ""}#{h}:#{m < 10 ? "0" : ""}#{m}"
     else
       "--:--"
     end
+  end
+  
+  def method_missing(meth, *args, &block)
+    @minutes.send(meth, *args, &block)
   end
 end

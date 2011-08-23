@@ -37,14 +37,14 @@ task :stats => "spec:statsetup"
 
 desc "Run all specs in spec directory (excluding plugin specs)"
 RSpec::Core::RakeTask.new(:spec => spec_prereq) do |t|
-  t.rspec_opts ||= []
+  t.rspec_opts ||= ["--tty"]
   #t.rspec_opts << "--backtrace"
   t.pattern = ["./spec/**/*_spec.rb"]
 end
 
 desc  "Run all specs with rcov"
 RSpec::Core::RakeTask.new(:rcov => spec_prereq) do |t|
-  t.rspec_opts ||= []
+  t.rspec_opts ||= ["--tty"]
   #t.rspec_opts << "--backtrace"
   t.pattern = ["./spec/**/*_spec.rb"]
   t.rcov = true
@@ -54,6 +54,7 @@ namespace :spec do
   [:requests, :models, :controllers, :views, :helpers, :mailers, :lib].each do |sub|
     desc "Run the code examples in spec/#{sub}"
     RSpec::Core::RakeTask.new(sub => spec_prereq) do |t|
+      t.rspec_opts ||= ["--tty"]
       t.pattern = ["./spec/#{sub}/**/*_spec.rb"]
     end
   end

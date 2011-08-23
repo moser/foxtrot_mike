@@ -6,7 +6,7 @@ class FlightsController < ApplicationController
   #before_filter :login_required
 
   def dates
-    @dates ||= AbstractFlight.group("date(departure)").order("date(departure) DESC").count unless request.xhr?
+    @dates ||= AbstractFlight.group("departure_date").order("departure_date DESC").count unless request.xhr?
   end
   
   # GET /flights
@@ -17,24 +17,25 @@ class FlightsController < ApplicationController
     @current_day = Date.new(*(["day(1i)", "day(2i)", "day(3i)"].map { |e| params[e].to_i })) if params["day(1i)"]
     @current_day ||= AbstractFlight.latest_departure.to_date
     dates
+    p @dates
     if !request.xhr?
-      @flights = AbstractFlight.include_all.where("departure < ? and departure > ?", @current_day + 1.day, @current_day).
-                                  order("departure DESC, duration DESC")
+      @flights = AbstractFlight.include_all.where("departure_date <= ? and departure_date >= ?", @current_day + 1.day, @current_day).
+                                  order("departure_date DESC, departure_i DESC")
     else
       from = @current_day
       to = @current_day + 1.day
       if params[:minus_days]
-        from = Date.parse(AbstractFlight.group("date(departure)").order("date(departure) DESC").
-                                where("departure < ?", @current_day).limit(params[:minus_days]).
+        from = Date.parse(AbstractFlight.group("departure_date").order("departure_date DESC").
+                                where("departure_date <= ?", @current_day).limit(params[:minus_days]).
                                 count.keys.min) rescue @current_day
       end
       if params[:plus_days]
-        to = Date.parse(AbstractFlight.group("date(departure)").order("date(departure) ASC").
-                          where("departure > ?", @current_day + 1.day).limit(params[:plus_days]).
+        to = Date.parse(AbstractFlight.group("departure_date").order("departure_date ASC").
+                          where("departure_date >= ?", @current_day + 1.day).limit(params[:plus_days]).
                           count.keys.max) + 1.day rescue @current_day + 1.day
       end
-      @days = AbstractFlight.include_all.where("departure > ? and departure < ?", from, to).
-                               order("departure DESC, duration DESC").group_by { |f| f.departure_date }
+      @days = AbstractFlight.include_all.where("departure_date >= ? and departure_date <= ?", from, to).
+                               order("departure_date DESC, departure_i  DESC").group_by { |f| f.departure_date }
       (from..(to - 1.day)).each do |d|
         @days[d] ||= []
       end

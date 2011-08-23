@@ -55,7 +55,7 @@ class Person < ActiveRecord::Base
 
   def relevant_licenses_for(flight)
     if flight 
-      time = flight.departure || DateTime.now
+      time = flight.departure_date || Date.today
       if flight.plane
         return licenses_at(time).select { |l| l.legal_plane_classes.include?(flight.plane.legal_plane_class) }
       end

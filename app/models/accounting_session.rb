@@ -8,9 +8,9 @@ class AccountingSession < ActiveRecord::Base
     if finished?
       flights_without_default
     else
-      Flight.include_all.where(AbstractFlight.arel_table[:departure].gteq(start_date)).
-                            where(AbstractFlight.arel_table[:departure].lteq(end_date)).
-                            order('departure ASC').all
+      Flight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(start_date)).
+                            where(AbstractFlight.arel_table[:departure_date].lteq(end_date)).
+                            order('departure_date ASC').all
     end
   end
   

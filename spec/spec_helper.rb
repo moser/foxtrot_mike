@@ -85,7 +85,7 @@ unless defined?(SetupSpec)
     #
     # config.mock_with :mocha
     # config.mock_with :flexmock
-    config.mock_with :rspec
+    config.mock_with "rspec"
     #
     # == Notes
     #

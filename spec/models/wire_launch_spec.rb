@@ -11,7 +11,7 @@ describe WireLaunch do
   it "should be able to return wire launches for a given date range" do
     a, b = 10.days.ago, 1.day.ago
     m = mock("relation")
-    m.should_receive(:where).with("abstract_flights.departure >= ? AND abstract_flights.departure < ?", a, b)
+    m.should_receive(:where).with("abstract_flights.departure_date >= ? AND abstract_flights.departure_date < ?", a, b)
     WireLaunch.should_receive(:joins).with(:abstract_flight).and_return(m)
     WireLaunch.between(a, b)
   end
@@ -38,7 +38,7 @@ describe WireLaunch do
   it "should be able to return wire launches after a given date" do
     a = 10.days.ago
     m = mock("relation")
-    m.should_receive(:where).with("abstract_flights.departure >= ?", a)
+    m.should_receive(:where).with("abstract_flights.departure_date >= ?", a)
     WireLaunch.should_receive(:joins).with(:abstract_flight).and_return(m)
     WireLaunch.after(a)
   end
@@ -46,7 +46,7 @@ describe WireLaunch do
   it "should be able to return wire launches before a given date" do
     a = 10.days.ago
     m = mock("relation")
-    m.should_receive(:where).with("abstract_flights.departure < ?", a)
+    m.should_receive(:where).with("abstract_flights.departure_date < ?", a)
     WireLaunch.should_receive(:joins).with(:abstract_flight).and_return(m)
     WireLaunch.before(a)
   end

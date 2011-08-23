@@ -1,3 +1,4 @@
+#encoding: utf-8
 [ PersonCostCategory, WireLauncherCostCategory, LegalPlaneClass, Group,
   FinancialAccount, Person, License, PersonCostCategoryMembership, Account, Airfield,
   Plane, WireLauncher, PlaneCostCategory, WireLauncherCostCategoryMembership,

@@ -26,7 +26,7 @@ class FlightCostRule < ActiveRecord::Base
 
   def matches?(flight, conditions = nil)
     unless conditions
-      valid_at?(flight.departure) && flight_type == flight.class.to_s && matches?(flight, [ person_cost_category, plane_cost_category, cost_rule_conditions ].flatten)
+      valid_at?(flight.departure_date) && flight_type == flight.class.to_s && matches?(flight, [ person_cost_category, plane_cost_category, cost_rule_conditions ].flatten)
     else
       conditions.empty? || (conditions[0].matches?(flight) && matches?(flight, conditions[1..-1]))
     end

@@ -20,7 +20,7 @@ shared_examples_for "an accounting entry factory" do
     r.wire_launch_cost_items.create :value => 100
     r.wire_launch_cost_items.create :value => 10, :financial_account => fa
     
-    @f = Flight.create(:plane_id => plane.id, :seat1_id => person.id, :duration => 10, :departure => DateTime.now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
+    @f = Flight.create(:plane_id => plane.id, :seat1_id => person.id, :departure => DateTime.now, :arrival => 10.minutes.from_now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
     @f.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @f)
     @f.save!
   end
@@ -62,7 +62,8 @@ shared_examples_for "an accounting entry factory" do
       r = FlightCostRule.generate!(:plane_cost_category_id => a, :person_cost_category_id => @b, :flight_type => "TowFlight")
       r.flight_cost_items.create :depends_on => "duration", :value => 200
       r.flight_cost_items.create :additive_value => 10, :financial_account => fa = FinancialAccount.generate!
-      @f.launch = TowFlight.create(:plane_id => tow_plane.id, :seat1_id => tow_pilot.id, :duration => 5, :to => @f.to, :abstract_flight => @f)
+      @f.launch = TowFlight.create(:plane_id => tow_plane.id, :seat1_id => tow_pilot.id, :to => @f.to, :abstract_flight => @f)
+      @f.launch.duration = 5
       @f.save!
       @f.launch.accounting_entries.should_not be_empty
     end

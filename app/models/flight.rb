@@ -84,7 +84,7 @@ class Flight < AbstractFlight
   def initialize(*args)
     super(*args)
     if new_record?
-      self.departure ||= Date.today
+      self.departure_date ||= Date.today
     end
   end
 
@@ -99,7 +99,7 @@ private
   end
   
   def invalidation_necessary?
-    !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure", "duration", "engine_duration", "cost_hint_id"]).empty?
+    !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure_date", "departure_i", "arrival_i", "engine_duration", "cost_hint_id"]).empty?
   end
 
   def before_update_invalidate_accounting_entries

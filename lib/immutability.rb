@@ -4,7 +4,7 @@ module Immutability
       methods.each do |method|
         class_eval <<-END
           def #{method}_with_immutability=(obj)
-            raise ImmutableObjectException unless #{method}.nil?
+            raise ImmutableObjectException unless #{method}.nil? || obj == #{method}
             self.#{method}_without_immutability = obj
           end
           alias_method_chain "#{method}=", :immutability

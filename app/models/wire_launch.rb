@@ -14,7 +14,7 @@ class WireLaunch < ActiveRecord::Base
   class << self
     def between(from, to)
       if from && to
-        joins(:abstract_flight).where("abstract_flights.departure >= ? AND abstract_flights.departure < ?", from, to)
+        joins(:abstract_flight).where("abstract_flights.departure_date >= ? AND abstract_flights.departure_date < ?", from, to)
       elsif from
         after(from)
       elsif to
@@ -25,11 +25,11 @@ class WireLaunch < ActiveRecord::Base
     end
     
     def after(from)
-      joins(:abstract_flight).where("abstract_flights.departure >= ?", from)
+      joins(:abstract_flight).where("abstract_flights.departure_date >= ?", from)
     end
     
     def before(to)
-      joins(:abstract_flight).where("abstract_flights.departure < ?", to)
+      joins(:abstract_flight).where("abstract_flights.departure_date < ?", to)
     end
   end
 
