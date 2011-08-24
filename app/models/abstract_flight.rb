@@ -380,7 +380,7 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def self.oldest_departure(rel = AbstractFlight)
-    rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue DateTime.now
+    rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue 2.years.ago
   end
 
 =begin
