@@ -6,7 +6,7 @@ class AccountSessionsController < ApplicationController
   def create
     @account_session = AccountSession.new(params[:account_session])
     if @account_session.save
-      redirect_to '/'
+      redirect_to session[:redirect_to_after_login] || '/'
     else
       render :action => :new
     end

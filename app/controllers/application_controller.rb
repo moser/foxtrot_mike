@@ -170,6 +170,7 @@ class ApplicationController < ActionController::Base
     if current_account  
       redirect_to "/403.html"
     else
+      session[:redirect_to_after_login] = current_path
       redirect_to "/login"
     end
   end
