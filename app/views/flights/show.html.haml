@@ -110,7 +110,8 @@
           %ul.versions
             - @flight.all_versions.each do |v|
               %li
-                = l(v.created_at) + ' ' + v.item_type
-                = Account.find(v.whodunnit).person unless v.whodunnit.nil?
-                - #TODO ^ change to person?
+                = l(v.created_at, :format => :short)
+                = v.whodunnit.nil? ? "" : Person.find(v.whodunnit)
+                = v.event
+                = v.item_type
     = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date

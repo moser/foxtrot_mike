@@ -130,9 +130,9 @@ class ApplicationController < ActionController::Base
     @include_stylesheet_files.uniq
   end
   
-  #def user_for_paper_trail
-  #  logged_in? ? current_account.id : nil
-  #end
+  def user_for_paper_trail
+    current_account ? current_account.person_id : nil
+  end
   
   def model_by_id    
     eval "@model = @#{model_name.underscore} = #{model_class}.find(params[:id])"
