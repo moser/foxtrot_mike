@@ -93,7 +93,7 @@ class FlightsController < ApplicationController
   def create
     #TODO what to do with type? new controller or split here
     attrs = params[:flight] #|| params[:tow_flight]
-    attrs.delete_if { |k,v| k.to_s =~ /arrival/ }
+    attrs.delete_if { |k,v| k.to_s =~ /^duration/ }
     @flight = (attrs.delete(:type) || "Flight").constantize.new(attrs)
     authorize! :create, @flight
     @flight.id = attrs[:id] unless attrs[:id].nil?
@@ -120,7 +120,7 @@ class FlightsController < ApplicationController
   # PUT /flights/1.xml
   def update
     attrs = params[:flight]
-    attrs.delete_if { |k,v| k.to_s =~ /arrival/ }
+    attrs.delete_if { |k,v| k.to_s =~ /^duration/ }
     @flight = AbstractFlight.find(params[:id])
     authorize! :update, @flight
     respond_to do |format|

@@ -76,6 +76,13 @@ describe AbstractFlight do
       @f.departure.hour.should == 1
       @f.departure.min.should == 40
     end
+    
+    it "should accept a string" do
+      @f.departure = "10"
+      @f.departure_i.should == 10
+      @f.departure = "8:21"
+      @f.departure_i.should == 501
+    end
   end
   
   describe "arrival" do
@@ -97,6 +104,13 @@ describe AbstractFlight do
       @f.departure_i = 100
       @f.arrival_i = 60
       @f.arrival.should > @f.departure
+    end
+    
+    it "should accept a string" do
+      @f.arrival = "10"
+      @f.arrival_i.should == 10
+      @f.arrival = "8:21"
+      @f.arrival_i.should == 501
     end
   end
   

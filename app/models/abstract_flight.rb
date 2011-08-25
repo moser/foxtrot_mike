@@ -163,8 +163,8 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def departure_time
-    @departure_day_time ||= DayTime.new(departure_time)
-    @departure_day_time.minutes = departure_time
+    @departure_day_time ||= DayTime.new(departure_i)
+    @departure_day_time.minutes = departure_i
     @departure_day_time
   end
   
@@ -425,7 +425,7 @@ protected
     elsif Integer === time
       send("#{method}=", time)
     elsif String === time
-      #TODO
+      send("#{method}=", DayTime.parse(time))
     else
       send("#{method}=", -1)
     end

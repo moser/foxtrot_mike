@@ -5,9 +5,9 @@
   = tf.association :to
   .input.time.optional.replaced
     %label.time.optional>= Flight.l(:departure)
-    = l(launch.abstract_flight.departure, :format => :time)
+    = launch.abstract_flight.departure_time
+  = tf.input :arrival_time
   .input.time.optional.replaced
-    %label.time.optional{ :for => "arrival" }>= Flight.l(:arrival)
-    = text_field_tag :arrival, (launch.arrival.strftime("%H:%M") rescue ""), :class => "timepicker"
-  = tf.input :duration, :wrapper_html => { :class => "duration" }
+    %label.time.optional>= Flight.l(:duration)
+    = launch.duration_time_span
   = tf.input :comment
