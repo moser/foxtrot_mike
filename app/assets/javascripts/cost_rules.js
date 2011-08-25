@@ -7,9 +7,9 @@ var CostRules = {
     }
   },
   reload_cost_rules: function() {
-    person_cost_category_id = $.bbq.getState("person_cost_category_id");
-    other_cost_category_parameter = $.bbq.getState("other_cost_category_parameter");
-    other_cost_category_id = $.bbq.getState("other_cost_category_id");
+    person_cost_category_id = window.History.getState().data.person_cost_category_id;
+    other_cost_category_parameter = window.History.getState().data.other_cost_category_parameter;
+    other_cost_category_id = window.History.getState().data.other_cost_category_id;
     
     $('a[data-parameter=person_cost_category_id]').parent().removeClass('current');
     $('a[data-parameter=person_cost_category_id][data-value=' + person_cost_category_id + ']').parent().addClass('current');
@@ -26,7 +26,7 @@ var CostRules = {
               url: "/" + CostRules.cost_rule_type(other_cost_category_parameter),
               data: data, 
               success: function(html) {
-                $('#cost_rules').html(html);
+                $("#cost_rules").html(html);
                 DomInsertionWatcher.notify_listeners($('#cost_rules'));
                 
                 PleaseWait.vote_hide();
@@ -36,18 +36,21 @@ var CostRules = {
                 PleaseWait.vote_hide();
               }
       });
+      
       PleaseWait.vote_show();  
     }
   },
   update: function(e) {
-    var state = null;
+    console.log("CR update");
+    var state = window.History.getState().data;
     if($(e.target).attr('data-parameter') == 'person_cost_category_id') {
-      state = { person_cost_category_id: $(e.target).attr('data-value') };
+      state.person_cost_category_id = $(e.target).attr('data-value');
     } else {
-      state = { other_cost_category_parameter: $(e.target).attr('data-parameter'),
-                other_cost_category_id: $(e.target).attr('data-value') };
+      state.other_cost_category_parameter = $(e.target).attr('data-parameter');
+      state.other_cost_category_id = $(e.target).attr('data-value');
     }
-    $.bbq.pushState(state);
+    CostRules.pushState(state);
+    CostRules.reload_cost_rules();
     return false;
   },
   remote_form: function(e) {
@@ -84,21 +87,29 @@ var CostRules = {
     plane_cost_category_id = $('.plane_cost_categories li.current a').attr('data-value');
     wire_launcher_cost_category_id = $('.wire_launcher_cost_categories li.current a').attr('data-value');
     //cost_rule_type = $('.tablist li.current a').attr('data-value');
-    $(window).bind('hashchange', CostRules.navigate);
+    $(window).bind('popstate', CostRules.navigate);
+    var state = null;
     if(plane_cost_category_id) {
-      $.bbq.pushState({ person_cost_category_id: person_cost_category_id,
-                        other_cost_category_parameter: 'plane_cost_category_id',
-                        other_cost_category_id: plane_cost_category_id });
+      state = { person_cost_category_id: person_cost_category_id,
+                other_cost_category_parameter: 'plane_cost_category_id',
+                other_cost_category_id: plane_cost_category_id };
     } else {
-      $.bbq.pushState({ person_cost_category_id: person_cost_category_id,
-                        other_cost_category_parameter: 'wire_launcher_cost_category_id',
-                        other_cost_category_id: wire_launcher_cost_category_id });
+      state = { person_cost_category_id: person_cost_category_id,
+                other_cost_category_parameter: 'wire_launcher_cost_category_id',
+                other_cost_category_id: wire_launcher_cost_category_id };
     }
+    CostRules.pushState(state);
+  },
+  pushState: function(state) {
+    var params = { person_cost_category_id: state.person_cost_category_id };
+    params[state.other_cost_category_parameter] = state.other_cost_category_id;
+    window.History.pushState(state, window.document.title, "?" + $.param(params));
   }
 };
 
 $(function() {
   if($('.cost_rules').length > 0) {
     CostRules.init();
+    console.log("CR init");
   }
 });

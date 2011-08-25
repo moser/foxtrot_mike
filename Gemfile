@@ -8,6 +8,7 @@ gem "coffee-script"
 gem "therubyracer"
 gem "uglifier"
 gem "jquery-rails"
+gem "jquery-historyjs"
 
 gem "haml"
 gem "haml-rails"
