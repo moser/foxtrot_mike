@@ -27,13 +27,14 @@ class FilteredFlightsController < ApplicationController
     @flights = @obj.flights
     @from ||= Flight.latest_departure(@flights).to_date
     @to ||= @from
-    @flights = @flights.where(AbstractFlight.arel_table[:departure_date].gteq(@from.to_datetime)).
-                          where(AbstractFlight.arel_table[:departure_date].lt(@to.to_datetime + 1.day)).
+    @flights = @flights.where(AbstractFlight.arel_table[:departure_date].gteq(@from.to_date)).
+                          where(AbstractFlight.arel_table[:departure_date].lteq(@to.to_date)).
                           order('departure_date ASC').all
 		
     if params[:group_by] && GROUPS.include?(params[:group_by]) && !request.xhr?
       @group_by = params[:group_by]
       @flights = @flights.group_by &:"grouping_#{params[:group_by]}"
+      @flights.delete_if { |a| a && a.respond_to?(:id) && params[:ignore].include?(a.id) } if params[:ignore]
     else
       @group_by = ''
     end

@@ -99,7 +99,7 @@ var Groupable = {
       });
       for(var i = 0; i < groups.length; i++) {
         var group = groups[i];
-        var group_div = $('#group-prototype .group').clone();
+        var group_div = $('#group-prototype .group').clone().attr("id", group);
         var div = group_div.find('.items');
         var groupables = $(':not(.hidden).groupable[data-' + group_by + '*="(' + group + ')"]');
         group_div.find('.foot .count .number').text(groupables.length);
@@ -208,8 +208,10 @@ $(function() {
     $('a.change_params').live('click', function() {
       var uri = parseUri(this.href);
       uri.params.group_by = Groupable.current_group;
+      uri.params.filter = {};
       uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
       uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
+      uri.params.ignore = $(".print_off").map(function(i, e) { return $(e).attr("id"); }).toArray();
       this.href = uri.reconstruct();
       //return false;
     });

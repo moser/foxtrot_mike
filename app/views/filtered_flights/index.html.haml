@@ -1,7 +1,7 @@
 .filtered_flights
   .controls.no_print
-    = link_to t("views.as_pdf"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :pdf), :class => "change_params"
-    = link_to t("views.as_csv"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :csv), :class => "change_params"
+    = link_to t("views.as_pdf"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :pdf), :class => "change_params", :target => "_blank"
+    = link_to t("views.as_csv"), generate_filtered_flights_path(@obj, @from, @to, @group_by, :csv), :class => "change_params", :target => "_blank"
 
   %h1.page_title= t('.title', :for => @obj.to_s)
   %h2.page_sub_title= "#{l(@from)} - #{l(@to)}"
@@ -51,8 +51,8 @@
           %h1.title
           %em.hint
           .controls
-            %a.control.toggle_no_print{ :href => '#' } Print (on/off)
-            %a.control.toggle_collapsed{ :href => '#' } Collapse
+            %a.control.toggle_no_print{ :href => '#' }= t(".exclude")
+            %a.control.toggle_collapsed{ :href => '#' }= t(".collapse")
         .items.alternate
         .foot
           .count
