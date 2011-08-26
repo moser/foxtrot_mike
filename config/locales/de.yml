@@ -99,6 +99,8 @@ de:
   launches:
     edit:
       selflaunch: Eigenstart
+    show:
+      selflaunch: Eigenstart
   legal_plane_classes:
     index:
       title: "Flugzeugklassen"
@@ -267,6 +269,8 @@ de:
         book: "Flugbuch"
         disabled: Deaktiviert
         disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
+      tow_flight:
+        towed_flight: Geschleppter Flug
       wire_launcher:
         registration: Kennzeichen
       time_cost_rule:

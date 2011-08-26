@@ -3,17 +3,27 @@
   = f.association :plane
   = f.input :seat1_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
   = f.input :seat2_id, :collection => Person.all.collect { |c| [ c.name, c.id ] }
-  = f.association :from
+  - unless TowFlight === @flight
+    = f.association :from
+  - else
+    .input.select.reqired
+      %label.select.reqired>= Flight.l(:from)
+      = @flight.from
   = f.association :to
-  = f.input :departure_time
+  - unless TowFlight === @flight
+    = f.input :departure_time
+  - else
+    .input.time.optional.replaced
+      %label.time.optional>= Flight.l(:departure_time)
+      = @flight.departure_time
   = f.input :arrival_time
   .input.time.optional.replaced
     %label.time.optional>= Flight.l(:duration)
     = @flight.duration_time_span
   - if @flight.plane.nil? || @flight.plane.engine_duration_possible?
     = f.input :engine_duration, :wrapper_html => { :class => "duration" }
-  = f.association :controller
   - unless @flight.is_a?(TowFlight)
+    = f.association :controller
     = f.association :cost_hint
   = f.input :comment
   = f.button :submit

@@ -3,7 +3,8 @@
     = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
 .item_container
   .item.inline_form_replace_context
-    = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date
+    %h1= @flight.class.l
+    = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
     %table.categories
       %tr
         %th= Flight.l(:data)
@@ -57,41 +58,49 @@
               %td= @flight.comment
             %tr
               %td= edit_link(@flight, nil, {:class => "inline_form_show" })
-      %tr
-        %th= Flight.l(:launch)
-        %td
-          = render(:partial => "launches/show", :locals => { :flight => @flight })  
+      - if TowFlight ===  @flight
         %tr
-          %th
-            = Flight.l(:cost)
+          %th= TowFlight.l(:towed_flight)
           %td
-            %table.data
-              - if @flight.cost 
-                %tr
-                  %th= FlightCostRule.l
-                  %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
-                - @flight.cost.items.each do |i|
-                  %tr
-                    %td= i.cost_item.name
-                    %td= i.financial_account || ""
-                    %td= format_currency(i.value)
-              - if @flight.launch_cost
-                %tr
-                  %th= @flight.launch_cost.cost_rule.class.l
-                  %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
-                - @flight.launch_cost.items.each do |i|
-                  %tr
-                    %td= i.cost_item.name
-                    %td= i.financial_account || ""
-                    %td= format_currency(i.value)
+            .flight_format= render(:partial => "flights/title_spans")  
+            .flight_format
+              = render(:partial => "flights/flight_spans", :locals => { :flight => @flight.abstract_flight })
+              = show_link(@flight.abstract_flight, nil, {:class => "sop show"})
+      -  unless TowFlight ===  @flight
+        %tr
+          %th= Flight.l(:launch)
+          %td= render(:partial => "launches/show", :locals => { :flight => @flight })  
+      %tr
+        %th
+          = Flight.l(:cost)
+        %td
+          %table.data
+            - if @flight.cost 
               %tr
-                %td= Flight.l(:cost_sum)
-                %td
-                %td= format_currency(@flight.cost_sum)
+                %th= FlightCostRule.l
+                %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
+              - @flight.cost.items.each do |i|
+                %tr
+                  %td= i.cost_item.name
+                  %td= i.financial_account || ""
+                  %td= format_currency(i.value)
+            - if @flight.launch_cost
               %tr
-                %td= Flight.l(:free_cost_sum)
-                %td
-                %td= format_currency(@flight.free_cost_sum)
+                %th= @flight.launch_cost.cost_rule.class.l
+                %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
+              - @flight.launch_cost.items.each do |i|
+                %tr
+                  %td= i.cost_item.name
+                  %td= i.financial_account || ""
+                  %td= format_currency(i.value)
+            %tr
+              %td= Flight.l(:cost_sum)
+              %td
+              %td= format_currency(@flight.cost_sum)
+            %tr
+              %td= Flight.l(:free_cost_sum)
+              %td
+              %td= format_currency(@flight.free_cost_sum)
       - unless @flight.is_a?(TowFlight)
         %tr
           %th= Flight.l(:liabilities)
@@ -105,7 +114,7 @@
               - @flight.problems.each do |col, str|
                 %li= Flight.l(col) + " " + str
       %tr
-        %th= Flight.l(:versions)
+        %th= Flight.l(:versions) #TODO move to own view/controller
         %td
           %ul.versions
             - @flight.all_versions.each do |v|
@@ -114,4 +123,4 @@
                 = v.whodunnit.nil? ? "" : Person.find(v.whodunnit)
                 = v.event
                 = v.item_type
-    = back_link(Flight, {:class => "sop back index"}) #TODO link to /flights/day/:departure_date
+    = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
