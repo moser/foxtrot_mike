@@ -2,7 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Person do  
   it { should have_many :financial_account_ownerships }
-  it { should validate_presence_of :financial_account }
+  it { should validate_presence_of :firstname }
+  it { should validate_presence_of :lastname }
+  it { should validate_presence_of :group }
   
   it "should have one current financial_account_ownership" do
     p = Person.new
@@ -23,6 +25,7 @@ describe Person do
   end
   
   it "should find all people by their name" do
+    Person.destroy_all
     martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
     tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")
     Person.find_all_by_name('foo').should == [martin, tom]
@@ -97,8 +100,15 @@ describe Person do
     m = mock("make sure the block is executed")
     m.should_receive(:lala).twice
     p = Person.create
-    p.should_receive("flights").and_return([1])
+    p.should_receive("flights").with(any_args).and_return([1])
     p.should_receive("flights_liable_for").and_return([2])
     p.find_concerned_accounting_entry_owners { |r| m.lala; r }.should include(1, 2)
+  end
+  
+  it "should not include tow flights in " do
+    p = Person.generate!
+    f = TowFlight.generate! :seat1_id => p
+    p.reload
+    p.find_concerned_accounting_entry_owners.should_not include(f)
   end
 end

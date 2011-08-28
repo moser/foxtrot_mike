@@ -120,7 +120,7 @@ class Person < ActiveRecord::Base
   
   def find_concerned_accounting_entry_owners(&blk)
     blk ||= lambda { |r| r }
-    blk.call(flights) + blk.call(flights_liable_for)
+    blk.call(flights(Flight.include_all)) + blk.call(flights_liable_for)
   end
   
 private
