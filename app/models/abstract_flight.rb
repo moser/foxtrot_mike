@@ -10,7 +10,7 @@ class AbstractFlight < ActiveRecord::Base
   #launch == nil <=> selflaunched
   belongs_to :launch, :polymorphic => true, :autosave => true, :readonly => false
   has_one :manual_cost, :as => :item
-  has_many :crew_members, :include => [:person], :after_add => :association_changed, :after_remove => :association_changed #, :dependent => :destroy  # , :autosave => true
+  has_many :crew_members, :include => [:person], :after_add => :association_changed, :after_remove => :association_changed, :dependent => :destroy  # , :autosave => true
   has_many :accounting_entries, :as => :item
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
