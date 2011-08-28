@@ -25,6 +25,13 @@ describe AccountingSession do
     AccountingSession.latest_session_end.should == 1.day.ago.to_date
   end
   
+  it "should return the maximum of to dates of finished sessions for latest_finished_session_end" do
+    AccountingSession.destroy_all
+    AccountingSession.generate!(:end_date => 3.days.ago, :finished_at => 2.days.ago)
+    AccountingSession.generate!(:end_date => 1.days.ago)
+    AccountingSession.latest_finished_session_end.should == 3.day.ago.to_date
+  end
+  
   it "should return the date before the first flight" do
     AccountingSession.destroy_all
     Flight.generate!(:departure => 2.years.ago)
@@ -39,7 +46,7 @@ describe AccountingSession do
     b = AccountingSession.generate!(:end_date => 3.days.ago)
     b.start_date.should == (a.end_date + 1.day)
   end
-  
+
   it "should have a sensible default for end_date" do
     AccountingSession.destroy_all
     a = AccountingSession.generate!(:end_date => ((Date.today - 1.month).end_of_month))

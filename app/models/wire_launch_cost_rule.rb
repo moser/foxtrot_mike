@@ -42,6 +42,10 @@ class WireLaunchCostRule < ActiveRecord::Base
     wire_launcher_cost_category.find_concerned_accounting_entry_owners { |r| r.between(min_date(valid_from, from), max_date(valid_to, to)) }
   end
   
+  def association_changed(obj)
+    delay.invalidate_concerned_accounting_entries
+  end
+  
 private
   def after_save_invalidate_accounting_entries
     created = changes.keys.include?("id")
@@ -50,9 +54,5 @@ private
     else
       delay.invalidate_concerned_accounting_entries(old_or_current(:valid_from), old_or_current(:valid_to))
     end
-  end
-  
-  def association_changed(obj)
-    delay.invalidate_concerned_accounting_entries
   end
 end

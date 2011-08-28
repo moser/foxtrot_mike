@@ -18,13 +18,19 @@ module ValidityCheck
 
   # The rule could be in use and thus must not be changed anymore
   # The only change allowed is to set the valid_to date (must be after
-  # AccountingSession.booking_now).
+  # AccountingSession.latest_finished_session_end).
   def in_effect?
-    valid_at?(AccountingSession.latest_session_end)
+    valid_at?(AccountingSession.latest_finished_session_end)
   end
 
+  # The rule cannot be edited anymore, because it's validity ended before
+  # AccountingSession.latest_finished_session_end.
   def outdated?
-    not_valid_anymore_at?(AccountingSession.latest_session_end)
+    not_valid_anymore_at?(AccountingSession.latest_finished_session_end)
+  end
+  
+  def not_yet_in_effect?
+    not_yet_valid_at?(AccountingSession.latest_finished_session_end)
   end
 
   def self.included(base)

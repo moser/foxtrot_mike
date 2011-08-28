@@ -44,6 +44,10 @@ class FlightCostRule < ActiveRecord::Base
     end
   end
   
+  def association_changed(obj)
+    delay.invalidate_concerned_accounting_entries
+  end
+  
 private
   def after_save_invalidate_accounting_entries
     created = changes.keys.include?("id")
@@ -52,9 +56,5 @@ private
     else
       delay.invalidate_concerned_accounting_entries(old_or_current(:valid_from), old_or_current(:valid_to))
     end
-  end
-  
-  def association_changed(obj)
-    delay.invalidate_concerned_accounting_entries
   end
 end

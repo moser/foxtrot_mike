@@ -25,9 +25,9 @@ class AbstractCostRulesController < ApplicationController
     @person_cost_category_id = params[:person_cost_category_id]
     eval "@#{other_cost_category}_id = params[:#{other_cost_category}_id]"
 
-    @not_valid_anymore = @models.find_all { |r| r.not_valid_anymore_at?(now) }.sort_by { |r| r.valid_to }
-    @valid = @models.find_all { |r| r.valid_at?(now) }.sort_by { |r| r.valid_to || 1000.years.from_now }
-    @not_yet_valid = @models.find_all { |r| r.not_yet_valid_at?(now) }.sort_by { |r| r.valid_from }
+    @not_valid_anymore = @models.select { |r| r.outdated? }.sort_by { |r| r.valid_to }
+    @valid = @models.select { |r| r.in_effect? }.sort_by { |r| r.valid_to || 1000.years.from_now }
+    @not_yet_valid = @models.select { |r| r.not_yet_in_effect? }.sort_by { |r| r.valid_from }
     respond_to do |format|
       format.html do
         if request.xhr?

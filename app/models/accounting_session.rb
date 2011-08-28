@@ -49,6 +49,10 @@ class AccountingSession < ActiveRecord::Base
   # This date is used to determine if any cost related models
   # may be changed. (E.g. a cost rule that was valid at this date must
   # not be changed.)
+  def self.latest_finished_session_end
+    AccountingSession.where(AccountingSession.arel_table[:finished_at].not_eq(nil)).select(:end_date).maximum(:end_date) || (AbstractFlight.oldest_departure - 1.year).to_date
+  end
+
   def self.latest_session_end
     AccountingSession.select(:end_date).maximum(:end_date) || (AbstractFlight.oldest_departure - 1.day).to_date
   end

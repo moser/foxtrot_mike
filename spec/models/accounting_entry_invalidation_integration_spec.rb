@@ -38,6 +38,13 @@ describe "Accounting entry invalidation" do
           @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
         end
       end
+      
+      it "should invalidate accounting entries when a cost item is changed" do
+        i = @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        check_change do 
+          i.update_attributes(:value => 2)
+        end
+      end
     end
     
     describe "WireLauncherCostCategoryMembership" do
@@ -102,6 +109,13 @@ describe "Accounting entry invalidation" do
       it "should invalidate accounting entries when a cost item is added" do
         check_change do
           @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        end
+      end
+      
+      it "should invalidate accounting entries when a cost item is changed" do
+        i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        check_change do
+          i.update_attributes(:value => 2)
         end
       end
     end
@@ -214,6 +228,13 @@ describe "Accounting entry invalidation" do
       it "should invalidate accounting entries when a cost item is added" do
         check_change do
           @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        end
+      end
+      
+      it "should invalidate accounting entries when a cost item is changed" do
+        i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+        check_change do
+          i.update_attributes(:value => 2)
         end
       end
     end
