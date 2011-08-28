@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Accounting entry invalidation" do
   describe "wire launch" do
-    before(:each) do
+    before(:all) do
       @wm = WireLauncherCostCategoryMembership.generate!(:valid_to => nil)
       @wl = @wm.wire_launcher
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
@@ -13,6 +13,9 @@ describe "Accounting entry invalidation" do
       @cr.wire_launch_cost_items.create(:name => "1", :value => 10)
       @f = Flight.generate!(:seat1_id => @p.id)
       @f.launch = WireLaunch.create!(:abstract_flight => @f, :wire_launcher => @wl)
+    end
+
+    before(:each) do
       [ @wm, @wl, @pm, @p, @cr, @f ].each { |e| e.reload }
     end
     
@@ -65,7 +68,7 @@ describe "Accounting entry invalidation" do
   end
   
   describe "flight" do
-    before(:each) do
+    before(:all) do
       @plm = PlaneCostCategoryMembership.generate!(:valid_to => nil)
       @plane = @plm.plane
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
@@ -76,6 +79,9 @@ describe "Accounting entry invalidation" do
                                      :flight_type => "Flight")
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
       @f = Flight.generate!(:plane_id => @plane.id, :seat1_id => @person.id, :duration => 20)
+    end
+    
+    before(:each) do
       [ @plm, @plane, @pm, @person, @cr, @f ].each { |e| e.reload }
     end
     
@@ -172,19 +178,23 @@ describe "Accounting entry invalidation" do
   end
   
   describe "tow flight" do
-    before(:each) do
+    before(:all) do
       @plm = PlaneCostCategoryMembership.generate!(:valid_to => nil)
       @tplane = @plm.plane
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
       @person = @pm.person
+      @other_person = Person.generate!
       @cr = FlightCostRule.create!(:plane_cost_category => @plm.plane_cost_category,
                                      :person_cost_category => @pm.person_cost_category,
                                      :name => "foo", :valid_from => 1.month.ago,
                                      :flight_type => "TowFlight")
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
       @f = Flight.generate!(:seat1_id => @person.id, :duration => 20)
-      @l = TowFlight.generate!(:plane => @tplane, :abstract_flight => @f, :duration => 5)
-      [ @plm, @tplane, @pm, @person, @cr, @f, @l ].each { |e| e.reload }
+      @l = TowFlight.generate!(:plane => @tplane, :seat1_id => @other_person.id, :abstract_flight => @f, :duration => 5)
+    end
+    
+    before(:each) do
+      [ @plm, @tplane, @pm, @person, @other_person, @cr, @f, @l ].each { |e| e.reload }
     end
     
     def check_change

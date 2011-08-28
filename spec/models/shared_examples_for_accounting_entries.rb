@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 shared_examples_for "an accounting entry factory" do
-  before(:each) do 
+  before(:all) do 
     plane = Plane.generate!
     FinancialAccountOwnership.generate!(:owner => plane)
     person = Person.generate!
@@ -23,6 +23,10 @@ shared_examples_for "an accounting entry factory" do
     @f = Flight.create(:plane_id => plane.id, :seat1_id => person.id, :departure => DateTime.now, :arrival => 10.minutes.from_now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
     @f.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @f)
     @f.save!
+  end
+  
+  before(:each) do
+    @f.reload
   end
   
   it "should create 4 accounting entries" do #launch and flight each have 1 free and 1 bound cost item

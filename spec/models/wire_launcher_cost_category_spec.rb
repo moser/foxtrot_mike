@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe WireLauncherCostCategory do
-  before(:each) do
+  before(:all) do
     @c = WireLauncherCostCategory.generate!
     @wl = WireLauncher.generate!
     @c.wire_launcher_cost_category_memberships.create :wire_launcher => @wl, :valid_from => 2.days.ago

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PlaneCostCategory do
-  before(:each) do
+  before(:all) do
     @c = PlaneCostCategory.generate!
     @p = Plane.generate!
     @c.plane_cost_category_memberships.create :plane => @p, :valid_from => 2.days.ago

@@ -152,16 +152,19 @@ describe AbstractFlight do
   end
   
   describe "crew member factory" do
+    before(:all) do
+      @pilot = Person.generate!
+      @trainee = Person.generate!
+      @instructor = Person.generate!(:lastname => "instructor")
+    end
+
     before(:each) do
       @f = AbstractFlight.spawn
-      @pilot = Person.generate!
       @pilot.stub(:trainee? => false)
-      @trainee = Person.generate!
       @trainee.stub(:trainee? => true)
-      @instructor = Person.generate!(:lastname => "instructor")
       @instructor.stub(:instructor? => true)
     end
-    
+
     it "should accept ids" do
       @f.should_receive(:seat1=).with(1)
       @f.seat1_id = 1
