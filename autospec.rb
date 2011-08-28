@@ -62,7 +62,7 @@ end
 search_files(true)
 
 @sf = {}
-@run_all = true
+@run_all = false
 @last_time_all = DateTime.now
 @run_all_when_green = false
 
@@ -116,14 +116,14 @@ loop do
               `notify-send '#{$1} example#{$1 == "1" ? "" : "s"}, #{$2} pending' -i ~/code/foxtrot_mike/.notify-img/pending.png &> /dev/null`
               notified = true
               if @run_all_when_green 
-                @run_all = true 
+                #@run_all = true 
                 @run_all_when_green = false
               end
             elsif l =~ /([0-9]*) examples*, 0 failures/
               `notify-send '#{$1} example#{$1 == "1" ? "" : "s"} passed' -i ~/code/foxtrot_mike/.notify-img/passed.png &> /dev/null`
               notified = true
               if @run_all_when_green && ((DateTime.now - @last_time_all) * 1440) > 5 #only run all after green every 5 minutes
-                @run_all = true 
+                #@run_all = true 
                 @run_all_when_green = false
               end
             elsif l =~ /([0-9]*) examples*, ([0-9]*) failures*/
