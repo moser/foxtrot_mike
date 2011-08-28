@@ -2,7 +2,7 @@ class TowFlight < AbstractFlight
   before_validation :set_departure
   before_update :before_update_invalidate_accounting_entries
   after_update :after_update_invalidate_accounting_entries
-  has_one :abstract_flight, :as => :launch #the towed flight
+  has_one :abstract_flight, :as => :launch, :readonly => false #the towed flight
   
   include LaunchAccountingEntries
 
