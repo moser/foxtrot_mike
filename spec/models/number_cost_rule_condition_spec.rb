@@ -14,6 +14,8 @@ describe NumberCostRuleCondition do
   it { should validate_presence_of :condition_operator }
   it { should validate_presence_of :condition_value_i }
   it { should validate_numericality_of :condition_value_i }
-  it { should ensure_inclusion_of(:condition_field).in_range(NumberCostRuleCondition.valid_fields) }
-  it { should ensure_inclusion_of(:condition_operator).in_range(NumberCostRuleCondition.valid_operators) }
+  it { NumberCostRuleCondition.valid_fields.each { |e| should allow_value(e).for(:condition_field) } }
+  it { should_not allow_value(:foo).for(:condition_field) }
+  it { NumberCostRuleCondition.valid_operators.each { |e| should allow_value(e).for(:condition_operator) } }
+  it { should_not allow_value(:foo).for(:condition_operator) }
 end
