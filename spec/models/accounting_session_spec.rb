@@ -5,6 +5,7 @@ describe AccountingSession do
   it { should validate_presence_of :name }
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
+  it { should_not allow_value(1.day.from_now).for(:end_date) }
 
   it "should not be finished unless the finished_at date is present" do
     s = AccountingSession.new
@@ -51,6 +52,16 @@ describe AccountingSession do
     AccountingSession.destroy_all
     a = AccountingSession.generate!(:end_date => ((Date.today - 1.month).end_of_month))
     AccountingSession.new.end_date.should == Date.today.end_of_month
-  end  
+  end
   
+  it "should pwn all flights between start and end date when finished" do
+    AccountingSession.destroy_all
+    p Flight.all
+    f = Flight.generate!(:departure_date => 1.day.ago)
+    s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago)
+    s.finish
+    s.finished?.should be_true
+    f.reload
+    f.accounting_session.should == s
+  end
 end

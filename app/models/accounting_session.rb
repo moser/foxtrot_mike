@@ -2,6 +2,9 @@ class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights
   validates_presence_of :name, :start_date, :end_date
+  validate do |a|
+    errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
+  end
   
   #TODO make all other flights methods unaccessible
   def flights_with_default
@@ -10,6 +13,7 @@ class AccountingSession < ActiveRecord::Base
     else
       Flight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(start_date)).
                             where(AbstractFlight.arel_table[:departure_date].lteq(end_date)).
+                            where(:accounting_session_id => nil).
                             order('departure_date ASC').all
     end
   end
@@ -37,6 +41,15 @@ class AccountingSession < ActiveRecord::Base
 
   def finished?
     !finished_at.nil?
+  end
+  
+  def finish
+    unless finished?
+      flights.each do |f|
+        f.update_attribute :accounting_session, self
+      end
+      update_attribute :finished_at, DateTime.now
+    end
   end
 
 #  def self.booking_now
