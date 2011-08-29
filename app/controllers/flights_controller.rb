@@ -135,7 +135,7 @@ class FlightsController < ApplicationController
         end
         format.json  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "edit", :layout => !request.xhr?, :status => :unprocessable_entity }
         format.json  { render :json => @flight.errors, :status => :unprocessable_entity }
       end
     end
