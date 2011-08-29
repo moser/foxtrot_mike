@@ -40,7 +40,8 @@ class TowFlight < AbstractFlight
 private
   def set_departure
     unless abstract_flight.nil?
-      self.departure = abstract_flight.departure
+      self.departure_date = abstract_flight.departure_date
+      self.departure_i = abstract_flight.departure_i
       self.from = abstract_flight.from
       self.controller = abstract_flight.controller
     end

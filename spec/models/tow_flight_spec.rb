@@ -15,6 +15,19 @@ describe TowFlight do
     t.from.should == f.from
   end
   
+  it "should reset departure, from, cost_responsible when saved" do
+    t = TowFlight.spawn :abstract_flight => f = Flight.generate!
+    t.departure_date = 1.week.ago
+    t.departure_i = 490 #8:10
+    t.from = Airfield.generate!
+    t.save
+    t.departure.should == f.departure
+    t.departure_i.should == f.departure_i
+    t.departure_date.should == f.departure_date
+    t.cost_responsible.should == f.cost_responsible
+    t.from.should == f.from
+  end
+  
   describe "accounting_entries" do
     it "should invalidate accounting_entries and start a delayed job for their creation" do
       f = TowFlight.generate!
