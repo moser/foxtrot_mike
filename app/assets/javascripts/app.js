@@ -263,7 +263,12 @@ $(function() {
   // page is loaded without JS scrollbars are shown.
   $("head").append('<style type="text/css"> .scrollable { overflow: hidden; } </style>');
   
-  $('a.facebox').live('click', function(e) { jQuery.facebox({ ajax: e.target.href }); return false; });
+  $('a.facebox').live('click', function(e) {
+    if(!e.ctrlKey && !e.shiftKey) {
+      jQuery.facebox({ ajax: e.target.href }); 
+      return false;
+    }
+  });
   $('body').ajaxError(function(e, xhr, o, exception) {
     if(xhr.status == 500) {
       jQuery.facebox("An error occurred. Please try reloading the page.");
