@@ -1,6 +1,6 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
-  has_many :flights
+  has_many :flights, :order => "departure_date ASC, departure_date ASC"
   validates_presence_of :name, :start_date, :end_date
   validate do |a|
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
@@ -42,9 +42,10 @@ class AccountingSession < ActiveRecord::Base
   def finished?
     !finished_at.nil?
   end
+  alias :finished :finished?
   
-  def finish
-    unless finished?
+  def finished=(b)
+    unless !b || finished?
       flights.each do |f|
         f.update_attribute :accounting_session, self
       end

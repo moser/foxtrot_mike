@@ -59,7 +59,7 @@ describe AccountingSession do
     p Flight.all
     f = Flight.generate!(:departure_date => 1.day.ago)
     s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago)
-    s.finish
+    s.finished = true
     s.finished?.should be_true
     f.reload
     f.accounting_session.should == s
