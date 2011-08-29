@@ -84,18 +84,19 @@ module ApplicationHelper
   end
 
   def back_link(obj, options = {})
-    link_to t('views.back'), obj, *[options] if can?(:read, obj)
+    link_to t('views.back'), obj, *[merge_class_into_options("back", options)] if can?(:read, obj)
   end
 
   def show_link(obj, str = nil, options = {})
     unless str
-      link_to t('views.show'), obj, *[options] if can?(:read, obj)
+      link_to t('views.show'), obj, *[merge_class_into_options("show", options)] if can?(:read, obj)
     else
       link_to_unless cannot?(:read, obj), str, obj, *[options]
     end
   end
 
   def edit_link(obj, str = nil, options = {})
+    options = merge_class_into_options("edit", options)
     unless str
       link_to t('views.edit'), polymorphic_path(obj, :action => :edit), *[options] if can?(:update, obj)
     else
@@ -104,6 +105,7 @@ module ApplicationHelper
   end
 
   def new_link(klass, str = nil, options = {})
+    options = merge_class_into_options("new", options)
     unless str
       link_to t('views.new'), polymorphic_path(klass, :action => :new), *[options] if can?(:create, klass)
     else
@@ -112,10 +114,20 @@ module ApplicationHelper
   end
 
   def add_link(klass, options = {})
-    link_to t('views.add'), polymorphic_path(klass, :action => :new), *[options] if can?(:create, [klass].flatten.last)
+    link_to t('views.add'), polymorphic_path(klass, :action => :new), *[merge_class_into_options("add", options)] if can?(:create, [klass].flatten.last)
   end
 
   def destroy_link(obj, options = {})
     #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can?(:destroy, obj)
+  end
+  
+private
+  def merge_class_into_options(cls, options)
+    if options[:class]
+      options[:class] += " #{cls}"
+      options
+    else
+      options.merge({ :class => cls })
+    end
   end
 end
