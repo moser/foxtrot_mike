@@ -5,4 +5,5 @@
 //= require jquery-ui-timepicker-addon-0.9.3
 //= require history
 //= require timepicker
+//= require core_ext
 //= require_tree .

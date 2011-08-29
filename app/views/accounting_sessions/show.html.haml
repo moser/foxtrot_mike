@@ -1,25 +1,39 @@
-%h1= @accounting_session.name
-= l(@accounting_session.start_date)
-\-
-= l(@accounting_session.end_date)
-.flights
-  = render :partial => "flights/title_spans"
-  - @accounting_session.flights.each do |f|
-    .flight_format
-      = render :partial => "flights/flight_spans", :locals => { :flight => f }
-      = show_link(f)
-      .accounting_entries.hidden
-        - f.accounting_entries.each do |e|
-          = format_accounting_entry(e.from, e.to, e.value)
-.aggregated_entries
-  - entries = @accounting_session.flights.map { |f| f.accounting_entries }.flatten
-  - grouped0 = entries.group_by { |e| e.from }
-  - grouped1 = {}
-  - grouped0.each { |k, v| grouped1[k] = v.group_by { |e| e.to } }
-  - grouped1.each do |from, hs|
-    - hs.each do |to, es|
-      .aggregated_entry
-        = format_accounting_entry(from, to, es.map { |e| e.value }.sum)
-        .accounting_entries.hidden
-          - es.each do |e|
+.accounting_session
+  %h1= @accounting_session.name
+  = l(@accounting_session.start_date)
+  \-
+  = l(@accounting_session.end_date)
+  - if @accounting_session.finished?
+    .status
+      = AccountingSession.l(:finished_at)
+      = l(@accounting_session.finished_at.to_date)
+  - else
+    = simple_form_for(@accounting_session) do |f|
+      = f.input :finished, :input_html => { :value => true }, :as => :hidden
+      = f.button :submit, t(".finish")
+  .aggregated_entries
+    %h2= t(".aggregated_entries")
+    - entries = @accounting_session.flights.map { |f| f.accounting_entries }.flatten
+    - grouped0 = entries.group_by { |e| e.from }
+    - grouped1 = {}
+    - grouped0.each { |k, v| grouped1[k] = v.group_by { |e| e.to } }
+    - grouped1.each do |from, hs|
+      - hs.each do |to, es|
+        .aggregated_entry
+          = format_accounting_entry(from, to, es.map { |e| e.value }.sum)
+          %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{from.id}-#{to.id}" }= "dfssa"
+          %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
+          .accounting_entries.hide_on_startup
+            - es.each do |e|
+              = format_accounting_entry(e.from, e.to, e.value)
+  .flights
+    %h2= t("flights.index.title")
+    = render :partial => "flights/title_spans"
+    - @accounting_session.flights.each do |f|
+      .flight.flight_format{ :class => f.accounting_entries.map { |e| "filter-#{e.from.id}-#{e.to.id}" }.join(" ") }
+        = render :partial => "flights/flight_spans", :locals => { :flight => f }
+        = show_link(f)
+        %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
+        .accounting_entries.hide_on_startup
+          - f.accounting_entries.each do |e|
             = format_accounting_entry(e.from, e.to, e.value)
