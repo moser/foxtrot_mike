@@ -1,3 +1,13 @@
+#facebox .content {
+  width: auto;
+}
+
+#facebox a.back {
+  display: none;
+}
+
+
+/*### orig ###*/
 #facebox .b {
   background:url(/images/facebox/b.png);
 }
