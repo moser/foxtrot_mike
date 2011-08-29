@@ -41,7 +41,6 @@ var CostRules = {
     }
   },
   update: function(e) {
-    console.log("CR update");
     var state = window.History.getState().data;
     if($(e.target).attr('data-parameter') == 'person_cost_category_id') {
       state.person_cost_category_id = $(e.target).attr('data-value');
@@ -110,6 +109,5 @@ var CostRules = {
 $(function() {
   if($('.cost_rules').length > 0) {
     CostRules.init();
-    console.log("CR init");
   }
 });
