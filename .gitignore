@@ -1,5 +1,5 @@
 log/*.log
-tmp/**/*
+tmp/*
 *~
 coverage*
 *.sqlite3
@@ -8,3 +8,4 @@ rerun.txt
 .bundle
 .redcar/*
 .sass-cache/*
+webrat.log

@@ -21,13 +21,19 @@ specs.each do |c, as|
   as.each do |a|                  
     describe "/#{c}/#{a}.html.haml" do
       before do
-        if a == "index"
-          eval "assigns[:#{c}] = @#{c} = [#{c.singularize.camelcase}.generate!, #{c.singularize.camelcase}.generate!]"
-          eval "assigns[:nested] = @nested = #{nested[c.to_sym]}.generate!" if nested[c.to_sym]
-        elsif a == "new"
-          eval "assigns[:#{c.singularize}] = @#{c.singularize} = #{c.singularize.camelcase}.new"
+        unless c == "accounts"
+          if a == "index"
+            eval "assigns[:#{c}] = @#{c} = [#{c.singularize.camelcase}.generate!, #{c.singularize.camelcase}.generate!]"
+            eval "assigns[:nested] = @nested = #{nested[c.to_sym]}.generate!" if nested[c.to_sym]
+          elsif a == "new"
+            eval "assigns[:#{c.singularize}] = @#{c.singularize} = #{c.singularize.camelcase}.new"
+          else
+            eval "assigns[:#{c.singularize}] = @#{c.singularize} = #{c.singularize.camelcase}.generate!"
+          end
         else
-          eval "assigns[:#{c.singularize}] = @#{c.singularize} = #{c.singularize.camelcase}.generate!"
+          assigns[:account] = @account = Account.spawn
+          @account.save_without_session_maintenance
+          assigns[:accounts] = @accounts = [ @account ]
         end
       end
 

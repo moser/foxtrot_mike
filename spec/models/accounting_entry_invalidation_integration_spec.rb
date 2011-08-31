@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 describe "Accounting entry invalidation" do
-  describe "wire launch" do
-    before(:all) do
+  describe "wire launch and friends" do    
+    def check_change
+      old_ids = @f.launch.accounting_entries.map(&:id)
+      yield
+      @f.reload
+      @f.launch.accounting_entries.map(&:id).should_not include(*old_ids)
+    end
+    
+    it "invalidate accounting_entries" do
       @wm = WireLauncherCostCategoryMembership.generate!(:valid_to => nil)
       @wl = @wm.wire_launcher
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
@@ -13,69 +20,49 @@ describe "Accounting entry invalidation" do
       @cr.wire_launch_cost_items.create(:name => "1", :value => 10)
       @f = Flight.generate!(:seat1_id => @p.id)
       @f.launch = WireLaunch.create!(:abstract_flight => @f, :wire_launcher => @wl)
-    end
-
-    before(:each) do
-      [ @wm, @wl, @pm, @p, @cr, @f ].each { |e| e.reload }
-    end
-    
-    def check_change
-      old_ids = @f.launch.accounting_entries.map(&:id)
-      yield
-      @f.reload
-      @f.launch.accounting_entries.map(&:id).should_not include(*old_ids)
-    end
-    
-    describe "WireLaunchCostRule" do
-      it "should invalidate accounting entries when changed" do
-        check_change do 
-          @cr.update_attribute :valid_to, 1.year.from_now
-        end
+      
+      [ @wm, @wl, @pm, @p, @cr, @f ].each { |o| o.reload }
+      
+      #WireLaunchCostRule
+      check_change do 
+        @cr.update_attribute :valid_to, 1.year.from_now
+      end
+      check_change do 
+        @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      end
+      i = @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      check_change do 
+        i.update_attributes(:value => 2)
       end
       
-      it "should invalidate accounting entries when a cost item is added" do
-        check_change do 
-          @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        end
+      #WireLauncherCostCategoryMembership
+      check_change do
+        @wm.update_attribute :valid_to, 1.year.from_now
+      end
+         
+      #WireLauncher
+      check_change do
+        @wl.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
       end
       
-      it "should invalidate accounting entries when a cost item is changed" do
-        i = @cr.wire_launch_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        check_change do 
-          i.update_attributes(:value => 2)
-        end
-      end
-    end
-    
-    describe "WireLauncherCostCategoryMembership" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @wm.update_attribute :valid_to, 1.year.from_now
-        end
-      end
-    end
-    
-    describe "WireLauncher" do
-      it "should invalidate accounting entries when financial account is changed" do
-        check_change do
-          @wl.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
-        end
-      end
-    end
-    
-    describe "WireLaunch" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          launch = @f.launch
-          launch.wire_launcher = WireLauncher.generate!
-          launch.save
-        end
+      #WireLaunch
+      check_change do
+        launch = @f.launch
+        launch.wire_launcher = WireLauncher.generate!
+        launch.save
       end
     end
   end
-  
-  describe "flight" do
-    before(:all) do
+
+  describe "flight and friends" do    
+    def check_change
+      old_ids = @f.accounting_entries.map(&:id)
+      yield
+      @f.reload
+      @f.accounting_entries.map(&:id).should_not include(*old_ids)
+    end
+    
+    it "invalidate accounting entries" do
       @plm = PlaneCostCategoryMembership.generate!(:valid_to => nil)
       @plane = @plm.plane
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
@@ -86,113 +73,75 @@ describe "Accounting entry invalidation" do
                                      :flight_type => "Flight")
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
       @f = Flight.generate!(:plane_id => @plane.id, :seat1_id => @person.id, :duration => 20)
-    end
-    
-    before(:each) do
-      [ @plm, @plane, @pm, @person, @cr, @f ].each { |e| e.reload }
-    end
-    
-    def check_change
-      old_ids = @f.accounting_entries.map(&:id)
-      yield
-      @f.reload
-      @f.accounting_entries.map(&:id).should_not include(*old_ids)
-    end
-    
-    describe "FlightCostRule" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @cr.update_attribute :valid_to, 1.year.from_now
-        end
+
+      [ @plm, @plane, @pm, @person, @cr, @f ].each { |o| o.reload }
+      
+      #FlightCostRule
+      check_change do
+        @cr.update_attribute :valid_to, 1.year.from_now
+      end
+      check_change do
+        @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      end
+      i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      check_change do
+        i.update_attributes(:value => 2)
       end
       
-      it "should invalidate accounting entries when a cost item is added" do
-        check_change do
-          @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        end
+      #PlaneCostCategoryMembership
+      check_change do
+        @plm.update_attribute :valid_to, 1.year.from_now
+      end
+      check_change do
+        PlaneCostCategoryMembership.generate! :plane => @plane, :valid_from => 1.year.ago
       end
       
-      it "should invalidate accounting entries when a cost item is changed" do
-        i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        check_change do
-          i.update_attributes(:value => 2)
-        end
-      end
-    end
-    
-    describe "PlaneCostCategoryMembership" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @plm.update_attribute :valid_to, 1.year.from_now
-        end
+      #Plane
+      check_change do
+        @plane.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
       end
       
-      it "should invalidate accounting entries when created" do
-        check_change do
-          PlaneCostCategoryMembership.generate! :plane => @plane, :valid_from => 1.year.ago
-        end
+      #PersonCostCategoryMembership
+      check_change do
+        @pm.update_attribute :valid_to, 1.year.from_now
       end
-    end
-    
-    describe "Plane" do
-      it "should invalidate accounting entries when financial account is changed" do
-        check_change do
-          @plane.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
-        end
-      end
-    end
-    
-    describe "Flight" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @f.update_attribute :duration, 100
-        end
-        check_change do
-          @f.update_attribute :plane, Plane.generate!
-        end
+      check_change do
+        PersonCostCategoryMembership.generate! :person => @person, :valid_from => 1.year.ago
       end
       
-      it "should invalidate accounting entries when a crew member is changed" do
-        check_change do
-          @f.seat1 = Person.generate!
-        end
+      #Person
+      check_change do
+        @person.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
       end
       
-      it "should invalidate accounting entries when a liability is added or removed" do
-        check_change do
-          @f.liabilities.create :person => Person.generate!, :proportion => 1
-        end
-        check_change do
-          @f.liabilities.clear
-        end
+      #Flight
+      check_change do
+        @f.update_attribute :duration, 100
       end
-    end
-    
-    describe "PersonCostCategoryMembership" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @pm.update_attribute :valid_to, 1.year.from_now
-        end
+      check_change do
+        @f.update_attribute :plane, Plane.generate!
       end
-      
-      it "should invalidate accounting entries when created" do
-        check_change do
-          PersonCostCategoryMembership.generate! :person => @person, :valid_from => 1.year.ago
-        end
+      check_change do
+        @f.seat1 = Person.generate!
       end
-    end
-    
-    describe "Person" do
-      it "should invalidate accounting entries  when financial account is changed" do
-        check_change do
-          @person.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
-        end
+      check_change do
+        @f.liabilities.create :person => Person.generate!, :proportion => 1
+      end
+      check_change do
+        @f.liabilities.clear
       end
     end
   end
   
-  describe "tow flight" do
-    before(:all) do
+  describe "tow flight and friends" do  
+    def check_change
+      old_ids = @l.accounting_entries.map(&:id)
+      yield
+      @l.reload
+      @l.accounting_entries.map(&:id).should_not include(*old_ids)
+    end
+    
+    it "invalidate accounting entries" do
       @plm = PlaneCostCategoryMembership.generate!(:valid_to => nil)
       @tplane = @plm.plane
       @pm = PersonCostCategoryMembership.generate!(:valid_to => nil)
@@ -205,70 +154,40 @@ describe "Accounting entry invalidation" do
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
       @f = Flight.generate!(:seat1_id => @person.id, :duration => 20)
       @l = TowFlight.generate!(:plane => @tplane, :seat1_id => @other_person.id, :abstract_flight => @f, :duration => 5)
-    end
-    
-    before(:each) do
-      [ @plm, @tplane, @pm, @person, @other_person, @cr, @f, @l ].each { |e| e.reload }
-    end
-    
-    def check_change
-      old_ids = @l.accounting_entries.map(&:id)
-      yield
-      @l.reload
-      @l.accounting_entries.map(&:id).should_not include(*old_ids)
-    end
-    
-    describe "FlightCostRule" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @cr.update_attribute :valid_to, 1.year.from_now
-        end
+      
+      [ @plm, @tplane, @pm, @person, @other_person, @cr, @f, @l ].each { |o| o.reload }
+      
+      #FlightCostRule
+      check_change do
+        @cr.update_attribute :valid_to, 1.year.from_now
+      end
+      check_change do
+        @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      end
+      i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
+      check_change do
+        i.update_attributes(:value => 2)
       end
       
-      it "should invalidate accounting entries when a cost item is added" do
-        check_change do
-          @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        end
+      #PlaneCostCategoryMembership
+      check_change do
+        @plm.update_attribute :valid_to, 1.year.from_now
+      end
+      check_change do
+        PlaneCostCategoryMembership.generate! :plane => @tplane, :valid_from => 1.year.ago
       end
       
-      it "should invalidate accounting entries when a cost item is changed" do
-        i = @cr.flight_cost_items.create(:name => "2", :value => 1, :financial_account => FinancialAccount.generate!)
-        check_change do
-          i.update_attributes(:value => 2)
-        end
-      end
-    end
-    
-    describe "PlaneCostCategoryMembership" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @plm.update_attribute :valid_to, 1.year.from_now
-        end
+      #Plane
+      check_change do
+        @tplane.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
       end
       
-      it "should invalidate accounting entries when created" do
-        check_change do
-          PlaneCostCategoryMembership.generate! :plane => @tplane, :valid_from => 1.year.ago
-        end
+      #TowFlight
+      check_change do
+        @l.update_attribute :duration, 10
       end
-    end
-    
-    describe "Plane" do
-      it "should invalidate accounting entries when financial account is changed" do
-        check_change do
-          @tplane.financial_account_ownerships.create(:valid_from => 1.month.from_now, :financial_account => FinancialAccount.generate!)
-        end
-      end
-    end
-    
-    describe "TowFlight" do
-      it "should invalidate accounting entries when changed" do
-        check_change do
-          @l.update_attribute :duration, 10
-        end
-        check_change do
-          @l.update_attribute :plane, Plane.generate!
-        end
+      check_change do
+        @l.update_attribute :plane, Plane.generate!
       end
     end
   end
