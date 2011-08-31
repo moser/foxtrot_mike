@@ -17,7 +17,6 @@ class FlightsController < ApplicationController
     @current_day = Date.new(*(["day(1i)", "day(2i)", "day(3i)"].map { |e| params[e].to_i })) if params["day(1i)"]
     @current_day ||= AbstractFlight.latest_departure.to_date
     dates
-    p @dates
     if !request.xhr?
       @flights = AbstractFlight.include_all.where("departure_date <= ? and departure_date >= ?", @current_day + 1.day, @current_day).
                                   order("departure_date DESC, departure_i DESC")
@@ -25,14 +24,14 @@ class FlightsController < ApplicationController
       from = @current_day
       to = @current_day + 1.day
       if params[:minus_days]
-        from = Date.parse(AbstractFlight.group("departure_date").order("departure_date DESC").
+        from = AbstractFlight.group("departure_date").order("departure_date DESC").
                                 where("departure_date <= ?", @current_day).limit(params[:minus_days]).
-                                count.keys.min) rescue @current_day
+                                count.keys.min || @current_day
       end
       if params[:plus_days]
-        to = Date.parse(AbstractFlight.group("departure_date").order("departure_date ASC").
+        to = AbstractFlight.group("departure_date").order("departure_date ASC").
                           where("departure_date >= ?", @current_day + 1.day).limit(params[:plus_days]).
-                          count.keys.max) + 1.day rescue @current_day + 1.day
+                          count.keys.max + 1.day || @current_day + 1.day
       end
       @days = AbstractFlight.include_all.where("departure_date >= ? and departure_date <= ?", from, to).
                                order("departure_date DESC, departure_i  DESC").group_by { |f| f.departure_date }
@@ -92,7 +91,7 @@ class FlightsController < ApplicationController
   # POST /flights.xml
   def create
     #TODO what to do with type? new controller or split here
-    attrs = params[:flight] #|| params[:tow_flight]
+    attrs = params[:flight] || params[:tow_flight]
     attrs.delete_if { |k,v| k.to_s =~ /^duration/ }
     @flight = (attrs.delete(:type) || "Flight").constantize.new(attrs)
     authorize! :create, @flight
@@ -104,13 +103,12 @@ class FlightsController < ApplicationController
           unless request.xhr?
             redirect_to(flight_path(@flight))
           else
-            render :action => :show, :layout => false
+            render :text => flight_path(@flight)
           end
         end
         format.json  { render :json => "OK" }
       else
-        p @flight.errors
-        format.html { render :action => "new", :layout => !request.xhr? }
+        format.html { render :action => "new", :layout => !request.xhr?, :status => :unprocessable_entity }
         format.json  { render :json => "FAIL" }
       end
     end
@@ -119,7 +117,7 @@ class FlightsController < ApplicationController
   # PUT /flights/1
   # PUT /flights/1.xml
   def update
-    attrs = params[:flight]
+    attrs = params[:flight] || params[:tow_flight]
     attrs.delete_if { |k,v| k.to_s =~ /^duration/ }
     @flight = AbstractFlight.find(params[:id])
     authorize! :update, @flight

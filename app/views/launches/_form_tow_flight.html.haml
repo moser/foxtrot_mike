@@ -5,9 +5,9 @@
   = tf.association :to
   .input.time.optional.replaced
     %label.time.optional>= Flight.l(:departure)
-    = launch.abstract_flight.departure_time
+    %span.departure_time= launch.abstract_flight.departure_time
   = tf.input :arrival_time
   .input.time.optional.replaced
     %label.time.optional>= Flight.l(:duration)
-    = launch.duration_time_span
+    %span.duration= launch.duration_time_span
   = tf.input :comment

@@ -363,54 +363,27 @@ h2.page_sub_title {
 
 
 .dc .mark {
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid black;
   text-align: right;
   position: relative;
   font-size: 0.8em;
+  font-weight: bold;
   height: 16px;
   padding-right: 2px;
 }
 
-.dc img {
-  margin: 0;
-}
-
 .dc .day_link {
-  height: 4px;
-  position: relative;
+  font-size: 0.8em;
+  
 }
 
 .dc .day_link a {
-  position: absolute;
-  display: none;
   text-decoration: none;
-  color: #000;
-}
-
-.dc .day_link img {
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  position: absolute;
 }
 
 .dc .day_link:hover,
 .dc .day_link.current {
-  height: 16px;
-  font-size: 0.9em;
   background: #fa0;
-  position: relative;
-}
-
-.dc .day_link:hover a,
-.dc .day_link.current a {  
-  display: inline-block;
-  width: 100%;
-}
-
-.dc .day_link:hover img,
-.dc .day_link.current img {
-  display: none;
 }
 
 .col {

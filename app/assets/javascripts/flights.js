@@ -1,67 +1,38 @@
-function ArrivalHelper(el) {
-  var self = this;
+function TimeHelper(el) {
   this.flight_div = $(el);
-  DateTimePickers.replaceAndAttachPickersManually($(".input.time.departure", this.flight_div), "time",
-                  function(e) {
-                    self.departure = e;
-                    e.timepicker({ onClose: function() { 
-                      self.recalc_departure({ data: { self: self } });
-                    }, constrainInput: false });
-                    return e;
-                  });
-  DateTimePickers.replaceAndAttachPickersManually($(".input.time.arrival", this.flight_div), "time",
-                  function(e) {
-                    self.arrival = e;
-                    e.timepicker({ onClose: function() { 
-                      self.recalc_arrival({ data: { self: self } });
-                    }, constrainInput: false });
-                    return e;
-                  });
-  this.duration_hidden = $("#flight_duration", this.flight_div);
-  this.duration_hidden.hide();
-  this.duration = $('<input id="flight_duration_show" value="'+ Format.duration(this.duration_hidden.val()) +'"/>')
-  this.duration.insertAfter(this.duration_hidden)
-  this.duration.bind("blur", {self: this}, this.recalc_duration);
+  this.departure = this.flight_div.find("input#flight_departure_time");
+  this.tow_flight = false;
+  if(this.departure.length == 0) { //tow flight
+    this.departure = this.flight_div.find("span.departure_time");
+    this.arrival = this.flight_div.find("input#launch_tow_flight_arrival_time");
+    this.tow_flight = true;
+  } else {
+    this.arrival = this.flight_div.find("input#flight_arrival_time");
+    this.departure.blur({ self: this }, this.recalc);
+  }
+  this.duration = this.flight_div.find("span.duration");
+  this.arrival.blur({ self: this }, this.recalc);
 }
-ArrivalHelper.prototype = {
-  recalc: function(e, caller) {
+TimeHelper.prototype = {
+  recalc: function(e) {
     var self = e.data.self;
-    var departure = Parse.time(self.departure.val());
+    var departure = Parse.time(self.getDepartureTime());
     var arrival = Parse.time(self.arrival.val());
-    if(caller == "arrival" || caller == "departure") {
-      if(departure && arrival) {
-        var delta = 60 * (arrival.h - departure.h) + arrival.m - departure.m;
-        if(delta < 0) {
-          delta = 0;
-          self.arrival.val(Format.time(departure));
-        }
-        self.duration.val(Format.duration(delta));
-        self.duration_hidden.val(delta);
-      }
-    } else if(caller == "duration") {
-      var duration = Parse.duration(self.duration.val());
-      if(duration) {
-        self.arrival.val(Format.time(Time.add(departure, duration)));
-        self.duration_hidden.val(duration);
-      } else {
-        self.recalc_arrival(e);
-      }
+    if(!self.tow_flight)
+      self.departure.val(Format.time(departure));
+    self.arrival.val(Format.time(arrival));
+    if(departure && arrival) {
+      var delta = 60 * (arrival.h - departure.h) + arrival.m - departure.m;
+      self.duration.html(Format.duration(delta));
     }
   },
-  recalc_duration: function(e) {
-    e.data.self.recalc(e, "duration");
-  },
-  recalc_arrival: function(e) {
-    e.data.self.recalc(e, "arrival");
-  },
-  recalc_departure: function(e) {
-    e.data.self.recalc(e, "departure");
-  },
+  getDepartureTime: function() {
+    if(this.tow_flight) 
+      return this.departure.html();
+    else
+      return this.departure.val();
+  }
 };
-
-function DateHelper(el) {
-  
-}
 
 function Days() {
   var self = this;
@@ -108,12 +79,25 @@ function Days() {
     if((new Date() - this.elements[key].loaded) > this.reloadAge) {
       this.reload(key, callback);
     }
-    console.log(this.elements[key].dom.html().length);
+    //console.log(this.elements[key].dom.html().length);
     return this.elements[key];
   };
-  this.add = function(day) {
-    this.elements[day.key] = day;
-    this.callbackFor(day.key);
+  this.add = function(d) {
+    this.elements[d.key] = d;
+    var c = d.count();
+    if(c == 0)
+      $(".dc div.day_link-" + d.key).remove();
+    else {
+      if($(".dc #day_link-" + d.key).length == 0) {
+        var newday = $('<div data-date="'+ d.key +'" class="day_link" id="day_link-'+ d.key +'"><a href="/flights/day/'+ d.key +'" data-date="'+ d.key +'">'+ Format.date_short(Parse.date_to_s(d.key)) +'</a><span class="count">('+ c +')</span></div>');
+        var after = $(".dc .items div").filter(function() { return $(this).data("date") > d.key }).last();
+        (after.length > 0 ?
+          after.after(newday)
+          : $(".dc .items").prepend(newday)).effect("highlight", {}, 3000);
+      }
+      $(".dc #day_link-" + d.key + " .count").html("(" + c + ")");
+      this.callbackFor(d.key);
+    }
   };
   this.load = function(key, callback) {
     PleaseWait.vote_modal_show();
@@ -126,7 +110,7 @@ function Days() {
     });
   };
   this.reload = function(key, callback) {
-    console.log("reloading " + key);
+    //console.log("reloading " + key);
     PleaseWait.vote_show();
     this.addCallbackFor(key, callback, false);
     $.ajax({url: "/flights?day_parse_date=" + key + "&plus_days=" + this.preLoadCount + "&minus_days=" + this.preLoadCount,
@@ -171,6 +155,13 @@ function Days() {
     });
     return d;
   };  
+  this.invalidate_day = function(key) {
+    console.log("invalidate_day " + key);
+    if(!this.present(key)) {
+      this.elements[key] = new Day($('<div class="day scrollable alternate" id="'+ key +'"><div class="flight"/></div>')); //add element with one flight
+    }
+    this.elements[key].loaded = new Date(new Date() - 86400000);
+  }
 }
 
 function Day(dom) {
@@ -187,9 +178,13 @@ function Day(dom) {
   // Date in JS sucks...
   this.next_key = Format.date_to_s(new Date(Parse.date_to_s(this.key).getTime() + 90000000));
   this.prev_key = Format.date_to_s(new Date(Parse.date_to_s(this.key).getTime() - 82800000));
+  this.count = function() {
+    return $(this.dom).find(".flight").length;
+  }
 }
 
 function CacheEntry(path, dom) {
+  var self = this;
   this.dom = dom;
   this.loaded = new Date();
   this.key = path;
@@ -248,15 +243,18 @@ var Flights = {
         return false;
       }
     });
-    window.onpopstate = function(e) {
-      if(e.state && e.state.day) {
-        console.log("nav to " + e.state.day);
-        Flights.goto_day(e.state.day); 
-      } else if(e.state && e.state.path) { //use the url fragment
-        console.log("nav to " + e.state.path);
-        Flights.goto_url(e.state.path);
+    $(window).bind("popstate", function(e) {
+      if(e.originalEvent && e.originalEvent.state) {
+        state = window.History.getState().data;
+        if(state && state.day) {
+          //console.log("nav to " + state.day);
+          Flights.goto_day(state.day); 
+        } else if(state && state.path) { //use the url fragment
+          //console.log("nav to " + state.path);
+          Flights.goto_url(state.path);
+        }
       }
-    };
+    });
     Flights.days.extract($(".flights"));
     if(window.location.pathname.match(/^\/flights$/) ||
        window.location.pathname.match(/^\/flights\/$/) || 
@@ -273,8 +271,13 @@ var Flights = {
     }
   },
   goto_day: function(key, doState, first) {
-    if (doState) { window.history.pushState({ day: key }, "", "/flights/day/" + key); }
-    if(first) { window.history.replaceState({ day: key }, "", "/flights/day/" + key); }
+    console.log(key + " " + Flights.current_day.key);
+    if(key == Flights.current_day.key && !first) {
+      Flights.days.invalidate_day(key);
+      doState = false;
+    }
+    if (doState) { Flights.doState("push", { day: key }, "/flights/day/" + key); }
+    if(first) { Flights.doState("replace", { day: key }, "/flights/day/" + key); }
     var f = function(d, highlight) { 
       if(d) {
         $(".item_container").hide();
@@ -287,7 +290,7 @@ var Flights = {
           $(".dc div.day_link.current").removeClass("current");
           $('.dc .scrollable').data('scrollable').seekTo(
             $('.dc .scrollable').data('scrollable').getItems().
-              index($(".dc div.day_link[data-date=" + d.key + "]").addClass("current")));
+              index($(".dc div#day_link-" + d.key).addClass("current")));
           Flights.scrollable = $(".flights .day").scrollable({vertical : true, mousewheel: true, item: ".flight", onBeforeSeek: function(e, i) {
             if(i > (e.target.getSize() - Flights.per_page + 1)) {
               if(e.target.getIndex() < (e.target.getSize() - Flights.per_page + 1)) {
@@ -295,55 +298,71 @@ var Flights = {
               }
               return false;
             }
-	        }, speed: 200}).data("scrollable");
+          }, speed: 200}).data("scrollable");
           Flights.scrollable.begin();
-        };
+        }
       }
     };
     f(Flights.days.get(key, f), false);
   },
   goto_url: function(url, doState, first) {
-    var urlregex = /^http\:\/\/[a-zA-Z0-9\-\.]+(\:\d+)*(\/\S*)?$/
-    var pathregex = /^(\/\S*)?$/
-    m = url.match(urlregex)
-    if(m) { url = m[2]; }
-    if(url.match(pathregex)) {
+    if(url = Flights.extract_path(url)) {
       var f = function(html) {
-        $(".item_container").html(html);
+        $(".item_container").html($(html).filter(".item_container").children());
         DomInsertionWatcher.notify_listeners($('.item_container'));
         $(".list").hide();
         $(".item_container").show();
       };
-      if(first) { Flights.cache[url] = new CacheEntry(url, $(".item_container").children()); }
+      if(first) { Flights.cache[url] = new CacheEntry(url, $(".item_container")); }
       if(Flights.cache[url]) {
         f(Flights.cache[url].dom);
-        if(doState) { window.history.pushState({ path: url }, "lala", url); }
-        if(first) { window.history.replaceState({ path: url }, "lala", url); }
+        if (doState) { Flights.doState("push", { path: url }, url); }
+        if(first) { Flights.doState("replace", { path: url }, url); }
         
         // Reload only if older than 60s
         // TODO reload for edit or don't cache edit?
         if(new Date - Flights.cache[url].loaded > 60000) {
           PleaseWait.vote_show();
           $.get(url, function(html) {
-            if(window.location.pathname == url) {
-              f(html);
+            PleaseWait.vote_hide();
+            Flights.cache[url] = new CacheEntry(url, html);
+            if(window.History.getState().data.path == url) {
+              f(Flights.cache[url].dom);
               $(".item_container").effect("highlight", {}, 3000);
             }
-            PleaseWait.vote_hide();
-            Flights.cache[url] = html;
           });
-          }
+        }
       } else {
         PleaseWait.vote_modal_show();
         $.get(url, function(html) {
-          f(html);
-          if(doState) { window.history.pushState({ path: url }, "lala", url); }
-          if(first) { window.history.replaceState({ path: url }, "lala", url); }
-          PleaseWait.vote_modal_hide();
+          if (doState) { Flights.doState("push", { path: url }, url); }
+          if(first) { Flights.doState("replace", { path: url }, url); }
           Flights.cache[url] = new CacheEntry(url, html);
+          f(Flights.cache[url].dom);
+          PleaseWait.vote_modal_hide();
         });
       }
     }
+  },
+  invalidate_cache: function(url) {
+    console.log("invalidate_cache " + url);
+    url = Flights.extract_path(url);
+    if(url && !!Flights.cache[url])
+      Flights.cache[url].loaded = new Date(new Date() - 86400000);
+  },
+  extract_path: function(url) {
+    var urlregex = /^http\:\/\/[a-zA-Z0-9\-\.]+(\:\d+)*(\/\S*)?$/;
+    var pathregex = /^(\/\S*)?$/;
+    m = url.match(urlregex);
+    if(m) { url = m[2]; }
+    if(url.match(pathregex))
+      return url;
+    else
+      return false;
+  },
+  doState: function(method, data, url) {
+    //console.log("pushState " + url);
+    window.History[method + "State"](data, window.document.title, url);
   }
 };
 
@@ -360,15 +379,48 @@ $(function() {
     $('a.sop.new').live('click', f);
     $('a.sop.edit').live('click', f);
     $('a.sop.back.index').live('click', function(e) { if(!e.ctrlKey) {
-        Flights.goto_day(Flights.current_day.key, true);
+        Flights.goto_day($(".item_container .item").data("departure_date"), true);
         return false; 
       }
     });
     
+    $('a.inline_form_show').live('click', function(e) {
+      var t = $(e.target);
+      Flights.invalidate_cache(t.parents(".item").data("path"));
+      Flights.days.invalidate_day(t.parents(".item").data("departure_date"));
+      
+      $('form.edit').live('submit', function(e) {
+        var d = Parse.date($(e.target).find("input#flight_departure_date").val());
+        if(d)
+          Flights.days.invalidate_day(Format.date_to_s(d));
+      }); 
+    }); 
   }
   var f = function() {
     $('div.flight_form').each(function(i, el) {
-      new ArrivalHelper(el);
+      new TimeHelper(el);
+    });
+    $('form#launch_form').each(function(i, el) {
+      new TimeHelper(el);
+    });
+    $('.flight_form.new').bind('submit', function(e) {
+      var form = $(e.target);
+      $.ajax({url: form.attr('action'),
+            data: form.serialize(),
+            type: 'POST',
+            success: function(html, status, xhr) {
+              PleaseWait.vote_modal_hide();
+              Flights.goto_url(html, true, false);
+            },
+            error: function(xhr, status) {
+              $('.flight_form.new').html($(xhr.responseText));
+              DomInsertionWatcher.notify_listeners($('.flight_form.new'));
+              PleaseWait.vote_modal_hide();
+              return false;
+            }
+      });
+      PleaseWait.vote_modal_show();
+      return false;
     });
   };
   DomInsertionWatcher.register(f);

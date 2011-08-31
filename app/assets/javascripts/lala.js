@@ -32,7 +32,7 @@ var IF = {
             }
       });
       PleaseWait.vote_show(); //TODO uncomment when async again
-      return false;
+      e.preventDefault()
     });
   },
   load: function(e) {   

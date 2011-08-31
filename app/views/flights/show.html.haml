@@ -2,7 +2,7 @@
   .list{ :style => "display: none;" }
     = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
 .item_container
-  .item.inline_form_replace_context
+  .item.inline_form_replace_context{ :id => @flight.id, :"data-departure_date" => @flight.departure_date, :"data-path" => flight_path(@flight) }
     %h1= @flight.class.l
     = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
     %table.categories
@@ -120,7 +120,7 @@
             - @flight.all_versions.each do |v|
               %li
                 = l(v.created_at, :format => :short)
-                = v.whodunnit.nil? ? "" : Person.find(v.whodunnit)
+                = v.whodunnit.nil? ? "" : Person.find(v.whodunnit) rescue "" #Person could have been deleted
                 = v.event
                 = v.item_type
     = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
