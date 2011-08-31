@@ -82,7 +82,6 @@ class ResourceController < ApplicationController
     if nested && nested_id
       @model.send(:"#{nested}=", find_nested)
     end
-    p @model
     @model.id = params[model_name.underscore.to_sym][:id] unless params[model_name.underscore.to_sym].nil? || params[model_name.underscore.to_sym][:id].nil?
     if @model.save
       respond_to do |f|

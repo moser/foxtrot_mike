@@ -1,5 +1,5 @@
 var Parse = {
-  time_pattern: /([0-9]+)(\.|:)([0-9]+)/,
+  time_pattern: /([0-9]{1,2})(\.|:){0,1}([0-9]{2})/,
   date_pattern_de: /([0-9]+)\.([0-9]+)\.([0-9]+)/,
   date_pattern_en: /([0-9]+)(-|\/)([0-9]+)(-|\/)([0-9]+)/,
   date_pattern_to_s: /([0-9]+)-([0-9]+)-([0-9]+)/,
@@ -7,7 +7,7 @@ var Parse = {
   time: function(str) {
     matches = this.time_pattern.exec(str);
     if(matches != null && matches.length == 4) {
-      return {h: this.integer(matches[1]), m: this.integer(matches[3]) };
+      return {h: this.integer(matches[1]) % 24, m: this.integer(matches[3]) % 60 };
     } else {
       return false;
     }
@@ -27,7 +27,7 @@ var Parse = {
     if(obj.y < 100) {
       obj.y += obj.y > 50 ? 1900 : 2000;
     }
-    return obj;
+    return new Date(obj.y, obj.m - 1, obj.d);;
   },
   date_to_s: function(str) {
     matches = this.date_pattern_to_s.exec(str);
@@ -80,6 +80,9 @@ var Format = {
     return ((d < 10 ? '0': '') + d) + '.' + ((m < 10 ? '0': '') + m) + '.' + date.getFullYear();
   },
   duration: function(i) {
+    i = i % 1440;
+    if(i < 0)
+      i = 1440 + i;
     h = Math.floor(i / 60);
     m = i % 60;
     return h + ":" + (m < 10 ? "0": "") + m;
