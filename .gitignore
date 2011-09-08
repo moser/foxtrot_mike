@@ -9,3 +9,4 @@ rerun.txt
 .redcar/*
 .sass-cache/*
 webrat.log
+*.swp
