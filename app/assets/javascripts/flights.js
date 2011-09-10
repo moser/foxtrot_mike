@@ -399,6 +399,11 @@ $(function() {
   var f = function() {
     $('div.flight_form').each(function(i, el) {
       new TimeHelper(el);
+      new PlaneHelper(el);
+      new CrewHelper(el);
+      new AirfieldHelper(el, "from");
+      new AirfieldHelper(el, "to");
+      new PersonHelper(el, "controller");
     });
     $('form#launch_form').each(function(i, el) {
       new TimeHelper(el);

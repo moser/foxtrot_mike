@@ -447,3 +447,9 @@ table.controllers td, table.controllers th {
 table.controllers td.signature {
   width: 280px
 }
+
+li.ui-menu-item span.info {
+  display: block;
+  font-size: 0.8em;
+  color: #555;
+}
