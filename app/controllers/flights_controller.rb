@@ -29,9 +29,9 @@ class FlightsController < ApplicationController
                                 count.keys.min || @current_day
       end
       if params[:plus_days]
-        to = AbstractFlight.group("departure_date").order("departure_date ASC").
+        to = (AbstractFlight.group("departure_date").order("departure_date ASC").
                           where("departure_date >= ?", @current_day + 1.day).limit(params[:plus_days]).
-                          count.keys.max + 1.day || @current_day + 1.day
+                          count.keys.max || @current_day) + 1.day
       end
       @days = AbstractFlight.include_all.where("departure_date >= ? and departure_date <= ?", from, to).
                                order("departure_date DESC, departure_i  DESC").group_by { |f| f.departure_date }
