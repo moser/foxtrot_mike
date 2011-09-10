@@ -53,6 +53,6 @@ describe Plane do
 
   it "should return a hash for to_j" do
     pl = Plane.generate!
-    pl.to_j.keys.should include(:registration, :id, :legal_plane_class_id, :make, :group_name)
+    pl.to_j.keys.map(&:to_sym).should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled)
   end
 end

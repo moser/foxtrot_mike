@@ -407,6 +407,9 @@ $(function() {
     });
     $('form#launch_form').each(function(i, el) {
       new TimeHelper(el);
+      new TowPlaneHelper(el);
+      new CrewHelper(el, "launch_tow_flight");
+      new AirfieldHelper(el, "to", "launch_tow_flight");
     });
     $('.flight_form.new').bind('submit', function(e) {
       var form = $(e.target);
@@ -418,7 +421,7 @@ $(function() {
               Flights.goto_url(html, true, false);
             },
             error: function(xhr, status) {
-              $('.flight_form.new').html($(xhr.responseText));
+              $('.item_container').replaceWith($(xhr.responseText));
               DomInsertionWatcher.notify_listeners($('.flight_form.new'));
               PleaseWait.vote_modal_hide();
               return false;

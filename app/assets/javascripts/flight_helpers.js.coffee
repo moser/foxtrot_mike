@@ -15,12 +15,21 @@ class List
   get: (id) ->
     (obj for obj in @list when obj.id == id)[0]
 
-@peopleList = new List("/people.json", "name")
+peopleList = new List("/people.json", "name")
 peopleList.load()
 planesList = new List("/planes.json", "registration")
 airfieldsList = new List("/airfields.json", "name")
 planesList.load()
 airfieldsList.load()
+
+class TowPlanesList
+  constructor: (@list) -> 1
+  get: (id) ->
+    @list.find(id)
+  find: (str, flight) ->
+    obj for obj in @list.find(str, flight) when obj.can_tow
+
+towPlanesList = new TowPlanesList(planesList)
 
 levelToI = (a) ->
   { instructor: 0, normal: 1, trainee: 2 }[a]
@@ -36,9 +45,9 @@ class PeopleList
   get: (id) ->
     peopleList.get(id)
   find: (str, flight) ->
+    self = this
     if @legal_plane_class_id != planesList.get(flight.data("plane_id")).legal_plane_class_id || !@departure_date? || @departure_date != Parse.date(flight.find("#flight_departure_date").val())
       @legal_plane_class_id = planesList.get(flight.data("plane_id")).legal_plane_class_id
-      self = this
       @departure_date = Parse.date(flight.find("#flight_departure_date").val())
       #TODO sort and set level
       lala = (person) ->
@@ -60,13 +69,14 @@ class PeopleList
 
 
 class FieldHelper
-  constructor: (@list, el, @field, @method, render = null, required = true) ->
+  constructor: (@list, el, @field, @method, render = null, required = true, prefix = "flight") ->
     self = this
+    console.log "##{prefix}_#{@field}_id"
     @flight_div = $(el)
-    @flight_div.data("#{@field}_id", @flight_div.find("#flight_#{@field}_id").val())
+    @flight_div.data("#{@field}_id", @flight_div.find("##{prefix}_#{@field}_id").val())
     @old_item = @list.get(@flight_div.data("#{@field}_id"))
-    @hidden_element = $("<input type=\"hidden\" id=\"flight_#{@field}_id\" name=\"flight[#{@field}_id]\" />") .val(@flight_div.find("#flight_#{@field}_id").val())
-    @element = $("<input type=\"text\" id=\"flight_#{@field}\" name=\"ignore\"/>").autocomplete(
+    @hidden_element = $("<input type=\"hidden\" id=\"#{prefix}_#{@field}_id\" name=\"flight[#{@field}_id]\" />") .val(@flight_div.find("##{prefix}_#{@field}_id").val())
+    @element = $("<input type=\"text\" id=\"#{prefix}_#{@field}\" name=\"ignore\"/>").autocomplete(
       autoFocus: true
       minLength: 0
       source: (request, response) ->
@@ -87,37 +97,45 @@ class FieldHelper
             self.hidden_element.val("")
             self.flight_div.data("#{self.field}_id", "")
         false
-    ).val(@flight_div.find("#flight_#{@field}_id option:selected").html())
+    ).val(@flight_div.find("##{prefix}_#{@field}_id option:selected").html())
     @element.data("autocomplete")._renderItem = render || (ul, item) ->
       $("<li></li>")
         .data("item.autocomplete", item)
         .append("<a>#{item[self.method].replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}</a>")
         .appendTo(ul)
-    @flight_div.find("#flight_#{@field}_id").after(@element).replaceWith(@hidden_element)
+    @flight_div.find("##{prefix}_#{@field}_id").after(@element).replaceWith(@hidden_element)
 
 class @PlaneHelper extends FieldHelper
-  constructor: (el) ->
-    super(planesList, el, "plane", "registration", (ul, item) ->
+  constructor: (el, prefix = "flight", list = planesList) ->
+    super(list, el, "plane", "registration", ((ul, item) ->
       $("<li></li>")
         .data("item.autocomplete", item)
         .append("<a>#{item.registration.replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{item.make}, #{item.group_name}</span></a>")
         .appendTo(ul)
-    )
+    ), true, prefix)
+
+class @TowPlaneHelper extends PlaneHelper
+  constructor: (el) ->
+    super(el, "launch_tow_flight", towPlanesList)
 
 class @AirfieldHelper extends FieldHelper
-  constructor: (el, field) ->
-    super(airfieldsList, el, field, "name")
+  constructor: (el, field, prefix = "flight") ->
+    super(airfieldsList, el, field, "name", null, true, prefix)
 
 class @PersonHelper extends FieldHelper
-  constructor: (el, field, list = peopleList, render = null, required = true) ->
-    super(list, el, field, "name", render, required)
+  constructor: (el, field, list = peopleList, render = null, required = true, prefix = "flight") ->
+    super(list, el, field, "name", render, required, prefix)
 
-class @CrewHelper
-  constructor: (el) ->
+class @CrewMemberHelper extends PersonHelper
+  constructor: (el, field, required = true, prefix = "flight") ->
     render = (ul, item) ->
       $("<li></li>")
        .data("item.autocomplete", item)
        .append("<a>#{item.name.replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
        .appendTo(ul)
-    new PersonHelper(el, "seat1", new PeopleList("seat1"), render)
-    new PersonHelper(el, "seat2", new PeopleList("seat2"), render, false)
+    super(el, field, new PeopleList(field), render, required, prefix)
+
+class @CrewHelper
+  constructor: (el, prefix = "flight") ->
+    new CrewMemberHelper(el, "seat1", true, prefix)
+    new CrewMemberHelper(el, "seat2", false, prefix)
