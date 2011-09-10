@@ -42,4 +42,9 @@ describe Airfield do
     a.srss.should respond_to(:sunrise)
     a.srss.should respond_to(:sunset)
   end
+
+  it "should return a hash for to_j" do
+    a = Airfield.spawn
+    a.to_j.keys.should include(:id, :name, :registration)
+  end
 end

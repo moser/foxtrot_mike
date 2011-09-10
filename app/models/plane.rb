@@ -64,7 +64,10 @@ class Plane < ActiveRecord::Base
     blk ||= lambda { |r| r }
     blk.call(flights)
   end
-  
+
+  def to_j
+    { :id => id, :registration => registration, :make => make, :legal_plane_class_id => legal_plane_class_id, :group_name => group.name }
+  end
 private
   def association_changed(obj = nil)
     delay.invalidate_concerned_accounting_entries

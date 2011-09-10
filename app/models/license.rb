@@ -48,4 +48,8 @@ class License < ActiveRecord::Base
   def info
     "#{level}"
   end
+
+  def to_j
+    { :name => name, :level => level, :legal_plane_class_ids => legal_plane_class_ids, :valid_from => valid_from, :valid_to => valid_to }
+  end
 end

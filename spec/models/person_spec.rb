@@ -111,4 +111,12 @@ describe Person do
     p.reload
     p.find_concerned_accounting_entry_owners.should_not include(f)
   end
+  it "should include license information in custom json return by to_j" do
+    p = Person.generate!
+    l = License.generate! :person => p
+    p.reload
+
+    p.licenses.each { |e| e.should_receive(:to_j) }
+    p.to_j.keys.should include(:licenses, :id, :name, :firstname, :lastname, :group_id, :group_name)
+  end
 end

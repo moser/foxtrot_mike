@@ -32,4 +32,8 @@ class Airfield < ActiveRecord::Base
   def srss
     @srss ||= SRSS.new(lat, long)
   end
+
+  def to_j
+    { :id => id, :name => name, :registration => registration }
+  end
 end

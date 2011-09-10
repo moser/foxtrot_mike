@@ -122,6 +122,16 @@ class Person < ActiveRecord::Base
     blk ||= lambda { |r| r }
     blk.call(flights(Flight.include_all)) + blk.call(flights_liable_for)
   end
+
+  def to_j
+    { :id => id,
+      :name => name,
+      :firstname => firstname,
+      :lastname => lastname,
+      :group_id => group_id,
+      :group_name => group.name,
+      :licenses => licenses.map { |e| e.to_j } }
+  end
   
 private
   def association_changed(obj = nil)

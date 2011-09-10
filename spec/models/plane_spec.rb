@@ -50,4 +50,9 @@ describe Plane do
     wl.should_receive("flights").and_return([1])
     wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
   end
+
+  it "should return a hash for to_j" do
+    pl = Plane.generate!
+    pl.to_j.keys.should include(:registration, :id, :legal_plane_class_id, :make, :group_name)
+  end
 end
