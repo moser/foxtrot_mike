@@ -40,11 +40,10 @@ class WireLauncher < ActiveRecord::Base
     blk ||= lambda { |r| r }
     blk.call(wire_launches)
   end
-  
-  def self.shared_attribute_names
-    [ :id, :registration ]
+
+  def to_j
+    { :id => id, :registration => registration }
   end
-  
 private
   def association_changed(obj = nil)
     delay.invalidate_concerned_accounting_entries

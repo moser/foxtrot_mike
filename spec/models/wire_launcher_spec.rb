@@ -23,4 +23,9 @@ describe WireLauncher do
     wl.should_receive("wire_launches").and_return([1])
     wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
   end
+
+  it "should return a hash for to_j" do
+    w = WireLauncher.spawn
+    w.to_j.keys.should include(:id, :registration)
+  end
 end

@@ -20,7 +20,7 @@ class Group < ActiveRecord::Base
                                project(CrewMember.arel_table[:abstract_flight_id]).to_sql})")
   end
 
-  def to_json
-    { :id => id.to_s, :name => name }.to_json
+  def to_j
+    { :id => id, :name => name }
   end
 end

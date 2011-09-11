@@ -16,4 +16,9 @@ describe Group do
   it "should respond to to_s" do
     Group.new(:name => "hua").to_s.should == "hua"
   end
+
+  it "should return a hash for to_j" do
+    g = Group.spawn
+    g.to_j.keys.should include(:id, :name)
+  end
 end
