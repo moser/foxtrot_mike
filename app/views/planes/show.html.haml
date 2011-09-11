@@ -6,6 +6,9 @@
     %th= Plane.l(:make)
     %td=h @plane.make
   %tr
+    %th= Plane.l(:seat_count)
+    %td=h @plane.seat_count
+  %tr
     %th= Plane.l(:group)
     %td= show_link(@plane.group, @plane.group.to_s)
   %tr

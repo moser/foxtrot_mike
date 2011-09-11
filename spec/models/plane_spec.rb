@@ -67,6 +67,7 @@ describe Plane do
   it "should set default values" do
     pl = Plane.new
     pl.default_launch_method.should == "self"
+    pl.seat_count.should == 1
     pl.competition_sign.should == ""
     pl.has_engine.should_not be_nil
     pl.can_tow.should_not be_nil

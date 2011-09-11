@@ -1,6 +1,7 @@
 = simple_form_for(plane) do |f|
   = f.input :registration
   = f.input :make
+  = f.input :seat_count
   = f.association :group, :include_blank => false
   = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] }, :include_blank => false if plane.new_record?
   = f.input :default_launch_method, :collection => [ "self", "tow_flight", "wire_launch" ].map { |e| [Flight.l("launch_types.#{e}.long"), e] }, :include_blank => false

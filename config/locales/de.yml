@@ -264,6 +264,7 @@ de:
       plane:
         registration: Kennzeichen
         make: Typ
+        seat_count: Sitzplätze
         book: "Bordbuch"
         legal_plane_class: Flugzeugklasse
         can_be_towed: Kann im F-Schlepp starten.

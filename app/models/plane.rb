@@ -82,6 +82,7 @@ private
   def init
     self.default_launch_method ||= "self"
     self.competition_sign ||= ""
+    self.seat_count = 1 if seat_count.nil?
     self.has_engine = false if has_engine.nil?
     self.can_tow = false if can_tow.nil?
     self.selflaunching = false if selflaunching.nil?
