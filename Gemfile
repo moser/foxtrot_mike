@@ -22,7 +22,7 @@ gem "delayed_job"
 gem "wicked_pdf"
 
 group :production do
-  gem "pg", :require => "pg"
+  #gem "pg", :require => "pg"
 end
 
 group :test do

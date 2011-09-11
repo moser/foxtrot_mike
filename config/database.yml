@@ -13,11 +13,10 @@ test: &TEST
   timeout: 5000
 
 production:
-  adapter: postgresql
-  database: mydb
-  host: localhost
-  username: rails
-  password: 123
+  adapter: sqlite3
+  database: db/dev.sqlite3
+  pool: 5
+  timeout: 5000
 
 cucumber:
   <<: *TEST
