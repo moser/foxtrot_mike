@@ -46,14 +46,17 @@ class AbstractFlight < ActiveRecord::Base
               l.abstract_flight.id  
             end
           end }
-  send(:include, SoftValidation::Validation)
-  soft_validates_presence_of 1, :departure_date
-  soft_validates_presence_of 1, :departure_i
-  soft_validates_presence_of 1, :arrival_i
-  soft_validate 1 do |r|
-    r.problems['crew_members'] = 'No Crew specified' if r.crew_members.size == 0
+
+  attr_reader :problems
+  def soft_validate
+    @problems = Hash.new { |h, k| h[k] = [] }
+    @problems[:crew_members] << :too_many if crew_members.map { |e| e.size }.sum > plane.seat_count
+    @problems[:crew_members] << :seat2_not_an_instructor if seat1.trainee? && seat2 && !seat2.instructor?
+    #@problems[:launch] << :not_possible if #TODO if launch method does not fit the plane
+
+    @problems.empty?
   end
-  
+
   def all_versions
     (versions + Version.where(:abstract_flight_id => id)).sort_by { |e| e.created_at }
   end
