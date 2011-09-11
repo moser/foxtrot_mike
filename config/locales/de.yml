@@ -266,11 +266,15 @@ de:
         make: Typ
         book: "Bordbuch"
         legal_plane_class: Flugzeugklasse
-        can_be_towed: Kann im F-Schlepp gestartet werden.
+        can_be_towed: Kann im F-Schlepp starten.
         can_be_wire_launched: Kann an der Winde starten.
+        selflaunching: Eigenstartfähig
         can_tow: Kann schleppen.
         can_fly_without_engine: Kann motorlos fliegen.
         has_engine: Ist motorisiert.
+        flags: Eigenschaften
+        financial_account_id: Buchungskonto
+        default_launch_method: Bevorzugte Startart
         disabled: Deaktiviert
         disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
       person:

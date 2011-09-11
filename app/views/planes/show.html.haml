@@ -9,13 +9,16 @@
     %th= Plane.l(:group)
     %td= show_link(@plane.group, @plane.group.to_s)
   %tr
+    %th= Plane.l(:default_launch_method)
+    %td= Flight.l("launch_types.#{@plane.default_launch_method}.long")
+  %tr
     %th= Plane.l(:legal_plane_class)
     %td= show_link(@plane.legal_plane_class, @plane.legal_plane_class.to_s)
   %tr
     %th= Plane.l(:flags)
     %td
       %ul
-        - [:has_engine, :can_tow, :can_fly_without_engine, :can_be_towed, :can_be_wire_launched ].each do |flag|
+        - [:has_engine, :can_tow, :can_fly_without_engine, :selflaunching, :can_be_towed, :can_be_wire_launched ].each do |flag|
           - if @plane.send(flag)
             %li= Plane.l(flag)
   - if @plane.disabled

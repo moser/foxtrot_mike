@@ -15,7 +15,7 @@ table.data th {
   font-weight: normal;
   vertical-align: top;
   text-align: left;
-  width: 120px;
+  width: 170px;
   color: #999;
   font-size: 13px;
 }
@@ -204,7 +204,7 @@ ul.scroll {
 /*************FORMS**************/
 .input label {
   display: inline-block;
-  width: 10em;
+  width: 170px;
   color: #999;
 }
 
@@ -216,6 +216,14 @@ ul.scroll {
 .input input,
 .input select {
   width: 14em;
+}
+
+.input input[type=checkbox] {
+  width: auto;
+  margin-left: 170px;
+  margin-right: 1em;
+  margin-top: 2px;
+  float: left;
 }
 
 .field_with_errors input,

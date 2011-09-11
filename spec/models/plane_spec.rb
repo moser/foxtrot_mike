@@ -3,14 +3,22 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Plane do
   it { should have_many :flights }
   it { should have_many :plane_cost_category_memberships }
+  it { should have_many :financial_account_ownerships }
   it { should belong_to :group }
   it { should belong_to :legal_plane_class }
 
+  it { should validate_presence_of :registration }
+  it { should validate_presence_of :make }
   it { should validate_presence_of :group }
   it { should validate_presence_of :legal_plane_class }
-  it { should have_many :financial_account_ownerships }
   it { should validate_presence_of :financial_account }
-  
+  it { should validate_presence_of :default_launch_method }
+
+  it { should allow_value("tow_flight").for(:default_launch_method) }
+  it { should allow_value("wire_launch").for(:default_launch_method) }
+  it { should allow_value("self").for(:default_launch_method) }
+  it { should_not allow_value("foo").for(:default_launch_method) }
+
   it "should have one current financial_account_ownership" do
     p = Plane.new
     p.should respond_to(:current_financial_account_ownership)
@@ -46,24 +54,30 @@ describe Plane do
   it "should find concerned accounting entry owners" do
     m = mock("make sure the block is executed")
     m.should_receive(:lala)
-    wl = Plane.create
+    wl = Plane.new
     wl.should_receive("flights").and_return([1])
     wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
   end
 
   it "should return a hash for to_j" do
-    pl = Plane.generate!
-    pl.to_j.keys.map(&:to_sym).should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled)
+    pl = Plane.spawn
+    pl.to_j.keys.map(&:to_sym).should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :selflaunching, :can_be_towed, :can_be_wire_launched, :disabled)
   end
 
   it "should set default values" do
     pl = Plane.new
-    pl.default_launch_method.should == ""
+    pl.default_launch_method.should == "self"
     pl.competition_sign.should == ""
     pl.has_engine.should_not be_nil
     pl.can_tow.should_not be_nil
     pl.can_be_towed.should_not be_nil
     pl.can_be_wire_launched.should_not be_nil
+    pl.selflaunching.should_not be_nil
     pl.can_fly_without_engine.should_not be_nil
+  end
+
+  it "should not throw an error if financial_account_id is called with an incorrect id" do
+    pl = Plane.new
+    lambda { pl.financial_account_id = -1 }.should_not raise_error
   end
 end

@@ -1,13 +1,16 @@
 = simple_form_for(plane) do |f|
   = f.input :registration
   = f.input :make
-  = f.association :group
-  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] } if plane.new_record?
-  = f.association :legal_plane_class
-  = f.input :has_engine
-  = f.input :can_tow
-  = f.input :can_fly_without_engine
-  = f.input :can_be_towed
-  = f.input :can_be_wire_launched
+  = f.association :group, :include_blank => false
+  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] }, :include_blank => false if plane.new_record?
+  = f.input :default_launch_method, :collection => [ "self", "tow_flight", "wire_launch" ].map { |e| [Flight.l("launch_types.#{e}.long"), e] }, :include_blank => false
+  = f.association :legal_plane_class, :include_blank => false
+  .alternate
+    = f.input :has_engine, :wrapper_html => { :class => "alternate_color" }
+    = f.input :can_tow, :wrapper_html => { :class => "alternate_color" }
+    = f.input :can_fly_without_engine, :wrapper_html => { :class => "alternate_color" }
+    = f.input :selflaunching, :wrapper_html => { :class => "alternate_color" }
+    = f.input :can_be_towed, :wrapper_html => { :class => "alternate_color" }
+    = f.input :can_be_wire_launched, :wrapper_html => { :class => "alternate_color" }
   = f.input :disabled unless plane.new_record?
   = f.button :submit

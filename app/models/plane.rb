@@ -16,8 +16,9 @@ class Plane < ActiveRecord::Base
   belongs_to :group
   membership :plane_cost_category_memberships
 
-  validates_presence_of :legal_plane_class, :group, :financial_account
-  
+  validates_presence_of :registration, :make, :legal_plane_class, :group, :financial_account, :default_launch_method
+  validates_inclusion_of :default_launch_method, :in => [ "self", "tow_flight", "wire_launch" ]
+
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account
   end
@@ -33,7 +34,10 @@ class Plane < ActiveRecord::Base
   end
   
   def financial_account_id=(fa)
-    self.financial_account = FinancialAccount.find(fa)
+    begin
+      self.financial_account = FinancialAccount.find(fa)
+    rescue ActiveRecord::RecordNotFound
+    end
   end
   
   def to_s
@@ -42,7 +46,7 @@ class Plane < ActiveRecord::Base
   
   def self.shared_attribute_names
     [ :id, :registration, :make, :competition_sign, :group_id, :default_launch_method, :has_engine, 
-      :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id ]
+      :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id, :selflaunching ]
 
   end
   
@@ -76,10 +80,11 @@ private
   end
 
   def init
-    self.default_launch_method ||= ""
+    self.default_launch_method ||= "self"
     self.competition_sign ||= ""
     self.has_engine = false if has_engine.nil?
     self.can_tow = false if can_tow.nil?
+    self.selflaunching = false if selflaunching.nil?
     self.can_be_towed = false if can_be_towed.nil?
     self.can_be_wire_launched = false if can_be_wire_launched.nil?
     self.can_fly_without_engine = false if can_fly_without_engine.nil?
