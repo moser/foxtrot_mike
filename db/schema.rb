@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110911141522) do
+ActiveRecord::Schema.define(:version => 20110911154639) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20110911141522) do
     t.integer  "cost_hint_id"
     t.integer  "accounting_session_id"
     t.boolean  "accounting_entries_valid",               :default => false
+    t.boolean  "problems_exist"
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true

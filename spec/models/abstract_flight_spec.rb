@@ -311,4 +311,11 @@ describe AbstractFlight do
       AbstractFlight.l(:duration).should == "Duration"
     end
   end
+
+  it "should set problems_exist before saving" do
+    f = Flight.spawn
+    f.should_receive(:soft_validate).and_return(false)
+    f.save.should be_true
+    f.problems_exist?.should be_true
+  end
 end

@@ -288,7 +288,9 @@ input[type=submit].delete:hover {
 
 
 
-
+.problems {
+  background-color: #F4FA58
+}
 
 
 .flight_format span {

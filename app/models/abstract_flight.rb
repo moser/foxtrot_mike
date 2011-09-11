@@ -5,6 +5,7 @@ class AbstractFlight < ActiveRecord::Base
   #Purposes = ['training', 'exercise', 'tow', nil] 
   include UuidHelper
   before_save :destroy_launch
+  before_save :execute_soft_validation
 
   belongs_to :plane
   #launch == nil <=> selflaunched
@@ -49,9 +50,9 @@ class AbstractFlight < ActiveRecord::Base
 
   attr_reader :problems
   def soft_validate
-    @problems = Hash.new { |h, k| h[k] = [] }
-    @problems[:crew_members] << :too_many if crew_members.map { |e| e.size }.sum > plane.seat_count
-    @problems[:crew_members] << :seat2_not_an_instructor if seat1.trainee? && seat2 && !seat2.instructor?
+    @problems = []
+    @problems << :too_many_people if plane && crew_members.map { |e| e.size }.sum > plane.seat_count
+    @problems << :seat2_is_not_an_instructor if seat1 && seat1.trainee? && seat2 && !seat2.instructor?
     #@problems[:launch] << :not_possible if #TODO if launch method does not fit the plane
 
     @problems.empty?
@@ -65,9 +66,6 @@ class AbstractFlight < ActiveRecord::Base
     all_versions.select { |version| version.event != "create" }
   end
   
-  #TODO validate crew members
-  # exactly one PIC/PICUS
-  #validates_inclusion_of :purpose, :in => Purposes
   validates_presence_of :plane
   validates_presence_of :departure
   validates_presence_of :seat1_id
@@ -75,7 +73,6 @@ class AbstractFlight < ActiveRecord::Base
   validates_presence_of :from
   validates_presence_of :to
   
-  #TODO move to module
   accepts_string_for :plane, :parent_method => 'registration'
   accepts_string_for :from, :parent_method => ['registration', 'name']
   accepts_string_for :to, :parent_method => ['registration', 'name']
@@ -87,17 +84,9 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
 
-#  def launch_type
-#    I18n.t("activerecord.attributes.flight.launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.long")
-#  end
-
   def launch_type_short
     I18n.t("activerecord.attributes.flight.launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.short")
   end
-  
-#  def cost
-#    @cost ||= FlightCost.new(self)
-#  end
 
   def cost
     unless @cost
@@ -445,6 +434,11 @@ private
     end
   end
   
+  def execute_soft_validation
+    self.problems_exist = !soft_validate
+    true
+  end
+
   def association_changed(obj)
     #nothing here, used and defined in Flight
   end

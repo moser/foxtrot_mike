@@ -17,5 +17,9 @@ class NCrewMember < CrewMember
   def value
     n
   end
+
+  def size
+    n
+  end
 end
 

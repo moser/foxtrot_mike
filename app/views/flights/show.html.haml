@@ -70,6 +70,13 @@
         %tr
           %th= Flight.l(:launch)
           %td= render(:partial => "launches/show", :locals => { :flight => @flight })  
+      - if @flight.problems_exist?
+        - @flight.soft_validate #hack...
+        %tr
+          %th= Flight.l(:problems)
+          %td.problems
+            - @flight.problems.each do |sym|
+              .problem= t("soft_validation.flight.#{sym.to_s}")
       %tr
         %th
           = Flight.l(:cost)
@@ -106,13 +113,6 @@
           %th= Flight.l(:liabilities)
           %td
             = render :partial => "liabilities/list", :locals => { :flight => @flight }
-      - unless @flight.soft_validate
-        %tr
-          %th= Flight.l(:problems)
-          %td
-            %ul
-              - @flight.problems.each do |col, str|
-                %li= Flight.l(col) + " " + str
       %tr
         %th= Flight.l(:versions) #TODO move to own view/controller
         %td
