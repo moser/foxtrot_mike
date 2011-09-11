@@ -187,6 +187,7 @@ de:
       person: Person
       person_cost_category: Personenkategorie
       time_cost_rule: Zeitkostenregel
+      wire_launch: Windenstart
       wire_launcher_cost_category: Windenkategorie
     attributes:
       account:
@@ -289,6 +290,9 @@ de:
         disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
       tow_flight:
         towed_flight: Geschleppter Flug
+      wire_launch:
+        wire_launcher: Winde
+        operator: Windenfahrer
       wire_launcher:
         registration: Kennzeichen
       time_cost_rule:

@@ -22,7 +22,7 @@ shared_examples_for "an accounting entry factory" do
       r.wire_launch_cost_items.create :value => 10, :financial_account => fa
 
       @xf = Flight.create(:plane_id => @plane.id, :seat1_id => @person.id, :departure => DateTime.now, :arrival => 10.minutes.from_now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
-      @lnch = @xf.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @xf)
+      @lnch = @xf.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @xf, :operator => Person.generate!)
       @xf.save!
       @xf.accounting_entries
     

@@ -14,6 +14,7 @@ class Person < ActiveRecord::Base
   has_many :liabilities
   has_many :licenses
   has_many_current :licenses
+  has_many :wire_launches, :as => :operator
   belongs_to :group
   membership :person_cost_category_memberships
   

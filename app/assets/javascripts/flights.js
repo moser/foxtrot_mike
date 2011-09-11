@@ -408,8 +408,9 @@ $(function() {
     $('form#launch_form').each(function(i, el) {
       new TimeHelper(el);
       new TowPlaneHelper(el);
-      new CrewHelper(el, "launch_tow_flight");
-      new AirfieldHelper(el, "to", "launch_tow_flight");
+      new CrewHelper(el, "launch[tow_flight]");
+      new AirfieldHelper(el, "to", "launch[tow_flight]");
+      new PersonHelper(el, "operator", null, true, "launch[wire_launch]");
     });
     $('.flight_form.new').bind('submit', function(e) {
       var form = $(e.target);

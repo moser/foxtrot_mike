@@ -4,9 +4,13 @@ require File.expand_path(File.dirname(__FILE__) + '/shared_examples_for_accounti
 describe WireLaunch do
   it_behaves_like "an accounting entry factory"
   it { should belong_to :wire_launcher }
+  it { should belong_to :operator }
   it { should have_many :accounting_entries }
   it { should have_one :abstract_flight }
   it { should have_one :manual_cost }
+  
+  it { should validate_presence_of :wire_launcher }
+  it { should validate_presence_of :operator }
   
   it "should be able to return wire launches for a given date range" do
     a, b = 10.days.ago, 1.day.ago

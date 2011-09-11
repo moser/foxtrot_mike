@@ -8,9 +8,14 @@ class WireLaunch < ActiveRecord::Base
 
   has_many :accounting_entries, :as => :item
   belongs_to :wire_launcher
+  belongs_to :operator, :class_name => "Person"
   has_one :abstract_flight, :as => :launch
   has_one :manual_cost, :as => :item
-  
+
+  validates_presence_of :wire_launcher, :operator
+
+  include LaunchAccountingEntries
+
   class << self
     def between(from, to)
       if from && to
@@ -33,10 +38,6 @@ class WireLaunch < ActiveRecord::Base
     end
   end
 
-  validates_presence_of :wire_launcher
-  
-  include LaunchAccountingEntries
-  
   def cost
     unless @cost
       candidates = WireLaunchCostRule.for(self.abstract_flight).map { |cr| cr.apply_to(self) }

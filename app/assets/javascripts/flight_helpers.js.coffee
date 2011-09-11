@@ -69,14 +69,14 @@ class PeopleList
 
 
 class FieldHelper
-  constructor: (@list, el, @field, @method, render = null, required = true, prefix = "flight") ->
+  constructor: (@list, el, @field, @method, render = null, required = true, @prefix = "flight") ->
     self = this
-    console.log "##{prefix}_#{@field}_id"
+    console.log @id()
     @flight_div = $(el)
-    @flight_div.data("#{@field}_id", @flight_div.find("##{prefix}_#{@field}_id").val())
+    @flight_div.data("#{@field}_id", @flight_div.find("##{@id()}").val())
     @old_item = @list.get(@flight_div.data("#{@field}_id"))
-    @hidden_element = $("<input type=\"hidden\" id=\"#{prefix}_#{@field}_id\" name=\"flight[#{@field}_id]\" />") .val(@flight_div.find("##{prefix}_#{@field}_id").val())
-    @element = $("<input type=\"text\" id=\"#{prefix}_#{@field}\" name=\"ignore\"/>").autocomplete(
+    @hidden_element = $("<input type=\"hidden\" id=\"#{@id()}\" name=\"#{@prefix}[#{@field}_id]\" />") .val(@flight_div.find("##{@id()}").val())
+    @element = $("<input type=\"text\" id=\"#{@name()}\" name=\"ignore\"/>").autocomplete(
       autoFocus: true
       minLength: 0
       source: (request, response) ->
@@ -97,13 +97,17 @@ class FieldHelper
             self.hidden_element.val("")
             self.flight_div.data("#{self.field}_id", "")
         false
-    ).val(@flight_div.find("##{prefix}_#{@field}_id option:selected").html())
+    ).val(@flight_div.find("##{@id()} option:selected").html())
     @element.data("autocomplete")._renderItem = render || (ul, item) ->
       $("<li></li>")
         .data("item.autocomplete", item)
         .append("<a>#{item[self.method].replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}</a>")
         .appendTo(ul)
-    @flight_div.find("##{prefix}_#{@field}_id").after(@element).replaceWith(@hidden_element)
+    @flight_div.find("##{@id()}").after(@element).replaceWith(@hidden_element)
+  id: ->
+    @id_cache ||= "#{@prefix}_#{@field}_id".replace(/[\[\]]/g, "_").replace(/__/g, "_")
+  name: ->
+    @name_cache ||= @id().substring(0, @id().length - 4)
 
 class @PlaneHelper extends FieldHelper
   constructor: (el, prefix = "flight", list = planesList) ->
@@ -116,14 +120,14 @@ class @PlaneHelper extends FieldHelper
 
 class @TowPlaneHelper extends PlaneHelper
   constructor: (el) ->
-    super(el, "launch_tow_flight", towPlanesList)
+    super(el, "launch[tow_flight]", towPlanesList)
 
 class @AirfieldHelper extends FieldHelper
   constructor: (el, field, prefix = "flight") ->
     super(airfieldsList, el, field, "name", null, true, prefix)
 
 class @PersonHelper extends FieldHelper
-  constructor: (el, field, list = peopleList, render = null, required = true, prefix = "flight") ->
+  constructor: (el, field, render = null, required = true, prefix = "flight", list = peopleList) ->
     super(list, el, field, "name", render, required, prefix)
 
 class @CrewMemberHelper extends PersonHelper
@@ -133,7 +137,7 @@ class @CrewMemberHelper extends PersonHelper
        .data("item.autocomplete", item)
        .append("<a>#{item.name.replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
        .appendTo(ul)
-    super(el, field, new PeopleList(field), render, required, prefix)
+    super(el, field, render, required, prefix, new PeopleList(field))
 
 class @CrewHelper
   constructor: (el, prefix = "flight") ->

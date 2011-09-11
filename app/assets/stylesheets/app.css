@@ -288,10 +288,13 @@ input[type=submit].delete:hover {
 
 
 
-.problems {
-  background-color: #F4FA58
+.flight.problems {
+  background-color: #F4FA58;
 }
 
+.alternate .problems.alternate_color:nth-child(even) {
+  background-color: #E6EA48;
+}
 
 .flight_format span {
   display: inline-block;

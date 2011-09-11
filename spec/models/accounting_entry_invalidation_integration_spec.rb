@@ -19,7 +19,7 @@ describe "Accounting entry invalidation" do
                                          :name => "foo", :valid_from => 1.month.ago)
       @cr.wire_launch_cost_items.create(:name => "1", :value => 10)
       @f = Flight.generate!(:seat1_id => @p.id)
-      @f.launch = WireLaunch.create!(:abstract_flight => @f, :wire_launcher => @wl)
+      @f.launch = WireLaunch.create!(:abstract_flight => @f, :wire_launcher => @wl, :operator => Person.generate!)
       
       [ @wm, @wl, @pm, @p, @cr, @f ].each { |o| o.reload }
       

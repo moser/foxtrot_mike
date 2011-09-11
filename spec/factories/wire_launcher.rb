@@ -16,5 +16,6 @@ end
 
 Factory.define :wire_launch do |w|
   w.association :wire_launcher, :factory => :wire_launcher
+  w.association :operator, :factory => :person
   w.association :abstract_flight, :factory => :flight
 end

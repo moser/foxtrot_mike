@@ -7,6 +7,6 @@
       = radio_button_tag "launch_type", lt.to_s, flight.launch.is_a?(lt)
       = lt.l
       .hide_if_unchecked
-        = render :partial => "launches/form_#{lt.name.underscore}", :locals => { :f => f, :launch => flight.launch.is_a?(lt) ? flight.launch : lt.new(:abstract_flight => flight) }
-  = f.submit
+        = render :partial => "launches/form_#{lt.name.underscore}", :locals => { :f => f, :launch => flight.launch.is_a?(lt) ? flight.launch : lt.new, :flight => flight }
+  = f.submit "Ok"
 = link_to t('views.cancel'), [flight, :launch], :class => "inline_form_hide"

@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Person do  
   it { should have_many :financial_account_ownerships }
+  it { should have_many :wire_launches }
   it { should validate_presence_of :firstname }
   it { should validate_presence_of :lastname }
   it { should validate_presence_of :group }
