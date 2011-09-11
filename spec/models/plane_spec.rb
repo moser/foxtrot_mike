@@ -55,4 +55,15 @@ describe Plane do
     pl = Plane.generate!
     pl.to_j.keys.map(&:to_sym).should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled)
   end
+
+  it "should set default values" do
+    pl = Plane.new
+    pl.default_launch_method.should == ""
+    pl.competition_sign.should == ""
+    pl.has_engine.should_not be_nil
+    pl.can_tow.should_not be_nil
+    pl.can_be_towed.should_not be_nil
+    pl.can_be_wire_launched.should_not be_nil
+    pl.can_fly_without_engine.should_not be_nil
+  end
 end

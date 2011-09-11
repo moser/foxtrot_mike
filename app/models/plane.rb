@@ -4,6 +4,8 @@ class Plane < ActiveRecord::Base
   include Current
   include AccountingEntryInvalidation
 
+  after_initialize :init
+
   has_paper_trail
 
   has_many :flights, :include => [:from, :to, :crew_members], :class_name => "AbstractFlight"
@@ -71,5 +73,15 @@ class Plane < ActiveRecord::Base
 private
   def association_changed(obj = nil)
     delay.invalidate_concerned_accounting_entries
+  end
+
+  def init
+    self.default_launch_method ||= ""
+    self.competition_sign ||= ""
+    self.has_engine = false if has_engine.nil?
+    self.can_tow = false if can_tow.nil?
+    self.can_be_towed = false if can_be_towed.nil?
+    self.can_be_wire_launched = false if can_be_wire_launched.nil?
+    self.can_fly_without_engine = false if can_fly_without_engine.nil?
   end
 end
