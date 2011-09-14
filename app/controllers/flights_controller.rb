@@ -18,7 +18,7 @@ class FlightsController < ApplicationController
     @current_day ||= AbstractFlight.latest_departure.to_date
     dates
     if !request.xhr?
-      @flights = AbstractFlight.include_all.where("departure_date <= ? and departure_date >= ?", @current_day + 1.day, @current_day).
+      @flights = AbstractFlight.include_all.where("departure_date = ?", @current_day).
                                   order("departure_date DESC, departure_i DESC")
     else
       from = @current_day
@@ -43,7 +43,8 @@ class FlightsController < ApplicationController
     
     respond_to do |format|
       format.html do 
-        if request.xhr?          
+        if request.xhr?
+          #really_expires_now
           render :partial => "flights/days", :locals => { :days => @days} #TODO? , :terminators => [ AbstractFlight.latest_departure.to_date, AbstractFlight.oldest_departure.to_date ] }
         end
       end
@@ -59,7 +60,10 @@ class FlightsController < ApplicationController
     authorize! :read, @flight
     dates
     respond_to do |format|
-      format.html { render :layout => !request.xhr? }
+      format.html do
+        really_expires_now if request.xhr?
+        render :layout => !request.xhr?
+      end
       format.json { render :json => @flight }
     end
   end
@@ -72,7 +76,10 @@ class FlightsController < ApplicationController
     dates
     @current_day = AbstractFlight.latest_departure.to_date
     respond_to do |format|
-      format.html { render :layout => !request.xhr? }
+      format.html do
+        really_expires_now
+        render :layout => !request.xhr?
+      end
       format.json { render :json => @flight }
     end
   end
@@ -83,6 +90,7 @@ class FlightsController < ApplicationController
     authorize! :update, @flight
     dates
     if request.xhr?
+      really_expires_now
       render :layout => false
     end
   end
@@ -150,5 +158,12 @@ class FlightsController < ApplicationController
       format.html { redirect_to(flights_url) }
       format.json  { head :ok }
     end
+  end
+
+private
+  def really_expires_now
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 end
