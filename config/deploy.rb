@@ -15,9 +15,9 @@ set :deploy_to, "/var/rails/fm"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
-role :web, "fm.vielsmaier.net"
-role :app, "fm.vielsmaier.net"
-role :db,  "fm.vielsmaier.net", :primary => true
+role :web, "fm.ssv-cham.de"
+role :app, "fm.ssv-cham.de"
+role :db,  "fm.ssv-cham.de", :primary => true
 
 
 namespace :deploy do
