@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", ">=3.1.0.rc6"
+gem "rails", ">=3.1"
 gem "rails3-generators"
 
 gem "sass"
@@ -22,7 +22,7 @@ gem "delayed_job"
 gem "wicked_pdf"
 
 group :production do
-  #gem "pg", :require => "pg"
+  gem "pg"
 end
 
 group :test do
