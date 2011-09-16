@@ -14,7 +14,7 @@ test: &TEST
 
 production:
   adapter: sqlite3
-  database: db/dev.sqlite3
+  database: /var/rails/db/dev.sqlite3
   pool: 5
   timeout: 5000
 
