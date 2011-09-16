@@ -4,8 +4,10 @@
     %meta{ "http-equiv" => "content-type", "content" => "text/html;charset=UTF-8" }
     %title
       FoxtrotMike
-    = stylesheet_link_tag 'application'
-    = stylesheet_link_tag 'print'
+    %style{ :type => "text/css" }
+      = Rails.application.assets['application.css'].to_s.html_safe
+    %style{ :type => "text/css", :media => "print" }
+      = Rails.application.assets['print/print.css'].to_s.html_safe
     =# wicked_pdf_stylesheet_link_tag @include_stylesheet_files
   %body
     .content
