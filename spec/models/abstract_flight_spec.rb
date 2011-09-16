@@ -308,7 +308,7 @@ describe AbstractFlight do
   describe "l" do
     it "should translate FLIGHT" do
       AbstractFlight.l.should == "Abstract flight"
-      AbstractFlight.l(:duration).should == "Duration"
+      AbstractFlight.l(:duration).should == "Dauer"
     end
   end
 

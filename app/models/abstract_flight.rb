@@ -85,7 +85,11 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def launch_type_short
-    I18n.t("activerecord.attributes.flight.launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.short")
+    I18n.t("launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.short")
+  end
+
+  def launch_type_long
+    I18n.t("launch_types.#{ launch.nil? ? "self" : launch.class.to_s.underscore }.long")
   end
 
   def cost

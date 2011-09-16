@@ -105,7 +105,8 @@
               %td
               %td= format_currency(@flight.cost_sum)
             %tr
-              %td= Flight.l(:free_cost_sum)
+              %td
+                %span{ :title => Flight.l(:free_cost_sum_hint) }= Flight.l(:free_cost_sum)
               %td
               %td= format_currency(@flight.free_cost_sum)
       - unless @flight.is_a?(TowFlight)

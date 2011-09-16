@@ -19,6 +19,7 @@ de:
     start_date: Anfangsdatum
     end_date: Enddatum
     financial_accounts: Buchhaltungskonten
+    financial_account_id: Buchhaltungskonto
   helpers:
     submit:
       create: "Erstellen"
@@ -170,6 +171,26 @@ de:
   time_cost_rules:
     time_cost_rule:
       per_minute: "%{n} pro Minute %{on}"
+  purposes:
+    training:
+      long: Schulung
+      short: S
+    exercise:
+      long: Übung
+      short: Ü
+    tow:
+      long: F-Schlepp
+      short: F
+  launch_types:
+    tow_flight:
+      short: F
+      long: F-Schlepp
+    wire_launch:
+      short: W
+      long: Windenstart
+    self:
+      short: E
+      long: Eigenstart
   activerecord:
     models:
       account: Benutzerkonto
@@ -179,6 +200,7 @@ de:
       flight: Flug
       flight_cost_rule: Kostenregel für Flüge
       financial_account: Buchhaltungskonto
+      group: Gruppe
       legal_plane_class: Flugzeugklasse
       number_cost_rule_condition: Bedingung auf Dauer
       tow_flight: Schleppflug
@@ -188,7 +210,9 @@ de:
       person_cost_category: Personenkategorie
       time_cost_rule: Zeitkostenregel
       wire_launch: Windenstart
+      wire_launcher: Winde
       wire_launcher_cost_category: Windenkategorie
+      wire_launch_cost_rule: Kostenregel für Windenstart
     attributes:
       account:
         password: Passwort
@@ -202,7 +226,7 @@ de:
         registration: Kennung
         lat: geog. Breite (+ = Nord)
         long: geog. Länge (+ = Ost)
-      flight:
+      abstract_flight:
         plane: Flugzeug
         date: Datum
         seat1: Sitz 1
@@ -224,6 +248,9 @@ de:
         controller: Flugleiter
         lauch_cost: Startkosten
         sum: Summe
+        cost_sum: Summe
+        free_cost_sum: Freie Summe
+        free_cost_sum_hint: Der Teil der Kosten, der durch Zahlungsverpflichtungen gedeckt werden muss.
         liabilities: Zahlungsverpflichtungen
         problems: Probleme
         versions: Änderungen
@@ -231,32 +258,17 @@ de:
         data: Daten
         purpose: Zweck
         purpose_short: Z
-        purposes:
-          training:
-            long: Schulung
-            short: S
-          exercise:
-            long: Übung
-            short: Ü
-          tow:
-            long: F-Schlepp
-            short: F
         launch_type: Startart
         launch_type_short: S
-        launch_types:
-          tow_flight:
-            short: F
-            long: F-Schlepp
-          wire_launch:
-            short: W
-            long: Windenstart
-          self:
-            short: E
-            long: Eigenstart
       flight_cost_rule:
         flight_type: Flugart
       financial_account:
         owners: Besitzer
+      group:
+        members: Mitglieder
+        planes: Flugzeuge
+      legal_plane_class:
+        planes: Flugzeuge
       license:
         name: Bezeichnung
         level: Stufe

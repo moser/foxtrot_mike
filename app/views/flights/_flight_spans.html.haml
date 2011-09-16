@@ -11,7 +11,7 @@
       = show_link(flight.seat2.person, flight.seat2.person.to_s)
     - else
       = flight.seat2.to_s
-%span.launch_type{ :title => flight.launch_type }= flight.launch_type_short
+%span.launch_type{ :title => flight.launch_type_long }= flight.launch_type_short
 %span.purpose{ :title => flight.purpose.to_s }= flight.purpose.short
 %span.airfield{ :title => flight.from.name }= flight.from
 %span.airfield{ :title => flight.to.name }= flight.to
