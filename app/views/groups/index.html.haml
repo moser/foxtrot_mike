@@ -1,9 +1,13 @@
 %h1= t '.title'
-%table
-  %tr
+%table.filtered{ :"data-filter-by" => "filter_string" }
+  %tr.no_filter.show_on_startup
+    %th= t("views.filter_search")
+  %tr.no_filter.show_on_startup
+    %td= text_field_tag "filter_string"
+  %tr.no_filter
     %th= Group.l(:name)
   - @groups.each do |group|
-    %tr
+    %tr.alternate_color{ :"data-filter_string" => group.name.downcase }
       %td= h group.name
       %td= show_link(group)
       %td= edit_link(group)

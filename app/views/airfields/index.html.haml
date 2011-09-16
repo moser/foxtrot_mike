@@ -1,10 +1,14 @@
 %h1= t '.title'
-%table
-  %tr
+%table.filtered{ :"data-filter-by" => "filter_string" }
+  %tr.no_filter.show_on_startup
+    %th= t("views.filter_search")
+  %tr.no_filter.show_on_startup
+    %td= text_field_tag "filter_string"
+  %tr.no_filter
     %th= Airfield.human_attribute_name(:registration)
     %th= Airfield.human_attribute_name(:name)
   - @airfields.each do |airfield|
-    %tr
+    %tr.alternate_color{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}" }
       %td=h airfield.registration
       %td=h airfield.name
       %td= show_link(airfield)
