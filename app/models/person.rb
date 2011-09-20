@@ -126,7 +126,6 @@ class Person < ActiveRecord::Base
 
   def to_j
     { :id => id,
-      :name => name,
       :firstname => firstname,
       :lastname => lastname,
       :group_id => group_id,

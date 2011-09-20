@@ -1,5 +1,5 @@
 class List
-  constructor: (@resource, @method) ->
+  constructor: (@resource, @method, @prototype = Object.prototype) ->
     @list = []
   find: (str, flight) ->
     f = (obj) ->
@@ -7,15 +7,24 @@ class List
       obj
     f obj for obj in @list when this.extract(obj).match(new RegExp(".*#{str}.*", "i"))
   extract: (obj) ->
-    obj[@method]
+    if $.isFunction(obj[@method])
+      obj[@method].call(obj)
+    else
+      obj[@method]
   load: ->
     self = this
     $.get self.resource, (data) ->
       self.list = data
+      if($.isArray(self.list))
+        self.list = (self.createObj(obj) for obj in self.list)
   get: (id) ->
     (obj for obj in @list when obj.id == id)[0]
+  createObj: (obj) ->
+    newObj = Object.create(@prototype)
+    newObj[prop] = obj[prop] for prop of obj when obj.hasOwnProperty(prop)
+    newObj
 
-peopleList = new List("/people.json", "name")
+peopleList = new List("/people.json", "name", { name: -> "#{@firstname} #{@lastname}" })
 peopleList.load()
 planesList = new List("/planes.json", "registration")
 airfieldsList = new List("/airfields.json", "name")
@@ -135,7 +144,7 @@ class @CrewMemberHelper extends PersonHelper
     render = (ul, item) ->
       $("<li></li>")
        .data("item.autocomplete", item)
-       .append("<a>#{item.name.replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
+       .append("<a>#{item.name().replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
        .appendTo(ul)
     super(el, field, render, required, prefix, new PeopleList(field))
 

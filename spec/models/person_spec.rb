@@ -118,6 +118,6 @@ describe Person do
     p.reload
 
     p.licenses.each { |e| e.should_receive(:to_j) }
-    p.to_j.keys.should include(:licenses, :id, :name, :firstname, :lastname, :group_id, :group_name)
+    p.to_j.keys.should include(:licenses, :id, :firstname, :lastname, :group_id, :group_name)
   end
 end
