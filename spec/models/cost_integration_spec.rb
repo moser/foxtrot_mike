@@ -61,7 +61,7 @@ describe "Costs" do
     flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => Time.now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
-    flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight
+    flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight, :operator => Person.generate!
     flight.cost_responsible.should == @pilot_a
     flight.launch.abstract_flight.cost_responsible.should == @pilot_a
     flight.free_cost_sum.should == 550
@@ -69,7 +69,7 @@ describe "Costs" do
     flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => 1.month.from_now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
-    flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight
+    flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight, :operator => Person.generate!
     flight.free_cost_sum.should == 700
   
   #it "should calculate costs for a towed flight" do
