@@ -44,7 +44,11 @@ class Flight < AbstractFlight
   alias_method_chain :accounting_entries, :validity_check
 
   def liabilities_with_default
-    liabilities.count == 0 ? [ DefaultLiability.new(self) ] : liabilities
+    unless seat1.is_a? UnknownCrewMember
+      liabilities.count == 0 ? [ DefaultLiability.new(self) ] : liabilities
+    else
+      liabilities
+    end
   end
 
 

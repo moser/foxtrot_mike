@@ -177,6 +177,11 @@ describe AbstractFlight do
       @f.seat1 = @pilot
       @f.crew_members.first.should be_a PilotInCommand
     end
+
+    it "should create a unknown crew member when passed 'unknown'" do
+      @f.seat1 = "unknown"
+      @f.crew_members.first.should be_a UnknownCrewMember
+    end
     
     it "should make a single pilot without license a Trainee" do
       @f.seat1 = @trainee

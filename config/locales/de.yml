@@ -1,4 +1,5 @@
 de:
+  unknown_person: Pilot
   soft_validation:
     flight:
       seat2_is_not_an_instructor: "Der Begleiter ist kein Fluglehrer, obwohl auf dem vorderen Sitz ein Schüler eingetragen ist."

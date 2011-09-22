@@ -4,10 +4,13 @@
     = show_link(flight.plane, flight.plane.to_s)
 %span.seat
   - unless flight.seat1.nil?
-    = show_link(flight.seat1.person, flight.seat1.person.to_s)
+    - unless flight.seat1.unknown?
+      = show_link(flight.seat1.person, flight.seat1.person.to_s)
+    - else
+      = flight.seat1.person.name
 %span.seat
   - unless flight.seat2.nil?
-    - if flight.seat2.is_a?(PersonCrewMember)
+    - if flight.seat2.person?
       = show_link(flight.seat2.person, flight.seat2.person.to_s)
     - else
       = flight.seat2.to_s

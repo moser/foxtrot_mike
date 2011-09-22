@@ -204,7 +204,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def seat1
-    crew_members.find_all { |m| [ PilotInCommand, Trainee ].include?(m.class) }.first
+    crew_members.find_all { |m| [ UnknownCrewMember, PilotInCommand, Trainee ].include?(m.class) }.first
   end
   
   def seat2
@@ -212,7 +212,7 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def seat1_id
-    seat1.person_id rescue nil
+    seat1 && seat1.person && seat1.person.id
   end
   
   def seat2_id
@@ -229,17 +229,21 @@ class AbstractFlight < ActiveRecord::Base
   
   def seat1=(obj)
     unless obj.nil?
-      obj = Person.find(obj) unless obj.is_a?(Person)
       old = seat1
-      if obj.trainee?(self)
-        new = Trainee.new(:person => obj)
+      unless obj == "unknown"
+        obj = Person.find(obj) unless obj.is_a?(Person)
+        if obj.trainee?(self)
+          new = Trainee.new(:person => obj)
+        else
+          new = PilotInCommand.new(:person => obj)
+        end
       else
-        new = PilotInCommand.new(:person => obj)
+        new = UnknownCrewMember.new
       end
       if !new.equals?(old)
         crew_members.delete old unless old.nil?
-        new.save
         crew_members << new
+        new.save
       end
     else
       old = seat1
@@ -267,8 +271,8 @@ class AbstractFlight < ActiveRecord::Base
       end
       if !new.equals?(old)
         crew_members.delete old unless old.nil?
-        new.save
         crew_members << new
+        new.save
       end
     else
       old = seat2
@@ -344,7 +348,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def grouping_people
-    crew_members.select { |m| [ PilotInCommand, Trainee, Instructor ].include?(m.class) }.map(&:person).reject(&:'nil?')
+    crew_members.select { |m| [ UnknownCrewMember, PilotInCommand, Trainee, Instructor ].include?(m.class) }.map(&:person).reject(&:'nil?')
   end
 
   def grouping_licenses
@@ -352,7 +356,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def grouping_people_groups
-    grouping_people.map(&:group).uniq
+    grouping_people.map(&:group).uniq.reject(&:'nil?')
   end
 
   def grouping_groups

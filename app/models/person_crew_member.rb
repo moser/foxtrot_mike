@@ -19,4 +19,8 @@ class PersonCrewMember < CrewMember
   def value
     person
   end
+
+  def person?
+    true
+  end
 end

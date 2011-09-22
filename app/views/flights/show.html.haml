@@ -77,43 +77,44 @@
           %td.problems
             - @flight.problems.each do |sym|
               .problem= t("soft_validation.flight.#{sym.to_s}")
-      %tr
-        %th
-          = Flight.l(:cost)
-        %td
-          %table.data
-            - if @flight.cost 
-              %tr
-                %th= FlightCostRule.l
-                %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
-              - @flight.cost.items.each do |i|
-                %tr
-                  %td= i.cost_item.name
-                  %td= i.financial_account || ""
-                  %td= format_currency(i.value)
-            - if @flight.launch_cost
-              %tr
-                %th= @flight.launch_cost.cost_rule.class.l
-                %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
-              - @flight.launch_cost.items.each do |i|
-                %tr
-                  %td= i.cost_item.name
-                  %td= i.financial_account || ""
-                  %td= format_currency(i.value)
-            %tr
-              %td= Flight.l(:cost_sum)
-              %td
-              %td= format_currency(@flight.cost_sum)
-            %tr
-              %td
-                %span{ :title => Flight.l(:free_cost_sum_hint) }= Flight.l(:free_cost_sum)
-              %td
-              %td= format_currency(@flight.free_cost_sum)
-      - unless @flight.is_a?(TowFlight)
+      - unless @flight.seat1.nil? || @flight.seat1.unknown?
         %tr
-          %th= Flight.l(:liabilities)
+          %th
+            = Flight.l(:cost)
           %td
-            = render :partial => "liabilities/list", :locals => { :flight => @flight }
+            %table.data
+              - if @flight.cost 
+                %tr
+                  %th= FlightCostRule.l
+                  %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
+                - @flight.cost.items.each do |i|
+                  %tr
+                    %td= i.cost_item.name
+                    %td= i.financial_account || ""
+                    %td= format_currency(i.value)
+              - if @flight.launch_cost
+                %tr
+                  %th= @flight.launch_cost.cost_rule.class.l
+                  %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
+                - @flight.launch_cost.items.each do |i|
+                  %tr
+                    %td= i.cost_item.name
+                    %td= i.financial_account || ""
+                    %td= format_currency(i.value)
+              %tr
+                %td= Flight.l(:cost_sum)
+                %td
+                %td= format_currency(@flight.cost_sum)
+              %tr
+                %td
+                  %span{ :title => Flight.l(:free_cost_sum_hint) }= Flight.l(:free_cost_sum)
+                %td
+                %td= format_currency(@flight.free_cost_sum)
+        - unless @flight.is_a?(TowFlight)
+          %tr
+            %th= Flight.l(:liabilities)
+            %td
+              = render :partial => "liabilities/list", :locals => { :flight => @flight }
       %tr
         %th= Flight.l(:versions) #TODO move to own view/controller
         %td

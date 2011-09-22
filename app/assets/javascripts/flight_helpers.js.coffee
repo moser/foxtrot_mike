@@ -23,6 +23,8 @@ class List
     newObj = Object.create(@prototype)
     newObj[prop] = obj[prop] for prop of obj when obj.hasOwnProperty(prop)
     newObj
+  all: ->
+    @list
 
 peopleList = new List("/people.json", "name", { name: -> "#{@firstname} #{@lastname}" })
 peopleList.load()
@@ -40,6 +42,29 @@ class TowPlanesList
 
 towPlanesList = new TowPlanesList(planesList)
 
+class PeopleListWithUnknown
+  constructor: (@wrapped_list) ->
+    self = this
+    @unknown = null
+    $.get "/unknown_person.json", (data) ->
+      self.unknown = self.wrapped_list.createObj(data)
+  get: (id) ->
+    if id == "unknown"
+      @unknown
+    else
+      @wrapped_list.get(id)
+  find: (str, flight) ->
+    l = @wrapped_list.find(str, flight)
+    if @unknown.name().match(new RegExp(".*#{str}.*", "i"))
+      @unknown.term = str
+      @unknown.level = 1
+      l.push @unknown
+    l
+  all: ->
+    @wrapped_list.list
+
+peopleListWithUnknown = new PeopleListWithUnknown(peopleList)
+
 levelToI = (a) ->
   { instructor: 0, normal: 1, trainee: 2 }[a]
 
@@ -47,12 +72,11 @@ levelIToGerman = (a) ->
   [ "Lehrer", "Scheininhaber", "Schüler" ][a]
 
 class PeopleList
-  constructor: (@method) ->
+  constructor: (@list, @method) ->
     @legal_plane_class_id = -1
     @departure_date = null
-    @list = []
   get: (id) ->
-    peopleList.get(id)
+    @list.get(id)
   find: (str, flight) ->
     self = this
     if @legal_plane_class_id != planesList.get(flight.data("plane_id")).legal_plane_class_id || !@departure_date? || @departure_date != Parse.date(flight.find("#flight_departure_date").val())
@@ -65,8 +89,8 @@ class PeopleList
           person.level = levels.sort()[levels.length - 1]
         else
           person.level = 2
-      lala person for person in peopleList.list
-    peopleList.find(str, flight).sort (a, b) ->
+      lala person for person in @list.all()
+    @list.find(str, flight).sort (a, b) ->
       r = 0
       if self.method == "seat2"
         r = a.level - b.level
@@ -92,7 +116,7 @@ class FieldHelper
         response(self.list.find(request.term, self.flight_div))
       select: (event, ui) ->
         self.old_item = ui.item
-        self.element.val(ui.item[self.method])
+        self.element.val(self.extract(ui.item))
         self.hidden_element.val(ui.item.id)
         self.flight_div.data("#{self.field}_id", ui.item.id)
         false
@@ -110,13 +134,18 @@ class FieldHelper
     @element.data("autocomplete")._renderItem = render || (ul, item) ->
       $("<li></li>")
         .data("item.autocomplete", item)
-        .append("<a>#{item[self.method].replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}</a>")
+        .append("<a>#{self.extract(item).replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}</a>")
         .appendTo(ul)
     @flight_div.find("##{@id()}").after(@element).replaceWith(@hidden_element)
   id: ->
     @id_cache ||= "#{@prefix}_#{@field}_id".replace(/[\[\]]/g, "_").replace(/__/g, "_")
   name: ->
     @name_cache ||= @id().substring(0, @id().length - 4)
+  extract: (obj) ->
+    if $.isFunction(obj[@method])
+      obj[@method].call(obj)
+    else
+      obj[@method]
 
 class @PlaneHelper extends FieldHelper
   constructor: (el, prefix = "flight", list = planesList) ->
@@ -140,15 +169,15 @@ class @PersonHelper extends FieldHelper
     super(list, el, field, "name", render, required, prefix)
 
 class @CrewMemberHelper extends PersonHelper
-  constructor: (el, field, required = true, prefix = "flight") ->
+  constructor: (el, field, required = true, prefix = "flight", list = peopleList) ->
     render = (ul, item) ->
       $("<li></li>")
        .data("item.autocomplete", item)
        .append("<a>#{item.name().replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
        .appendTo(ul)
-    super(el, field, render, required, prefix, new PeopleList(field))
+    super(el, field, render, required, prefix, new PeopleList(list, field))
 
 class @CrewHelper
   constructor: (el, prefix = "flight") ->
-    new CrewMemberHelper(el, "seat1", true, prefix)
+    new CrewMemberHelper(el, "seat1", true, prefix, peopleListWithUnknown)
     new CrewMemberHelper(el, "seat2", false, prefix)

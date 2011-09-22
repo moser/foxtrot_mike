@@ -68,7 +68,8 @@ Server::Application.routes.draw do
   resources :licenses do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
   end
-  resources :legal_plane_classes  
+  resources :legal_plane_classes
+  resource :unknown_person
   
   root :to => 'dashboards#show'
 

@@ -41,4 +41,12 @@ class CrewMember < ActiveRecord::Base
   def picus?
     trainee? && pic?
   end
+
+  def person?
+    false
+  end
+
+  def unknown?
+    false
+  end
 end

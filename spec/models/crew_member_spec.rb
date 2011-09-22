@@ -5,7 +5,7 @@ describe CrewMember do
   it { should ensure_immutability_of(:abstract_flight, lambda { Flight.generate! }) }
   it "should respond to some helpful methods" do
     c = CrewMember.new
-    [ :size, :trainee?, :instructor?, :pic?, :picus? ].each do |e|
+    [ :size, :trainee?, :instructor?, :pic?, :picus?, :unknown?, :person? ].each do |e|
       c.should respond_to(e)
     end
   end
