@@ -46,7 +46,7 @@ class Plane < ActiveRecord::Base
   
   def self.shared_attribute_names
     [ :id, :registration, :make, :competition_sign, :group_id, :default_launch_method, :has_engine, 
-      :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id, :selflaunching ]
+      :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id, :selflaunching, :seat_count ]
 
   end
   

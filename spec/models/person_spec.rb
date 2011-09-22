@@ -29,7 +29,7 @@ describe Person do
     Person.destroy_all
     martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
     tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")
-    Person.find_all_by_name('foo').should == [martin, tom]
+    Person.find_all_by_name('foo').should == [tom, martin]
     Person.find_all_by_name('martin').should == [martin]
     Person.find_all_by_name('martin f').should == [martin]
     Person.find_all_by_name('FOO M').should == [martin]

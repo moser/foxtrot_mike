@@ -212,11 +212,11 @@ class AbstractFlight < ActiveRecord::Base
   end
   
   def seat1_id
-    seat1 && seat1.person && seat1.person.id
+    seat1 && seat1.person? && seat1.person.id
   end
   
   def seat2_id
-    seat2.person_id rescue nil
+    seat2 && ((seat2.person? && seat2.person.id) || (seat2.n? && "+#{seat2.n}"))
   end
   
   def seat1_id=(id)
@@ -258,6 +258,7 @@ class AbstractFlight < ActiveRecord::Base
   
   def seat2=(obj)
     unless obj.nil?
+      obj = $1.to_i if obj =~ /^\+([0-9]+)$/
       obj = Person.find(obj) unless obj.is_a?(Person) || obj.is_a?(Integer)
       old = seat2
       if obj.is_a?(Person)

@@ -65,6 +65,28 @@ class PeopleListWithUnknown
 
 peopleListWithUnknown = new PeopleListWithUnknown(peopleList)
 
+class PeopleListWithN
+  constructor: (@wrapped_list) ->
+    self = this
+    f = (n) ->
+      self.wrapped_list.createObj({ id: "+#{n}", firstname: "+#{n}", lastname: "", n: n })
+    @internal = (f n for n in [1..3])
+  get: (id) ->
+    @wrapped_list.get(id) || (obj for obj in @internal when obj.id == id)[0]
+  find: (str, flight) ->
+    if str.match(/^\+.*/)
+      plane = planesList.get(flight.data("plane_id"))
+      if plane?
+        obj for obj in @internal when (plane.seat_count - 1) >= obj.n
+      else
+        @internal
+    else
+      @wrapped_list.find(str, flight)
+  all: ->
+    @wrapped_list.list
+
+peopleListWithN = new PeopleListWithN(peopleList)
+
 levelToI = (a) ->
   { instructor: 0, normal: 1, trainee: 2 }[a]
 
@@ -171,13 +193,16 @@ class @PersonHelper extends FieldHelper
 class @CrewMemberHelper extends PersonHelper
   constructor: (el, field, required = true, prefix = "flight", list = peopleList) ->
     render = (ul, item) ->
+      str = "<a>#{item.name().replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}"
+      str += "<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span>" if item.level?
+      str += "</a>"
       $("<li></li>")
        .data("item.autocomplete", item)
-       .append("<a>#{item.name().replace(new RegExp("(#{item.term})", "gi"), "<b>$1</b>")}<span class=\"info\">#{levelIToGerman(item.level)}, #{item.group_name}</span></a>")
+       .append(str)
        .appendTo(ul)
     super(el, field, render, required, prefix, new PeopleList(list, field))
 
 class @CrewHelper
   constructor: (el, prefix = "flight") ->
     new CrewMemberHelper(el, "seat1", true, prefix, peopleListWithUnknown)
-    new CrewMemberHelper(el, "seat2", false, prefix)
+    new CrewMemberHelper(el, "seat2", false, prefix, peopleListWithN)

@@ -221,6 +221,11 @@ describe AbstractFlight do
     it "should accept a number for seat2" do
       @f.seat2 = 3
       @f.crew_members.first.should be_a NCrewMember
+      @f.crew_members.first.n.should == 3
+      @f.seat2 = nil
+      @f.seat2 = "+2"
+      @f.crew_members.first.should be_a NCrewMember
+      @f.crew_members.first.n.should == 2
     end
     
     it "should remove a crew member if passed nil" do
