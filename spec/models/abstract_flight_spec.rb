@@ -328,4 +328,40 @@ describe AbstractFlight do
     f.save.should be_true
     f.problems_exist?.should be_true
   end
+
+  describe "#soft_validate" do
+    it "should report a problem if there are more crew members than seats" do
+      p = Plane.generate! :seat_count => 1
+      f = Flight.create :plane => p
+      f.seat2 = 2
+      f.soft_validate.should be_false
+      f.problems.should include :too_many_people
+    end
+
+    it "should report a problem if a trainee has a passenger" do
+      p = Person.generate!
+      p.stub(:trainee? => true)
+      f = Flight.spawn :seat1 => p, :seat2 => 1
+      f.soft_validate.should be_false
+      f.problems.should include :seat2_is_not_an_instructor
+    end
+
+    it "should report a problem if the launch method does not fit the plane" do
+      p = Plane.generate! :selflaunching => false
+      f = Flight.spawn :plane => p
+      f.soft_validate.should be_false
+      f.problems.should include :launch_method_impossible
+    end
+
+    it "should report a problem if the pilot has no license" do
+      plane = Plane.generate!
+      person = Person.generate!
+      f = Flight.spawn :plane => plane, :seat1 => person
+      f.soft_validate.should be_false
+      f.problems.should include :seat1_no_license
+      person.licenses.create! :valid_from => 2.days.ago, :legal_plane_class_ids => [ plane.legal_plane_class_id ], :name => "fkfdj"
+      f.soft_validate
+      f.problems.should_not include :seat1_no_license
+    end
+  end
 end

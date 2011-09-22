@@ -4,6 +4,8 @@ class Plane < ActiveRecord::Base
   include Current
   include AccountingEntryInvalidation
 
+  LAUNCH_METHODS = [ "self", "tow_flight", "wire_launch" ]
+
   after_initialize :init
 
   has_paper_trail
@@ -17,7 +19,7 @@ class Plane < ActiveRecord::Base
   membership :plane_cost_category_memberships
 
   validates_presence_of :registration, :make, :legal_plane_class, :group, :financial_account, :default_launch_method
-  validates_inclusion_of :default_launch_method, :in => [ "self", "tow_flight", "wire_launch" ]
+  validates_inclusion_of :default_launch_method, :in => LAUNCH_METHODS
 
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account

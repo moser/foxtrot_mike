@@ -53,8 +53,10 @@ class AbstractFlight < ActiveRecord::Base
     @problems = []
     @problems << :too_many_people if plane && crew_members.map { |e| e.size }.sum > plane.seat_count
     @problems << :seat2_is_not_an_instructor if seat1 && seat1.trainee? && seat2 && !seat2.instructor?
-    #@problems[:launch] << :not_possible if #TODO if launch method does not fit the plane
-
+    @problems << :launch_method_impossible if plane && ((!plane.selflaunching? && launch.nil?) ||
+                                                        (!plane.can_be_towed && launch.is_a?(TowFlight)) ||
+                                                        (!plane.can_be_wire_launched && launch.is_a?(WireLaunch)))
+    @problems << :seat1_no_license if plane && seat1 && seat1.person && seat1.person.relevant_licenses_for(self).empty?
     @problems.empty?
   end
 
