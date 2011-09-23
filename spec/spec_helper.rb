@@ -5,7 +5,6 @@ unless defined?(SetupSpec)
   ENV["RAILS_ENV"] ||= 'test'
   require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
   require 'rspec/rails'
-  require 'capybara/rspec'
 
   # Requires supporting files with custom matchers and macros, etc,
   # in ./support/ and its subdirectories.
@@ -65,8 +64,6 @@ unless defined?(SetupSpec)
     config.before(:each) do
       init_haml_helpers
     end
-    config.include  Webrat::Matchers 
-    config.include  Webrat::HaveTagMatcher
     config.before(:suite) do  
       DatabaseCleaner.strategy = :truncation  
     end  
