@@ -26,10 +26,9 @@ describe Person do
   end
   
   it "should find all people by their name" do
-    Person.destroy_all
     martin = Person.generate!(:lastname => "Foo", :firstname => "Martin")
     tom = Person.generate!(:lastname => "Foo", :firstname => "Tom")
-    Person.find_all_by_name('foo').should == [tom, martin]
+    Person.find_all_by_name('foo').should == [ martin, tom]
     Person.find_all_by_name('martin').should == [martin]
     Person.find_all_by_name('martin f').should == [martin]
     Person.find_all_by_name('FOO M').should == [martin]
@@ -112,6 +111,7 @@ describe Person do
     p.reload
     p.find_concerned_accounting_entry_owners.should_not include(f)
   end
+
   it "should include license information in custom json return by to_j" do
     p = Person.generate!
     l = License.generate! :person => p
@@ -119,5 +119,69 @@ describe Person do
 
     p.licenses.each { |e| e.should_receive(:to_j) }
     p.to_j.keys.should include(:licenses, :id, :firstname, :lastname, :group_id, :group_name)
+  end
+
+  describe "#lvb_member_state" do
+    it "should return a key representing the member state for LVB" do
+      p = Person.spawn :birthdate => 9.years.ago, :member_state => :active, :primary_member => true
+      p.lvb_member_state.should == :young_children
+      p.lvb_member_state(2.years.from_now).should == :children
+      p.birthdate = 10.years.ago - 1.day
+      p.lvb_member_state.should == :children
+      p.birthdate = 14.years.ago - 1.day
+      p.lvb_member_state.should == :youths
+      p.birthdate = 22.years.ago - 1.day
+      p.lvb_member_state.should == :adults
+    end
+  end
+
+  describe "#active?" do
+    it "should return true if the member_state is active" do
+      p = Person.spawn :member_state => :active
+      p.active?.should be_true
+      p.member_state = :passive
+      p.active?.should be_false
+    end
+  end
+
+  describe "#donor?" do
+    it "should return true if the member_state is donor" do
+      p = Person.spawn :member_state => :donor
+      p.donor?.should be_true
+      p.member_state = :passive
+      p.donor?.should be_false
+    end
+  end
+
+  describe "#passive?" do
+    it "should return true if the member_state is passive" do
+      p = Person.spawn :member_state => :passive
+      p.passive?.should be_true
+      p.member_state = :passive_with_voting_right
+      p.passive?.should be_true
+      p.member_state = :active
+      p.passive?.should be_false
+    end
+  end
+
+  describe "#passive_with_voting_right?" do
+    it "should return true if the member_state is passive_with_voting_right" do
+      p = Person.spawn :member_state => :passive_with_voting_right
+      p.passive?.should be_true
+      p.member_state = :active
+      p.passive?.should be_false
+    end
+  end
+
+  describe "#age_at" do
+    it "should return the age in years" do
+      p = Person.spawn :birthdate => 20.years.ago.to_date
+      p.age_at(1.day.ago).should == 19
+      p.age_at(Date.today).should == 20
+      p.age_at(1.day.from_now).should == 20
+      p.age_at(400.days.from_now).should == 21
+      p.birthdate = 10.years.ago.to_date
+      p.age.should == 10
+    end
   end
 end

@@ -1,13 +1,45 @@
+%h1= @person.name
 %table.data
-  %tr
-    %th= Person.l(:name)
-    %td=h @person.name
   %tr
     %th= Person.l(:group)
     %td= show_link(@person.group, @person.group.to_s)
   - if @person.disabled
     %tr
       %td= Person.l(:disabled_long)
+  - if @person.member
+    %tr
+      %th= Person.l(:title)
+      %td= @person.title
+    %tr
+      %th= Person.l(:sex)
+      %td= t("person.sex.#{@person.sex}")
+    %tr
+      %th= Person.l(:birthdate)
+      %td= l(@person.birthdate)
+
+    %tr
+      %th= Person.l(:address)
+      %td
+        .address1= @person.address1
+        .address2= @person.address2
+        .zip.city
+          = @person.zip
+          = @person.city
+    - [ :email, :phone1, :phone2, :cell, :facsimile ].each do |m|
+      - unless @person.send(m).nil? || @person.send(m) == ""
+        %tr
+          %th= Person.l(m)
+          %td= @person.send(m)
+    %tr
+      %th= Person.l(:entry_date)
+      %td= l(@person.entry_date)
+    %tr
+      %th= Person.l(:member_state)
+      %td= t("person.member_state.#{@person.member_state}")
+    %tr
+      %th= Person.l(:lvb_member_state)
+      %td= t("person.lvb_member_state.#{@person.lvb_member_state}")
+
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @person }
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }

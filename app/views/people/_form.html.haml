@@ -1,9 +1,35 @@
 = simple_form_for(person) do |f|
   = f.input :firstname
   = f.input :lastname
-  = f.input :birthdate, :as => :date, :start_year => 1900, :end_year => Date.today.year
-  = f.input :email
   = f.association :group
   = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] } if person.new_record?
   = f.input :disabled unless person.new_record?
+  = f.input :member
+  .hide_if_unchecked.TODO
+    .personal
+      %label= Person.l(:personal)
+      = f.input :title
+      = f.input :sex, :collection => ["m", "w"], :include_blank => false
+      = f.input :birthdate, :as => :date, :start_year => 1900, :end_year => Date.today.year
+    .address
+      %label= Person.l(:address)
+      = f.input :address1
+      = f.input :address2
+      = f.input :zip
+      = f.input :city
+    .contact
+      %label= Person.l(:contact)
+      = f.input :email
+      = f.input :phone1
+      = f.input :phone2
+      = f.input :cell
+      = f.input :facsimile
+    .membership
+      %label= Person.l(:membership)
+      = f.input :entry_date
+      = f.input :in_training
+      = f.input :member_state, :collection => Person::MemberStates.map { |s| [ t("member_state.#{s}"), s ] }
+      = f.input :lvbnr
+      = f.input :primary_member
+    = f.input :comment
   = f.button :submit

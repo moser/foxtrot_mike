@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110911212104) do
+ActiveRecord::Schema.define(:version => 20110923133131) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20110911212104) do
   add_index "manual_costs", ["id"], :name => "index_manual_costs_on_id", :unique => true
 
   create_table "people", :id => false, :force => true do |t|
-    t.string   "id",               :limit => 36
+    t.string   "id",             :limit => 36
     t.string   "lastname"
     t.string   "firstname"
     t.date     "birthdate"
@@ -248,17 +248,15 @@ ActiveRecord::Schema.define(:version => 20110911212104) do
     t.string   "email"
     t.text     "comment"
     t.integer  "group_id"
-    t.boolean  "disabled",                       :default => false
+    t.boolean  "disabled",                     :default => false
     t.boolean  "in_training"
-    t.string   "fibunr"
     t.string   "lvbnr"
-    t.boolean  "primary_member",                 :default => true
-    t.text     "description"
+    t.boolean  "primary_member",               :default => true
     t.date     "entry_date"
-    t.string   "ssv_member_state"
-    t.string   "type"
+    t.string   "member_state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "member"
   end
 
   add_index "people", ["id"], :name => "index_people_on_id", :unique => true

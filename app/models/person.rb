@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  MemberStates = [ :active, :passive, :passive_with_voting_right, :donor ]
+
   include UuidHelper
   include Membership
   include Current
@@ -134,7 +136,65 @@ class Person < ActiveRecord::Base
       :group_name => group.name,
       :licenses => licenses.map { |e| e.to_j } }
   end
+
+  def member_state
+    read_attribute(:member_state).to_sym
+  end
   
+  def lvb_member_state(date = Date.today)
+    unless primary_member
+      :secondary
+    else
+      if active?
+        if age_at(date) > 21
+          :adults
+        elsif age_at(date) >= 14
+          :youths
+        elsif age_at(date) >= 10
+          :children
+        else
+          :young_children
+        end
+      else
+        :passive
+      end
+    end
+  end
+
+  def active?
+    :active == member_state
+  end
+
+  def donor?
+    :donor == member_state
+  end
+
+  def passive?
+    :passive == member_state || :passive_with_voting_right == member_state
+  end
+
+  def passive_with_voting_right?
+    :passive_with_voting_right == member_state
+  end
+
+  def voting_right?(date = Date.today)
+    (active? || passive_with_voting_right?) && age_at(date) >= 18
+  end
+
+  def age_at(date)
+    bdate = birthdate.to_date
+    date = date.to_date
+    years = date.year - bdate.year
+    if bdate + years.year > date
+      years - 1
+    else
+      years
+    end
+  end
+
+  def age
+    age_at(Date.today)
+  end
 private
   def association_changed(obj = nil)
     delay.invalidate_concerned_accounting_entries
