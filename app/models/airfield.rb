@@ -8,6 +8,8 @@ class Airfield < ActiveRecord::Base
   
   validates_presence_of :name
   validates_uniqueness_of :registration, :if => Proc.new { |airfield| airfield.registration != "" }
+
+  default_scope order("name asc")
   
   def to_s
     if registration && registration != ""

@@ -13,6 +13,8 @@ class WireLauncher < ActiveRecord::Base
   has_one_current :financial_account_ownership
 
   validates_presence_of :registration, :financial_account
+
+  default_scope order("registration asc")
   
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account

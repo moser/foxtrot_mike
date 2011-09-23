@@ -20,7 +20,7 @@ class Person < ActiveRecord::Base
   
   validates_presence_of :firstname, :lastname, :group
 
-  default_scope order("lastname, firstname desc")
+  default_scope order("lastname asc, firstname asc")
 
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account 

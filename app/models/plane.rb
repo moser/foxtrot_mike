@@ -21,6 +21,8 @@ class Plane < ActiveRecord::Base
   validates_presence_of :registration, :make, :legal_plane_class, :group, :financial_account, :default_launch_method
   validates_inclusion_of :default_launch_method, :in => LAUNCH_METHODS
 
+  default_scope order("registration asc")
+
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account
   end
