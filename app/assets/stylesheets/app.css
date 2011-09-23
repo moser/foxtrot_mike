@@ -206,6 +206,7 @@ ul.scroll {
   display: inline-block;
   width: 170px;
   color: #999;
+  vertical-align: top;
 }
 
 .input label.collection_radio {
