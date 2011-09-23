@@ -6,9 +6,10 @@
     %td= text_field_tag "filter_string"
   %tr.no_filter
     %th= Group.l(:name)
-  - @groups.each do |group|
-    %tr.alternate_color{ :"data-filter_string" => group.name.downcase }
-      %td= h group.name
-      %td= show_link(group)
-      %td= edit_link(group)
+  %tbody.alternate
+    - @groups.each do |group|
+      %tr.alternate_color{ :"data-filter_string" => group.name.downcase }
+        %td= h group.name
+        %td= show_link(group)
+        %td= edit_link(group)
 = new_link(Group)

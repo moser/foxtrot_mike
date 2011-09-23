@@ -7,14 +7,17 @@
     %td= text_field_tag "filter_string"
     %td= select :group, "id", Group.all.map { |g| [g.name, g.id] }, { :include_blank => true }
   %tr.no_filter
-    %th= Flight.l(:name)
-    %th= Flight.l(:group)
-  - @people.each do |person|
-    %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
-      %td{ :class => person.disabled ? "strike" : "" }=h person.name
-      %td=h person.group.name
-      %td= show_link(person)
-      %td= show_link([person, :flights], Person.l(:book))
-      %td= edit_link(person)
-      %td= destroy_link(person)
+    %th= Person.l(:lastname)
+    %th= Person.l(:firstname)
+    %th= Person.l(:group)
+  %tbody.alternate
+    - @people.each do |person|
+      %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
+        %td=h person.lastname
+        %td=h person.firstname
+        %td=h person.group.name
+        %td= show_link(person)
+        %td= show_link([person, :flights], Person.l(:book))
+        %td= edit_link(person)
+        %td= destroy_link(person)
 = new_link(Person)

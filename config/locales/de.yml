@@ -301,6 +301,10 @@ de:
         disabled: Deaktiviert
         disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
       person:
+        firstname: Vorname
+        lastname: Nachname
+        birthdate: Geburtsdatum
+        email: Emailadresse
         book: "Flugbuch"
         disabled: Deaktiviert
         disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
