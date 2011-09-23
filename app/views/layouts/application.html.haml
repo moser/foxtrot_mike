@@ -15,4 +15,10 @@
     .please_wait
       = image_tag "/images/ajax-loader.gif"
     .content
+      - if flash[:notice]
+        .flash.notice= flash[:notice]
+      - if flash[:success]
+        .flash.success= flash[:success]
+      - if flash[:error]
+        .flash.error= flash[:error]
       = yield
