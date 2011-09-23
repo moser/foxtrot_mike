@@ -9,4 +9,5 @@
       %td= show_link(account.person, account.person.name)
       %td= edit_link(account)
       %td= destroy_link(account)
+      %td= link_to t("change_password"), new_account_password_path(account)
 = new_link(Account)

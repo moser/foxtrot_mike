@@ -1,0 +1,8 @@
+%h1
+  Passwort ändern
+- unless @own
+  = "#{@account.login}, #{@account.person}"
+= simple_form_for(@account, :url => @own ? [:password] : [@account, :password], :method => "POST") do |f|
+  = f.input :password, :as => :password, :required => true
+  = f.input :password_confirmation, :as => :password, :required => true
+  = f.button :submit

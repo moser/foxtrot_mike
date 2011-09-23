@@ -17,7 +17,10 @@ Server::Application.routes.draw do
     resources :flights, :controller => 'filtered_flights', :only => [:index]
     resources :financial_account_ownerships
   end
-  resources :accounts
+  resources :accounts do
+    resource :password, :only => [ :new, :create ]
+  end
+  resource :password, :only => [ :new, :create ]
   resources :account_sessions 
   resources :flights do 
     resource :launch
