@@ -15,7 +15,7 @@ class Purpose
 
   def to_s
     if @str
-      I18n.t("purposes.#{@str}.long")
+      I18n.t("flight.purposes.#{@str}.long")
     else
       ""
     end
@@ -23,7 +23,7 @@ class Purpose
 
   def short
    if @str
-      I18n.t("purposes.#{@str}.short")
+      I18n.t("flight.purposes.#{@str}.short")
     else
       ""
     end

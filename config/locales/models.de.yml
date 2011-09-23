@@ -1,0 +1,225 @@
+de:
+  soft_validation:
+    flight:
+      seat2_is_not_an_instructor: "Der Begleiter ist kein Fluglehrer, obwohl auf dem vorderen Sitz ein Schüler eingetragen ist."
+      seat1_no_license: "Der Pilot auf dem vorderen Sitz besitz keinerlei Lizenz. Bitte tragen Sie eine Schülerlizenz ein."
+      too_many_people: "Für die angegebene Besatzung ist im Flugzeug kein Platz."
+      launch_method_impossible: "Flugzeug und Startart passen nicht zusammen."
+  flight:
+    purposes:
+      training:
+        long: Schulung
+        short: S
+      exercise:
+        long: Übung
+        short: Ü
+      tow:
+        long: F-Schlepp
+        short: F
+    launch_types:
+      tow_flight:
+        short: F
+        long: F-Schlepp
+      wire_launch:
+        short: W
+        long: Windenstart
+      self:
+        short: E
+        long: Eigenstart
+  person:
+    member_state:
+      active: Aktiv
+      passive: "Fördernd"
+      passive_with_voting_right: "Fördernd mit Stimmrecht"
+      donor: Spender
+    blsv_member_state:
+      children: "Kinder"
+      youths: "Jugendliche"
+      adults: "Erwachsene"
+    blsv_detailed_member_state:
+      young_children: "Kinder bis 5 Jahre"
+      children: "Kinder 6 - 13 Jahre"
+      youths: "Jugendliche 14 - 17 Jahre"
+      adults_upto_26: "Erwachsene 18 - 26 Jahre"
+      adults_upto_40: "Erwachsene 27 - 40 Jahre"
+      adults_upto_60: "Erwachsene 41 - 60 Jahre"
+      adults_gt_60: "Erwachsene ab 61 Jahren"
+      donor: "Kein BLSV-Mitglied"
+    lvb_member_state:
+      young_children: "Kinder unter 10 Jahren"
+      children: "Kinder 10 bis 13 Jahre"
+      youths: "Jugendliche 14 bis 21 Jahre"
+      adults: "Erwachsene ab 21 Jahre"
+      passive: "Fördernde"
+      donor: "Kein LVB-Mitglied"
+      secondary: "Zweitmitglied"
+    salutation:
+      m: Herr
+      w: Frau
+    sex:
+      m: "männlich"
+      w: weiblich
+  attributes:
+    valid_from: "gültig von"
+    valid_to: "gültig bis"
+    group: Gruppe
+    name: "Name"
+    comment: Kommentar
+    cost_hint: Kostengruppe
+    person_cost_category: Personenkategorie
+    plane_cost_category: Flugzeugkategorie
+    conditions: Bedingungen
+    cost_items: Kostenpositionen
+    financial_account: Buchhaltungskonto
+    start_date: Anfangsdatum
+    end_date: Enddatum
+    financial_accounts: Buchhaltungskonten
+    financial_account_id: Buchhaltungskonto
+  activerecord:
+    models:
+      account: Benutzerkonto
+      airfield: Flugplatz
+      cost_hint: Kostengruppe
+      cost_hint_condition: Einschränkung auf Kostengruppe
+      flight: Flug
+      flight_cost_rule: Kostenregel für Flüge
+      financial_account: Buchhaltungskonto
+      group: Gruppe
+      legal_plane_class: Flugzeugklasse
+      number_cost_rule_condition: Bedingung auf Dauer
+      tow_flight: Schleppflug
+      plane: Flugzeug
+      plane_cost_category: Flugzeugkategorie
+      person: Person
+      person_cost_category: Personenkategorie
+      time_cost_rule: Zeitkostenregel
+      wire_launch: Windenstart
+      wire_launcher: Winde
+      wire_launcher_cost_category: Windenkategorie
+      wire_launch_cost_rule: Kostenregel für Windenstart
+    attributes:
+      account:
+        password: Passwort
+        password_confirmation: "Passwort (Wiederholung)"
+        login: Loginname
+      accounting_session:
+        must_not_be_in_the_future: Darf nicht in der Zukunft liegen.
+        finished: Abgeschlossen
+        finished_at: Abgeschlossen am
+      airfield:
+        registration: Kennung
+        lat: geog. Breite (+ = Nord)
+        long: geog. Länge (+ = Ost)
+      abstract_flight:
+        plane: Flugzeug
+        date: Datum
+        seat1: Sitz 1
+        seat1_id: Sitz 1
+        seat2: Sitz 2
+        seat2_id: Sitz 2
+        from: Von
+        to: Nach
+        departure: Abflug
+        departure_date: Datum
+        departure_time: Abflug
+        arrival: Ankunft
+        arrival_time: Ankunft
+        duration: Dauer
+        engine_duration: Motorlaufzeit
+        crew: Besatzung
+        launch: Start
+        cost: Kosten
+        controller: Flugleiter
+        lauch_cost: Startkosten
+        sum: Summe
+        cost_sum: Summe
+        free_cost_sum: Freie Summe
+        free_cost_sum_hint: Der Teil der Kosten, der durch Zahlungsverpflichtungen gedeckt werden muss.
+        liabilities: Zahlungsverpflichtungen
+        problems: Probleme
+        versions: Änderungen
+        tow_plane: Schleppflugzeug
+        data: Daten
+        purpose: Zweck
+        purpose_short: Z
+        launch_type: Startart
+        launch_type_short: S
+      flight_cost_rule:
+        flight_type: Flugart
+      financial_account:
+        owners: Besitzer
+      group:
+        members: Mitglieder
+        planes: Flugzeuge
+      legal_plane_class:
+        planes: Flugzeuge
+      license:
+        name: Bezeichnung
+        level: Stufe
+        normal: "Normal"
+        instructor: "Lehrberechtigung"
+        book: "Flugbuch"
+      number_cost_rule_condition:
+        condition_field: Feld
+        condition_operator: Operator
+        condition_value_i: Wert
+      plane:
+        registration: Kennzeichen
+        make: Typ
+        seat_count: Sitzplätze
+        book: "Bordbuch"
+        legal_plane_class: Flugzeugklasse
+        can_be_towed: Kann im F-Schlepp starten.
+        can_be_wire_launched: Kann an der Winde starten.
+        selflaunching: Eigenstartfähig
+        can_tow: Kann schleppen.
+        can_fly_without_engine: Kann motorlos fliegen.
+        has_engine: Ist motorisiert.
+        flags: Eigenschaften
+        financial_account_id: Buchungskonto
+        default_launch_method: Bevorzugte Startart
+        disabled: Deaktiviert
+        disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
+      person:
+        address: Adresse
+        address1: Adresszeile 1
+        address2: Adresszeile 2
+        birthdate: Geburtsdatum
+        book: "Flugbuch"
+        contact: Kontakt
+        cell: Mobil
+        city: Ort
+        disabled: Deaktiviert
+        disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
+        email: Emailadresse
+        entry_date: Eintrittsdatum
+        firstname: Vorname
+        facsimile: Fax
+        in_training: In Ausbildung
+        lastname: Nachname
+        lvbnr: LVB-Nr.
+        membership: Mitgliedschaft
+        member_state: Mitgliedsart
+        personal: Persönliches
+        phone1: Telefon
+        phone2: Telefon
+        primary_member: Erstmitglied
+        sex: Geschlecht
+        title: Titel
+        zip: PLZ
+      tow_flight:
+        towed_flight: Geschleppter Flug
+      wire_launch:
+        wire_launcher: Winde
+        operator: Windenfahrer
+      wire_launcher:
+        registration: Kennzeichen
+      time_cost_rule:
+        cost: Kosten
+        flight_type: Flugtyp
+    errors:
+      models:
+        account:
+          attributes:
+            password:
+              confirmation: "Stimmt nicht mit der Wiederholung überein!"

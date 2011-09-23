@@ -13,7 +13,7 @@
     %td= show_link(@plane.group, @plane.group.to_s)
   %tr
     %th= Plane.l(:default_launch_method)
-    %td= Flight.l("launch_types.#{@plane.default_launch_method}.long")
+    %td= I18n.t("flight.launch_types.#{@plane.default_launch_method}.long")
   %tr
     %th= Plane.l(:legal_plane_class)
     %td= show_link(@plane.legal_plane_class, @plane.legal_plane_class.to_s)

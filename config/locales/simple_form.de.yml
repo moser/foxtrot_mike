@@ -1,0 +1,14 @@
+de:
+  simple_form:
+    "yes": 'Ja'
+    "no": 'Nein'
+    required:
+      text: 'notwendig'
+      mark: '*'
+    error_notification:
+      default_message: "Es wurden Fehler gefunden:"        
+    hints:
+      flight:
+        engine_duration: "Wird ignoriert, wenn nicht zutreffend."
+    labels:
+      account:

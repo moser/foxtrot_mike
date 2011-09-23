@@ -2,28 +2,6 @@ de:
   unknown_person: Pilot
   change_password: "Passwort ändern"
   password_changed: "Passwort erfolgreich gesetzt."
-  soft_validation:
-    flight:
-      seat2_is_not_an_instructor: "Der Begleiter ist kein Fluglehrer, obwohl auf dem vorderen Sitz ein Schüler eingetragen ist."
-      seat1_no_license: "Der Pilot auf dem vorderen Sitz besitz keinerlei Lizenz. Bitte tragen Sie eine Schülerlizenz ein."
-      too_many_people: "Für die angegebene Besatzung ist im Flugzeug kein Platz."
-      launch_method_impossible: "Flugzeug und Startart passen nicht zusammen."
-  attributes:
-    valid_from: "gültig von"
-    valid_to: "gültig bis"
-    group: Gruppe
-    name: "Name"
-    comment: Kommentar
-    cost_hint: Kostengruppe
-    person_cost_category: Personenkategorie
-    plane_cost_category: Flugzeugkategorie
-    conditions: Bedingungen
-    cost_items: Kostenpositionen
-    financial_account: Buchhaltungskonto
-    start_date: Anfangsdatum
-    end_date: Enddatum
-    financial_accounts: Buchhaltungskonten
-    financial_account_id: Buchhaltungskonto
   helpers:
     submit:
       create: "Erstellen"
@@ -61,7 +39,6 @@ de:
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"
-  main_flight_book: "Hauptflugbuch %{airfield} (%{date})"
   accounts:
     index:
       title: Benutzerkonten
@@ -131,6 +108,8 @@ de:
     index:
       title: "Stammdaten"
   main_log_books:
+    show:
+      title: "Hauptflugbuch %{airfield} (%{date})"
     controller_log:
       end_time: Dienstende
       start_time: Dienstbeginn
@@ -175,165 +154,3 @@ de:
   time_cost_rules:
     time_cost_rule:
       per_minute: "%{n} pro Minute %{on}"
-  purposes:
-    training:
-      long: Schulung
-      short: S
-    exercise:
-      long: Übung
-      short: Ü
-    tow:
-      long: F-Schlepp
-      short: F
-  launch_types:
-    tow_flight:
-      short: F
-      long: F-Schlepp
-    wire_launch:
-      short: W
-      long: Windenstart
-    self:
-      short: E
-      long: Eigenstart
-  activerecord:
-    models:
-      account: Benutzerkonto
-      airfield: Flugplatz
-      cost_hint: Kostengruppe
-      cost_hint_condition: Einschränkung auf Kostengruppe
-      flight: Flug
-      flight_cost_rule: Kostenregel für Flüge
-      financial_account: Buchhaltungskonto
-      group: Gruppe
-      legal_plane_class: Flugzeugklasse
-      number_cost_rule_condition: Bedingung auf Dauer
-      tow_flight: Schleppflug
-      plane: Flugzeug
-      plane_cost_category: Flugzeugkategorie
-      person: Person
-      person_cost_category: Personenkategorie
-      time_cost_rule: Zeitkostenregel
-      wire_launch: Windenstart
-      wire_launcher: Winde
-      wire_launcher_cost_category: Windenkategorie
-      wire_launch_cost_rule: Kostenregel für Windenstart
-    attributes:
-      account:
-        password: Passwort
-        password_confirmation: "Passwort (Wiederholung)"
-        login: Loginname
-      accounting_session:
-        must_not_be_in_the_future: Darf nicht in der Zukunft liegen.
-        finished: Abgeschlossen
-        finished_at: Abgeschlossen am
-      airfield:
-        registration: Kennung
-        lat: geog. Breite (+ = Nord)
-        long: geog. Länge (+ = Ost)
-      abstract_flight:
-        plane: Flugzeug
-        date: Datum
-        seat1: Sitz 1
-        seat1_id: Sitz 1
-        seat2: Sitz 2
-        seat2_id: Sitz 2
-        from: Von
-        to: Nach
-        departure: Abflug
-        departure_date: Datum
-        departure_time: Abflug
-        arrival: Ankunft
-        arrival_time: Ankunft
-        duration: Dauer
-        engine_duration: Motorlaufzeit
-        crew: Besatzung
-        launch: Start
-        cost: Kosten
-        controller: Flugleiter
-        lauch_cost: Startkosten
-        sum: Summe
-        cost_sum: Summe
-        free_cost_sum: Freie Summe
-        free_cost_sum_hint: Der Teil der Kosten, der durch Zahlungsverpflichtungen gedeckt werden muss.
-        liabilities: Zahlungsverpflichtungen
-        problems: Probleme
-        versions: Änderungen
-        tow_plane: Schleppflugzeug
-        data: Daten
-        purpose: Zweck
-        purpose_short: Z
-        launch_type: Startart
-        launch_type_short: S
-      flight_cost_rule:
-        flight_type: Flugart
-      financial_account:
-        owners: Besitzer
-      group:
-        members: Mitglieder
-        planes: Flugzeuge
-      legal_plane_class:
-        planes: Flugzeuge
-      license:
-        name: Bezeichnung
-        level: Stufe
-        normal: "Normal"
-        instructor: "Lehrberechtigung"
-        book: "Flugbuch"
-      number_cost_rule_condition:
-        condition_field: Feld
-        condition_operator: Operator
-        condition_value_i: Wert
-      plane:
-        registration: Kennzeichen
-        make: Typ
-        seat_count: Sitzplätze
-        book: "Bordbuch"
-        legal_plane_class: Flugzeugklasse
-        can_be_towed: Kann im F-Schlepp starten.
-        can_be_wire_launched: Kann an der Winde starten.
-        selflaunching: Eigenstartfähig
-        can_tow: Kann schleppen.
-        can_fly_without_engine: Kann motorlos fliegen.
-        has_engine: Ist motorisiert.
-        flags: Eigenschaften
-        financial_account_id: Buchungskonto
-        default_launch_method: Bevorzugte Startart
-        disabled: Deaktiviert
-        disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
-      person:
-        firstname: Vorname
-        lastname: Nachname
-        birthdate: Geburtsdatum
-        email: Emailadresse
-        book: "Flugbuch"
-        disabled: Deaktiviert
-        disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
-      tow_flight:
-        towed_flight: Geschleppter Flug
-      wire_launch:
-        wire_launcher: Winde
-        operator: Windenfahrer
-      wire_launcher:
-        registration: Kennzeichen
-      time_cost_rule:
-        cost: Kosten
-        flight_type: Flugtyp
-    errors:
-      models:
-        account:
-          attributes:
-            password:
-              confirmation: "Stimmt nicht mit der Wiederholung überein!"
-  simple_form:
-    "yes": 'Ja'
-    "no": 'Nein'
-    required:
-      text: 'notwendig'
-      mark: '*'
-    error_notification:
-      default_message: "Es wurden Fehler gefunden:"        
-    hints:
-      flight:
-        engine_duration: "Wird ignoriert, wenn nicht zutreffend."
-    labels:
-      account:
