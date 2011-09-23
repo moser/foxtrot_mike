@@ -5,13 +5,14 @@
   %tr.no_filter.show_on_startup
     %td= text_field_tag "filter_string"
   %tr.no_filter
-    %th= Airfield.human_attribute_name(:registration)
     %th= Airfield.human_attribute_name(:name)
-  - @airfields.each do |airfield|
-    %tr.alternate_color{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}" }
-      %td=h airfield.registration
-      %td=h airfield.name
-      %td= show_link(airfield)
-      %td= edit_link(airfield)
-      %td= destroy_link(airfield)
+    %th= Airfield.human_attribute_name(:registration)
+  %tbody.alternate
+    - @airfields.each do |airfield|
+      %tr.alternate_color{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}" }
+        %td=h airfield.name
+        %td=h airfield.registration
+        %td= show_link(airfield)
+        %td= edit_link(airfield)
+        %td= destroy_link(airfield)
 = new_link(Airfield)
