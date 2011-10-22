@@ -297,21 +297,27 @@ describe AbstractFlight do
     end
   end
   
-  describe "group_id" do
+  describe "aggregation_id" do
     it "should change when departure_date, seat1 or seat2 change" do
-      f = Flight.create
-      s = f.group_id
+      f = Flight.spawn
+      f.from = f.to
+      s = f.generate_aggregation_id
       f.departure_date = 1.day.ago
-      f.group_id.should_not == s
-      s = f.group_id
+      f.generate_aggregation_id.should_not == s
+      s = f.generate_aggregation_id
       f.seat1 = Person.generate!
-      f.group_id.should_not == s
-      s = f.group_id
+      f.generate_aggregation_id.should_not == s
+      s = f.generate_aggregation_id
       f.seat2 = Person.generate!
-      f.group_id.should_not == s
-      s = f.group_id
+      f.generate_aggregation_id.should_not == s
+      s = f.generate_aggregation_id
       f.seat1 = Person.generate!
-      f.group_id.should_not == s
+      f.generate_aggregation_id.should_not == s
+      s = f.generate_aggregation_id
+      f.from = Airfield.generate!
+      f.generate_aggregation_id.should be_false
+      f.to = f.from
+      f.generate_aggregation_id.should_not == s
     end
   end
 

@@ -1,0 +1,14 @@
+.aggregated_entry
+  .items
+    .flight
+      display: none
+    .flight:first-child
+      display: block
+      .arrival, .duration
+        display: none
+    .flight:last-child
+      display: block
+      span
+        opacity: 0
+      .arrival
+        opacity: 1

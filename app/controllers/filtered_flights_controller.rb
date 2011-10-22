@@ -39,8 +39,9 @@ class FilteredFlightsController < ApplicationController
       @group_by = ''
     end
     if request.xhr?
-      render :partial => "filtered_flights/index", :locals => { :flights => @flights }
+      render :partial => "filtered_flights/index", :locals => { :flights => @flights, :aggregate_entries => false }
     else
+      @aggregate_entries = !!params[:aggregate_entries]
     	respond_to do |f|
     	  f.csv do
     	    attr = ActiveSupport::OrderedHash.new
@@ -80,7 +81,6 @@ class FilteredFlightsController < ApplicationController
         f.pdf { 
     			render :pdf => "#{@obj.to_s}-flights".downcase.gsub(" ", "-"), 
     						 :template => "filtered_flights/index.html.haml",
-    						 :orientation => 'Landscape',
     						 :disable_internal_links => true,
                  :disable_external_links => true
     		}

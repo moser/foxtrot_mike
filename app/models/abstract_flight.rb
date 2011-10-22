@@ -338,10 +338,14 @@ class AbstractFlight < ActiveRecord::Base
     #  NCrewMemberRevision, WireLaunchRevision, TowLaunchRevision].map { |c| c.find(:all, :conditions => { :abstract_flight_id => id }) }].flatten.sort_by { |r| r.revisable_current_at }
   end
 
-  def group_id
-    Digest::SHA256.hexdigest(((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}")
+  def aggregation_id
+   #flight can be only aggregated if it is a local flight
+   @aggregation_id ||= generate_aggregation_id
   end
 
+  def generate_aggregation_id
+    from == to && Digest::SHA256.hexdigest(((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}" + from_id.to_s)
+  end
   def grouping_purposes
     [purpose]
   end

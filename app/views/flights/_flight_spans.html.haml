@@ -18,6 +18,6 @@
 %span.purpose{ :title => flight.purpose.to_s }= flight.purpose.short
 %span.airfield{ :title => flight.from.name }= flight.from
 %span.airfield{ :title => flight.to.name }= flight.to
-%span.time= l(flight.departure, :format => :time)
-%span.time= flight.arrival.nil? ? '-' : l(flight.arrival, :format => :time)
+%span.time.departure= l(flight.departure, :format => :time)
+%span.time.arrival= flight.arrival.nil? ? '-' : l(flight.arrival, :format => :time)
 %span.duration= format_minutes(flight.duration) || "0:00"

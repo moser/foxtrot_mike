@@ -44,6 +44,43 @@ Range.prototype = {
   }
 };
 
+var Aggregate = {
+  aggregateEntries: function() {
+  flightContainer = $(".flights");
+  a = flightContainer.find(".flight").first();
+  while(a.length > 0) {
+    e = a.nextUntil("[data-aggregation_id!=" + a.data("aggregation_id") + "]").andSelf();
+    if(e.length > 1 && a.data("aggregation_id") != undefined) {
+      g = $("#aggregated_entry-prototype .aggregated_entry").clone();
+      a.before(g);
+      g.find(".items").append(e);
+      g.find(".foot .count .number").text(e.length);
+      sum = 0;
+      e.each(function() {
+        sum = sum + parseInt($(this).data("duration"));
+      })
+      g.find(".foot .sum .number").text(Format.duration(sum));
+    }
+    e.addClass("processed");
+    a = flightContainer.find(".flight:not(.processed)").first();
+  }
+  $(".processed").removeClass("processed");
+  },
+
+  unaggregateEntries: function () {
+  $(".group_container .aggregated_entry").each(function() {
+    $(this).before($(this).find(".flight")).remove();
+  });
+  },
+  check: function() {
+    if($("#aggregate_entries").is(":checked")) {
+      Aggregate.aggregateEntries();
+    } else {
+      Aggregate.unaggregateEntries();
+    }
+  }
+};
+
 var Groupable = {
   headers: {},
   current_group: 'none',
@@ -72,12 +109,12 @@ var Groupable = {
   },
 
   change_group_by: function(group_by) {
+    Aggregate.unaggregateEntries();
     if(Groupable.current_group != null && $(".flight").length > 0) {
       $('.group_container').append($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first")).find('.group').remove();
-      
     }
     Groupable.current_group = group_by;
-    if(group_by != 'none') {
+     if(group_by != 'none') {
       var h = Groupable.getHeaders(group_by);
       var groups = [];
       $(':not(.hidden).groupable').each(function(i, e) {
@@ -117,9 +154,12 @@ var Groupable = {
         if(Groupable.group_callback) { Groupable.group_callback.call(group_div); }
         $('.group_container').append(group_div);
       }
+      $(".filtered_flights > .foot").hide();
     } else {
       $('.group_container').find('.groupable').sortElements(function(a, b) { return parseInt($(a).attr('data-sort')) > parseInt($(b).attr('data-sort')) ? 1 : -1; });
+      $(".filtered_flights > .foot").show();
     }
+    Aggregate.check();
   },
 
   init: function(group_callback) {
@@ -140,8 +180,7 @@ var Groupable = {
 var Book = {
   dates: {},
   loaded_range: null,
-  
-  update_flights: function(range) {    
+  update_flights: function(range) {
     if(Book.loaded_range.lt(range)) {
       var diff = range.minus(Book.loaded_range);
       if(diff.lower) { Book.load_and_show_flights(diff.lower); }
@@ -177,10 +216,10 @@ var Book = {
     }
     Groupable.items_changed();
     var sum = 0;
-    $('.content > .foot .count .number').text($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first").filter('.flight:not(.hidden)').each(function(i, e) {
+    $('.filtered_flights > .foot .count .number').text($("#" + $.unique($(".flight").map(function(i,e) { return $(e).attr("id"); })).toArray().join(":first, #") + ":first").filter('.flight:not(.hidden)').each(function(i, e) {
       sum = sum + parseInt($(e).attr('data-duration'));
     }).length);
-    $('.content > .foot .sum .number').text(Format.duration(sum));
+    $('.filtered_flights > .foot .sum .number').text(Format.duration(sum));
   },
 
   find_dates: function() {
@@ -212,6 +251,7 @@ $(function() {
       uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
       uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
       uri.params.ignore = $(".print_off").map(function(i, e) { return $(e).attr("id"); }).toArray();
+      uri.params.aggregate_entries = $("#aggregate_entries").is(":checked") ? 1 : undefined;
       this.href = uri.reconstruct();
       //return false;
     });
@@ -221,6 +261,9 @@ $(function() {
         sum = sum + parseInt($(e).attr('data-duration'));
       });
       this.find('.foot .sum .number').text(Format.duration(sum));
+    });
+    $("#aggregate_entries").change(function() {
+      Aggregate.check();
     });
     Book.init();
   }

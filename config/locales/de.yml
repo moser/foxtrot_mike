@@ -7,6 +7,7 @@ de:
       create: "Erstellen"
       update: "Ok"
   views:
+    aggregate_entries: "Sammeleinträge"
     accounting_entry: "%{from} an %{to} %{value}"
     add: "Hinzufügen"
     areusure: "Sind Sie sicher?"

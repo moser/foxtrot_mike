@@ -1,0 +1,41 @@
+.group
+  margin: 1em 0em
+  page-break-inside: avoid
+
+.group .head
+  height: 25px
+
+.group .head h1
+  display: inline
+  margin: 0
+  padding: 2px
+
+.head
+  border-bottom: 1px solid black
+
+.foot
+  border-top: 1px solid black
+  position: relative
+  .sum, .count
+    display: inline
+  .sum
+    position: absolute
+    left: 726px
+
+.group.collapsed .items
+  display: none
+
+.aggregated_entry
+  border: 1px solid #ccc
+  margin: 5px 0
+  .items 
+    .flight span
+      opacity: 0.5
+    .flight:first-child
+      span
+        opacity: 1
+      .arrival, .duration
+        opacity: 0.5
+    .flight:last-child
+      .arrival
+        opacity: 1
