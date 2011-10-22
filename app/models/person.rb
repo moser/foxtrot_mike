@@ -138,7 +138,7 @@ class Person < ActiveRecord::Base
   end
 
   def member_state
-    read_attribute(:member_state).to_sym
+    (read_attribute(:member_state) || "").to_sym
   end
   
   def lvb_member_state(date = Date.today)
