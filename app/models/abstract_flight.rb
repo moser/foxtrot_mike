@@ -125,7 +125,7 @@ class AbstractFlight < ActiveRecord::Base
     unless plane.nil?
       if !plane.has_engine
         0
-      elsif !plane.can_fly_without_engine
+      elsif !plane.can_fly_without_engine || plane.default_engine_duration_to_duration
         duration
       else
         read_attribute(:engine_duration)

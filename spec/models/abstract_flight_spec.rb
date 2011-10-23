@@ -136,6 +136,32 @@ describe AbstractFlight do
       @f.duration.should == 20
     end
   end
+
+  describe "#engine_duration" do
+    before(:each) do
+      @f.departure = 0
+      @f.arrival = 10
+      @f.plane = Plane.spawn
+    end
+
+    it "should default to 0 if plane has no engine" do
+      @f.plane.stub(:has_engine => false)
+      @f.engine_duration.should == 0
+    end
+
+    it "should default to duration if plane cannot fly without engine" do
+      @f.plane.stub(:can_fly_without_engine => false)
+      @f.plane.stub(:has_engine => true)
+      @f.engine_duration.should == 10
+    end
+
+    it "should default to duration if plane has default_engine_duration_to_duration set" do
+      @f.plane.stub(:default_engine_duration_to_duration => true)
+      @f.plane.stub(:can_fly_without_engine => true)
+      @f.plane.stub(:has_engine => true)
+      @f.engine_duration.should == 10
+    end
+  end
   
   describe "landed?" do
     it "should be false if arrival_i is negative" do
