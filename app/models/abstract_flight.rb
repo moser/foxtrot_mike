@@ -344,7 +344,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def generate_aggregation_id
-    from == to && Digest::SHA256.hexdigest(((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}" + from_id.to_s)
+    from == to && Digest::SHA256.hexdigest("#{plane_id.to_s}" + ((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}" + from_id.to_s)
   end
   def grouping_purposes
     [purpose]
