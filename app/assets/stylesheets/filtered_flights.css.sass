@@ -20,7 +20,7 @@
     display: inline
   .sum
     position: absolute
-    left: 726px
+    left: 715px
 
 .group.collapsed .items
   display: none
@@ -28,7 +28,7 @@
 .aggregated_entry
   border: 1px solid #ccc
   margin: 5px 0
-  .items 
+  .items
     .flight span
       opacity: 0.5
     .flight:first-child
@@ -39,3 +39,12 @@
     .flight:last-child
       .arrival
         opacity: 1
+
+.aggregated_entry.hide_flights
+  .items
+    .flight
+      display: none
+    .flight:first-child
+      display: block
+    .flight:last-child
+      display: block

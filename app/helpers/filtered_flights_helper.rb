@@ -19,7 +19,7 @@ module FilteredFlightsHelper
           g << flights.delete_at(0)
         end
         if g.length > 1
-          haml_tag :div, :class => "aggregated_entry" do
+          haml_tag :div, :class => "aggregated_entry hover_controls" do
             haml_tag :div, :class => "items" do
               g.each do |f|
                 block.call(f)

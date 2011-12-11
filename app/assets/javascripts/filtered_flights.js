@@ -48,11 +48,13 @@ var Aggregate = {
   aggregateEntries: function() {
   flightContainer = $(".flights");
   a = flightContainer.find(".flight").first();
+  i = 0
   while(a.length > 0) {
     e = a.nextUntil("[data-aggregation_id!=" + a.data("aggregation_id") + "]").andSelf();
     if(e.length > 1 && a.data("aggregation_id") != undefined) {
       g = $("#aggregated_entry-prototype .aggregated_entry").clone();
       a.before(g);
+      g.attr("id", "" + a.data("aggregation_id") + "_" + i);
       g.find(".items").append(e);
       g.find(".foot .count .number").text(e.length);
       sum = 0;
@@ -60,11 +62,16 @@ var Aggregate = {
         sum = sum + parseInt($(this).data("duration"));
       })
       g.find(".foot .sum .number").text(Format.duration(sum));
+      i++;
     }
     e.addClass("processed");
     a = flightContainer.find(".flight:not(.processed)").first();
   }
   $(".processed").removeClass("processed");
+  $("a.toggle_hide_flights").click(function(e) {
+    $(e.target).parents(".aggregated_entry").toggleClass("hide_flights");
+    return false;
+  });
   },
 
   unaggregateEntries: function () {

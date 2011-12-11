@@ -338,10 +338,17 @@ input[type=submit].delete:hover {
   opacity: 0.5;
 }
 
+div.hover_controls {
+  position: relative;
+}
+
 .controls {
-  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
   border: 1px solid #ccc;
-  padding: 0.2em;  
+  padding: 0.2em;
+  z-index: 999;
 }
 
 div.hover_controls .controls {
@@ -349,7 +356,7 @@ div.hover_controls .controls {
 }
 
 div.hover_controls:hover .controls {
-  display: inline;
+  display: block;
 }
 
 .alternate .alternate_color:nth-child(even) {
