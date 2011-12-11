@@ -1,5 +1,5 @@
 class Plane < ActiveRecord::Base
-  include UuidHelper  
+  include UuidHelper
   include Membership
   include Current
   include AccountingEntryInvalidation
@@ -26,38 +26,38 @@ class Plane < ActiveRecord::Base
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account
   end
-  
+
   def financial_account=(fa)
     if new_record?
       financial_account_ownerships << FinancialAccountOwnership.create(:financial_account => fa, :owner => self)
     end
   end
-  
+
   def financial_account_id
     financial_account && financial_account.id
   end
-  
+
   def financial_account_id=(fa)
     begin
       self.financial_account = FinancialAccount.find(fa)
     rescue ActiveRecord::RecordNotFound
     end
   end
-  
+
   def to_s
     registration || ""
   end
-  
+
   def self.shared_attribute_names
-    [ :id, :registration, :make, :competition_sign, :group_id, :default_launch_method, :has_engine, 
+    [ :id, :registration, :make, :competition_sign, :group_id, :default_launch_method, :has_engine, :default_engine_duration_to_duration,
       :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id, :selflaunching, :seat_count ]
 
   end
-  
+
   def shared_attributes
     self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
   end
-  
+
   def engine_duration_possible?
     has_engine && can_fly_without_engine
   end
@@ -69,7 +69,7 @@ class Plane < ActiveRecord::Base
   def info
     "#{make}, #{group.name}"
   end
-  
+
   def find_concerned_accounting_entry_owners(&blk)
     blk ||= lambda { |r| r }
     blk.call(flights)
@@ -93,5 +93,6 @@ private
     self.can_be_towed = false if can_be_towed.nil?
     self.can_be_wire_launched = false if can_be_wire_launched.nil?
     self.can_fly_without_engine = false if can_fly_without_engine.nil?
+    self.default_engine_duration_to_duration = false if default_engine_duration_to_duration.nil?
   end
 end

@@ -27,13 +27,13 @@ describe Plane do
     p.should_receive(:current_financial_account_ownership).at_least(:once).and_return(m)
     p.financial_account.should == 1
   end
-  
+
   it "should return registration when sent to_s" do
     str = "D-ZZZZ"
     p = Plane.new :registration => str
     p.to_s.should == str
   end
-  
+
   it "should have some flags" do
     p = Plane.new :has_engine => true, :can_tow => true, :can_fly_without_engine => false
     p.engine_duration_possible?.should be_false
@@ -46,11 +46,11 @@ describe Plane do
     c = Plane.new(:registration => "D-0123")
     [b, c, a].sort.should == [c, a, b]
   end
-   
+
   it "should be revisable" do
     Plane.new.should respond_to :versions
   end
-  
+
   it "should find concerned accounting entry owners" do
     m = mock("make sure the block is executed")
     m.should_receive(:lala)
@@ -61,7 +61,7 @@ describe Plane do
 
   it "should return a hash for to_j" do
     pl = Plane.spawn
-    pl.to_j.keys.map(&:to_sym).should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :selflaunching, :can_be_towed, :can_be_wire_launched, :disabled)
+    pl.to_j.keys.map(&:to_sym).sort.should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :selflaunching, :can_be_towed, :can_be_wire_launched, :disabled, :default_engine_duration_to_duration, :seat_count, :group_id, :competition_sign)
   end
 
   it "should set default values" do
