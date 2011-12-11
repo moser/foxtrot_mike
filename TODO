@@ -1,3 +1,9 @@
+Flug bearbeiten:
+  - NaN:NaN bei duration
+
+
+
+
 - locking for editing (optimistic?) (obj.versions.count?)
 - locking when stuff is booked
 
