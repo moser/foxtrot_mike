@@ -1,6 +1,8 @@
 Flug bearbeiten:
   - NaN:NaN bei duration
-
+- wkhtmltopdf
+- filtered_flights
+  - bei pdf mitschicken, welche aggregated entries collapsed sind
 
 
 
