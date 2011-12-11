@@ -5,4 +5,8 @@ class CostHint < ActiveRecord::Base
   def to_s
     name
   end
+
+  def to_j
+    { :id => id, :name => name }
+  end
 end
