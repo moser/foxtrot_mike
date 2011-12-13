@@ -10,7 +10,7 @@ class Flight < AbstractFlight
   validate do |f|
     errors.add(:base, I18n.t("activerecord.errors.not_editable")) unless f.editable?
   end
-  
+
   def create_accounting_entries
     accounting_entries_without_validity_check.delete_all
     if cost && cost_responsible
@@ -25,7 +25,7 @@ class Flight < AbstractFlight
     end
     update_attribute :accounting_entries_valid, true
   end
-  
+
   def invalidate_accounting_entries(delayed = true)
     if editable? && !id.nil?
       update_attribute :accounting_entries_valid, false
@@ -33,14 +33,14 @@ class Flight < AbstractFlight
       launch.invalidate_accounting_entries(delayed) if launch
     end
   end
-  
+
   def accounting_entries_with_validity_check
     unless accounting_entries_valid?
       create_accounting_entries
     end
     accounting_entries_without_validity_check(true) + (launch.nil? ? [] : launch.accounting_entries)
   end
-  
+
   alias_method_chain :accounting_entries, :validity_check
 
   def liabilities_with_default
@@ -55,15 +55,15 @@ class Flight < AbstractFlight
   def proportion_sum
     liabilities_with_default.map { |l| l.proportion }.sum
   end
-  
+
   def value_for(liability)
     (proportion_for(liability) * free_cost_sum.to_f).round
   end
-  
+
   def proportion_for(liability)
     liability.proportion.to_f / proportion_sum.to_f
   end
-  
+
   def liabilities_attributes=(attrs)
     unless attrs.nil?
       attrs.each do |h|
@@ -78,13 +78,13 @@ class Flight < AbstractFlight
   def liabilities_attributes
     liabilities.map { |l| l.attributes }
   end
-  
+
   def shared_attributes
     a = super
     a[:liabilities_attributes] = liabilities_attributes
     a
   end
-  
+
   def initialize(*args)
     super(*args)
     if new_record?
@@ -101,7 +101,7 @@ private
     #raise "not editable" unless editable?
     editable?
   end
-  
+
   def invalidation_necessary?
     !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure_date", "departure_i", "arrival_i", "engine_duration", "cost_hint_id"]).empty?
   end
@@ -110,14 +110,15 @@ private
     self.accounting_entries_valid = false if invalidation_necessary? && editable?
     true
   end
-  
+
   def after_update_invalidate_accounting_entries
     delay.create_accounting_entries if invalidation_necessary? && editable? && !Rails.env.test? #HACK...
     # delay = false in test env sucks here, because when this is executed immediatly we get an infinite loop here.
     # this should work in test and other envs.
   end
-  
+
   def association_changed(obj)
+    super(obj)
     delay.invalidate_accounting_entries
   end
 end

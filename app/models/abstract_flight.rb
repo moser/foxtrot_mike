@@ -16,7 +16,7 @@ class AbstractFlight < ActiveRecord::Base
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
-  
+
   class << self
     def between(from, to)
       if from && to
@@ -29,19 +29,19 @@ class AbstractFlight < ActiveRecord::Base
         self.where("1 = 1")
       end
     end
-    
+
     def after(from)
       where("departure_date >= ?", from)
     end
-    
+
     def before(to)
       where("departure_date < ?", to)
     end
   end
-  
+
   #accepts_nested_attributes_for :crew_members
   #accepts_nested_attributes_for :launch
-  
+
   has_paper_trail :meta => { :abstract_flight_id => Proc.new do |l| 
             unless l.nil? || !l.is_a?(TowFlight) || l.new_record? || l.abstract_flight.nil?
               l.abstract_flight.id  
@@ -56,29 +56,29 @@ class AbstractFlight < ActiveRecord::Base
     @problems << :launch_method_impossible if plane && ((!plane.selflaunching? && launch.nil?) ||
                                                         (!plane.can_be_towed && launch.is_a?(TowFlight)) ||
                                                         (!plane.can_be_wire_launched && launch.is_a?(WireLaunch)))
-    @problems << :seat1_no_license if plane && seat1 && seat1.person && seat1.person.relevant_licenses_for(self).empty?
+    @problems << :seat1_no_license if plane && seat1 && seat1.person && !seat1.person.has_relevant_licenses_for(self)
     @problems.empty?
   end
 
   def all_versions
     (versions + Version.where(:abstract_flight_id => id)).sort_by { |e| e.created_at }
   end
-  
+
   def all_changes
     all_versions.select { |version| version.event != "create" }
   end
-  
+
   validates_presence_of :plane
   validates_presence_of :departure
   validates_presence_of :seat1_id
   validates_presence_of :controller
   validates_presence_of :from
   validates_presence_of :to
-  
+
   accepts_string_for :plane, :parent_method => 'registration'
   accepts_string_for :from, :parent_method => ['registration', 'name']
   accepts_string_for :to, :parent_method => ['registration', 'name']
-  
+
   def initialize(*args)
     super
     if new_record?
@@ -116,11 +116,11 @@ class AbstractFlight < ActiveRecord::Base
   def free_cost_sum
     [ (cost || Cost.new(nil)), (launch_cost || Cost.new(nil)) ].map { |c| c.free_sum }.sum
   end
-  
+
   def cost_responsible
     seat1.nil? ? nil : seat1.person
   end
-  
+
   def engine_duration
     unless plane.nil?
       if !plane.has_engine
@@ -132,23 +132,23 @@ class AbstractFlight < ActiveRecord::Base
       end
     end
   end
-  
+
   def departure_date=(d)
     unless d.nil?
       write_attribute(:departure_date, d.to_date)
     end
   end
-  
+
   # Departure as DateTime
   def departure
     (departure_date + [0, departure_i].max.minutes).to_datetime
   end
-  
+
   def departure=(time)
     self.departure_date = time.to_date if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
     self.departure_time = time
   end
-  
+
   # Arrival as DateTime
   def arrival
     if arrival_i >= 0 && departure_i >= 0
@@ -159,28 +159,28 @@ class AbstractFlight < ActiveRecord::Base
       end
     end
   end
-  
+
   def departure_time
     @departure_day_time ||= DayTime.new(departure_i)
     @departure_day_time.minutes = departure_i
     @departure_day_time
   end
-  
+
   def departure_time=(time)
     set_time(:departure_i, time)
   end
-  
+
   def arrival_time
     @arrival_day_time ||= DayTime.new(arrival_i)
     @arrival_day_time.minutes = arrival_i
     @arrival_day_time
   end
-  
+
   def arrival_time=(time)
     set_time(:arrival_i, time)
   end
   alias_method "arrival=", "arrival_time="
-  
+
   def duration
     if departure_i < 0 || arrival_i < 0 
       -1
@@ -188,19 +188,19 @@ class AbstractFlight < ActiveRecord::Base
       (arrival_i - departure_i) % 1440
     end
   end
-  
+
   def duration=(i)
     unless departure_i < 0
       self.arrival_i = (departure_i + i) % 1440
     end
   end
-  
+
   def duration_time_span
     @duration_time_span ||= TimeSpan.new(duration)
     @duration_time_span.minutes = duration
     @duration_time_span
   end
-  
+
   def landed?
     arrival_i > 0
   end
@@ -208,27 +208,27 @@ class AbstractFlight < ActiveRecord::Base
   def seat1
     crew_members.find_all { |m| [ UnknownCrewMember, PilotInCommand, Trainee ].include?(m.class) }.first
   end
-  
+
   def seat2
     crew_members.find_all { |m| [ Instructor, PersonCrewMember, NCrewMember ].include?(m.class) }.first
   end
-  
+
   def seat1_id
     seat1 && seat1.person? && seat1.person.id
   end
-  
+
   def seat2_id
     seat2 && ((seat2.person? && seat2.person.id) || (seat2.n? && "+#{seat2.n}"))
   end
-  
+
   def seat1_id=(id)
     self.seat1 = (id != '' ? id : nil)
   end
-  
+
   def seat2_id=(id)
     self.seat2 = (id != '' ? id : nil)
   end
-  
+
   def seat1=(obj)
     unless obj.nil?
       old = seat1
@@ -257,7 +257,7 @@ class AbstractFlight < ActiveRecord::Base
       end
     end
   end
-  
+
   def seat2=(obj)
     unless obj.nil?
       obj = $1.to_i if obj =~ /^\+([0-9]+)$/
@@ -282,7 +282,7 @@ class AbstractFlight < ActiveRecord::Base
       crew_members.delete old unless old.nil?
     end
   end
-  
+
   def pic
     if seat1.is_a?(PilotInCommand) || (seat1.is_a?(Trainee) && seat2.nil?)
       seat1
@@ -290,7 +290,7 @@ class AbstractFlight < ActiveRecord::Base
       seat2
     end
   end
-  
+
   def crew_members_attributes=(attrs)
     unless attrs.nil?
       attrs.each do |h|
@@ -301,7 +301,7 @@ class AbstractFlight < ActiveRecord::Base
       end
     end
   end
- 
+
   def launch_attributes=(attrs)
     unless attrs.nil?
       obj = attrs.delete(:type).constantize.new(attrs)
@@ -315,7 +315,7 @@ class AbstractFlight < ActiveRecord::Base
     [ :plane_id, :from_id, :to_id, :departure, :duration, :engine_duration,
       :purpose, :comment, :id, :type ]
   end
-  
+
   def shared_attributes
     a = self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
     a[:crew_members_attributes] = crew_members.map { |m| m.attributes }
@@ -331,7 +331,7 @@ class AbstractFlight < ActiveRecord::Base
       Purpose.get('exercise')
     end 
   end
-  
+
   def history
     #TODO add manual cost?
     #[revisions, [PilotInCommandRevision, TraineeRevision, PersonCrewMemberRevision,
@@ -349,7 +349,7 @@ class AbstractFlight < ActiveRecord::Base
   def grouping_purposes
     [purpose]
   end
-  
+
   def grouping_planes
     [plane]
   end
@@ -385,7 +385,7 @@ class AbstractFlight < ActiveRecord::Base
   def self.latest_departure(rel = AbstractFlight)
     rel.order('departure_date DESC, departure_i DESC').limit(1).first.departure rescue DateTime.now
   end
-  
+
   def self.oldest_departure(rel = AbstractFlight)
     rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue 2.years.ago
   end
@@ -420,11 +420,11 @@ protected
   def rational_day_to_minutes(r)
     (r * 1440).to_i
   end
-  
+
   def time_to_minutes(t)
     t.hour * 60 + t.min
   end
-  
+
   def set_time(method, time)
     if [Date, DateTime, Time, ActiveSupport::TimeWithZone].include? time.class
       time = time.to_datetime.utc
@@ -448,13 +448,14 @@ private
       end
     end
   end
-  
+
   def execute_soft_validation
     self.problems_exist = !soft_validate
     true
   end
 
   def association_changed(obj)
-    #nothing here, used and defined in Flight
+    b = !soft_validate
+    update_attribute :problems_exist, b if problems_exist != b
   end
 end

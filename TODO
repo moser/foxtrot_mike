@@ -4,6 +4,9 @@ Flug bearbeiten:
 - filtered_flights
   - bei pdf mitschicken, welche aggregated entries collapsed sind
 
+- Flight:
+  - CostResponsible (unknow pilot)
+
 
 
 - locking for editing (optimistic?) (obj.versions.count?)

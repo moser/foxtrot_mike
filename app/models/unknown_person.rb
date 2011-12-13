@@ -23,6 +23,10 @@ class UnknownPerson
     []
   end
 
+  def has_relevant_licenses_for(f)
+    true
+  end
+
   def relevant_licenses_for(f)
     []
   end
