@@ -6,6 +6,8 @@ Flug bearbeiten:
 
 - Flight:
   - CostResponsible (unknow pilot)
+    - Field on plane: warn about missing cost responsible
+    - if set, warn if such a plane is flown by a UnknownPerson
 
 
 
