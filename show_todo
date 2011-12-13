@@ -1,0 +1,3 @@
+#!/bin/bash
+markdown TODO.md > TODO.html
+chromium TODO.html
