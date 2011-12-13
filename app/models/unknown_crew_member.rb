@@ -6,4 +6,8 @@ class UnknownCrewMember < PilotInCommand
   def unknown?
     true
   end
+
+  def person_id
+    "unknown"
+  end
 end

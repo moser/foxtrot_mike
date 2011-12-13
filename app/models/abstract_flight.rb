@@ -329,7 +329,7 @@ class AbstractFlight < ActiveRecord::Base
       Purpose.get('training')
     else
       Purpose.get('exercise')
-    end 
+    end
   end
 
   def history
