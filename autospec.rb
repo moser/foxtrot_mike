@@ -97,7 +97,7 @@ loop do
       notified = false 
       err = ""
       if @run_all && changed_files.empty? #do not run all, if there are changed files
-        c = "rake spec"
+        c = "bundle exec rake spec"
         @run_all = false
         @last_time_all = DateTime.now
       else
