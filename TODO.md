@@ -1,5 +1,4 @@
 # Before release
-
   - Flug bearbeiten:
     - NaN:NaN bei duration
   - wkhtmltopdf
@@ -12,6 +11,29 @@
   - accounting session
     - add manual accounting_entries
     - export them as DATEV,...
+  - Create (plane|person|wire_launcher)
+    - add financial_account on the fly
+  - Create License
+    - legalplaneclass checkboxes (CSS?)
+  - planecostcategory
+    - create: rm tow cost rule thing
+    - show: add heading
+  - flightcostrule create
+    - WTF why create 2 objects?????
+    - position create
+      - localize duration/engine_duration
+    - show localize tow_flight
+  - flightcostrule edit
+    - when posted, second delete link appears
+  - cost rules
+    - hide/collapse old rules
+  - flight change date
+    - check if date of towlaunch is changed too
+  - hash displayed to often (flight was updated...)
+  - person#show
+    - add finacc, cancel misses
+  - tow_flight#edit
+    - js helpers
 
 
 # medium run
