@@ -10,7 +10,7 @@ Flug bearbeiten:
     - if set, warn if such a plane is flown by a UnknownPerson
 
 
-
+OLD:
 - locking for editing (optimistic?) (obj.versions.count?)
 - locking when stuff is booked
 
@@ -26,17 +26,11 @@ Flug bearbeiten:
   - add manual accounting_entries
   + aggregate all accounting_entries
   - export them as DATEV,...
-  
+
 - check seeds file
   - better random seeds
-  
-RUBY 1.9:
- - NotImplementedError in Filtered flightsController#index
-   Please switch to Ruby 1.9's standard CSV library.  It's FasterCSV plus support for Ruby 1.9's m17n encoding engine.
 
 PAPER_TRAIL:
   - item_type should be the real class, not the superclass (STI)
     - add column real_type and keep track of the real class there
   - show diffs or something in views
-  
-
