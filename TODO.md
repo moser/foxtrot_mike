@@ -25,6 +25,8 @@
     - add finacc, cancel misses
   - towflight#edit
     - js helpers
+  - js helpers
+    - leave seat1 empty on new flight
   - pdf
     - layout??
 

@@ -101,7 +101,7 @@ class PeopleList
     @list.get(id)
   find: (str, flight) ->
     self = this
-    if @legal_plane_class_id != planesList.get(flight.data("plane_id")).legal_plane_class_id || !@departure_date? || @departure_date != Parse.date(flight.find("#flight_departure_date").val())
+    if flight.data("plane_id") != "" && (@legal_plane_class_id != planesList.get(flight.data("plane_id")).legal_plane_class_id || !@departure_date? || @departure_date != Parse.date(flight.find("#flight_departure_date").val()))
       @legal_plane_class_id = planesList.get(flight.data("plane_id")).legal_plane_class_id
       @departure_date = Parse.date(flight.find("#flight_departure_date").val())
       #TODO sort and set level
