@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111023210248) do
+ActiveRecord::Schema.define(:version => 20111214151943) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(:version => 20111023210248) do
     t.boolean  "selflaunching"
     t.integer  "seat_count"
     t.boolean  "default_engine_duration_to_duration"
+    t.boolean  "warn_when_no_cost_rules",                           :default => false
   end
 
   add_index "planes", ["id"], :name => "index_planes_on_id", :unique => true

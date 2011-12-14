@@ -12,7 +12,7 @@ class WireLaunch < ActiveRecord::Base
   has_one :abstract_flight, :as => :launch
   has_one :manual_cost, :as => :item
 
-  validates_presence_of :wire_launcher, :operator
+  validates_presence_of :wire_launcher
 
   include LaunchAccountingEntries
 

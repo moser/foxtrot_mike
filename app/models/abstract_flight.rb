@@ -57,6 +57,7 @@ class AbstractFlight < ActiveRecord::Base
                                                         (!plane.can_be_towed && launch.is_a?(TowFlight)) ||
                                                         (!plane.can_be_wire_launched && launch.is_a?(WireLaunch)))
     @problems << :seat1_no_license if plane && seat1 && seat1.person && !seat1.person.has_relevant_licenses_for(self)
+    @problems << :no_cost_calculation_possible if plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
     @problems.empty?
   end
 

@@ -5,6 +5,7 @@ de:
       seat1_no_license: "Der Pilot auf dem vorderen Sitz besitz keinerlei Lizenz. Bitte tragen Sie eine Schülerlizenz ein."
       too_many_people: "Für die angegebene Besatzung ist im Flugzeug kein Platz."
       launch_method_impossible: "Flugzeug und Startart passen nicht zusammen."
+      no_cost_calculation_possible: "Kosten konnten nicht berechnet werden. (Diese Warnung kann in den Eigenschaften des Flugzeugs deaktiviert werden.)"
   flight:
     purposes:
       training:

@@ -13,5 +13,6 @@
     = f.input :selflaunching, :wrapper_html => { :class => "alternate_color" }
     = f.input :can_be_towed, :wrapper_html => { :class => "alternate_color" }
     = f.input :can_be_wire_launched, :wrapper_html => { :class => "alternate_color" }
+    = f.input :warn_when_no_cost_rules, :wrapper_html => { :class => "alternate_color" }
   = f.input :disabled unless plane.new_record?
   = f.button :submit

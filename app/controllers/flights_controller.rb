@@ -8,7 +8,7 @@ class FlightsController < ApplicationController
   def dates
     @dates ||= AbstractFlight.group("departure_date").order("departure_date DESC").count unless request.xhr?
   end
-  
+
   # GET /flights
   # GET /flights.xml
   def index
@@ -39,8 +39,7 @@ class FlightsController < ApplicationController
         @days[d] ||= []
       end
     end
-    
-    
+
     respond_to do |format|
       format.html do 
         if request.xhr?
@@ -50,7 +49,7 @@ class FlightsController < ApplicationController
       end
       format.json { render :json => @flights }
     end
-  end  
+  end
 
   # GET /flights/1
   # GET /flights/1.xml
@@ -141,6 +140,7 @@ class FlightsController < ApplicationController
         end
         format.json  { head :ok }
       else
+        p @flight.errors
         format.html { render :action => "edit", :layout => !request.xhr?, :status => :unprocessable_entity }
         format.json  { render :json => @flight.errors, :status => :unprocessable_entity }
       end
@@ -153,7 +153,7 @@ class FlightsController < ApplicationController
     @flight = AbstractFlight.find(params[:id])
     authorize! :destroy, @flight
     @flight.destroy
-    
+
     respond_to do |format|
       format.html { redirect_to(flights_url) }
       format.json  { head :ok }

@@ -1,11 +1,4 @@
 # Before release
-  - wkhtmltopdf
-  - filteredflights
-    - bei pdf mitschicken, welche aggregated entries collapsed sind
-  - Flight:
-    - CostResponsible (unknow pilot)
-      - Field on plane: warn about missing cost responsible
-      - if set, warn if such a plane is flown by a UnknownPerson
   - accounting session
     - add manual accountingentries
     - export them as DATEV,...
@@ -41,6 +34,8 @@
     - item_type should be the real class, not the superclass (STI)
       - add column real_type and keep track of the real class there
     - show diffs or something in views
+  - filteredflights
+    - bei pdf mitschicken, welche aggregated entries collapsed sind
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
