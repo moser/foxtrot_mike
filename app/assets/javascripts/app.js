@@ -88,12 +88,14 @@ var Format = {
     return h + ":" + (m < 10 ? "0": "") + m;
   },
   time: function(obj) {
-    return obj.h + ":" + (obj.m < 10 ? "0": "") + obj.m;
+    if(obj.h == undefined || obj.m == undefined) {
+      return "--:--"
+    }
+    return (obj.h < 10 ? "0" : "") + obj.h + ":" + (obj.m < 10 ? "0": "") + obj.m;
   },
   time_of_date: function(date) {
-    var h = date.getHours();
-    var m = date.getMinutes();
-    return ((h < 10 ? '0': '') + h) + ":" + (m < 10 ? "0": "") + m;
+    var obj = {h: date.getHours(), m: date.getMinutes()};
+    return Format.time(obj);
   }
 };
 

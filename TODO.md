@@ -1,18 +1,18 @@
 # Before release
-  - Flug bearbeiten:
-    - NaN:NaN bei duration
+  - Flights#show/edit/create
+    - catch click on menu link "Flights" and handle by js
   - wkhtmltopdf
-  - filtered_flights
+  - filteredflights
     - bei pdf mitschicken, welche aggregated entries collapsed sind
   - Flight:
     - CostResponsible (unknow pilot)
       - Field on plane: warn about missing cost responsible
       - if set, warn if such a plane is flown by a UnknownPerson
   - accounting session
-    - add manual accounting_entries
+    - add manual accountingentries
     - export them as DATEV,...
-  - Create (plane|person|wire_launcher)
-    - add financial_account on the fly
+  - Create (plane|person|wirelauncher)
+    - add financialaccount on the fly
   - Create License
     - legalplaneclass checkboxes (CSS?)
   - planecostcategory
@@ -22,7 +22,7 @@
     - WTF why create 2 objects?????
     - position create
       - localize duration/engine_duration
-    - show localize tow_flight
+    - show localize towflight
   - flightcostrule edit
     - when posted, second delete link appears
   - cost rules
@@ -32,8 +32,10 @@
   - hash displayed to often (flight was updated...)
   - person#show
     - add finacc, cancel misses
-  - tow_flight#edit
+  - towflight#edit
     - js helpers
+  - pdf
+    - layout??
 
 
 # medium run
