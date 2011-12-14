@@ -1,6 +1,4 @@
 # Before release
-  - Flights#show/edit/create
-    - catch click on menu link "Flights" and handle by js
   - wkhtmltopdf
   - filteredflights
     - bei pdf mitschicken, welche aggregated entries collapsed sind

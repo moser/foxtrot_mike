@@ -5,7 +5,7 @@ module ApplicationHelper
   def navigation_items
     Tree.new do |t|
       t.children << Leaf.new({:name => "dashboard", :path => dashboard_path}) if can?(:read, :dashboards)
-      t.children << Leaf.new({:name => "flights", :path => flights_path})  if can?(:read, Flight)
+      t.children << Leaf.new({:name => "flights", :path => flights_path, :class => "flights_menu_link"})  if can?(:read, Flight)
       if can?(:read, Plane) || can?(:read, WireLauncher) || can?(:read, Airfield) || can?(:read, Person)
         t.children << Tree.new({ :name => "master_data" }) do |m|
           m.children << Leaf.new({:name => "planes", :path => planes_path})  if can?(:read, Plane)

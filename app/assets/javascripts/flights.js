@@ -274,6 +274,12 @@ var Flights = {
       Flights.days.reload($(".flights").attr("data-current_day"), function(d) { Flights.current_day = d; });
     }
   },
+  menu_link_clicked: function() {
+    if(Flights.current_view != "list") {
+      Flights.goto_day(Flights.current_day.key, true);
+      return false;
+    }
+  },
   goto_day: function(key, doState, first) {
     //console.log(key + " " + Flights.current_day.key);
     if(key == Flights.current_day.key && !first && Flights.current_view == "list") {
@@ -390,6 +396,9 @@ $(function() {
         Flights.goto_day($(".item_container .item").data("departure_date"), true);
         return false; 
       }
+    });
+    $('li.flights_menu_link').children('a').click(function(e) {
+      return Flights.menu_link_clicked();
     });
     
     $('a.inline_form_show').live('click', function(e) {
