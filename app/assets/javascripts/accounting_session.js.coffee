@@ -3,19 +3,19 @@ $ ->
     $("a.toggle_accounting_entries").click ->
       $(this).siblings(".accounting_entries").toggle()
       false
-
-    filter = []
     $("a.toggle_filter").click ->
-      v = $(this).data('filter')
       $(this).parent().toggleClass("filtering")
-      if $.inArray(v, filter) >= 0
-        filter = filter.remove(v)
-      else
-        filter.push v
-      if filter.length > 0
-        $(".flight").addClass "hidden"
-        $.each filter, (i, e) ->
-          $(".flight.filter-" + e).removeClass "hidden"
-      else
-        $(".flight").removeClass "hidden"
+      $(".flight").removeClass "filtering"
+      if $(this).parent().hasClass("filtering")
+        $(".flight.filter-" + $(this).data("filter")).addClass "filtering"
+      $(".aggregated_entry:not(##{$(this).parent().attr("id")})").removeClass "filtering"
+      $(".entry").removeClass "filtering"
+      false
+    $("a.toggle_filter_id").click ->
+      $(this).parent().toggleClass("filtering")
+      $(".flight").removeClass "filtering"
+      if $(this).parent().hasClass("filtering")
+        $(".flight.e-" + $(this).parent().attr("id")).addClass "filtering"
+      $(".aggregated_entry").removeClass "filtering"
+      $(".entry:not(##{$(this).parent().attr("id")})").removeClass "filtering"
       false

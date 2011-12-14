@@ -17,20 +17,24 @@
     - grouped0 = entries.group_by { |e| e.from }
     - grouped1 = {}
     - grouped0.each { |k, v| grouped1[k] = v.group_by { |e| e.to } }
+    - i = 0
     - grouped1.each do |from, hs|
       - hs.each do |to, es|
-        .aggregated_entry
-          = format_accounting_entry(from, to, es.map { |e| e.value }.sum)
-          %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{from.id}-#{to.id}" }= "dfssa"
+        .aggregated_entry{ :id => "ae-#{i}" }
+          - i += 1
+          %h3= format_accounting_entry(from, to, es.map { |e| e.value }.sum)
+          %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{from.id}-#{to.id}" }= "Quelle(n) markieren"
           %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
           .accounting_entries.hide_on_startup
             - es.each do |e|
-              = format_accounting_entry(e.from, e.to, e.value)
+              .entry{ :id => e.id }
+                = format_accounting_entry(e.from, e.to, e.value)
+                %a.toggle_filter_id.show_on_startup{ :href => "#" }= "Quelle markieren"
   .flights
     %h2= t("flights.index.title")
     = render :partial => "flights/title_spans"
     - @accounting_session.flights.each do |f|
-      .flight.flight_format{ :class => f.accounting_entries.map { |e| "filter-#{e.from.id}-#{e.to.id}" }.join(" ") }
+      .flight.flight_format{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
         = render :partial => "flights/flight_spans", :locals => { :flight => f }
         = show_link(f)
         %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
