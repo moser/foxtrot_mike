@@ -4,8 +4,6 @@
     - export them as DATEV,...
   - Create (plane|person|wirelauncher)
     - add financialaccount on the fly
-  - Create License
-    - legalplaneclass checkboxes (CSS?)
   - planecostcategory
     - create: rm tow cost rule thing
     - show: add heading

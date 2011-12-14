@@ -219,6 +219,10 @@ ul.scroll {
   width: 14em;
 }
 
+.input.check_boxes span {
+  display: block;
+}
+
 .input input[type=checkbox] {
   width: auto;
   margin-left: 170px;
