@@ -14,8 +14,6 @@
     - show localize towflight
   - flightcostrule edit
     - when posted, second delete link appears
-  - cost rules
-    - hide/collapse old rules
   - flight change date
     - check if date of towlaunch is changed too
   - hash displayed to often (flight was updated...)
@@ -36,6 +34,8 @@
     - show diffs or something in views
   - filteredflights
     - bei pdf mitschicken, welche aggregated entries collapsed sind
+  - cost rules
+    - hide/collapse old rules
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
