@@ -14,7 +14,6 @@
     - show localize towflight
   - flightcostrule edit
     - when posted, second delete link appears
-  - flash displayed to often (flight was updated...)
   - person#show
     - add finacc, cancel misses
   - towflight#edit

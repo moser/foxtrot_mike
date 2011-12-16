@@ -105,9 +105,9 @@ class FlightsController < ApplicationController
     @flight.id = attrs[:id] unless attrs[:id].nil?
     respond_to do |format|
       if @flight.save
-        flash[:notice] = 'Flight was successfully created.'
         format.html do
           unless request.xhr?
+            flash[:notice] = 'Flight was successfully created.'
             redirect_to(flight_path(@flight))
           else
             render :text => flight_path(@flight)
@@ -130,9 +130,9 @@ class FlightsController < ApplicationController
     authorize! :update, @flight
     respond_to do |format|
       if @flight.update_attributes(attrs)
-        flash[:notice] = 'Flight was successfully updated.'
         format.html do
           unless request.xhr?
+            flash[:notice] = 'Flight was successfully updated.'
             redirect_to(flight_path(@flight))
           else
             render :action => :show, :layout => false
