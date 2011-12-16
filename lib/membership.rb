@@ -8,16 +8,16 @@ module Membership
                       reflect_on_all_associations.
                       select { |a| a.macro == :belongs_to }.
                       reject { |a| a.name == own_name.to_sym }.first.name.to_s
-              
+
       class_eval <<-END
         def #{other_name.pluralize}
           #{association}.map { |e| e.#{other_name} }
         end
-        
+
         def current_#{other_name.pluralize}
           current_#{association}.map { |e| e.#{other_name} }
         end
-        
+
         def #{other_name.pluralize}_at(time)
           #{association}_at(time).map { |e| e.#{other_name} }
         end

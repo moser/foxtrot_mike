@@ -4,9 +4,6 @@
     - export them as DATEV,...
   - Create (plane|person|wirelauncher)
     - add financialaccount on the fly
-  - planecostcategory
-    - create: rm tow cost rule thing
-    - show: add heading
   - flightcostrule create
     - WTF why create 2 objects?????
     - position create
@@ -22,6 +19,8 @@
     - leave seat1 empty on new flight
   - pdf
     - layout??
+  - facebox
+    - default width?
 
 
 # medium run

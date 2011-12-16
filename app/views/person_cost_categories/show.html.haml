@@ -1,6 +1,12 @@
-%table.data
-  %tr
-    %th= PersonCostCategory.l(:name)
-    %td=h @person_cost_category.name 
+%h1= "#{PersonCostCategory.l} #{@person_cost_category.name}"
+
 = edit_link(@person_cost_category)
 = back_link(PersonCostCategory)
+
+%table.data
+  %tr
+    %th= PlaneCostCategory.l(:people_now)
+    %td
+      %ul.no_bullet
+        - @person_cost_category.current_people.each do |p|
+          %li= show_link(p, p.name, { :class => "facebox" })

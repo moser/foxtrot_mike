@@ -66,11 +66,11 @@ module ApplicationHelper
       end
     end
   end
-  
+
   def labeled_text_field(form, method, options = {})
     form.label(method) + "\n" + form.text_field(method, options) 
   end
-  
+
   def format_minutes(i)
     unless i.nil? || i < 0
       "#{i/60}:#{i%60 < 10 ? "0" : ""}#{i%60}"
@@ -78,7 +78,7 @@ module ApplicationHelper
       "-"
     end
   end
-  
+
   def format_currency(i)
     "€ #{i/100},#{i%100 < 10 ? "0" : ""}#{i%100}" unless i.nil? #TODO i18n/configurable
   end
