@@ -18,9 +18,23 @@
   - js helpers
     - leave seat1 empty on new flight
   - pdf
-    - layout??
+    - layout?? only on the deployed version
   - facebox
     - default width?
+  - flight change date
+    - flight#index shows wrong number on day sidebar (may even show empty day)
+  - flights#index
+    - big up/down button should not jump to empty day?
+  - person/plane#show
+    - fin\_acc add does not work properly (when existing membership is valid nil to nil??)
+  - plane/person/wire\_launcher#index
+    - show more info (finacc, costcategories,...)
+  - main log book
+    - timepicker does not work - remove??
+    - main log book: try to parse times, mark field if invalid..
+    - times are not sent back for pdf creation
+  - cost\_rules#index
+    - rm absolute positioning, float?
 
 
 # medium run
