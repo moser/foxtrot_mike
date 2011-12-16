@@ -1,17 +1,18 @@
 class TowFlight < AbstractFlight
-  before_validation :set_departure
+  before_validation :copy_from_abstract_flight
   before_update :before_update_invalidate_accounting_entries
   after_update :after_update_invalidate_accounting_entries
   has_one :abstract_flight, :as => :launch, :readonly => false #the towed flight
 
   include LaunchAccountingEntries
 
+
   def cost_hint
-    abstract_flight.cost_hint
+    abstract_flight.cost_hint rescue nil
   end
 
   def cost_responsible
-    abstract_flight.cost_responsible #rescue nil
+    abstract_flight.cost_responsible rescue nil
   end
 
   def financial_account
@@ -29,9 +30,14 @@ class TowFlight < AbstractFlight
     end
   end
 
+  def abstract_flight_changed
+    copy_from_abstract_flight
+    save if changed?
+  end
+
 private
-  def set_departure
-    unless abstract_flight.nil?
+  def copy_from_abstract_flight
+    if abstract_flight
       self.departure_date = abstract_flight.departure_date
       self.departure_i = abstract_flight.departure_i
       self.from = abstract_flight.from

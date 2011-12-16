@@ -1,5 +1,10 @@
 = simple_form_for(@flight, :html => { :class => "sop #{@flight.new_record? ? "new" : "edit"}" }) do |f|
-  = f.input :departure_date
+  - unless TowFlight === @flight
+    = f.input :departure_date
+  - else
+    .input.date.optional.replaced
+      %label.date.optional>= Flight.l(:departure_date)
+      =l @flight.departure_date
   = f.association :plane
   = f.input :seat1_id, :collection => Person.all.collect { |c| [ c.name, c.id ] } + [[ UnknownPerson.new.name, UnknownPerson.new.id ]], :include_blank => false
   = f.input :seat2_id, :collection => Person.all.collect { |c| [ c.name, c.id ] } + (1..3).to_a.map { |i| "+#{i}" }.map { |s| [s,s] }

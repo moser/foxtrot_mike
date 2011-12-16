@@ -1,4 +1,3 @@
-#TODO create AbstractFlight, let Flight and TowFlight inherit
 require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
@@ -6,6 +5,7 @@ class AbstractFlight < ActiveRecord::Base
   include UuidHelper
   before_save :destroy_launch
   before_save :execute_soft_validation
+  after_save :notify_launch
 
   belongs_to :plane
   #launch == nil <=> selflaunched
@@ -347,6 +347,7 @@ class AbstractFlight < ActiveRecord::Base
   def generate_aggregation_id
     from == to && Digest::SHA256.hexdigest("#{plane_id.to_s}" + ((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id + m.class.name}).join + "#{departure_date}" + from_id.to_s)
   end
+
   def grouping_purposes
     [purpose]
   end
@@ -458,5 +459,9 @@ private
   def association_changed(obj)
     b = !soft_validate
     update_attribute :problems_exist, b if problems_exist != b
+  end
+
+  def notify_launch
+    launch.abstract_flight_changed if launch
   end
 end

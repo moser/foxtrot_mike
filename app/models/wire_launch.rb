@@ -28,11 +28,11 @@ class WireLaunch < ActiveRecord::Base
         self.where("1 = 1")
       end
     end
-    
+
     def after(from)
       joins(:abstract_flight).where("abstract_flights.departure_date >= ?", from).select("wire_launches.*")
     end
-    
+
     def before(to)
       joins(:abstract_flight).where("abstract_flights.departure_date <= ?", to).select("wire_launches.*")
     end
@@ -50,11 +50,11 @@ class WireLaunch < ActiveRecord::Base
   def free_cost_sum
     cost.free_sum
   end
-  
+
   def shared_attributes
     attributes
   end
-  
+
   def self.short
     "W"
   end
@@ -62,15 +62,9 @@ class WireLaunch < ActiveRecord::Base
   def financial_account
     wire_launcher.financial_account
   end
-  
-#  def set_type
-#    p self
-#    self.revisable_type = self.type
-#    self.type = "#{self.type}Revision"
-#    self.revisable_original_id = self.id
-#    
-#    self.save
-#  end
+
+  def abstract_flight_changed
+  end
 
 private
   def invalidation_necessary?
@@ -81,7 +75,7 @@ private
     self.accounting_entries_valid = false if invalidation_necessary? && abstract_flight.editable?
     true
   end
-  
+
   def after_update_invalidate_accounting_entries
     delay.create_accounting_entries if invalidation_necessary? && abstract_flight.editable? && !Rails.env.test? #HACK...
     # delay = false in test env sucks here, because when this is executed immediatly we get an infinite loop here.

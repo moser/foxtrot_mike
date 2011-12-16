@@ -14,9 +14,7 @@
     - show localize towflight
   - flightcostrule edit
     - when posted, second delete link appears
-  - flight change date
-    - check if date of towlaunch is changed too
-  - hash displayed to often (flight was updated...)
+  - flash displayed to often (flight was updated...)
   - person#show
     - add finacc, cancel misses
   - towflight#edit
@@ -28,6 +26,7 @@
 
 
 # medium run
+  - security: attr\_accessible
   - PAPER_TRAIL:
     - item_type should be the real class, not the superclass (STI)
       - add column real_type and keep track of the real class there
@@ -36,6 +35,8 @@
     - bei pdf mitschicken, welche aggregated entries collapsed sind
   - cost rules
     - hide/collapse old rules
+  - ajax/stay on page for people, planes,...
+  - member management
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
