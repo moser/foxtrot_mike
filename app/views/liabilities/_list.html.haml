@@ -6,7 +6,8 @@
         %span.time= l.proportion
         %span.time= "#{(flight.proportion_for(l) * 100.0).to_i}%"
         %span= format_currency(l.value)
-        %span= t(".default") if l.default?
-        %span= edit_link l, nil, { :class => "inline_form_show", :"data-replace" => flight_liabilities_path(flight) } unless l.default?
-        %span= button_to t('views.destroy'), polymorphic_path([flight, l]), :method => :delete, :class => "delete", :"data-replace" => flight_liabilities_path(flight) unless l.default?
-  = add_link([flight, Liability], { :class => "inline_form_show", :"data-replace" => flight_liabilities_path(flight) })
+        - if flight.editable?
+          %span= t(".default") if l.default?
+          %span= edit_link l, nil, { :class => "inline_form_show", :"data-replace" => flight_liabilities_path(flight) } unless l.default?
+          %span= button_to t('views.destroy'), polymorphic_path([flight, l]), :method => :delete, :class => "delete", :"data-replace" => flight_liabilities_path(flight) unless l.default?
+  = add_link([flight, Liability], { :class => "inline_form_show", :"data-replace" => flight_liabilities_path(flight) }) if flight.editable?

@@ -6,6 +6,10 @@ class TowFlight < AbstractFlight
 
   include LaunchAccountingEntries
 
+  def editable?
+    !!abstract_flight.try(:editable?)
+  end
+
 
   def cost_hint
     abstract_flight.cost_hint rescue nil

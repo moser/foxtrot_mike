@@ -8,7 +8,7 @@ class Flight < AbstractFlight
   after_update :after_update_invalidate_accounting_entries
 
   validate do |f|
-    errors.add(:base, I18n.t("activerecord.errors.not_editable")) unless f.editable?
+    errors.add(:base, I18n.t("activerecord.errors.messages.not_editable")) unless f.editable?
   end
 
   def create_accounting_entries

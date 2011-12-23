@@ -56,20 +56,21 @@
             %tr
               %th= Flight.l(:comment)
               %td= @flight.comment
-            %tr
-              %td= edit_link(@flight, nil, {:class => "inline_form_show" })
+            - if @flight.editable?
+              %tr
+                %td= edit_link(@flight, nil, {:class => "inline_form_show" })
       - if TowFlight ===  @flight
         %tr
           %th= TowFlight.l(:towed_flight)
           %td
-            .flight_format= render(:partial => "flights/title_spans")  
+            .flight_format= render(:partial => "flights/title_spans")
             .flight_format
               = render(:partial => "flights/flight_spans", :locals => { :flight => @flight.abstract_flight })
               = show_link(@flight.abstract_flight, nil, {:class => "sop show"})
       -  unless TowFlight ===  @flight
         %tr
           %th= Flight.l(:launch)
-          %td= render(:partial => "launches/show", :locals => { :flight => @flight })  
+          %td= render(:partial => "launches/show", :locals => { :flight => @flight })
       - if @flight.problems_exist?
         - @flight.soft_validate #hack...
         %tr
@@ -83,7 +84,7 @@
             = Flight.l(:cost)
           %td
             %table.data
-              - if @flight.cost 
+              - if @flight.cost
                 %tr
                   %th= FlightCostRule.l
                   %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })

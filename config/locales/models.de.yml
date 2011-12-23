@@ -113,6 +113,7 @@ de:
         lat: geog. Breite (+ = Nord)
         long: geog. Länge (+ = Ost)
       abstract_flight:
+        base: "Dieser Flug"
         plane: Flugzeug
         date: Datum
         seat1: Sitz 1

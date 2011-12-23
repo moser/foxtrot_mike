@@ -12,14 +12,14 @@ de:
       week: "Woche %W (bis %d.%m.%Y)"
       month: "%B %Y"
       year: "%Y"
-      
+
 
     day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
     abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
     month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
     abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]
     order: [ :day, :month, :year ]
-  
+
   time:
     formats:
       default: "%A, %d. %B %Y, %H:%M Uhr"
@@ -29,7 +29,7 @@ de:
 
     am: "vormittags"
     pm: "nachmittags"
-      
+
   datetime:
     distance_in_words:
       half_a_minute: 'eine halbe Minute'
@@ -134,7 +134,7 @@ de:
         body: "Bitte überprüfen Sie die folgenden Felder:"
 
       messages:
-        not_editable: "kann nicht geändert werden"
+        not_editable: "kann nicht mehr geändert werden (Buchungen wurden bereits erstellt)"
         inclusion: "ist kein gültiger Wert"
         exclusion: "ist nicht verfügbar"
         invalid: "ist nicht gültig"

@@ -1,4 +1,6 @@
 = simple_form_for(@flight, :html => { :class => "sop #{@flight.new_record? ? "new" : "edit"}" }) do |f|
+  - @flight.errors[:base].each do |e|
+    = "#{Flight.l(:base)} #{e}."
   - unless TowFlight === @flight
     = f.input :departure_date
   - else
