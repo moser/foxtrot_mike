@@ -3,9 +3,7 @@ class MainLogBooksController < ApplicationController
   def show
     @airfield = Airfield.find(params[:airfield_id])
     @date = parse_date(params[:filter], :date) || AbstractFlight.latest_departure(@airfield.flights).to_date
-    @flights = @airfield.flights.where(AbstractFlight.arel_table[:departure_date].gteq(@date.to_datetime)).
-                       where(AbstractFlight.arel_table[:departure_date].lt((@date + 1.day).to_datetime)).
-                       order("departure_date ASC, departure_i ASC").all
+    @flights = @airfield.flights.where(:departure_date => @date).order("departure_date ASC, departure_i ASC").all
     if params[:as] == 'controller_log'
       javascript :controller_log
       @controllers = []
@@ -28,15 +26,15 @@ class MainLogBooksController < ApplicationController
       template = "main_log_books/show"
       orientation = "Landscape"
     end
-    
+
     respond_to do |f|
       f.pdf do
-        render :pdf => "".downcase.gsub(" ", "-"), 
-    				   :template => "#{template}.html.haml",
-    				   :orientation => orientation,
-    				   :disable_internal_links => true,
-    				   :disable_external_links => true
-  		end
+        render :pdf => "".downcase.gsub(" ", "-"),
+               :template => "#{template}.html.haml",
+               :orientation => orientation,
+               :disable_internal_links => true,
+               :disable_external_links => true
+      end
       f.html { render :template => template }
     end
   end
