@@ -6,9 +6,11 @@
     %td= text_field_tag "filter_string"
   %tr.no_filter
     %th= FinancialAccount.l(:name)
+    %th= FinancialAccount.l(:number)
   - @financial_accounts.each do |financial_account|
     %tr.alternate_color{ :"data-filter_string" => financial_account.name.downcase }
       %td= h financial_account.name
+      %td= h financial_account.number
       %td= show_link(financial_account)
       %td= edit_link(financial_account)
 = new_link(FinancialAccount)

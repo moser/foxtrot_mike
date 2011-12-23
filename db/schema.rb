@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214151943) do
+ActiveRecord::Schema.define(:version => 20111217153346) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20111214151943) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "number",     :default => ""
   end
 
   create_table "flight_cost_items", :force => true do |t|

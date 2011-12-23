@@ -149,6 +149,7 @@ de:
         flight_type: Flugart
       financial_account:
         owners: Besitzer
+        number: Nummer
       group:
         members: Mitglieder
         planes: Flugzeuge

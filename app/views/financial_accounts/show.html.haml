@@ -1,7 +1,10 @@
 %table.data
   %tr
     %th= FinancialAccount.l(:name)
-    %td=h @financial_account.name 
+    %td=h @financial_account.name
+  %tr
+    %th= FinancialAccount.l(:number)
+    %td=h @financial_account.number
   %tr
     %th= FinancialAccount.l(:owners)
     %td
