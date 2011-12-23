@@ -2,9 +2,9 @@ class FlightCostRule < ActiveRecord::Base
   include ValidityCheck
   include Immutability
   include AccountingEntryInvalidation
-  
+
   after_save :after_save_invalidate_accounting_entries
-  
+
   belongs_to :person_cost_category
   belongs_to :plane_cost_category
   immutable :person_cost_category, :plane_cost_category
@@ -31,7 +31,7 @@ class FlightCostRule < ActiveRecord::Base
       conditions.empty? || (conditions[0].matches?(flight) && matches?(flight, conditions[1..-1]))
     end
   end
-  
+
   def find_concerned_accounting_entry_owners(from = valid_from, to = valid_to)
     plane_cost_category.find_concerned_accounting_entry_owners { |r| r.between(min_date(valid_from, from), max_date(valid_to, to)) }
   end
@@ -43,11 +43,11 @@ class FlightCostRule < ActiveRecord::Base
       []
     end
   end
-  
+
   def association_changed(obj)
     delay.invalidate_concerned_accounting_entries
   end
-  
+
 private
   def after_save_invalidate_accounting_entries
     created = changes.keys.include?("id")
