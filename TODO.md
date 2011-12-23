@@ -1,9 +1,15 @@
 # Before release
+  - flight#history ...
   - accounting session
     - add manual accountingentries
-    - export them as DATEV,...
+    - print a voucher
+    - edit
+    - create: add note, that this can take long
+    - do not create accounting entries w/ value 0
+  - show state of own finanical account
   - Create (plane|person|wirelauncher)
     - add financialaccount on the fly
+    - select initial ccmembership
   - flightcostrule create
     - WTF why create 2 objects?????
     - position create
@@ -35,9 +41,14 @@
     - times are not sent back for pdf creation
   - cost\_rules#index
     - rm absolute positioning, float?
+  - group#show
+    - heading
+  - layout in ff3.6/windows
+  - warning when flight is before sr/after ss
 
 
 # medium run
+  - caching
   - security: attr\_accessible
   - PAPER_TRAIL:
     - item_type should be the real class, not the superclass (STI)
