@@ -5,7 +5,7 @@ class AccountingSession < ActiveRecord::Base
   validate do |a|
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
   end
-  
+
   #TODO make all other flights methods unaccessible
   def flights_with_default
     if finished?
@@ -17,8 +17,16 @@ class AccountingSession < ActiveRecord::Base
                             order('departure_date ASC').all
     end
   end
-  
   alias_method_chain :flights, :default
+
+  def accounting_entries_with_default
+    if finished?
+      accounting_entries_without_default
+    else
+      flights.map { |f| f.accounting_entries }.flatten
+    end
+  end
+  alias_method_chain :accounting_entries, :default
 
   def initialize(*args)
     super(*args)
@@ -26,9 +34,8 @@ class AccountingSession < ActiveRecord::Base
       self.start_date = AccountingSession.latest_session_end + 1.day
       self.end_date = start_date.end_of_month
     end
-    
   end
-  
+
   def start_date=(d)
     d = d.to_date if d.respond_to?(:to_date)
     write_attribute(:start_date, d)
@@ -43,20 +50,32 @@ class AccountingSession < ActiveRecord::Base
     !finished_at.nil?
   end
   alias :finished :finished?
-  
+
   def finished=(b)
     unless !b || finished?
       flights.each do |f|
         f.update_attribute :accounting_session, self
+        f.accounting_entries.each do |e|
+          e.update_attribute :accounting_session, self
+        end
       end
       update_attribute :finished_at, DateTime.now
     end
   end
 
+  def aggregated_entries
+    ae = accounting_entries.group_by { |e| e.from }.map do |from, entries|
+      entries.group_by { |e| e.to }.map do |to, entries|
+        AggregatedEntry.new(from, to, entries)
+      end
+    end
+    ae.flatten
+  end
+
 #  def self.booking_now
 #    DateTime.now
 #  end
-  
+
   # The end date of the latest accounting session.
   # If there are no accounting sessions, the day before the first flight.
   # If there are no flights, it is yesterday.
