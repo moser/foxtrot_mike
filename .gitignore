@@ -10,4 +10,5 @@ rerun.txt
 .sass-cache/*
 webrat.log
 *.swp
+*.swo
 TODO.html
