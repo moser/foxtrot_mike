@@ -19,7 +19,7 @@ class FlightsController < ApplicationController
     dates
     if !request.xhr?
       @flights = AbstractFlight.include_all.where("departure_date = ?", @current_day).
-                                  order("departure_date DESC, departure_i DESC")
+                                  order("departure_date DESC, departure_i DESC, type DESC, id DESC")
     else
       from = @current_day
       to = @current_day + 1.day
@@ -34,7 +34,7 @@ class FlightsController < ApplicationController
                           count.keys.max || @current_day) + 1.day
       end
       @days = AbstractFlight.include_all.where("departure_date >= ? and departure_date <= ?", from, to).
-                               order("departure_date DESC, departure_i  DESC").group_by { |f| f.departure_date }
+                               order("departure_date DESC, departure_i  DESC, type DESC, id DESC").group_by { |f| f.departure_date }
       (from..(to - 1.day)).each do |d|
         @days[d] ||= []
       end
