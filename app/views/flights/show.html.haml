@@ -4,7 +4,7 @@
 .item_container
   .item.inline_form_replace_context{ :id => @flight.id, :"data-departure_date" => @flight.departure_date, :"data-path" => flight_path(@flight) }
     %h1= @flight.class.l
-    = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
+    = link_to t('views.back'), "/flights/day/#{@flight.departure_date}",{:class => "sop back index"}
     %table.categories
       %tr
         %th= Flight.l(:data)
@@ -17,19 +17,19 @@
               %th= Flight.l(:plane)
               %td
                 - unless @flight.plane.nil?
-                  = link_to @flight.plane.to_s, plane_path(@flight.plane)
+                  = show_link(@flight.plane, @flight.plane.to_s, :class => "facebox")
                 - else
                   = "-"
             %tr
               %th= Flight.l(:crew)
               %td
                 - unless @flight.seat1.nil?
-                  = @flight.seat1.value.to_s 
-                  = @flight.seat1.short
+                  = @flight.seat1.link_to_value(self)
+                  = "(#{@flight.seat1.short})" if @flight.seat1.person?
                   %br
                 - unless @flight.seat2.nil?
-                  = @flight.seat2.value.to_s 
-                  = @flight.seat2.short
+                  = @flight.seat2.link_to_value(self)
+                  = "(#{@flight.seat2.short})" if @flight.seat2.person?
             %tr
               %th= Flight.l(:from)
               %td= @flight.from || '-'
@@ -126,4 +126,4 @@
                 = v.whodunnit.nil? ? "" : Person.find(v.whodunnit) rescue "" #Person could have been deleted
                 = v.event
                 = v.item_type
-    = back_link("/flights/day/#{@flight.departure_date}", {:class => "sop back index"})
+    = link_to t('views.back'), "/flights/day/#{@flight.departure_date}",{:class => "sop back index"}

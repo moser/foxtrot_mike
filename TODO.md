@@ -45,6 +45,12 @@
     - heading
   - layout in ff3.6/windows
   - warning when flight is before sr/after ss
+  - accounts
+    - manage roles
+  - controller role
+    - create persons (mark as incomplete, show to admin/treasurer)
+  - flights#index
+    - show scrollbars
 
 
 # medium run

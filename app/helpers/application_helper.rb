@@ -120,7 +120,7 @@ module ApplicationHelper
   def destroy_link(obj, options = {})
     #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can?(:destroy, obj)
   end
-  
+
 private
   def merge_class_into_options(cls, options)
     if options[:class]

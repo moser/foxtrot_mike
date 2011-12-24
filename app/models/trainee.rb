@@ -4,10 +4,6 @@
 class Trainee < PersonCrewMember
 
   #default_scope includes(:person)
-  
-  def short
-    ""
-  end
 
   def trainee?
     true

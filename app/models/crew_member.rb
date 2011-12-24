@@ -1,9 +1,9 @@
 class CrewMember < ActiveRecord::Base
   include UuidHelper
   include Immutability
-  
+
   has_paper_trail :meta => { :abstract_flight_id => Proc.new { |cm| cm.abstract_flight_id unless cm.nil? || cm.new_record? || cm.abstract_flight_id.nil? } }
-  
+
   belongs_to :abstract_flight
   belongs_to :person
   immutable :abstract_flight
@@ -18,7 +18,7 @@ class CrewMember < ActiveRecord::Base
     elsif pic?
       "PIC"
     else
-      ""
+      CrewMember.l(:no_crew)
     end
   end
 
@@ -48,5 +48,9 @@ class CrewMember < ActiveRecord::Base
 
   def unknown?
     false
+  end
+
+  def link_to_value(context)
+    value
   end
 end
