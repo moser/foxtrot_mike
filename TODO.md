@@ -1,5 +1,4 @@
 # Before release
-  - flight#history ...
   - accounting session
     - add manual accountingentries
     - print a voucher
@@ -54,6 +53,7 @@
 
 
 # medium run
+  - flight#history ...
   - caching
   - security: attr\_accessible
   - PAPER_TRAIL:

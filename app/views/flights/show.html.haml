@@ -116,14 +116,4 @@
             %th= Flight.l(:liabilities)
             %td
               = render :partial => "liabilities/list", :locals => { :flight => @flight }
-      %tr
-        %th= Flight.l(:versions) #TODO move to own view/controller
-        %td
-          %ul.versions
-            - @flight.all_versions.each do |v|
-              %li
-                = l(v.created_at, :format => :short)
-                = v.whodunnit.nil? ? "" : Person.find(v.whodunnit) rescue "" #Person could have been deleted
-                = v.event
-                = v.item_type
     = link_to t('views.back'), "/flights/day/#{@flight.departure_date}",{:class => "sop back index"}
