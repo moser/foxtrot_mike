@@ -14,7 +14,7 @@ class AbstractCostRulesController < ApplicationController
   def other_cost_category_class
     other_cost_category.to_s.camelize.constantize  
   end
-  
+
   def index
     if params[:person_cost_category_id] && params["#{other_cost_category}_id"]
       model_all(:person_cost_category_id => params[:person_cost_category_id],
@@ -85,7 +85,7 @@ class AbstractCostRulesController < ApplicationController
       render :layout => !request.xhr?
     end
   end
-  
+
   def destroy
     model_by_id
     authorize! :destroy, @model

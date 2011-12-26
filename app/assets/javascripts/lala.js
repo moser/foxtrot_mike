@@ -35,7 +35,7 @@ var IF = {
       e.preventDefault()
     });
   },
-  load: function(e) {   
+  load: function(e) {
     var target = $(e.target);
     if($(target).parents('.inline_form_hide_context').length > 0) {
       target = $(target).closest('.inline_form_hide_context');
@@ -45,7 +45,6 @@ var IF = {
       target.before(h);
       IF.insert(h, target, e.target);
       target.hide();
-      
       DomInsertionWatcher.notify_listeners(h);
       PleaseWait.vote_hide();
     });
