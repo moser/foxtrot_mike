@@ -1,3 +1,4 @@
+//TODO add id to replace context and links => allow for nested form contexts
 var IF = {
   insert: function(h, target, link) {
     h.find('a.inline_form_hide').bind('click', function(e) {
@@ -13,8 +14,12 @@ var IF = {
             type: 'POST',
             success: function(html, status, xhr) {
               var f = function(html) {
-                target.closest('.inline_form_replace_context').replaceWith(html);
-                DomInsertionWatcher.notify_listeners($('.inline_form_replace_context'));
+                replace = target.closest('.inline_form_replace_context');
+                if($(link).attr("data-replace-id")) {
+                  replace = $("#" + $(link).attr("data-replace-id"));
+                }
+                replace.replaceWith(html);
+                DomInsertionWatcher.notify_listeners(replace);
                 PleaseWait.vote_hide();
               };
               if($(link).attr('data-replace')) {
@@ -60,8 +65,12 @@ var IF = {
             type: 'POST',
             success: function(html, status, xhr) {
               $.get(form.find("input[type=submit]").attr('data-replace'), function(html) {
-                form.closest('.inline_form_replace_context').replaceWith(html);
-                DomInsertionWatcher.notify_listeners($('.inline_form_replace_context'));
+                replace = form.closest('.inline_form_replace_context');
+                if(form.find("input[type=submit]").attr('data-replace-id')) {
+                  replace = $("#" + form.find("input[type=submit]").attr('data-replace-id'));
+                }
+                replace.replaceWith(html);
+                DomInsertionWatcher.notify_listeners(replace);
                 PleaseWait.vote_hide();
               });
             }

@@ -151,6 +151,10 @@ de:
         no_crew: "Begleiter"
       flight_cost_rule:
         flight_type: Flugart
+      flight_cost_item:
+        depends_on: Abhängig von
+        value: Wert
+        additive_value: Additiver Wert
       financial_account:
         owners: Besitzer
         number: Nummer
@@ -220,6 +224,8 @@ de:
         operator: Windenfahrer
       wire_launcher:
         registration: Kennzeichen
+      wire_launch_cost_item:
+        value: Wert
       time_cost_rule:
         cost: Kosten
         flight_type: Flugtyp

@@ -411,21 +411,16 @@ h2.page_sub_title {
   background: #fa0;
 }
 
-.col {
-  position: absolute;
-  top: 0;
-}
-
 .colspace {
   position: relative;
 }
 
 .col.left {
-  left: 0;
+  float: left;
 }
 
 .col.right {
-  right: 0;
+  float: right;
 }
 
 

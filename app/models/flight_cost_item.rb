@@ -1,6 +1,6 @@
 class FlightCostItem < ActiveRecord::Base
   after_update :after_update_invalidate_accounting_entries
-  
+
   def self.valid_fields
     [ nil, "duration", "engine_duration" ]
   end
@@ -27,7 +27,7 @@ class FlightCostItem < ActiveRecord::Base
       0
     end
   end
-  
+
 private
   def after_update_invalidate_accounting_entries
     flight_cost_rule.association_changed(nil)

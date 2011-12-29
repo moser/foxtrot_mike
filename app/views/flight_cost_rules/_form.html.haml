@@ -14,7 +14,7 @@
       = f.input :plane_cost_category_id, :as => :hidden, :value => flight_cost_rule.plane_cost_category_id
   - else
     = f.association :plane_cost_category, :required => true
-  = f.input :flight_type, :collection => {Flight.model_name.human => "Flight", TowFlight.model_name.human => "TowFlight"}, :selected => "Flight", :required => true, :include_blank => false
+  = f.input :flight_type, :collection => {Flight.model_name.human => "Flight", TowFlight.model_name.human => "TowFlight"}, :required => true, :include_blank => false
   = f.input :valid_from, :required => true, :include_blank => true
   = f.input :valid_to, :include_blank => true
   = f.input :comment

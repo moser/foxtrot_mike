@@ -8,5 +8,5 @@
         = f.simple_fields_for(n = ((@cost_rule_condition.class == lt && @cost_rule_condition) || lt.new(:cost_rule => @cost_rule))) do |nf|
           = nf.hidden_field :cost_rule_id
           = render :partial => "cost_rule_conditions/fields_#{lt.name.underscore}", :locals => { :f => nf, :cost_rule_condition => n }
-  = f.submit
+  = f.submit "Ok"
 = link_to t('views.cancel'), [@cost_rule, :cost_rule_conditions], :class => "inline_form_hide"

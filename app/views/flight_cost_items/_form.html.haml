@@ -1,7 +1,7 @@
 = simple_form_for(flight_cost_item) do |f|
   = f.hidden_field :flight_cost_rule_id
   = f.association :financial_account
-  = f.input :depends_on, :collection => FlightCostItem.valid_fields, :include_blank => false
+  = f.input :depends_on, :collection => { "" => "", Flight.l(:duration) => "duration", Flight.l(:engine_duration) => "engine_duration"}, :include_blank => false
   = f.input :value
   = f.input :additive_value
   = f.submit
