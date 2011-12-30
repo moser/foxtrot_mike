@@ -95,6 +95,9 @@ de:
       selflaunch: Eigenstart
     show:
       selflaunch: Eigenstart
+  layouts:
+    application:
+      js_warning: "Bitte aktivieren Sie Javascript, um den vollen Funktionsumfang nutzen zu können."
   legal_plane_classes:
     index:
       title: "Flugzeugklassen"

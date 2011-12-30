@@ -186,6 +186,10 @@ ul.scroll {
 .small input[type=submit] {
 }
 
+.block {
+  display: block;
+}
+
 .boxes > div {
   float: left;
   width: 35.5em;

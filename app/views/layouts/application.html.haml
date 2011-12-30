@@ -9,6 +9,8 @@
     = stylesheet_link_tag 'print/print', :media => "print"
     = javascript_include_tag 'application'
   %body
+    %noscript.block.flash.error
+      = t(".js_warning")
     .header
       - #= render :partial => "common/account_bar"
       = render :partial => "common/navigation_bar"
