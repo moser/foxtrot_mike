@@ -23,6 +23,7 @@
     - flight#index shows wrong number on day sidebar (may even show empty day)
   - flights#index
     - big up/down button should not jump to empty day?
+    - show scrollbars
   - person/plane#show
     - fin\_acc add does not work properly (when existing membership is valid nil to nil??)
   - plane/person/wire\_launcher#index
@@ -38,10 +39,7 @@
   - accounts
     - manage roles
   - controller role
-    - create persons (mark as incomplete, show to admin/treasurer)
-  - flights#index
-    - show scrollbars
-
+    - create people (mark as incomplete, show to admin/treasurer)
 
 # medium run
   - flight#history ...
@@ -57,6 +55,9 @@
     - hide/collapse old rules
   - ajax/stay on page for people, planes,...
   - member management
+  - winch
+    - operator charts
+    - log book
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
