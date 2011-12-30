@@ -24,6 +24,7 @@
     - show scrollbars
   - flights#show
     - delete flight
+    - show controller
   - person/plane#show
     - fin\_acc add does not work properly (when existing membership is valid nil to nil??)
   - plane/person/wire\_launcher#index
@@ -59,6 +60,7 @@
     - operator charts
     - log book
   - deactivate groups
+  - online help
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)

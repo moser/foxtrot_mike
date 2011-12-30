@@ -48,7 +48,8 @@ class FilteredFlightsController < ApplicationController
         f.csv do
           attr = ActiveSupport::OrderedHash.new
           attr[:departure_date] = lambda { |i| I18n.l(i) }
-          attr[:seat1] = lambda { |i| i.to_s } 
+          attr[:plane] = lambda { |i| i.to_s }
+          attr[:seat1] = lambda { |i| i.to_s }
           attr[:seat2] = lambda { |i| i.to_s }
           attr[:launch_type_short] = lambda { |i| i.to_s }
           attr[:purpose] = lambda { |i| i.to_s }
@@ -65,14 +66,12 @@ class FilteredFlightsController < ApplicationController
               @flights.each do |f|
                 csv << attr.map { |e, p| p.call(f.send(e)) }
               end
-              csv << [@flights.size, format_minutes(@flights.map { |e| e.duration }.sum)]
             else
               @flights.keys.each do |k|
                 csv << [k]
                 @flights[k].each do |f|
                   csv << attr.map { |e, p| p.call(f.send(e)) }
                 end
-                csv << [@flights[k].size, format_minutes(@flights[k].map { |e| e.duration }.sum)]
                 csv << []
               end
             end
