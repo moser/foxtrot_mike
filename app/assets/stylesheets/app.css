@@ -301,8 +301,8 @@ input[type=submit].delete:hover {
   background-color: #F4FA58;
 }
 
-.alternate .problems.alternate_color:nth-child(even) {
-  background-color: #E6EA48;
+.alternate > .problems.alternate_color:nth-child(even) {
+  background-color: #D6DA38;
 }
 
 .flight_format span {
@@ -367,8 +367,8 @@ div.hover_controls:hover .controls {
   display: block;
 }
 
-.alternate .alternate_color:nth-child(even) {
-  background: #f3f3f3;
+.alternate > .alternate_color:nth-child(even) {
+  background: #d0d0d0;
 }
 
 .strike {
