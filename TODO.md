@@ -24,6 +24,8 @@
   - flights#index
     - big up/down button should not jump to empty day?
     - show scrollbars
+  - flights#show
+    - delete flight
   - person/plane#show
     - fin\_acc add does not work properly (when existing membership is valid nil to nil??)
   - plane/person/wire\_launcher#index
@@ -58,6 +60,7 @@
   - winch
     - operator charts
     - log book
+  - deactivate groups
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
