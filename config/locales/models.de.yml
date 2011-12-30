@@ -161,6 +161,7 @@ de:
       group:
         members: Mitglieder
         planes: Flugzeuge
+        plural: Gruppen
       legal_plane_class:
         planes: Flugzeuge
       license:

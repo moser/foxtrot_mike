@@ -3,7 +3,13 @@
     %h2 Benutzerkonto
     %ul
       %li Personendaten bearbeiten
+      %li Buchungen anzeigen
       %li= link_to t("change_password"), new_password_path
+  .bordbooks
+    %h2= t('views.bordbooks')
+    %ul
+      - @planes.each do |p|
+        %li= link_to p.registration, polymorphic_path([p, :flights])
   .views
     %h2 Ansichten
     %ul
@@ -15,9 +21,9 @@
       %li= link_to "Alle", polymorphic_path([@current_person, :flights])
       - @licenses.each do |l|
         %li= link_to l.name, polymorphic_path([l, :flights])
-  .bordbooks
-    %h2= t('views.bordbooks')
+  .groupbooks
+    %h2= Group.l(:plural)
     %ul
-      - @planes.each do |p|
-        %li= link_to p.registration, polymorphic_path([p, :flights])
+      - @groups.each do |g|
+        %li= link_to g.name, polymorphic_path([g, :flights])
 .clear
