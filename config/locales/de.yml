@@ -84,6 +84,8 @@ de:
     index:
       title: "Flüge für %{for}"
       group_by: "Gruppieren nach"
+      exclude: "Verstecken/anzeigen"
+      collapse: "Flüge vestecken/anzeigen"
   financial_accounts:
     index:
       title: Buchhaltungskonten

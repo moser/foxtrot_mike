@@ -31,7 +31,7 @@ class FilteredFlightsController < ApplicationController
     @to ||= @from
     @flights = @flights.where(AbstractFlight.arel_table[:departure_date].gteq(@from.to_date)).
                           where(AbstractFlight.arel_table[:departure_date].lteq(@to.to_date)).
-                          order('departure_date ASC').all
+                          order('departure_date ASC, departure_i ASC').all
 
     if params[:group_by] && GROUPS.include?(params[:group_by]) && !request.xhr?
       @group_by = params[:group_by]
