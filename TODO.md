@@ -15,8 +15,6 @@
     - js helpers
   - js helpers
     - leave seat1 empty on new flight
-  - pdf
-    - layout?? only on the deployed version
   - facebox
     - default width?
   - flight change date

@@ -1,13 +1,12 @@
 /*
- *= require_directory . 
+ *= require_directory .
 */
 
 @page {
   size: A4;
-  margin: 40pt 30pt 40pt 30pt;
   @top-right {
     font-family: verdana, arial, helvetica, sans-serif;
-	  content: string(header);
+    content: string(header);
   }
   @bottom-right {
     font-family: verdana, arial, helvetica, sans-serif;
@@ -15,7 +14,7 @@
   }
 }
 
-body { background-color: #fff; color: #000; }
+body { background-color: #fff; color: #000 }
 
 h1.page_title {
   display: inline;

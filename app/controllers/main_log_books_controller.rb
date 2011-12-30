@@ -24,7 +24,7 @@ class MainLogBooksController < ApplicationController
       orientation = "Portrait"
     else
       template = "main_log_books/show"
-      orientation = "Landscape"
+      orientation = "Portrait"
     end
 
     respond_to do |f|
@@ -33,7 +33,8 @@ class MainLogBooksController < ApplicationController
                :template => "#{template}.html.haml",
                :orientation => orientation,
                :disable_internal_links => true,
-               :disable_external_links => true
+               :disable_external_links => true,
+               :dpi => "90"
       end
       f.html { render :template => template }
     end

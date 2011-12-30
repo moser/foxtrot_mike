@@ -84,7 +84,8 @@ class FilteredFlightsController < ApplicationController
           render :pdf => "#{@obj.to_s}-flights".downcase.gsub(" ", "-"),
                  :template => "filtered_flights/index.html.haml",
                  :disable_internal_links => true,
-                 :disable_external_links => true
+                 :disable_external_links => true,
+                 :dpi => "90"
         }
         f.html { render }
       end
