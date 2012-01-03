@@ -6,7 +6,9 @@
   - show state of own finanical account
   - Create (plane|person|wirelauncher)
     - add financialaccount on the fly
-    - select initial ccmembership
+  - Person#create
+    - make hide\_if\_unchecked work
+    - translate lvb member states
   - person#show
     - add finacc, cancel misses
   - towflight#edit
@@ -39,6 +41,8 @@
     - manage roles
   - controller role
     - create people (mark as incomplete, show to admin/treasurer)
+  - cost\_rule#create
+    - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
 
 # medium run
   - flight#history ...
@@ -59,6 +63,7 @@
     - log book
   - deactivate groups
   - online help
+  - phone list
 
 # ideas / long run
   - locking for editing (optimistic?) (obj.versions.count?)
