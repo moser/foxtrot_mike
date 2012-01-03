@@ -1,6 +1,18 @@
 = simple_form_for(@financial_account_ownership) do |f|
   = f.input :owner_id, :as => :hidden
   = f.input :owner_type, :as => :hidden
-  = f.association :financial_account
+  .choice
+    = radio_button_tag "fin_acc", "existing", true
+    Bestehendes Buchhaltungskonto verwenden
+    .hide_if_unchecked
+      = f.association :financial_account
+  .choice
+    = radio_button_tag "fin_acc", "new", false
+    Neues Buchhaltungskonto erstellen
+    .hide_if_unchecked
+      = f.simple_fields_for :financial_account, FinancialAccount.new do |ff|
+        = ff.input :name
+        = ff.input :number
   = f.input :valid_from
   = f.button :submit
+= link_to t('views.cancel'), @financial_account_ownership.owner, :class => "inline_form_hide"

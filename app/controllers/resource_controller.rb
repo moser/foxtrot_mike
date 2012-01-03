@@ -22,11 +22,11 @@ class ResourceController < ApplicationController
   def redirect_to_index
     self.class.redirect_to_index
   end
-  
+
   def self.redirect_to_after_save(x = false)
     @redirect_to_index ||= x
   end
-  
+
   def redirect_to_after_save
     self.class.redirect_to_after_save
   end
@@ -68,7 +68,6 @@ class ResourceController < ApplicationController
     if nested && nested_id
       @model.send(:"#{nested}=", find_nested)
     end
-    
     render :layout => !request.xhr?
   end
 

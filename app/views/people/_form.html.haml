@@ -2,7 +2,6 @@
   = f.input :firstname
   = f.input :lastname
   = f.association :group
-  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] } if person.new_record?
   = f.input :disabled unless person.new_record?
   = f.input :member
   .hide_if_unchecked.TODO

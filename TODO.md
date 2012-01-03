@@ -1,16 +1,11 @@
 # Before release
   - accounting session
-    - add manual accountingentries
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
   - show state of own finanical account
-  - Create (plane|person|wirelauncher)
-    - add financialaccount on the fly
   - Person#create
     - make hide\_if\_unchecked work
     - translate lvb member states
-  - person#show
-    - add finacc, cancel misses
   - towflight#edit
     - js helpers
   - js helpers
@@ -43,6 +38,7 @@
     - create people (mark as incomplete, show to admin/treasurer)
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
+  - do not load json data if not needed
 
 # medium run
   - flight#history ...
@@ -66,6 +62,8 @@
   - phone list
 
 # ideas / long run
+  - accounting session
+    - add manual accountingentries
   - locking for editing (optimistic?) (obj.versions.count?)
   - locking when stuff is booked
   - means to delete flights safely including revisions (+ export to another db) (command line tool?)

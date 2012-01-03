@@ -16,14 +16,14 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_account, :current_path
-     
-  def current_account_session  
-    return @current_account_session if defined?(@current_account_session)  
-    @current_account_session = AccountSession.find  
-  end  
 
-  def current_account  
-    @current_account ||= current_account_session && current_account_session.record  
+  def current_account_session
+    return @current_account_session if defined?(@current_account_session)
+    @current_account_session = AccountSession.find
+  end
+
+  def current_account
+    @current_account ||= current_account_session && current_account_session.record
   end
 
   def current_ability
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   def current_path
     request.path
   end
-  
+
   def parse_after
     @after = Time.at(params[:after].to_i).utc rescue nil if params.has_key? :after
   end
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
          "date" => {:day => "3i", :month => "2i", :year => "1i"},
          "time" => {:min => "5i", :hour => "4i"}}
   CL = { "date" => Date, "datetime" => DateTime, "time" => DateTime }
-  
+
   def parse_date_time_rec(h)
     add = {}
     h.each do |k, v|
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
     end
     add.each { |k, v| h[k] = v }
   end
-  
+
   def parse_json
     if params[:json]
       add = {}
@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
       add.each { |k, v| params[k] = v }
     end
   end
-  
+
   def parse_json_dates(obj)
    if obj.is_a?(Hash)
       obj.keys.each do |k|
@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
     @include_javascript_files += args.map { |f| f.to_s }
     @include_javascript_files.uniq
   end
-  
+
   def self.stylesheet(*args)
     @include_stylesheet_files ||= []
     @include_stylesheet_files += args.map { |f| f.to_s }
@@ -129,38 +129,38 @@ class ApplicationController < ActionController::Base
     @include_stylesheet_files += args.map { |f| f.to_s }
     @include_stylesheet_files.uniq
   end
-  
+
   def user_for_paper_trail
     current_account ? current_account.person_id : nil
   end
-  
-  def model_by_id    
+
+  def model_by_id
     eval "@model = @#{model_name.underscore} = #{model_class}.find(params[:id])"
   end
-  
+
   def model_all(conditions = nil)
     eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions).order()"
   end
-  
+
   def model_all_or_after
     if @after.nil?
       model_all
     else
-      eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(['updated_at > ?', @after])"      
+      eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(['updated_at > ?', @after])"
     end
   end
-  
+
   def model_new
     eval "@model = @#{model_name.underscore} = #{model_class}.new(params[:#{model_name.underscore}])"
   end
-  
+
   def model_name
     @model_name ||= self.class.name.gsub("Controller", "").singularize
   end
-  
+
   def model_class
     model_name.constantize
-  end  
+  end
 
   def parse_date(h, k)
     Date.new(h["#{k}(1i)"].to_i, h["#{k}(2i)"].to_i, h["#{k}(3i)"].to_i) rescue nil

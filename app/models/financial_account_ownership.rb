@@ -1,5 +1,6 @@
 class FinancialAccountOwnership < ActiveRecord::Base
   belongs_to :financial_account
+  accepts_nested_attributes_for :financial_account
   belongs_to :owner, :polymorphic => true
 
   validates_presence_of :financial_account, :owner

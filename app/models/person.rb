@@ -28,18 +28,8 @@ class Person < ActiveRecord::Base
     current_financial_account_ownership && current_financial_account_ownership.financial_account 
   end
 
-  def financial_account=(fa)
-    if new_record?
-      financial_account_ownerships << FinancialAccountOwnership.create(:financial_account => fa, :owner => self)
-    end
-  end
-
   def financial_account_id
     financial_account && financial_account.id
-  end
-
-  def financial_account_id=(fa)
-    self.financial_account = FinancialAccount.find(fa)
   end
 
   def self.find_all_by_name(str)
