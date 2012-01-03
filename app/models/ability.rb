@@ -12,7 +12,7 @@ class Ability
       else
         if account.role?(:reader) || account.role?(:controller) || account.role?(:treasurer) ||
            account.role?(:license_official)
-          can :read, [Flight, TowFlight, :dashboards, :filtered_flights]
+          can :read, [Flight, TowFlight, :dashboards, :filtered_flights, :own_financial_account]
         end
         if account.role?(:controller)
           can [:read, :create], [Person, Plane, Airfield, WireLauncher, Flight, TowFlight]

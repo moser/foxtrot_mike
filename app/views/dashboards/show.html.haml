@@ -2,8 +2,9 @@
   .account
     %h2 Benutzerkonto
     %ul
-      %li Personendaten bearbeiten
-      %li Buchungen anzeigen
+      -#%li Personendaten bearbeiten
+      -# if current_account && current_account.person && current_account.person.financial_account
+      -#  %li= link_to "Buchungen anzeigen", own_financial_account_path
       %li= link_to t("change_password"), new_password_path
   .bordbooks
     %h2= t('views.bordbooks')

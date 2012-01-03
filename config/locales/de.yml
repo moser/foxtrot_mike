@@ -127,6 +127,9 @@ de:
   none:
     index:
       title: "nichts"
+  own_financial_accounts:
+    show:
+      title: "Buchungsübersicht"
   plane_cost_categories:
     index:
       title: "Flugzeugkategorien"

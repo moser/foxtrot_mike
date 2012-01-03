@@ -1,0 +1,6 @@
+%h1= t(".title")
+- @accounting_entries.each do |e|
+  .entry
+    =l e.item.departure_date if e.item
+    = e.item.class.l if e.item
+    = format_currency(e.value)

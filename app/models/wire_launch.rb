@@ -1,6 +1,6 @@
 class WireLaunch < ActiveRecord::Base
   include UuidHelper
-  
+
   before_update :before_update_invalidate_accounting_entries
   after_update :after_update_invalidate_accounting_entries
 
@@ -61,6 +61,10 @@ class WireLaunch < ActiveRecord::Base
 
   def financial_account
     wire_launcher.financial_account
+  end
+
+  def departure_date
+    abstract_flight.departure_date
   end
 
   def abstract_flight_changed

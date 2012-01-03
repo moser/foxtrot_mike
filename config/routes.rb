@@ -43,7 +43,7 @@ Server::Application.routes.draw do
     resources :wire_launcher_cost_category_memberships
     resources :financial_account_ownerships
   end
-  
+
   resources :person_cost_categories
   resources :plane_cost_categories
   resources :wire_launcher_cost_categories
@@ -73,7 +73,8 @@ Server::Application.routes.draw do
   end
   resources :legal_plane_classes
   resource :unknown_person
-  
+  resource :own_financial_account
+
   root :to => 'dashboards#show'
 
   match "/flights/day/:day_parse_date", :controller => "flights", :action => "index"
