@@ -191,6 +191,8 @@ de:
         default_launch_method: Bevorzugte Startart
         disabled: Deaktiviert
         disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
+      plane_cost_category:
+        planes_now: "Flugzeuge"
       person:
         address: Adresse
         address1: Adresszeile 1
