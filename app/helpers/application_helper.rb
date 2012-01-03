@@ -80,7 +80,7 @@ module ApplicationHelper
   end
 
   def format_currency(i)
-    "€ #{i/100},#{i%100 < 10 ? "0" : ""}#{i%100}" unless i.nil? #TODO i18n/configurable
+    "#{i/100},#{i%100 < 10 ? "0" : ""}#{i%100} €" unless i.nil? #TODO i18n/configurable
   end
 
   def back_link(obj, options = {})

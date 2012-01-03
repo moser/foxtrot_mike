@@ -1,0 +1,7 @@
+%h1= "#{@accounting_session.name} - FM-#{@accounting_session.id}"
+= l(@accounting_session.start_date)
+\-
+= l(@accounting_session.end_date)
+- @accounting_session.aggregated_entries.each do |ae|
+  .ae
+    = format_accounting_entry(ae.from, ae.to, ae.value)

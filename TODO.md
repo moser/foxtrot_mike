@@ -1,7 +1,6 @@
 # Before release
   - accounting session
     - add manual accountingentries
-    - print a voucher
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
   - show state of own finanical account

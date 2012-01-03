@@ -27,6 +27,13 @@ class AccountingSessionsController < ResourceController
           send_data csv_string, :type => 'text/plain; charset=utf8;',
                     :filename => "#{ @accounting_session.finished_at.to_date }-#{ AccountingSession.l(:entries) }-#{ @accounting_session.name.gsub(" ", "-") }.txt"
       end
+      f.pdf do
+          render :pdf => "fm-#{@accounting_session.id}",
+                 :template => "accounting_sessions/voucher.html.haml",
+                 :disable_internal_links => true,
+                 :disable_external_links => true,
+                 :dpi => "90"
+      end
     end
   end
 end

@@ -8,7 +8,7 @@ de:
       update: "Ok"
   views:
     aggregate_entries: "Sammeleinträge"
-    accounting_entry: "%{from} an %{to} %{value}"
+    accounting_entry: "%{from} / %{to} %{value}"
     add: "Hinzufügen"
     areusure: "Sind Sie sicher?"
     as_csv: "CSV"
@@ -55,6 +55,7 @@ de:
       aggregated_entries: Summierte Buchungen
       mark_sources: "Quelle(n) markieren"
       entries_txt: "Buchungen exportieren"
+      voucher: "Beleg drucken"
   airfields:
     index:
       title: "Flugplätze"
