@@ -1,7 +1,7 @@
 %h1= t "views.editing", :name => Airfield.l
 
 = render :partial => "airfields/form", :locals => { :airfield => @airfield }
-  
+
 = show_link(@airfield)
 = back_link(Airfield)
 

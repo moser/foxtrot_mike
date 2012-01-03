@@ -3,6 +3,7 @@
   = l(@accounting_session.start_date)
   \-
   = l(@accounting_session.end_date)
+  = edit_link(@accounting_session) unless @accounting_session.finished?
   - if @accounting_session.finished?
     .status
       = AccountingSession.l(:finished_at)
