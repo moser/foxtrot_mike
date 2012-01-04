@@ -4,7 +4,6 @@
     - do not create accounting entries w/ value 0
   - show state of own finanical account
   - Person#create
-    - make hide\_if\_unchecked work
     - translate lvb member states
   - towflight#edit
     - js helpers

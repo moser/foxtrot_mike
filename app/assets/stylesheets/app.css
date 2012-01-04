@@ -237,7 +237,7 @@ ul.scroll {
 
 .field_with_errors input,
 .field_with_errors select {
-  
+
 }
 
 .input textarea {
@@ -263,6 +263,13 @@ ul.scroll {
   font-style: italic;
 }
 
+.choice input[type=checkbox] + .hide_if_unchecked {
+  display: none;
+}
+
+.choice input[type=checkbox]:checked + .hide_if_unchecked {
+  display: block;
+}
 
 .choice input[type=radio] + .hide_if_unchecked {
   display: none;

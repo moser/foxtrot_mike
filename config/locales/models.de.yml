@@ -211,6 +211,7 @@ de:
         in_training: In Ausbildung
         lastname: Nachname
         lvbnr: LVB-Nr.
+        member: Mitglied
         membership: Mitgliedschaft
         member_state: Mitgliedsart
         personal: Persönliches
