@@ -12,12 +12,12 @@ class FinancialAccountOwnership < ActiveRecord::Base
 
   def valid_at?(date)
     date = date.to_date if date.respond_to?(:to_date)
-    (!valid_from || date >= valid_from) && (!valid_to || valid_to > date)
+    (!valid_from || date >= valid_from) && (!valid_to || valid_to >= date)
   end
 
   def valid_to
     unless owner.new_record?
-      succ = FinancialAccountOwnership.where(:owner_id => owner.id, :owner_type => owner.class.to_s).where("valid_from > ?", (valid_from || 1000.years.ago)).order("valid_from ASC").first
+      succ = FinancialAccountOwnership.where(:owner_id => owner.id, :owner_type => owner.class.to_s).where("id != ?", self.id).where("valid_from >= ?", (valid_from || 1000.years.ago)).order("valid_from ASC, updated_at DESC").reject { |o| o.valid_from == self.valid_from && o.updated_at < self.updated_at }.first
       succ.valid_from if succ
     end
   end

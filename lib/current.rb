@@ -4,16 +4,20 @@ module Current
       singular = singular.to_s
       association = singular.pluralize
       class_eval <<-END
+        def has_one_current_time_of_decision
+          AccountingSession.latest_finished_session_end
+        end
+
         def previous_#{association}
-          #{association}.where("valid_from < ? OR valid_from = NULL", Time.now).reject { |e| e.valid_at?(Time.now) }
+          #{association}.where("valid_from < ? OR valid_from IS NULL", has_one_current_time_of_decision).reject { |e| e.valid_at?(has_one_current_time_of_decision) }
         end
 
         def current_#{singular}
-          #{association}.select { |e| e.valid_at?(Time.now) }.first
+          #{association}.select { |e| e.valid_at?(has_one_current_time_of_decision) }.first
         end
 
         def future_#{association}
-          #{association}.where("valid_from > ?", Time.now)
+          #{association}.where("valid_from > ?", has_one_current_time_of_decision)
         end
 
         def current_#{singular}=(new)
