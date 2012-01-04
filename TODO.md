@@ -7,8 +7,6 @@
     - js helpers
   - js helpers
     - leave seat1 empty on new flight
-  - facebox
-    - default width?
   - flight change date
     - flight#index shows wrong number on day sidebar (may even show empty day)
   - flights#index
@@ -30,7 +28,9 @@
   - accounts
     - manage roles
   - controller role
-    - create people (mark as incomplete, show to admin/treasurer)
+    - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
+    - soft validate models
+      - mark if no fin acc (do not let acc sessions finish?)
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - do not load json data if not needed
