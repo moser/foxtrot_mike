@@ -3,16 +3,14 @@
   = f.input :make
   = f.input :seat_count
   = f.association :group, :include_blank => false
-  = f.input :financial_account_id, :collection => FinancialAccount.all.collect { |c| [ c.name, c.id ] }, :include_blank => false if plane.new_record?
   = f.input :default_launch_method, :collection => [ "self", "tow_flight", "wire_launch" ].map { |e| [I18n.t("flight.launch_types.#{e}.long"), e] }, :include_blank => false
   = f.association :legal_plane_class, :include_blank => false
-  .alternate
-    = f.input :has_engine, :wrapper_html => { :class => "alternate_color" }
-    = f.input :can_tow, :wrapper_html => { :class => "alternate_color" }
-    = f.input :can_fly_without_engine, :wrapper_html => { :class => "alternate_color" }
-    = f.input :selflaunching, :wrapper_html => { :class => "alternate_color" }
-    = f.input :can_be_towed, :wrapper_html => { :class => "alternate_color" }
-    = f.input :can_be_wire_launched, :wrapper_html => { :class => "alternate_color" }
-    = f.input :warn_when_no_cost_rules, :wrapper_html => { :class => "alternate_color" }
+  = f.input :has_engine
+  = f.input :can_tow
+  = f.input :can_fly_without_engine
+  = f.input :selflaunching
+  = f.input :can_be_towed
+  = f.input :can_be_wire_launched
+  = f.input :warn_when_no_cost_rules
   = f.input :disabled unless plane.new_record?
   = f.button :submit
