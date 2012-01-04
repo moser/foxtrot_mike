@@ -3,8 +3,6 @@
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
   - show state of own finanical account
-  - Person#create
-    - translate lvb member states
   - towflight#edit
     - js helpers
   - js helpers
@@ -19,8 +17,6 @@
   - flights#show
     - delete flight
     - show controller
-  - person/plane#show
-    - fin\_acc add does not work properly (when existing membership is valid nil to nil??)
   - plane/person/wire\_launcher#index
     - show more info (finacc, costcategories,...)
   - main log book

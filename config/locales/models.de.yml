@@ -6,6 +6,11 @@ de:
       too_many_people: "Für die angegebene Besatzung ist im Flugzeug kein Platz."
       launch_method_impossible: "Flugzeug und Startart passen nicht zusammen."
       no_cost_calculation_possible: "Kosten konnten nicht berechnet werden. (Diese Warnung kann in den Eigenschaften des Flugzeugs deaktiviert werden.)"
+  member_state:
+    active: Aktiv
+    passive: Passiv
+    passive_with_voting_right: Passiv mit Stimmrecht
+    donor: Spender
   flight:
     purposes:
       training:
