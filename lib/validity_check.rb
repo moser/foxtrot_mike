@@ -5,12 +5,12 @@ module ValidityCheck
     time = time.to_date
     (valid_from.nil? || valid_from <= time) && (valid_to.nil? || time <= valid_to)
   end
-  
+
   def not_valid_anymore_at?(time = Time.zone.now)
     time = time.to_date
     !valid_to.nil? && time > valid_to
   end
-  
+
   def not_yet_valid_at?(time = Time.zone.now)
     time = time.to_date
     !valid_from.nil? && valid_from > time
@@ -28,7 +28,7 @@ module ValidityCheck
   def outdated?
     not_valid_anymore_at?(AccountingSession.latest_finished_session_end)
   end
-  
+
   def not_yet_in_effect?
     not_yet_valid_at?(AccountingSession.latest_finished_session_end)
   end

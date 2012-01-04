@@ -24,8 +24,14 @@ class Person < ActiveRecord::Base
 
   default_scope order("lastname asc, firstname asc")
 
+  def financial_account=(o)
+    if new_record?
+      financial_account_ownerships << FinancialAccountOwnership.create(:financial_account => o, :owner => self)
+    end
+  end
+
   def financial_account
-    current_financial_account_ownership && current_financial_account_ownership.financial_account 
+    current_financial_account_ownership && current_financial_account_ownership.financial_account
   end
 
   def financial_account_id

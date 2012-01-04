@@ -10,7 +10,7 @@ describe Flight do
     }
     @f = Flight.generate!
   end
-  
+
   it { should have_many :liabilities }
   it { should belong_to :cost_hint }
   it { should belong_to :accounting_session }
@@ -21,30 +21,30 @@ describe Flight do
       f.liabilities_with_default.count.should == 1
     end
   end
-  
+
   describe "liabilities_attributes" do
     it "TODO"
   end
-  
-  describe "cost" do    
+
+  describe "cost" do
     it "should calculate the values for liabilities" do
       @f.liabilities.create(:person => Person.generate, :proportion => 100)
       @f.should_receive(:free_cost_sum).at_least(:once).and_return(400)
       @f.proportion_for(@f.liabilities.first).should == 1.0
       @f.value_for(@f.liabilities.first).should == 400
-      
+
       @f.liabilities << Liability.new(:person => Person.generate, :proportion => 100)
       @f.proportion_for(@f.liabilities.first).should == 0.5
       @f.value_for(@f.liabilities.first).should == 200
     end
   end
-  
-  describe "shared_attributes" do 
+
+  describe "shared_attributes" do
     it "should contain liabilities_attributes" do
       @f.shared_attributes.keys.should include :liabilities_attributes
     end
   end
-  
+
   describe "l" do
     it "should translate FLIGHT" do
       Flight.l.should == "Flug"
@@ -55,11 +55,11 @@ describe Flight do
   it "should create a new instance given valid attributes" do
     Flight.create(@valid_attributes)
   end
-  
+
   it "should be revisable" do
     Flight.new.should respond_to :versions
   end
-  
+
   describe "accounting_entries" do
     it "should invalidate accounting_entries and start a delayed job for their creation" do
       f = Flight.generate!
@@ -68,11 +68,12 @@ describe Flight do
       f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
       launch = mock("launch")
       launch.should_receive(:invalidate_accounting_entries).at_least(:once)
+      launch.stub(:abstract_flight_changed)
       f.should_receive(:launch).at_least(:once).and_return(launch)
       f.invalidate_accounting_entries
       f.accounting_entries_valid?.should be_false
     end
-    
+
     it "should create accounting entries without a delayed job, if called with delayed = false" do
       f = Flight.generate!
       f.accounting_entries
@@ -80,12 +81,13 @@ describe Flight do
       f.should_not_receive(:delay)
       launch = mock("launch")
       launch.should_receive(:invalidate_accounting_entries).at_least(:once)
+      launch.stub(:abstract_flight_changed)
       f.should_receive(:launch).at_least(:once).and_return(launch)
       f.should_receive(:create_accounting_entries)
       f.invalidate_accounting_entries(false)
       f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
     end
-    
+
     it "should not invalidate accounting_entries if not editable" do
       f = Flight.generate!
       f.accounting_entries
@@ -96,14 +98,15 @@ describe Flight do
       f.invalidate_accounting_entries(true)
       f.invalidate_accounting_entries(false)
     end
-    
+
     it "should create accounting entries if invalid" do
       f = Flight.generate!
+      f.update_attribute :accounting_entries_valid, false
       f.should_receive(:create_accounting_entries)
       f.accounting_entries
-    end  
+    end
   end
-  
+
   it "should have a complete history" do
     f = Flight.create
     f.update_attribute :plane_id, Plane.generate!.id

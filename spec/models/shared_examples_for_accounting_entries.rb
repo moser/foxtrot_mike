@@ -25,27 +25,27 @@ shared_examples_for "an accounting entry factory" do
       @lnch = @xf.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @xf, :operator => Person.generate!)
       @xf.save!
       @xf.accounting_entries
-    
+
     #it "should create 4 accounting entries" do #launch and flight each have 1 free and 1 bound cost item
       @xf.accounting_entries.count.should == 4
-    
+
     #it "should set accounting_entries_valid to true" do
       @xf.accounting_entries
       @xf.accounting_entries_valid?.should be_true
-    
+
     #it "should delete old accounting entries before creating new ones" do
       n = @xf.accounting_entries.count
       @xf.invalidate_accounting_entries
       @xf.accounting_entries.count.should == n
-      
+
     #launch should create entries
       @xf.launch.accounting_entries.should_not be_empty
-      
+
     #it "should include accounting entries for the launch" do
       @xf.launch.should_receive(:accounting_entries).and_return([1])
       @xf.accounting_entries.should include(1)
     end
-    
+
     describe "tow_flight" do
       it "should create accounting entries" do
         pm = PersonCostCategoryMembership.generate!
