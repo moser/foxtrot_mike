@@ -60,6 +60,7 @@
   - deactivate groups
   - online help
   - phone list
+  - deactivate airports by location (eg lat > 50 && < 45)
 
 # ideas / long run
   - accounting session
