@@ -4,6 +4,9 @@ body
   font-family: verdana, arial, helvetica, sans-serif
   font-size: 13px
   line-height: 18px
+  margin: 0
+  margin-bottom: 5px
+  position: relative
 
 p, ol, ul, td
   font-family: verdana, arial, helvetica, sans-serif
@@ -56,17 +59,26 @@ a
 a img
   border: none
 
+h1
+  margin-top: 5px
+
 .marked
   background: #99f
 
 .hidden
   display: none
 
+.header_container
+  position: fixed
+  width: 100%
+  height: 50px
+  background: url('/assets/headerbg.png')
+  z-index: 999
+
 .header
-  width: 76em
+  width: 75em
   margin: auto
-  padding: 0.5em
-  padding-bottom: 0
+  padding-top: 1em
 
 .please_wait
   position: fixed
@@ -74,11 +86,15 @@ a img
   right: 1em
   display: none
 
-.content
-  width: 75em
+.content_container
+  width: 76em
   margin: auto
-  border: 1px solid #ccc
+  padding-top: 50px
+
+.content
   padding: 1em
+  border: 1px solid #999
+  border-width: 0 1px
   position: relative
 
 ul
@@ -117,7 +133,7 @@ ul
 
 .boxes > div
   float: left
-  width: 35.5em
+  width: 34.7em
   border: 1px solid #ddd
   margin: 0.9em
   h2
@@ -165,7 +181,7 @@ h2.page_sub_title, .show_on_startup
   width: 100%
   height: 100%
   background-color: white
-  background-image: url('/images/ajax-loader.gif')
+  background-image: url('/assets/loading.gif')
   background-repeat: no-repeat
   background-position: center center
   opacity: .6
