@@ -1,7 +1,4 @@
 %h1= t "views.editing", :name => Account.l
-= simple_form_for(@account) do |f|
-  = f.input :login
-  = f.association :person
-  = f.button :submit
+= render :partial => "accounts/form", :locals => { :account => @account }
 = show_link(@account)
 = back_link(Account)

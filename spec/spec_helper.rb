@@ -14,17 +14,17 @@ unless defined?(SetupSpec)
   Dir["#{::Rails.root}/spec/factories/**/*.rb"].each {|f| require f}
 
   require 'factory_girl/syntax/generate'
-  
+
   class ActionView::TestCase::TestController
+    helper_method :current_account
     def current_account
-      return @current_account if defined?(@current_account)  
+      return @current_account if defined?(@current_account)
       @current_account = Account.generate!
-      @current_account.account_roles.create :role => :admin 
       @current_account
     end
 
     def current_ability
-      Class.new { 
+      Class.new {
         include CanCan::Ability
         def initialize(*a)
           can :manage, :all
@@ -35,14 +35,13 @@ unless defined?(SetupSpec)
 
   class ApplicationController
     def current_account
-      return @current_account if defined?(@current_account)  
+      return @current_account if defined?(@current_account)
       @current_account = Account.generate!
-      @current_account.account_roles.create :role => :admin 
       @current_account
     end
 
     def current_ability
-      Class.new { 
+      Class.new {
         include CanCan::Ability
         def initialize(*a)
           can :manage, :all
@@ -64,16 +63,16 @@ unless defined?(SetupSpec)
     config.before(:each) do
       init_haml_helpers
     end
-    config.before(:suite) do  
-      DatabaseCleaner.strategy = :truncation  
-    end  
-      
-    config.before(:each) do  
-      DatabaseCleaner.start  
-    end  
-      
-    config.after(:each) do  
-      DatabaseCleaner.clean  
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
     end
   end
 end

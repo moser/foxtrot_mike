@@ -167,14 +167,14 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    if current_account  
+    if current_account
       redirect_to "/403.html"
     else
       session[:redirect_to_after_login] = current_path
       redirect_to "/login"
     end
   end
-  
+
 private
   def date_from_is(hash, key)
     Date.new(*[hash["#{key}(1i)"], hash["#{key}(2i)"], hash["#{key}(3i)"]].map { |e| e.to_i })

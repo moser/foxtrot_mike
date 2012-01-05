@@ -25,8 +25,6 @@
     - heading
   - layout in ff3.6/windows
   - warning when flight is before sr/after ss
-  - accounts
-    - manage roles
   - controller role
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
     - soft validate models

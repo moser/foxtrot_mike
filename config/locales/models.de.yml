@@ -108,6 +108,11 @@ de:
         password: Passwort
         password_confirmation: "Passwort (Wiederholung)"
         login: Loginname
+        admin: Admin
+        license_official: Lizenzverwalter
+        treasurer: Kassierer
+        controller: Flugleiter
+        reader: Leser
       accounting_session:
         must_not_be_in_the_future: Darf nicht in der Zukunft liegen.
         finished: Abgeschlossen

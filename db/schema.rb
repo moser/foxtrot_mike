@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217153346) do
+ActiveRecord::Schema.define(:version => 20120105194353) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -37,13 +37,6 @@ ActiveRecord::Schema.define(:version => 20111217153346) do
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
 
-  create_table "account_roles", :force => true do |t|
-    t.integer  "account_id"
-    t.string   "role"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "accounting_entries", :force => true do |t|
     t.integer  "from_id"
     t.integer  "to_id"
@@ -66,14 +59,14 @@ ActiveRecord::Schema.define(:version => 20111217153346) do
 
   create_table "accounts", :force => true do |t|
     t.string   "person_id",           :limit => 36
-    t.string   "login",                                            :null => false
-    t.string   "crypted_password",                                 :null => false
-    t.string   "password_salt",                                    :null => false
-    t.string   "persistence_token",                                :null => false
-    t.string   "single_access_token",                              :null => false
-    t.string   "perishable_token",                                 :null => false
-    t.integer  "login_count",                       :default => 0, :null => false
-    t.integer  "failed_login_count",                :default => 0, :null => false
+    t.string   "login",                                                :null => false
+    t.string   "crypted_password",                                     :null => false
+    t.string   "password_salt",                                        :null => false
+    t.string   "persistence_token",                                    :null => false
+    t.string   "single_access_token",                                  :null => false
+    t.string   "perishable_token",                                     :null => false
+    t.integer  "login_count",                       :default => 0,     :null => false
+    t.integer  "failed_login_count",                :default => 0,     :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -81,6 +74,11 @@ ActiveRecord::Schema.define(:version => 20111217153346) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",                             :default => false
+    t.boolean  "license_official",                  :default => false
+    t.boolean  "treasurer",                         :default => false
+    t.boolean  "controller",                        :default => false
+    t.boolean  "reader",                            :default => false
   end
 
   add_index "accounts", ["login"], :name => "index_accounts_on_login", :unique => true

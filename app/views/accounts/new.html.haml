@@ -1,8 +1,3 @@
 %h1= t "views.create", :name => Account.l
-= simple_form_for(@account) do |f|
-  = f.input :login
-  = f.association :person
-  = f.input :password, :as => :password
-  = f.input :password_confirmation, :as => :password
-  = f.button :submit
+= render :partial => "accounts/form", :locals => { :account => @account }
 = back_link(Account)
