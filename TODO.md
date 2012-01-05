@@ -12,6 +12,8 @@
   - flights#index
     - big up/down button should not jump to empty day?
     - show scrollbars
+    - show all flights instead of scrollbars?
+      - make daybar scroll
   - flights#show
     - delete flight
     - show controller
@@ -64,3 +66,4 @@
   - add concept of a update event (bundles all changes of automatic update thru a client)
     - add possibility to undo all changes
     - show changes of such an event
+
