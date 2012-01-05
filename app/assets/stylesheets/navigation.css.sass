@@ -1,0 +1,51 @@
+#navigation
+  margin: auto
+  position: relative
+  ul
+    list-style-type: none
+    margin: auto
+    padding: 0
+  li
+    position: relative
+    display: inline-block
+    padding: 0 0.5em
+    margin-left: 0.2em
+    &.logout
+      position: absolute
+      right: 0
+      top: 0
+    a
+      text-decoration: none
+      margin: 0.5em
+      width: 100%
+    border: 1px solid #ccc
+    border-bottom: 0
+    &.current
+      background: #ccc
+    ul
+      display: none
+      position: absolute
+      margin: 0
+      padding: 0
+      left: -1px
+      top: 18px
+      background-color: #fff
+      li
+        display: block
+        margin: 0
+        &:last-child
+          display: block
+          margin: 0
+          border-bottom: 1px solid #ccc
+    &:hover
+      background: #eee
+      ul
+        display: block
+        z-index: 200
+        li
+          ul
+            left: 40px
+            display: none
+          &:hover ul
+            display: block
+            z-index: 400

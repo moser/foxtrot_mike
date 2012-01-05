@@ -1,0 +1,64 @@
+.input
+  label
+    display: inline-block
+    width: 170px
+    color: #999
+    vertical-align: top
+    &.collection_radio
+      display: inline
+      color: #000
+  input, select
+    width: 14em
+  &.check_boxes span
+    display: block
+  input[type=checkbox]
+    width: auto
+    margin-left: 170px
+    margin-right: 1em
+    margin-top: 2px
+    float: left
+
+.field_with_errors
+  input, select
+
+.input textarea
+  width: 20em
+  height: 10em
+
+.simple_form
+  input[type=submit]
+    margin-left: 10em
+  .error
+    margin-left: 1em
+    font-size: 0.9em
+    color: #D00
+    font-style: italic
+  .hint
+    margin-left: 1em
+    font-size: 0.9em
+    color: #555
+    font-style: italic
+
+.choice input
+  &[type=checkbox], &[type=radio]
+    + .hide_if_unchecked
+      display: none
+    &:checked + .hide_if_unchecked
+      display: block
+
+form.button_to
+  display: inline
+  div
+    display: inline
+
+input[type=submit].delete
+  border: none
+  background: none
+  font-family: verdana,arial
+  font-size: 13px
+  color: #000077
+  text-decoration: underline
+  padding: 0
+  line-height: 18px
+  &:hover
+    color: #660000
