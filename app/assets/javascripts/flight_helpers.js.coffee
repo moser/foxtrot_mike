@@ -27,11 +27,8 @@ class List
     @list
 
 peopleList = new List("/people.json", "name", { name: -> "#{@firstname} #{@lastname}" })
-peopleList.load()
 planesList = new List("/planes.json", "registration")
 airfieldsList = new List("/airfields.json", "name")
-planesList.load()
-airfieldsList.load()
 
 class TowPlanesList
   constructor: (@list) -> 1
@@ -44,8 +41,9 @@ towPlanesList = new TowPlanesList(planesList)
 
 class PeopleListWithUnknown
   constructor: (@wrapped_list) ->
-    self = this
     @unknown = null
+  load: ->
+    self = this
     $.get "/unknown_person.json", (data) ->
       self.unknown = self.wrapped_list.createObj(data)
   get: (id) ->
@@ -206,3 +204,10 @@ class @CrewHelper
   constructor: (el, prefix = "flight") ->
     new CrewMemberHelper(el, "seat1", true, prefix, peopleListWithUnknown)
     new CrewMemberHelper(el, "seat2", false, prefix, peopleListWithN)
+
+$ ->
+  if document.location.pathname.match("^/flights")?
+    peopleList.load()
+    planesList.load()
+    airfieldsList.load()
+    peopleListWithUnknown.load()
