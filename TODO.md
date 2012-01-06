@@ -31,6 +31,7 @@
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - do not load json data if not needed
   - filtered\_flights permalink
+  - mainlogbook#show translate "No Flights"
 
 # medium run
   - ajaxify other pages

@@ -16,10 +16,10 @@ $(function() {
       //console.log(filter);
       e.find(filter).show();
     }
-    for (k in filter_by) {
-      var f = e.find("#" + filter_by[k]);
+    for (i = 0; i < filter_by.length; i++) {
+      var f = e.find("#" + filter_by[i]);
       if(f) {
-        elems[filter_by[k]] = $(f);
+        elems[filter_by[i]] = $(f);
         f.change(handler);
         f.keyup(handler);
       }

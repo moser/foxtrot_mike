@@ -162,7 +162,7 @@ function Days() {
     }
     this.elements[key].loaded = new Date(new Date() - 86400000);
     this.invalidatedDays.push(key);
-  }
+  };
   this.reloadInvalidated = function() {
     for(i = 0; i < this.invalidatedDays.length; i++) {
       this.reload(this.invalidatedDays[i], function() {});
