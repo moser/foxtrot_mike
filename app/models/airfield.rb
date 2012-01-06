@@ -10,7 +10,7 @@ class Airfield < ActiveRecord::Base
   validates_uniqueness_of :registration, :if => Proc.new { |airfield| airfield.registration != "" }
 
   default_scope order("name asc")
-
+  scope :home, where(:home => true)
 
   def registration
     read_attribute(:registration) || ""

@@ -6,11 +6,13 @@
       -# if current_account && current_account.person && current_account.person.financial_account
       -#  %li= link_to "Buchungen anzeigen", own_financial_account_path
       %li= link_to t("change_password"), new_password_path
-  .views
-    %h2 Ansichten
-    %ul
-      %li= link_to t("views.main_flight_book"), airfield_main_log_book_path(AppConfig::HomeAirfield)
-      %li= link_to t("views.controller_log"), airfield_main_log_book_path(AppConfig::HomeAirfield, :as => "controller_log")
+  - if Airfield.home.count > 0
+    .views
+      %h2 Ansichten
+      %ul
+        - Airfield.home.each do |a|
+          %li= link_to t("views.main_flight_book", :name => a.to_s), airfield_main_log_book_path(a)
+          %li= link_to t("views.controller_log", :name => a.to_s), airfield_main_log_book_path(a, :as => "controller_log")
   .bordbooks
     %h2= t('views.bordbooks')
     %ul

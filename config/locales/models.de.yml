@@ -122,6 +122,7 @@ de:
         registration: Kennung
         lat: geog. Breite (+ = Nord)
         long: geog. Länge (+ = Ost)
+        home: Heimatflugplatz
       abstract_flight:
         base: "Dieser Flug"
         plane: Flugzeug

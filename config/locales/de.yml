@@ -17,7 +17,7 @@ de:
     bordbooks: Bordbücher
     cancel: "Abbrechen"
     controller: "Flugleiter"
-    controller_log: "Flugleiterdienstbuch"
+    controller_log: "Flugleiterdienstbuch (%{name})"
     copy: Kopieren
     create: "%{name} erstellen"
     current: "Aktuell"
@@ -28,7 +28,7 @@ de:
     flightbooks: Flugbücher
     from: "Von"
     future: "Zukünftig"
-    main_flight_book: "Hauptflugbuch"
+    main_flight_book: "Hauptflugbuch (%{name})"
     new: "Erstellen"
     previous: "Ehemalig"
     show: "Anzeigen"

@@ -56,6 +56,9 @@
   - phone list
   - deactivate airports by location (eg lat > 50 && < 45)
   - mobile stylesheet
+  - setup
+    - shown if db is empty, asks for some details
+  - srss tables for every airfield (where not lat == 0 && lon == 0)
 
 # ideas / long run
   - accounting session

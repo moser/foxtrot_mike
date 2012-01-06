@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120105194353) do
+ActiveRecord::Schema.define(:version => 20120106124854) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20120105194353) do
     t.datetime "updated_at"
     t.float    "lat",                        :default => 0.0
     t.float    "long",                       :default => 0.0
+    t.boolean  "home",                       :default => false
   end
 
   add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true
