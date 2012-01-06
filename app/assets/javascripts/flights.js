@@ -43,6 +43,7 @@ function Days() {
   this.reloadAge = 300000; //age of day obj in milliseconds when it should be reloaded
   this.preLoading = {};
   this.elements = {};
+  this.invalidatedDays = [];
   this.callbackFor = function(key) {
     if(this.modalWaitingFor[key]) {
       this.modalWaitingFor[key].forEach(function(e) { e(self.elements[key]); });
@@ -86,7 +87,7 @@ function Days() {
     this.elements[d.key] = d;
     var c = d.count();
     if(c == 0)
-      $("div.day_link-" + d.key).remove();
+      $("#day_link-" + d.key).remove();
     else {
       if($("#day_link-" + d.key).length == 0) {
         var newday = $('<div data-date="'+ d.key +'" class="day_link" id="day_link-'+ d.key +'"><a href="/flights/day/'+ d.key +'" data-date="'+ d.key +'">'+ Format.date_short(Parse.date_to_s(d.key)) +'</a><span class="count">('+ c +')</span></div>');
@@ -156,12 +157,17 @@ function Days() {
     return d;
   };
   this.invalidate_day = function(key) {
-    //console.log("invalidate_day " + key);
     if(!this.present(key)) {
       this.elements[key] = new Day($('<div class="day alternate" id="'+ key +'"><div class="flight"/></div>')); //add element with one flight
     }
     this.elements[key].loaded = new Date(new Date() - 86400000);
+    this.invalidatedDays.push(key);
   }
+  this.reloadInvalidated = function() {
+    for(i = 0; i < this.invalidatedDays.length; i++) {
+      this.reload(this.invalidatedDays[i], function() {});
+    }
+  };
 }
 
 function Day(dom) {
@@ -259,6 +265,7 @@ var Flights = {
           $("div.day_link.current").removeClass("current");
           $("div.day_link[data-date="+ d.key +"]").addClass("current")
         }
+        Flights.days.reloadInvalidated();
       }
     };
     Flights.current_view = "list";

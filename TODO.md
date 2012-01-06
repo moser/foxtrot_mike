@@ -7,8 +7,6 @@
     - js helpers
   - js helpers
     - leave seat1 empty on new flight
-  - flight change date
-    - flight#index shows wrong number on day sidebar (may even show empty day)
   - flights#show
     - delete flight
     - show controller
@@ -29,8 +27,10 @@
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - do not load json data if not needed
+  - filtered\_flights permalink
 
 # medium run
+  - ajaxify other pages
   - flight#history ...
   - caching
   - security: attr\_accessible
@@ -51,6 +51,7 @@
   - online help
   - phone list
   - deactivate airports by location (eg lat > 50 && < 45)
+  - mobile stylesheet
 
 # ideas / long run
   - accounting session
