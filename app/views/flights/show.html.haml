@@ -76,8 +76,8 @@
         %tr
           %th= Flight.l(:problems)
           %td.problems
-            - @flight.problems.each do |sym|
-              .problem= t("soft_validation.flight.#{sym.to_s}")
+            - @flight.problems.each do |key, v|
+              .problem= t("soft_validation.flight.#{key.to_s}", v)
       - unless @flight.seat1.nil? || @flight.seat1.unknown?
         %tr
           %th

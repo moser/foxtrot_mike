@@ -22,7 +22,6 @@
   - layout in ff
     - person#new
       - form fields after checkboxes are indented
-  - warning when flight is before sr/after ss
   - controller role
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
     - soft validate models

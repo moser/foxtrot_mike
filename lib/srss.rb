@@ -7,7 +7,7 @@ require "date"
 #  p a.sunset(date).to_s #=> "2011-06-12T19:12:29+00:00"
 class SRSS
   attr_reader :ln, :lw
-  
+
   def sin(x)
     Math.sin(x * Math::PI / 180.0)
   end
@@ -92,7 +92,7 @@ class SRSS
     jstar = J2000 + J0 + (htarget + lw) * J3 / 360.0 + J3 * n
     jstar = jstar + J1 * sin(m) + J2 * sin(2 * lsun)
   # correction does not work
-  #  20.times do 
+  #  20.times do
   #    p jstar
   #    jstar = jstar + (htarget - theta(jstar, lw) + alpha(jstar)) / 360.0 * J3
   #  end
@@ -104,19 +104,32 @@ class SRSS
   def h(jd, ln)
     acos((sin(H0) - sin(ln) * sin(delta(jd))/(cos(ln) * cos(delta(jd)))))
   end
-  
+
   def initialize(north, west)
     @ln = north
     @lw = -west
   end
-  
+
   def sunrise(date)
     jd = date.jd
     DateTime.jd(j(jd, lw, -h(jd, ln)) + 0.5)
   end
-  
+
   def sunset(date)
     jd = date.jd
     DateTime.jd(j(jd, lw, h(jd, ln)) + 0.5)
+  end
+
+  def sunrise_i(date)
+    time_to_minutes(sunrise(date))
+  end
+
+  def sunset_i(date)
+    time_to_minutes(sunset(date))
+  end
+
+private
+  def time_to_minutes(t)
+    t.hour * 60 + t.min
   end
 end

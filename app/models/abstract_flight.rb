@@ -50,14 +50,23 @@ class AbstractFlight < ActiveRecord::Base
 
   attr_reader :problems
   def soft_validate
-    @problems = []
-    @problems << :too_many_people if plane && crew_members.map { |e| e.size }.sum > plane.seat_count
-    @problems << :seat2_is_not_an_instructor if seat1 && seat1.trainee? && seat2 && !seat2.instructor?
-    @problems << :launch_method_impossible if plane && ((!plane.selflaunching? && launch.nil?) ||
+    @problems = {}
+    @problems[:too_many_people] = {} if plane && crew_members.map { |e| e.size }.sum > plane.seat_count
+    @problems[:seat2_is_not_an_instructor] = {} if seat1 && seat1.trainee? && seat2 && !seat2.instructor?
+    @problems[:launch_method_impossible] = {} if plane && ((!plane.selflaunching? && launch.nil?) ||
                                                         (!plane.can_be_towed && launch.is_a?(TowFlight)) ||
                                                         (!plane.can_be_wire_launched && launch.is_a?(WireLaunch)))
-    @problems << :seat1_no_license if plane && seat1 && seat1.person && !seat1.person.has_relevant_licenses_for(self)
-    @problems << :no_cost_calculation_possible if plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
+    @problems[:seat1_no_license] = {} if plane && seat1 && seat1.person && !seat1.person.has_relevant_licenses_for(self)
+    @problems[:no_cost_calculation_possible] = {} if plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
+    sr = nil
+    ss = nil
+    if (departure_i >= 0 && from && from.srss? && (sr = from.srss.sunrise_i(departure_date)) > departure_i) ||
+                                           (arrival_i >= 0 && to && to.srss? && (ss = to.srss.sunset_i(departure_date)) < arrival_i)
+      @problems[:not_between_sr_and_ss] = { :sr => DayTime.new(sr), :ss => DayTime.new(ss) }
+    end
+    [ :departure_i, :arrival_i ].each do |field|
+      @problems["#{field}_needed"] = {} if send(field) < 0
+    end
     @problems.empty?
   end
 
@@ -72,7 +81,6 @@ class AbstractFlight < ActiveRecord::Base
   validates_presence_of :plane
   validates_presence_of :departure
   validates_presence_of :seat1_id
-  validates_presence_of :controller
   validates_presence_of :from
   validates_presence_of :to
 

@@ -6,6 +6,9 @@ de:
       too_many_people: "Für die angegebene Besatzung ist im Flugzeug kein Platz."
       launch_method_impossible: "Flugzeug und Startart passen nicht zusammen."
       no_cost_calculation_possible: "Kosten konnten nicht berechnet werden. (Diese Warnung kann in den Eigenschaften des Flugzeugs deaktiviert werden.)"
+      departure_i_needed: "Abflug muss ausgefüllt werden."
+      arrival_i_needed: "Ankunft muss ausgefüllt werden."
+      not_between_sr_and_ss: "Flug ist nicht zwischen Sonnenauf- und Sonnenuntergang (%{sr} - %{ss})."
   member_state:
     active: Aktiv
     passive: Passiv

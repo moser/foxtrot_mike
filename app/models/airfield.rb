@@ -40,6 +40,11 @@ class Airfield < ActiveRecord::Base
     @srss ||= SRSS.new(lat, long)
   end
 
+  # returns if sunrise/sunset calculation makes sense
+  def srss?
+    lat != 0.0 && long != 0.0 #there should not be an airfield, somewhere in the ocean
+  end
+
   def to_j
     { :id => id, :name => name, :registration => registration }
   end
