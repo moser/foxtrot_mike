@@ -1,4 +1,5 @@
 %h1= t('.title')
+= new_link(Plane)
 %table.filtered{ :"data-filter-by" => "group_id,filter_string" }
   %tr.no_filter.show_on_startup
     %th= t("views.filter_search")
@@ -10,14 +11,15 @@
     %th= Plane.l :registration
     %th= Plane.l :make
     %th= Plane.l :group
+    %th= Plane.l :plane_cost_categories
+    %th= Plane.l :financial_account
   %tbody.alternate
     - @planes.each do |plane|
       %tr.alternate_color{ :"data-filter_string" => "#{plane.registration} #{plane.make}".downcase, :"data-group_id" => plane.group_id }
         %td{ :class => plane.disabled ? "strike" : "" }=h plane.registration
         %td=h plane.make
         %td=h plane.group.name
+        %td=h plane.current_plane_cost_category_memberships.map { |c| c.plane_cost_category.name }.join(", ")
+        %td=h plane.financial_account
         %td= show_link(plane)
-        %td= show_link([plane, :flights], Plane.l(:book))
         %td= edit_link(plane)
-        %td= destroy_link(plane)
-= new_link(Plane)

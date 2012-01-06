@@ -185,6 +185,7 @@ de:
         condition_operator: Operator
         condition_value_i: Wert
       plane:
+        plane_cost_categories: Flugzeugkategorien
         registration: Kennzeichen
         make: Typ
         seat_count: Sitzplätze
