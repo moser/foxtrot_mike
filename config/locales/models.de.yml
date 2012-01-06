@@ -240,6 +240,7 @@ de:
         operator: Windenfahrer
       wire_launcher:
         registration: Kennzeichen
+        wire_launcher_cost_categories: Windenkategorien
       wire_launch_cost_item:
         value: Wert
       time_cost_rule:

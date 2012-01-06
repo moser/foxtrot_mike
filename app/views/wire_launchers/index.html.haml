@@ -1,4 +1,5 @@
 %h1= t('.title')
+= new_link(WireLauncher)
 %table.filtered{ :"data-filter-by" => "filter_string" }
   %tr.no_filter.show_on_startup
     %th= t("views.filter_search")
@@ -6,9 +7,12 @@
     %td= text_field_tag "filter_string"
   %tr.no_filter
     %th= WireLauncher.l(:registration)
+    %th= WireLauncher.l :wire_launcher_cost_categories
+    %th= WireLauncher.l :financial_account
   - @wire_launchers.each do |wire_launcher|
     %tr.alternate_color{ :"data-filter_string" => wire_launcher.registration.downcase }
       %td= h wire_launcher.registration
-      %td= link_to t('views.show'), wire_launcher
-      %td= link_to t('views.edit'), edit_wire_launcher_path(wire_launcher)
-= link_to t('views.new'), new_wire_launcher_path
+      %td=h wire_launcher.current_wire_launcher_cost_category_memberships.map { |c| c.wire_launcher_cost_category.name }.join(", ")
+      %td=h wire_launcher.financial_account
+      %td= show_link(wire_launcher)
+      %td= edit_link(wire_launcher)
