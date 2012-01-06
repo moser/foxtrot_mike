@@ -6,7 +6,7 @@ class FlightsController < ApplicationController
   #before_filter :login_required
 
   def dates
-    @dates ||= AbstractFlight.group("departure_date").order("departure_date DESC").count unless request.xhr?
+    @dates ||= AbstractFlight.where("departure_date > ?", 2.years.ago).group("departure_date").order("departure_date DESC").count unless request.xhr?
   end
 
   # GET /flights

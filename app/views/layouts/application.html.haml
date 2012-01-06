@@ -9,18 +9,20 @@
     = stylesheet_link_tag 'print/print', :media => "print"
     = javascript_include_tag 'application'
   %body
-    %noscript.block.flash.error
-      = t(".js_warning")
-    .header
-      - #= render :partial => "common/account_bar"
-      = render :partial => "common/navigation_bar"
-    .please_wait
-      = image_tag "/images/ajax-loader.gif"
-    .content
-      - if flash[:notice]
-        .flash.notice= flash[:notice]
-      - if flash[:success]
-        .flash.success= flash[:success]
-      - if flash[:error]
-        .flash.error= flash[:error]
-      = yield
+    .header_container
+      .header
+        - #= render :partial => "common/account_bar"
+        = render :partial => "common/navigation_bar"
+        .please_wait
+          = image_tag "/assets/loading.gif"
+    .content_container
+      .content
+        %noscript.block.flash.error
+          = t(".js_warning")
+        - if flash[:notice]
+          .flash.notice= flash[:notice]
+        - if flash[:success]
+          .flash.success= flash[:success]
+        - if flash[:error]
+          .flash.error= flash[:error]
+        = yield

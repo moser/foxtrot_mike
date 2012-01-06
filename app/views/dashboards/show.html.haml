@@ -6,16 +6,16 @@
       -# if current_account && current_account.person && current_account.person.financial_account
       -#  %li= link_to "Buchungen anzeigen", own_financial_account_path
       %li= link_to t("change_password"), new_password_path
-  .bordbooks
-    %h2= t('views.bordbooks')
-    %ul
-      - @planes.each do |p|
-        %li= link_to p.registration, polymorphic_path([p, :flights])
   .views
     %h2 Ansichten
     %ul
       %li= link_to t("views.main_flight_book"), airfield_main_log_book_path(AppConfig::HomeAirfield)
       %li= link_to t("views.controller_log"), airfield_main_log_book_path(AppConfig::HomeAirfield, :as => "controller_log")
+  .bordbooks
+    %h2= t('views.bordbooks')
+    %ul
+      - @planes.each do |p|
+        %li= link_to p.registration, polymorphic_path([p, :flights])
   .flightbooks
     %h2= t('views.flightbooks')
     %ul

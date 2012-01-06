@@ -43,6 +43,7 @@ function Days() {
   this.reloadAge = 300000; //age of day obj in milliseconds when it should be reloaded
   this.preLoading = {};
   this.elements = {};
+  this.invalidatedDays = [];
   this.callbackFor = function(key) {
     if(this.modalWaitingFor[key]) {
       this.modalWaitingFor[key].forEach(function(e) { e(self.elements[key]); });
@@ -86,16 +87,16 @@ function Days() {
     this.elements[d.key] = d;
     var c = d.count();
     if(c == 0)
-      $(".dc div.day_link-" + d.key).remove();
+      $("#day_link-" + d.key).remove();
     else {
-      if($(".dc #day_link-" + d.key).length == 0) {
+      if($("#day_link-" + d.key).length == 0) {
         var newday = $('<div data-date="'+ d.key +'" class="day_link" id="day_link-'+ d.key +'"><a href="/flights/day/'+ d.key +'" data-date="'+ d.key +'">'+ Format.date_short(Parse.date_to_s(d.key)) +'</a><span class="count">('+ c +')</span></div>');
-        var after = $(".dc .items div").filter(function() { return $(this).data("date") > d.key }).last();
+        var after = $(".day_links div").filter(function() { return $(this).data("date") > d.key }).last();
         (after.length > 0 ?
           after.after(newday)
-          : $(".dc .items").prepend(newday)).effect("highlight", {}, 3000);
+          : $(".day_links").prepend(newday)).effect("highlight", {}, 3000);
       }
-      $(".dc #day_link-" + d.key + " .count").html("(" + c + ")");
+      $("#day_link-" + d.key + " .count").html("(" + c + ")");
       this.callbackFor(d.key);
     }
   };
@@ -154,14 +155,19 @@ function Days() {
       self.add(new Day($(e)));
     });
     return d;
-  };  
+  };
   this.invalidate_day = function(key) {
-    //console.log("invalidate_day " + key);
     if(!this.present(key)) {
-      this.elements[key] = new Day($('<div class="day scrollable alternate" id="'+ key +'"><div class="flight"/></div>')); //add element with one flight
+      this.elements[key] = new Day($('<div class="day alternate" id="'+ key +'"><div class="flight"/></div>')); //add element with one flight
     }
     this.elements[key].loaded = new Date(new Date() - 86400000);
+    this.invalidatedDays.push(key);
   }
+  this.reloadInvalidated = function() {
+    for(i = 0; i < this.invalidatedDays.length; i++) {
+      this.reload(this.invalidatedDays[i], function() {});
+    }
+  };
 }
 
 function Day(dom) {
@@ -198,50 +204,9 @@ var Flights = {
   current_view: "",
   cache: {},
   init: function() {
-    $(".dc .scrollable").scrollable({vertical : true, mousewheel: true, item: ".day_link", speed: 200});
-    $('a.scroll_days_down').live('click', function(e) {
-      var s = $('.dc .scrollable').data('scrollable');
-      if(s.getIndex() > s.getSize() - 15) {
-        s.end();
-      } else {
-        s.move(14);
-      }
-      return false;
-    });
-    $('a.scroll_days_up').live('click', function(e) {
-      var s = $('.dc .scrollable').data('scrollable');
-      if(s.getIndex() < 14) {
-        s.begin();
-      } else {
-        s.move(-14);
-      }
-      return false;
-    });
-
-    $("a.down").live("click", function(e) { 
-      if(!e.ctrlKey) {
-        if(Flights.scrollable.getIndex() > Flights.scrollable.getSize() - Flights.per_page) {
-          Flights.goto_day(Flights.current_day.prev_key, true);
-        } else {
-          Flights.scrollable.move(1);
-        }
-        return false;
-      }
-    });
-    $("a.up").live("click", function(e) {
-      if(!e.ctrlKey) {
-        if(Flights.scrollable.getIndex() == 0) {
-          Flights.goto_day(Flights.current_day.next_key, true);
-        } else {
-          Flights.scrollable.move(-1);
-        }
-        return false;
-      }
-    });
-
     $(".day_link a").live("click", function(e) {
       if(!e.ctrlKey) {
-        Flights.goto_day($(e.target).attr("data-date"), true);
+        Flights.goto_day($(this).attr("data-date"), true);
         return false;
       }
     });
@@ -288,7 +253,7 @@ var Flights = {
     }
     if (doState) { Flights.doState("push", { day: key }, "/flights/day/" + key); }
     if(first) { Flights.doState("replace", { day: key }, "/flights/day/" + key); }
-    var f = function(d, highlight) { 
+    var f = function(d, highlight) {
       if(d && Flights.current_view == "list") {
         $(".item_container").hide();
         $(".list").show();
@@ -297,20 +262,10 @@ var Flights = {
           $(".flights .day").remove();
           $(".flights").html(d.dom);
           if(highlight) { $(".flights .day .flight").effect("highlight", {}, 3000); }
-          $(".dc div.day_link.current").removeClass("current");
-          $('.dc .scrollable').data('scrollable').seekTo(
-            $('.dc .scrollable').data('scrollable').getItems().
-              index($(".dc div#day_link-" + d.key).addClass("current")));
-          Flights.scrollable = $(".flights .day").scrollable({vertical : true, mousewheel: true, item: ".flight", onBeforeSeek: function(e, i) {
-            if(i > (e.target.getSize() - Flights.per_page + 1)) {
-              if(e.target.getIndex() < (e.target.getSize() - Flights.per_page + 1)) {
-                e.target.seekTo(e.target.getSize() - Flights.per_page + 1);
-              }
-              return false;
-            }
-          }, speed: 200}).data("scrollable");
-          Flights.scrollable.begin();
+          $("div.day_link.current").removeClass("current");
+          $("div.day_link[data-date="+ d.key +"]").addClass("current")
         }
+        Flights.days.reloadInvalidated();
       }
     };
     Flights.current_view = "list";
@@ -332,7 +287,6 @@ var Flights = {
         f(Flights.cache[url].dom);
         if (doState) { Flights.doState("push", { path: url }, url); }
         if(first) { Flights.doState("replace", { path: url }, url); }
-        
         // Reload only if older than 60s
         // TODO reload for edit or don't cache edit?
         if(new Date - Flights.cache[url].loaded > 60000) {
@@ -400,12 +354,12 @@ $(function() {
     $('li.flights_menu_link').children('a').click(function(e) {
       return Flights.menu_link_clicked();
     });
-    
+
     $('a.inline_form_show').live('click', function(e) {
       var t = $(e.target);
       Flights.invalidate_cache(t.parents(".item").data("path"));
       Flights.days.invalidate_day(t.parents(".item").data("departure_date"));
-      
+
       $('form.edit').live('submit', function(e) {
         var d = Parse.date($(e.target).find("input#flight_departure_date").val());
         if(d)

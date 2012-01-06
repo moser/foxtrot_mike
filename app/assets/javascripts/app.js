@@ -264,10 +264,6 @@ jQuery.fn.sortElements = (function(){
 })();
 
 $(function() {
-  // change the .scrollable class dynamically, so that then
-  // page is loaded without JS scrollbars are shown.
-  $("head").append('<style type="text/css"> .scrollable { overflow: hidden; } </style>');
-  
   $('a.facebox').live('click', function(e) {
     if(!e.ctrlKey && !e.shiftKey) {
       jQuery.facebox({ ajax: e.target.href }); 

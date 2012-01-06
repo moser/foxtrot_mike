@@ -1,8 +1,6 @@
 - days.keys.sort.each do |current_day|
-  .day.scrollable{ :id => current_day.to_s }
-    .items.alternate
+  .day{ :id => current_day.to_s }
+    .alternate
       - days[current_day].each do |flight|
         .flight.flight_format.alternate_color{ :class => flight.problems_exist? ? "problems" : "" }
           = render :partial => "flights/flight_spans", :locals => { :flight => flight }
-          %span= show_link(flight, nil, {:class => "sop show"})
-          - #%span= edit_link(flight, nil, {:class => "sop edit"})
