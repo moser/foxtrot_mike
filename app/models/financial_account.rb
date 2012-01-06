@@ -11,6 +11,10 @@ class FinancialAccount < ActiveRecord::Base
   end
 
   def to_s
-    name
+    if number
+      "#{name} (#{number})"
+    else
+      name
+    end
   end
 end

@@ -11,14 +11,15 @@
     %th= Person.l(:lastname)
     %th= Person.l(:firstname)
     %th= Person.l(:group)
+    %th= Person.l(:person_cost_categories)
+    %th= Person.l(:financial_account)
   %tbody.alternate
     - @people.each do |person|
       %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
-        %td=h person.lastname
-        %td=h person.firstname
+        %td{ :class => person.disabled? ? "strike" : "" }=h person.lastname
+        %td{ :class => person.disabled? ? "strike" : "" }=h person.firstname
         %td=h person.group.name
+        %td=h person.current_person_cost_category_memberships.map { |c| c.person_cost_category.name }.join(", ")
+        %td=h person.financial_account
         %td= show_link(person)
-        %td= show_link([person, :flights], Person.l(:book))
         %td= edit_link(person)
-        %td= destroy_link(person)
-= new_link(Person)
