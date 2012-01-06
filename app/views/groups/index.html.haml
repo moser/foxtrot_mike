@@ -1,4 +1,5 @@
 %h1= t '.title'
+= new_link(Group)
 %table.filtered{ :"data-filter-by" => "filter_string" }
   %tr.no_filter.show_on_startup
     %th= t("views.filter_search")
@@ -12,4 +13,3 @@
         %td= h group.name
         %td= show_link(group)
         %td= edit_link(group)
-= new_link(Group)

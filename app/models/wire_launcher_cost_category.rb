@@ -6,6 +6,8 @@ class WireLauncherCostCategory < ActiveRecord::Base
 
   validates_presence_of :name
 
+  default_scope order("name ASC")
+
   def matches?(flight)
     if flight.launch.is_a?(WireLaunch)
       wire_launchers_at(flight.departure).include?(flight.launch.wire_launcher)
@@ -13,7 +15,7 @@ class WireLauncherCostCategory < ActiveRecord::Base
       false
     end
   end
-  
+
   def find_concerned_accounting_entry_owners(&blk)
     wire_launcher_cost_category_memberships.map { |m| m.find_concerned_accounting_entry_owners(&blk) }.flatten.uniq
   end

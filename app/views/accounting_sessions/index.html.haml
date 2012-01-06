@@ -1,4 +1,5 @@
 %h1= t(".title")
+= new_link(AccountingSession)
 %table
   %tr
     %th= AccountingSession.l(:name)
@@ -10,4 +11,3 @@
       %td= l(s.start_date)
       %td= l(s.end_date)
       %td= show_link(s)
-= new_link(AccountingSession)  

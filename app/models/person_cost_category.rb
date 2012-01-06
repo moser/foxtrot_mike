@@ -7,6 +7,8 @@ class PersonCostCategory < ActiveRecord::Base
 
   validates_presence_of :name
 
+  default_scope order("name ASC")
+
   def matches?(flight)
     unless flight.cost_responsible.nil?
       people_at(flight.departure).include?(flight.cost_responsible)

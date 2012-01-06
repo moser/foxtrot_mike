@@ -1,4 +1,5 @@
 %h1= t '.title'
+= new_link(PersonCostCategory)
 %table
   %tr
     %th= PersonCostCategory.human_attribute_name(:name)
@@ -7,5 +8,3 @@
       %td=h person_cost_category.name
       %td= show_link(person_cost_category)
       %td= edit_link(person_cost_category)
-      %td= destroy_link(person_cost_category)
-= new_link(PersonCostCategory)

@@ -6,6 +6,8 @@ class PlaneCostCategory < ActiveRecord::Base
 
   validates_presence_of :name
 
+  default_scope order("name ASC")
+
   def matches?(flight)
     unless flight.plane.nil?
       planes_at(flight.departure).include?(flight.plane)

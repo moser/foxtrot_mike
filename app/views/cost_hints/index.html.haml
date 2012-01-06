@@ -1,4 +1,5 @@
 %h1= t '.title'
+= new_link(CostHint)
 %table
   %tr
     %th= CostHint.l(:name)
@@ -7,4 +8,3 @@
       %td= h cost_hint.name
       %td= show_link(cost_hint)
       %td= edit_link(cost_hint)
-= new_link(CostHint)
