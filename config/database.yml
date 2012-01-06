@@ -11,13 +11,3 @@ test: &TEST
   database: db/test.sqlite3
   pool: 5
   timeout: 5000
-
-production:
-  adapter: postgresql
-  host: /var/run/postgresql
-  database: fm
-  username: fm
-  password: test
-
-cucumber:
-  <<: *TEST
