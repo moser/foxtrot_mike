@@ -10,8 +10,6 @@
   - flights#show
     - delete flight
     - show controller
-  - plane/person/wire\_launcher#index
-    - show more info (finacc, costcategories,...)
   - main log book
     - timepicker does not work - remove??
     - main log book: try to parse times, mark field if invalid..
