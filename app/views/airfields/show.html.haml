@@ -1,7 +1,8 @@
+%h1= @airfield.to_s
 %table.data
   %tr
     %th= Airfield.l(:registration)
-    %td=h @airfield.registration 
+    %td=h @airfield.registration
   %tr
     %th= Airfield.l(:name)
     %td=h @airfield.name
@@ -10,6 +11,9 @@
     %td=h @airfield.lat
   %tr
     %th= Airfield.l(:long)
-    %td=h @airfield.long 
+    %td=h @airfield.long
+  %tr
+    %th
+    %td= Airfield.l(:home) if @airfield.home
 = edit_link(@airfield)
 = back_link(Airfield)
