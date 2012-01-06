@@ -6,8 +6,8 @@
     %span.seat= flight.seat2.to_s
     %span.launch_type{ :title => flight.launch_type_long }= flight.launch_type_short
     %span.purpose{ :title => flight.purpose.to_s }= flight.purpose.short
-    %span.airfield{ :title => flight.from.name }= flight.from
-    %span.airfield{ :title => flight.to.name }= flight.to
+    %span.airfield{ :title => flight.from.try(:name) }= flight.from
+    %span.airfield{ :title => flight.to.try(:name) }= flight.to
     %span.time.departure= l(flight.departure, :format => :time)
     %span.time.arrival= flight.arrival.nil? ? '-' : l(flight.arrival, :format => :time)
     %span.duration= format_minutes(flight.duration) || "0:00"
