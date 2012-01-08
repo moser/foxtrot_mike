@@ -1,4 +1,4 @@
-%table.data  
+%table.data
   %tr
     %th= Flight.l(:tow_plane)
     %td= launch.plane
@@ -6,11 +6,11 @@
     %th= Flight.l(:crew)
     %td
       - unless launch.seat1.nil?
-        = launch.seat1.person.to_s 
+        = launch.seat1.person.to_s
         = launch.seat1.short
         %br
       - unless launch.seat2.nil?
-        = launch.seat2.person.to_s 
+        = launch.seat2.person.to_s
         = launch.seat2.short
   %tr
     %th= Flight.l(:to)
@@ -21,4 +21,4 @@
   %tr
     %th= Flight.l(:duration)
     %td= format_minutes(launch.duration)
-= show_link(launch, nil, {:class => "sop show"})
+%a.sop.show{ :href => flight_path(launch) }= t("views.show")
