@@ -70,7 +70,7 @@ class FlightsController < ApplicationController
   # GET /flights/new
   # GET /flights/new.xml
   def new
-    @flight = Flight.new
+    @flight = Flight.new :from => Airfield.home.first, :to => Airfield.home.first
     authorize! :create, Flight
     dates
     @current_day = AbstractFlight.latest_departure.to_date

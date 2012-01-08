@@ -21,11 +21,12 @@ Server::Application.routes.draw do
     resource :password, :only => [ :new, :create ]
   end
   resource :password, :only => [ :new, :create ]
-  resources :account_sessions 
-  resources :flights do 
+  resources :account_sessions
+  resources :flights do
     resource :launch
     resources :liabilities
     resources :accounting_entries
+    resource :destroy_confirmation
   end
   resources :accounting_sessions do
     resources :flights, :controller => 'accounting_session_flights'

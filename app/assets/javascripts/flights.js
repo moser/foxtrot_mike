@@ -86,11 +86,23 @@ function Days() {
   this.add = function(d) {
     this.elements[d.key] = d;
     var c = d.count();
-    if(c == 0)
-      $("#day_link-" + d.key).remove();
-    else {
+    if(c == 0) {
+      e = $("#day_link-" + d.key);
+      if(Flights.current_day.key == d.key) {
+        to = false;
+        if(e.prevAll(".day_link").length > 0) {
+          to = e.prevAll(".day_link").first().attr("data-date");
+        } else if(e.nextAll(".day_link").length > 0) {
+          to = e.nextAll(".day_link").first().attr("data-date");
+        } else {
+          to = d.key;
+        }
+        Flights.goto_day(to, false, true);
+      }
+      e.remove();
+    } else {
       if($("#day_link-" + d.key).length == 0) {
-        var newday = $('<div data-date="'+ d.key +'" class="day_link" id="day_link-'+ d.key +'"><a href="/flights/day/'+ d.key +'" data-date="'+ d.key +'">'+ Format.date_short(Parse.date_to_s(d.key)) +'</a><span class="count">('+ c +')</span></div>');
+        var newday = $('<div data-date="'+ d.key +'" class="day_link" id="day_link-'+ d.key +'"><a href="/flights/day/'+ d.key +'" data-date="'+ d.key +'">'+ Format.date_short(Parse.date_to_s(d.key)) +' <span class="count">('+ c +')</span></a></div>');
         var after = $(".day_links div").filter(function() { return $(this).data("date") > d.key }).last();
         (after.length > 0 ?
           after.after(newday)
@@ -167,6 +179,7 @@ function Days() {
     for(i = 0; i < this.invalidatedDays.length; i++) {
       this.reload(this.invalidatedDays[i], function() {});
     }
+    this.invalidatedDays = [];
   };
 }
 
@@ -364,9 +377,30 @@ $(function() {
         var d = Parse.date($(e.target).find("input#flight_departure_date").val());
         if(d)
           Flights.days.invalidate_day(Format.date_to_s(d));
-      }); 
-    }); 
+      });
+    });
   }
+
+  $("#facebox a.cancel").live("click", function(e) {
+    $(document).trigger('close.facebox');
+    return false;
+  });
+  $("form.destroy_confirmation").live("submit", function(e) {
+    var form = $(e.target);
+    Flights.days.invalidate_day(Flights.current_day.key);
+    $.ajax({url: form.attr('action'),
+          data: form.serialize(),
+          type: 'POST',
+          success: function(html, status, xhr) {
+            PleaseWait.vote_modal_hide();
+            Flights.goto_day(Flights.current_day.key, false, true);
+            $(document).trigger('close.facebox');
+          }
+    });
+    PleaseWait.vote_modal_show();
+    return false;
+  });
+
   var f = function() {
     $('div.flight_form').each(function(i, el) {
       new TimeHelper(el);
@@ -389,6 +423,7 @@ $(function() {
             data: form.serialize(),
             type: 'POST',
             success: function(html, status, xhr) {
+              Flights.days.invalidate_day(Format.date_to_s(Parse.date($("input#flight_departure_date").val())));
               PleaseWait.vote_modal_hide();
               Flights.goto_url(html, true, false);
             },

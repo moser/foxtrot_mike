@@ -59,14 +59,16 @@
             - if @flight.editable?
               %tr
                 %td= edit_link(@flight, nil, {:class => "inline_form_show" })
+              %tr
+                %td= destroy_confirmation_link(@flight)
       - if TowFlight ===  @flight
         %tr
           %th= TowFlight.l(:towed_flight)
-          %td
+        %tr
+          %td{ :colspan => 2 }
             .flight_format= render(:partial => "flights/title_spans")
             .flight_format
               = render(:partial => "flights/flight_spans", :locals => { :flight => @flight.abstract_flight })
-              = show_link(@flight.abstract_flight, nil, {:class => "sop show"})
       -  unless TowFlight ===  @flight
         %tr
           %th= Flight.l(:launch)

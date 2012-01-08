@@ -124,7 +124,6 @@ class PeopleList
 class FieldHelper
   constructor: (@list, el, @field, @method, render = null, required = true, @prefix = "flight") ->
     self = this
-    console.log @id()
     @flight_div = $(el)
     @flight_div.data("#{@field}_id", @flight_div.find("##{@id()}").val())
     @old_item = @list.get(@flight_div.data("#{@field}_id"))

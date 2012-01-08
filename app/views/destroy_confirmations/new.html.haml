@@ -1,0 +1,5 @@
+%h2= t(".title")
+= t(".confirm", :name => @obj.class.l)
+= form_tag([@obj, :destroy_confirmation], :class => "destroy_confirmation") do
+  = submit_tag t("views.confirm")
+%a.cancel{ :href => "#" }= t("views.cancel")

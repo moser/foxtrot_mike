@@ -7,6 +7,7 @@ de:
       create: "Erstellen"
       update: "Ok"
   views:
+    confirm: Ja
     aggregate_entries: "Sammeleinträge"
     accounting_entry: "%{from} / %{to} %{value}"
     add: "Hinzufügen"
@@ -74,6 +75,10 @@ de:
   dashboard:
     index:
       title: "Startseite"
+  destroy_confirmations:
+    new:
+      title: "Sind Sie sicher?"
+      confirm: "Soll das %{name}-Objekt wirklich gelöscht werden?"
   flights:
     index:
       title: "Flüge"
