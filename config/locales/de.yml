@@ -125,6 +125,7 @@ de:
     show:
       title: "Hauptflugbuch %{airfield} (%{date})"
     controller_log:
+      no_flights: Keine Flüge
       end_time: Dienstende
       start_time: Dienstbeginn
       sunrise: Sonnenaufgang
