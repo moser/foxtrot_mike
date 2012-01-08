@@ -17,14 +17,22 @@
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights permalink
 
+# I18n
+  - license create
+    - legal plane classes
+  - personcc show
+    - people now
+  - people show
+    - lvb member state
+
 # medium run
   - ajaxify other pages
   - flight#history ...
   - caching
   - security: attr\_accessible
-  - PAPER_TRAIL:
-    - item_type should be the real class, not the superclass (STI)
-      - add column real_type and keep track of the real class there
+  - PAPER\_TRAIL:
+    - item\_type should be the real class, not the superclass (STI)
+      - add column real\_type and keep track of the real class there
     - show diffs or something in views
   - filteredflights
     - bei pdf mitschicken, welche aggregated entries collapsed sind
