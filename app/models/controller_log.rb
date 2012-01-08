@@ -29,7 +29,7 @@ class ControllerLog
       found = false
       for i in (0..(@controllers.count - 2))
         if @controllers[i][:person] == @controllers[i+1][:person]
-          @controllers.delete_at(i)
+          @controllers.delete_at(i + 1)
           found = true
           break
         end
