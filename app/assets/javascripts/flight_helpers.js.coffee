@@ -127,6 +127,7 @@ class FieldHelper
     @flight_div = $(el)
     @flight_div.data("#{@field}_id", @flight_div.find("##{@id()}").val())
     @old_item = @list.get(@flight_div.data("#{@field}_id"))
+    console.log(this.id())
     @hidden_element = $("<input type=\"hidden\" id=\"#{@id()}\" name=\"#{@prefix}[#{@field}_id]\" />") .val(@flight_div.find("##{@id()}").val())
     @element = $("<input type=\"text\" id=\"#{@name()}\" name=\"ignore\"/>").autocomplete(
       autoFocus: true
@@ -176,8 +177,8 @@ class @PlaneHelper extends FieldHelper
     ), true, prefix)
 
 class @TowPlaneHelper extends PlaneHelper
-  constructor: (el) ->
-    super(el, "launch[tow_flight]", towPlanesList)
+  constructor: (el, prefix = "launch[tow_flight]") ->
+    super(el, prefix, towPlanesList)
 
 class @AirfieldHelper extends FieldHelper
   constructor: (el, field, prefix = "flight") ->

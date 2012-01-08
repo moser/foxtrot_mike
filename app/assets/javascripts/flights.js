@@ -404,11 +404,17 @@ $(function() {
   var f = function() {
     $('div.flight_form').each(function(i, el) {
       new TimeHelper(el);
-      new PlaneHelper(el);
-      new CrewHelper(el);
-      new AirfieldHelper(el, "from");
-      new AirfieldHelper(el, "to");
-      new PersonHelper(el, "controller");
+      if($(el).find("#flight_plane_id").length > 0) {
+        new PlaneHelper(el);
+        new CrewHelper(el);
+        new AirfieldHelper(el, "from");
+        new AirfieldHelper(el, "to");
+        new PersonHelper(el, "controller");
+      } else { //tow_flight form
+        new TowPlaneHelper(el, "tow_flight");
+        new CrewHelper(el, "tow_flight");
+        new AirfieldHelper(el, "to", "tow_flight");
+      }
     });
     $('form#launch_form').each(function(i, el) {
       new TimeHelper(el);

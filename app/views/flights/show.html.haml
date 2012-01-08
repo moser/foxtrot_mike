@@ -64,7 +64,7 @@
               %tr
                 %td= edit_link(@flight, nil, {:class => "inline_form_show" })
               %tr
-                %td= destroy_confirmation_link(@flight)
+                %td= destroy_confirmation_link(@flight) unless TowFlight === @flight
       - if TowFlight ===  @flight
         %tr
           %th= TowFlight.l(:towed_flight)
