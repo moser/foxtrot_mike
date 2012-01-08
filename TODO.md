@@ -3,8 +3,6 @@
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
   - show state of own finanical account
-  - js helpers
-    - leave seat1 empty on new flight
   - main log book
     - timepicker does not work - remove??
     - main log book: try to parse times, mark field if invalid..

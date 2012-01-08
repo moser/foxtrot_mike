@@ -132,6 +132,7 @@ class FieldHelper
     @element = $("<input type=\"text\" id=\"#{@name()}\" name=\"ignore\"/>").autocomplete(
       autoFocus: true
       minLength: 0
+      delay: 100
       source: (request, response) ->
         response(self.list.find(request.term, self.flight_div))
       select: (event, ui) ->
