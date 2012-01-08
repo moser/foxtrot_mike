@@ -11,7 +11,6 @@ describe Plane do
   it { should validate_presence_of :make }
   it { should validate_presence_of :group }
   it { should validate_presence_of :legal_plane_class }
-  it { should validate_presence_of :financial_account }
   it { should validate_presence_of :default_launch_method }
 
   it { should allow_value("tow_flight").for(:default_launch_method) }

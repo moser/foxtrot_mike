@@ -11,14 +11,14 @@ class Plane < ActiveRecord::Base
   has_paper_trail
 
   has_many :flights, :include => [:from, :to, :crew_members], :class_name => "AbstractFlight"
-  has_many :plane_cost_category_memberships, :order => "valid_from ASC"  
+  has_many :plane_cost_category_memberships, :order => "valid_from ASC"
   has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
   belongs_to :legal_plane_class
   belongs_to :group
   membership :plane_cost_category_memberships
 
-  validates_presence_of :registration, :make, :legal_plane_class, :group, :financial_account, :default_launch_method
+  validates_presence_of :registration, :make, :legal_plane_class, :group, :default_launch_method
   validates_inclusion_of :default_launch_method, :in => LAUNCH_METHODS
 
   default_scope order("registration asc")
