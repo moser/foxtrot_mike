@@ -15,5 +15,9 @@
   %tr
     %th
     %td= Airfield.l(:home) if @airfield.home
+  - if @airfield.disabled
+    %tr
+      %th
+      %td= Airfield.l(:disabled_long)
 = edit_link(@airfield)
 = back_link(Airfield)

@@ -15,9 +15,9 @@
     %th= Person.l(:financial_account)
   %tbody.alternate
     - @people.each do |person|
-      %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
-        %td{ :class => person.disabled? ? "strike" : "" }=h person.lastname
-        %td{ :class => person.disabled? ? "strike" : "" }=h person.firstname
+      %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
+        %td=h person.lastname
+        %td=h person.firstname
         %td=h person.group.name
         %td=h person.current_person_cost_category_memberships.map { |c| c.person_cost_category.name }.join(", ")
         %td=h person.financial_account

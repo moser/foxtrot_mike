@@ -15,8 +15,8 @@
     %th= Plane.l :financial_account
   %tbody.alternate
     - @planes.each do |plane|
-      %tr.alternate_color{ :"data-filter_string" => "#{plane.registration} #{plane.make}".downcase, :"data-group_id" => plane.group_id }
-        %td{ :class => plane.disabled ? "strike" : "" }=h plane.registration
+      %tr.alternate_color{ :"data-filter_string" => "#{plane.registration} #{plane.make}".downcase, :"data-group_id" => plane.group_id, :class => plane.disabled ? "disabled_record" : "" }
+        %td=h plane.registration
         %td=h plane.make
         %td=h plane.group.name
         %td=h plane.current_plane_cost_category_memberships.map { |c| c.plane_cost_category.name }.join(", ")

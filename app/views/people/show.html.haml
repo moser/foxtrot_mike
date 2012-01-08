@@ -5,6 +5,7 @@
     %td= show_link(@person.group, @person.group.to_s)
   - if @person.disabled
     %tr
+      %th
       %td= Person.l(:disabled_long)
   - if @person.member
     %tr

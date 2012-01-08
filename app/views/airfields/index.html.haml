@@ -10,7 +10,7 @@
     %th= Airfield.human_attribute_name(:registration)
   %tbody.alternate
     - @airfields.each do |airfield|
-      %tr.alternate_color{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}" }
+      %tr.alternate_color{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}", :class => airfield.disabled? ? "disabled_record" : "" }
         %td{ :class => airfield.home? ? "marked" : "" }=h airfield.name
         %td=h airfield.registration
         %td= show_link(airfield)
