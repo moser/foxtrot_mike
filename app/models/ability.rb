@@ -17,10 +17,10 @@ class Ability
           can :manage, [  Person, Plane, Airfield, Flight, TowFlight, Group,
                           PersonCostCategory, PlaneCostCategory, WireLauncherCostCategory,
                           FinancialAccount, :cost_rules, CostHint,
-                          FlightCostRule, WireLaunchCostRule, 
+                          FlightCostRule, WireLaunchCostRule,
                           CostRuleCondition, FlightCostItem, WireLaunchCostItem,
                           PersonCostCategoryMembership, PlaneCostCategoryMembership,
-                          WireLauncherCostCategoryMembership ]
+                          WireLauncherCostCategoryMembership, AccountingSession ]
         end
         if account.license_official?
           can :manage, [Person, License, LegalPlaneClass]
