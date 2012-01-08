@@ -1,6 +1,9 @@
 = simple_form_for(account) do |f|
   = f.input :login
   = f.association :person
+  - if account.new_record?
+    = f.password
+    = f.password_confirmation
   = f.input :admin
   = f.input :license_official
   = f.input :treasurer
