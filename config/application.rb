@@ -12,8 +12,9 @@ module Server
   class Application < Rails::Application
     config.autoload_paths += %W( #{config.root}/shared/app/models #{config.root}/shared/app/libr #{config.root}/lib )
     config.i18n.default_locale = :de
-    
+
     config.assets.enabled = true
+    config.serve_static_assets = true
 
     config.generators do |g|
       g.template_engine :haml
