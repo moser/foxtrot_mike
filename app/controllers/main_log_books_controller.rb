@@ -1,28 +1,20 @@
 class MainLogBooksController < ApplicationController
+
   javascript :timepicker
   def show
     @airfield = Airfield.find(params[:airfield_id])
     @date = parse_date(params[:filter], :date) || AbstractFlight.latest_departure(@airfield.flights).to_date
-    @flights = @airfield.flights.where(:departure_date => @date).order("departure_date ASC, departure_i ASC").all
     if params[:as] == 'controller_log'
       javascript :controller_log
-      @controllers = []
-      if @flights.count > 0
-        c = nil
-        @flights.each do |f|
-          if c != f.controller
-            c = f.controller
-            if @controllers.last
-              @controllers.last[:to] = f.departure
-            end
-            @controllers << { :person => f.controller, :from => f.departure, :to => f.departure }
-          end
-        end
-        @controllers.last[:to] = (@flights.map(&:arrival).select { |a| !a.nil? }).max || @airfield.srss.sunset(@date)
+      controller_log = @airfield.controller_log(@date)
+      if params[:from] && params[:to]
+        controller_log.merge(params[:from], params[:to])
       end
+      @controllers = controller_log.controllers
       template = "main_log_books/controller_log"
       orientation = "Portrait"
     else
+      @flights = @airfield.flights.where(:departure_date => @date).order("departure_date ASC, departure_i ASC").all
       template = "main_log_books/show"
       orientation = "Portrait"
     end

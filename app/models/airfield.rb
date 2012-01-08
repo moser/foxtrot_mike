@@ -48,4 +48,8 @@ class Airfield < ActiveRecord::Base
   def to_j
     { :id => id, :name => name, :registration => registration }
   end
+
+  def controller_log(date)
+    @controller_log ||= ControllerLog.new(self, date)
+  end
 end

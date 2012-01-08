@@ -31,6 +31,7 @@ de:
     future: "Zukünftig"
     main_flight_book: "Hauptflugbuch (%{name})"
     new: "Erstellen"
+    no_controller: "Keiner"
     previous: "Ehemalig"
     show: "Anzeigen"
     signature: "Unterschrift"

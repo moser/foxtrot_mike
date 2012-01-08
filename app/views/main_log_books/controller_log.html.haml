@@ -1,5 +1,5 @@
 .controls.no_print
-  = link_to t("views.as_pdf"), airfield_main_log_book_path(@airfield, :as => "controller_log", :filter => { :date_parse_date => @date }, :format =>:pdf)
+  = link_to t("views.as_pdf"), airfield_main_log_book_path(@airfield, :as => "controller_log", :filter => { :date_parse_date => @date }, :format =>:pdf), :class => "cl_change_params"
 
 %h1= t("views.controller_log", :name => @airfield.name)
 %form.no_print.submit_when_changed
@@ -13,15 +13,15 @@
 - unless @controllers.count == 0
   .controller_log
     .times
-      = t(".start_time") 
-      %input.timepicker.linked{ :value => l(@controllers.first[:from], :format => :time), 'data-link-group' => 0 }
-      = t(".end_time") 
-      %input.timepicker.linked{ :value => l(@controllers.last[:to], :format => :time), 'data-link-group' => @controllers.count }
+      = t("main_log_books.controller_log.start_time")
+      %input.linked.start_time{ :value => DayTime.format(@controllers.first[:from]), 'data-link-group' => 0 }
+      = t("main_log_books.controller_log.end_time")
+      %input.linked.end_time{ :value => DayTime.format(@controllers.last[:to]), 'data-link-group' => @controllers.count }
     .sunrise
-      = t(".sunrise")
+      = t("main_log_books.controller_log.sunrise")
       = l(@airfield.srss.sunrise(@date), :format => :time)
     .sunset
-      = t(".sunset")
+      = t("main_log_books.controller_log.sunset")
       = l(@airfield.srss.sunset(@date), :format => :time)
     %table.controllers
       %tr
@@ -32,12 +32,12 @@
       - i = 0
       - @controllers.each do |c|
         %tr
-          %td= c[:person].name rescue "NONE"
+          %td= c[:person].name
           %td
-            %input.timepicker.linked{ :value => l(c[:from], :format => :time), 'data-link-group' => i }
+            %input.linked.from{ :value => DayTime.format(c[:from]), 'data-link-group' => i }
           %td
-            %input.timepicker.linked{ :value => l(c[:to], :format => :time), 'data-link-group' => i + 1 }
+            %input.linked.to{ :value => DayTime.format(c[:to]), 'data-link-group' => i + 1 }
           %td.signature
         - i += 1
 - else
-  = t('.no_flights')
+  = t('main_log_books.controller_log.no_flights')

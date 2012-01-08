@@ -5,14 +5,7 @@ class DayTime
   end
 
   def to_s
-    if @minutes.nil?
-      ""
-    elsif @minutes >= 0
-      h, m = [@minutes / 60, @minutes % 60]
-      "#{h < 10 ? "0" : ""}#{h}:#{m < 10 ? "0" : ""}#{m}"
-    else
-      "--:--"
-    end
+    DayTime.format(@minutes)
   end
 
   def method_missing(meth, *args, &block)
@@ -26,6 +19,17 @@ class DayTime
       str.to_i
     else
       -1
+    end
+  end
+
+  def self.format(minutes)
+    if minutes.nil?
+      ""
+    elsif minutes >= 0
+      h, m = [minutes / 60, minutes % 60]
+      "#{h < 10 ? "0" : ""}#{h}:#{m < 10 ? "0" : ""}#{m}"
+    else
+      "--:--"
     end
   end
 end
