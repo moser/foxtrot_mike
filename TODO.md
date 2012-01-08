@@ -24,6 +24,8 @@
     - people now
   - people show
     - lvb member state
+  - plane#\_form
+    - warn when no cost rule
 
 # medium run
   - ajaxify other pages
