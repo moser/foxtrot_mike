@@ -54,8 +54,12 @@
                 %th= Flight.l(:cost_hint)
                 %td= @flight.cost_hint
             %tr
-              %th= Flight.l(:comment)
-              %td= @flight.comment
+              %th= Flight.l(:controller)
+              %td= @flight.controller
+            - unless !@flight.comment || @flight.comment == ""
+              %tr
+                %th= Flight.l(:comment)
+                %td= @flight.comment
             - if @flight.editable?
               %tr
                 %td= edit_link(@flight, nil, {:class => "inline_form_show" })

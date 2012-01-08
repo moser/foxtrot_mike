@@ -7,8 +7,6 @@
     - js helpers
   - js helpers
     - leave seat1 empty on new flight
-  - flights#show
-    - show controller
   - main log book
     - timepicker does not work - remove??
     - main log book: try to parse times, mark field if invalid..
