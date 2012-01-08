@@ -1,5 +1,6 @@
 # Before release
   - accounting session
+    - #show, new flight layout
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
   - show state of own finanical account
@@ -16,6 +17,11 @@
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights permalink
+  - filtered flights PDF
+    - aggregated entry, not visible...
+    - flight spans +1 not shown (only on license#flights)
+  - flights#index
+    - alternate/marked not working properly
 
 # I18n
   - license create
@@ -26,6 +32,11 @@
     - lvb member state
   - plane#\_form
     - warn when no cost rule
+  - cost rules index
+    - title
+  - main log book pdf
+    - title
+  - account
 
 # medium run
   - ajaxify other pages
