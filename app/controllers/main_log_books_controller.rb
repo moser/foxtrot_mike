@@ -3,6 +3,7 @@ class MainLogBooksController < ApplicationController
   javascript :timepicker
   def show
     @airfield = Airfield.find(params[:airfield_id])
+    authorize! :read, @airfield
     @date = parse_date(params[:filter], :date) || AbstractFlight.latest_departure(@airfield.flights).to_date
     if params[:as] == 'controller_log'
       javascript :controller_log
