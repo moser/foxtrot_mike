@@ -3,6 +3,8 @@
     - #show, new flight layout
     - create: add note, that this can take long
     - do not create accounting entries w/ value 0
+    - manual entries
+    - add manual pseudo entries (+...)
   - show state of own finanical account
   - group#show
     - heading
@@ -11,6 +13,7 @@
     - person#new
       - form fields after checkboxes are indented
   - controller role
+    - create/show stuff only as json or thru the client
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
     - soft validate models
       - mark if no fin acc (do not let acc sessions finish?)
@@ -39,6 +42,7 @@
   - account
 
 # medium run
+  - licenses... medical...
   - ajaxify other pages
   - flight#history ...
   - caching
