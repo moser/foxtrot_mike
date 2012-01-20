@@ -12,3 +12,4 @@ webrat.log
 *.swp
 *.swo
 TODO.html
+*.sqlite3-journal
