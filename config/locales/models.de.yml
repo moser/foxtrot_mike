@@ -172,6 +172,7 @@ de:
         value: Wert
         additive_value: Additiver Wert
       financial_account:
+        advance_payment: Vorauszahlung
         owners: Besitzer
         number: Nummer
       group:
