@@ -46,7 +46,7 @@ class Airfield < ActiveRecord::Base
   end
 
   def to_j
-    { :id => id, :name => name, :registration => registration }
+    { :id => id, :name => name, :registration => registration, :disabled => disabled }
   end
 
   def controller_log(date)

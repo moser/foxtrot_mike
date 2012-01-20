@@ -134,6 +134,7 @@ class Person < ActiveRecord::Base
       :lastname => lastname,
       :group_id => group_id,
       :group_name => group.name,
+      :disabled => disabled,
       :licenses => licenses.map { |e| e.to_j } }
   end
 
