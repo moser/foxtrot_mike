@@ -20,7 +20,7 @@ class Ability
                           FlightCostRule, WireLaunchCostRule,
                           CostRuleCondition, FlightCostItem, WireLaunchCostItem,
                           PersonCostCategoryMembership, PlaneCostCategoryMembership,
-                          WireLauncherCostCategoryMembership, AccountingSession ]
+                          WireLauncherCostCategoryMembership, AccountingSession, AdvancePayment ]
         end
         if account.license_official?
           can :manage, [Person, License, LegalPlaneClass]

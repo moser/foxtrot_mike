@@ -1,5 +1,6 @@
 class FinancialAccount < ActiveRecord::Base
   has_many :financial_account_ownerships
+  has_many :advance_payments
 
   include Current
   has_many_current :financial_account_ownerships

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe FinancialAccount do
   it { should have_many :financial_account_ownerships }
+  it { should have_many :advance_payments }
 
   it "should return name on to_s" do
     f = FinancialAccount.generate!(:name => "lala", :number => 123)

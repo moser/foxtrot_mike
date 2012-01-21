@@ -69,6 +69,7 @@ de:
       m: "männlich"
       w: weiblich
   attributes:
+    date: Datum
     valid_from: "gültig von"
     valid_to: "gültig bis"
     group: Gruppe
@@ -88,6 +89,7 @@ de:
   activerecord:
     models:
       account: Benutzerkonto
+      advance_payment: Vorauszahlung
       airfield: Flugplatz
       cost_hint: Kostengruppe
       cost_hint_condition: Einschränkung auf Kostengruppe
@@ -122,6 +124,12 @@ de:
         finished: Abgeschlossen
         finished_at: Abgeschlossen am
         entries: Buchungen
+      accounting_entry:
+        value: Betrag
+      advance_payment:
+        plural: Vorauszahlungen
+        value_f: Betrag
+        value: Betrag
       airfield:
         registration: Kennung
         lat: geog. Breite (+ = Nord)
@@ -172,6 +180,7 @@ de:
         value: Wert
         additive_value: Additiver Wert
       financial_account:
+        add_advance_payment: "Vorauszahlung hinzufügen"
         advance_payment: Vorauszahlung
         owners: Besitzer
         number: Nummer
