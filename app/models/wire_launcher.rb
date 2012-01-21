@@ -26,6 +26,10 @@ class WireLauncher < ActiveRecord::Base
     end
   end
   
+  def financial_account_at(date)
+    financial_account_ownership_at(date) && financial_account_ownership_at(date).financial_account
+  end
+  
   def financial_account_id
     financial_account && financial_account.id
   end

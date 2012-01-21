@@ -14,12 +14,12 @@ class Flight < AbstractFlight
   def create_accounting_entries
     accounting_entries_without_validity_check.delete_all
     if cost && cost_responsible
-      plane_account = plane.financial_account
+      plane_account = plane.financial_account_at(departure_date)
       flight_sum = cost.free_sum
       liabilities_with_default.map do |l|
         value = (proportion_for(l) * flight_sum).round
         unless value == 0
-          AccountingEntry.create(:from => l.person.financial_account, :to => plane_account,
+          AccountingEntry.create(:from => l.person.financial_account_at(departure_date), :to => plane_account,
                                  :value => value, :item => self)
         end
       end

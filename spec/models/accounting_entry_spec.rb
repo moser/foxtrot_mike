@@ -17,7 +17,7 @@ describe AccountingEntry do
 
     it "should return end date of accounting session if no item is present" do
       a = AccountingEntry.new :accounting_session => AccountingSession.generate!(:end_date => 2.days.ago)
-      a.date.should == 2.days.ago
+      a.date.should == 2.days.ago.to_date
     end
   end
 

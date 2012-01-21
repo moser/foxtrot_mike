@@ -13,11 +13,16 @@ module Current
         end
 
         def current_#{singular}
-          #{association}.select { |e| e.valid_at?(has_one_current_time_of_decision) }.first
+          ##{association}.select { |e| e.valid_at?(has_one_current_time_of_decision) }.first
+          #{singular}_at(has_one_current_time_of_decision)
         end
 
         def future_#{association}
           #{association}.where("valid_from > ?", has_one_current_time_of_decision)
+        end
+
+        def #{singular}_at(date)
+          #{association}.where("valid_from <= ?", date).order("valid_from DESC").first || #{association}.where(:valid_from => nil).first
         end
 
         def current_#{singular}=(new)

@@ -20,7 +20,7 @@ class TowFlight < AbstractFlight
   end
 
   def financial_account
-    plane.financial_account
+    plane.financial_account_at(departure_date)
   end
 
   def purpose

@@ -6,7 +6,7 @@ module LaunchAccountingEntries
       abstract_flight.liabilities_with_default.map do |l|
         value = (abstract_flight.proportion_for(l) * sum).round
         unless value == 0
-          AccountingEntry.create(:from => l.person.financial_account, :to => financial_account,
+          AccountingEntry.create(:from => l.person.financial_account_at(departure_date), :to => financial_account,
                                  :value => value, :item => self)
         end
       end

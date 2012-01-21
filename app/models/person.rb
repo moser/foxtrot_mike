@@ -34,6 +34,10 @@ class Person < ActiveRecord::Base
     current_financial_account_ownership && current_financial_account_ownership.financial_account
   end
 
+  def financial_account_at(date)
+    financial_account_ownership_at(date) && financial_account_ownership_at(date).financial_account
+  end
+
   def financial_account_id
     financial_account && financial_account.id
   end

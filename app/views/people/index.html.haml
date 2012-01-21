@@ -20,6 +20,6 @@
         %td=h person.firstname
         %td=h person.group.name
         %td=h person.current_person_cost_category_memberships.map { |c| c.person_cost_category.name }.join(", ")
-        %td=h person.financial_account
+        %td=h person.financial_account_at(Date.today)
         %td= show_link(person)
         %td= edit_link(person)

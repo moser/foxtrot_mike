@@ -20,6 +20,6 @@
         %td=h plane.make
         %td=h plane.group.name
         %td=h plane.current_plane_cost_category_memberships.map { |c| c.plane_cost_category.name }.join(", ")
-        %td=h plane.financial_account
+        %td=h plane.financial_account_at(Date.today)
         %td= show_link(plane)
         %td= edit_link(plane)

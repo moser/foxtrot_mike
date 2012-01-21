@@ -60,7 +60,7 @@ class WireLaunch < ActiveRecord::Base
   end
 
   def financial_account
-    wire_launcher.financial_account
+    wire_launcher.financial_account_at(departure_date)
   end
 
   def departure_date
