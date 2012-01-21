@@ -52,6 +52,8 @@ de:
   accounting_sessions:
     index:
       title: Buchungssitzungen
+    new:
+      title: Buchungssitzung erstellen
     show:
       finish: Abschließen
       show_entries: Buchungen anzeigen
