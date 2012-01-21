@@ -2,7 +2,7 @@ class OwnFinancialAccountsController < ApplicationController
   def show
     authorize! :read, :own_financial_account
     person = current_account.try(:person)
-    @financial_account = person.try(:financial_account)
+    @financial_account = person.try(:financial_account_at, Date.today)
     if @financial_account
       @accounting_entries = AccountingEntry.where(:from_id => @financial_account.id)
       if @financial_account.advance_payment?
