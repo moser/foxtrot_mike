@@ -2,6 +2,7 @@ de:
   unknown_person: Pilot
   change_password: "Passwort ändern"
   password_changed: "Passwort erfolgreich gesetzt."
+  own_financial_account: "Buchungsübersicht"
   helpers:
     submit:
       create: "Erstellen"
@@ -143,6 +144,7 @@ de:
   own_financial_accounts:
     show:
       title: "Buchungsübersicht"
+      saldo: "Saldo"
   plane_cost_categories:
     index:
       title: "Flugzeugkategorien"

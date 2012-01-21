@@ -5,6 +5,10 @@
     - do not create accounting entries w/ value 0
     - manual entries
     - add manual pseudo entries (+...)
+    - warn about flights w/o accounting session before the start date of new accounting sessions
+      - alt: only set end date of accounting session
+  - manual cost
+    - add to flight ?
   - show state of own finanical account
   - group#show
     - heading
@@ -25,6 +29,7 @@
     - flight spans +1 not shown (only on license#flights)
   - flights#index
     - alternate/marked not working properly
+  - export flights grouped by cost responsible w/ cost for group
 
 # I18n
   - license create

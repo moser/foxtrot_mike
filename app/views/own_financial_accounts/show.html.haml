@@ -1,6 +1,16 @@
 %h1= t(".title")
-- @accounting_entries.each do |e|
-  .entry
-    =l e.item.departure_date if e.item
-    = e.item.class.l if e.item
-    = format_currency(e.value)
+- if @financial_account.advance_payment?
+  = "#{t(".saldo")}: #{format_currency(@saldo)}"
+%table
+  %tr
+    %th= AccountingEntry.l(:date)
+    %th= AccountingEntry.l(:text)
+    %th= AccountingEntry.l(:value)
+  - @accounting_entries.reverse.find_all { |e| e.date > 60.days.ago.to_date }.each do |e|
+    %tr
+      %td=l e.date.to_date
+      - if e.item
+        %td= link_to e.text, (AbstractFlight === e.item ? flight_path(e.item) : flight_path(e.item.abstract_flight))
+      - else
+        %td=h e.text
+      %td= format_currency(e.value)

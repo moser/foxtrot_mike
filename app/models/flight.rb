@@ -17,11 +17,18 @@ class Flight < AbstractFlight
       plane_account = plane.financial_account
       flight_sum = cost.free_sum
       liabilities_with_default.map do |l|
-          AccountingEntry.create(:from => l.person.financial_account, :to => plane_account, 
-                                   :value => (proportion_for(l) * flight_sum).round, :item => self)
+        value = (proportion_for(l) * flight_sum).round
+        unless value == 0
+          AccountingEntry.create(:from => l.person.financial_account, :to => plane_account,
+                                 :value => value, :item => self)
+        end
       end
-      cost.bound_items.map { |i| AccountingEntry.create(:from => i.financial_account, :to => plane_account,
-                                                          :value => i.value, :item => self) }
+      cost.bound_items.map do |i|
+        unless i.value == 0
+          AccountingEntry.create(:from => i.financial_account, :to => plane_account,
+                                 :value => i.value, :item => self)
+        end
+      end
     end
     update_attribute :accounting_entries_valid, true
   end
