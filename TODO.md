@@ -1,10 +1,7 @@
 # Before release
   - accounting session
-    - #show, new flight layout
     - create: add note, that this can take long
-    - do not create accounting entries w/ value 0
     - manual entries
-    - add manual pseudo entries (+...)
     - warn about flights w/o accounting session before the start date of new accounting sessions
       - alt: only set end date of accounting session
   - manual cost

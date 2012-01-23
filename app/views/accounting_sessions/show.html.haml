@@ -34,8 +34,3 @@
     - @accounting_session.flights.each do |f|
       .flight.flight_format{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
         = render :partial => "flights/flight_spans", :locals => { :flight => f }
-        = show_link(f)
-        %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
-        .accounting_entries.hide_on_startup
-          - f.accounting_entries.each do |e|
-            = format_accounting_entry(e.from, e.to, e.value)
