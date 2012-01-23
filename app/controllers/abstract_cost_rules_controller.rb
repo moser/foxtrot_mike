@@ -26,7 +26,7 @@ class AbstractCostRulesController < ApplicationController
     eval "@#{other_cost_category}_id = params[:#{other_cost_category}_id]"
 
     @not_valid_anymore = @models.select { |r| r.outdated? }.sort_by { |r| r.valid_to }
-    @valid = @models.select { |r| r.in_effect? }.sort_by { |r| r.valid_to || 1000.years.from_now }
+    @valid = @models.select { |r| r.in_effect? }.sort_by { |r| r.valid_to || 1000.years.from_now.to_date }
     @not_yet_valid = @models.select { |r| r.not_yet_in_effect? }.sort_by { |r| r.valid_from }
     respond_to do |format|
       format.html do
