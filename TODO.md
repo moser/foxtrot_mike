@@ -20,7 +20,6 @@
   - filtered\_flights permalink
   - filtered flights PDF
     - aggregated entry, not visible...
-    - flight spans +1 not shown (only on license#flights)
   - export flights grouped by cost responsible w/ cost for group
 
 # I18n

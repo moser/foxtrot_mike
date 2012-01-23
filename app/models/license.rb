@@ -21,7 +21,7 @@ class License < ActiveRecord::Base
       [ Trainee ]
     else
       [ PilotInCommand ]
-    end    
+    end
   end
 
   def editable?
@@ -29,10 +29,10 @@ class License < ActiveRecord::Base
   end
 
   def flights
-    AbstractFlight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(valid_from).
+    AbstractFlight.where(AbstractFlight.arel_table[:departure_date].gteq(valid_from).
                              and(AbstractFlight.arel_table[:departure_date].lteq(valid_to || 1.day.from_now.to_date))).
            joins(:crew_members).
-           where('crew_members.type' => to_crew_member_types.map(&:to_s), 
+           where('crew_members.type' => to_crew_member_types.map(&:to_s),
                  'crew_members.person_id' => person_id).joins(:plane).
            where('planes.legal_plane_class_id' => legal_plane_class_ids)
   end
