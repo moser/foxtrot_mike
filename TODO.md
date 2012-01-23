@@ -22,21 +22,6 @@
     - aggregated entry, not visible...
   - export flights grouped by cost responsible w/ cost for group
 
-# I18n
-  - license create
-    - legal plane classes
-  - personcc show
-    - people now
-  - people show
-    - lvb member state
-  - plane#\_form
-    - warn when no cost rule
-  - cost rules index
-    - title
-  - main log book pdf
-    - title
-  - account
-
 # medium run
   - licenses... medical...
   - ajaxify other pages

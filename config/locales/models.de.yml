@@ -193,6 +193,7 @@ de:
       license:
         name: Bezeichnung
         level: Stufe
+        legal_plane_classes: "Flugzeugklassen"
         normal: "Normal"
         instructor: "Lehrberechtigung"
         book: "Flugbuch"
@@ -217,8 +218,11 @@ de:
         flags: Eigenschaften
         financial_account_id: Buchungskonto
         default_launch_method: Bevorzugte Startart
+        warn_when_no_cost_rules: "Warnen, wenn keine Kostenregel für einen Flug gefunden wird"
       plane_cost_category:
         planes_now: "Flugzeuge"
+      person_cost_category:
+        people_now: "Mitglieder"
       person:
         address: Adresse
         address1: Adresszeile 1
@@ -236,6 +240,7 @@ de:
         in_training: In Ausbildung
         lastname: Nachname
         lvbnr: LVB-Nr.
+        lvb_member_state: "LVB-Mitgliedsart"
         member: Mitglied
         membership: Mitgliedschaft
         member_state: Mitgliedsart
