@@ -9,9 +9,6 @@
       - alt: only set end date of accounting session
   - manual cost
     - add to flight ?
-  - show state of own finanical account
-  - group#show
-    - heading
   - layout in ff3.6/windows
   - layout in ff
     - person#new
