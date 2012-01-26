@@ -31,6 +31,7 @@ Server::Application.routes.draw do
     resource :destroy_confirmation
   end
   resources :accounting_sessions do
+    resources :manual_accounting_entries
     resources :flights, :controller => 'accounting_session_flights'
   end
   resources :tow_flights, :controller => 'flights'

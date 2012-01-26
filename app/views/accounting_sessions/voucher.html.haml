@@ -4,4 +4,4 @@
 = l(@accounting_session.end_date)
 - @accounting_session.aggregated_entries.each do |ae|
   .ae
-    = format_accounting_entry(ae.from, ae.to, ae.value)
+    = format_accounting_entry(ae)

@@ -6,6 +6,10 @@ class AccountingSession < ActiveRecord::Base
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
   end
 
+  def manual_accounting_entries
+    accounting_entries_without_default.where(:manual => true)
+  end
+
   #TODO make all other flights methods unaccessible
   def flights_with_default
     if finished?
@@ -23,7 +27,7 @@ class AccountingSession < ActiveRecord::Base
     if finished?
       accounting_entries_without_default
     else
-      flights.map { |f| f.accounting_entries }.flatten
+      flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
     end
   end
   alias_method_chain :accounting_entries, :default

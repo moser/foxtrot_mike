@@ -18,6 +18,8 @@
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights permalink
+    - loaded, invisible flights become visible when switching on aggregation
+    - grouped + aggregated => check hover + controls
   - filtered flights PDF
     - aggregated entry, not visible...
   - export flights grouped by cost responsible w/ cost for group

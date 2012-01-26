@@ -10,4 +10,8 @@ class AggregatedEntry
   def value
     entries.map { |e| e.value }.sum
   end
+
+  def manual?
+    false
+  end
 end

@@ -1,1 +1,3 @@
+%h1= t ".title"
 = render :partial => "accounting_sessions/form", :locals => { :accounting_session => @accounting_session }
+= back_link(@accounting_session)

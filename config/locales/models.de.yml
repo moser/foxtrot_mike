@@ -125,7 +125,12 @@ de:
         finished_at: Abgeschlossen am
         entries: Buchungen
       accounting_entry:
+        plural: Buchungen
+        manual_plural: "Manuelle Buchungen"
         value: Betrag
+        to: "Haben-Konto"
+        from: "Soll-Konto"
+        text: "Beschreibung"
       advance_payment:
         plural: Vorauszahlungen
         value_f: Betrag

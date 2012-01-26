@@ -1,7 +1,7 @@
 .input
   label
     display: inline-block
-    width: 170px
+    width: 13em
     color: #999
     vertical-align: top
     &.collection_radio
@@ -13,7 +13,7 @@
     display: block
   input[type=checkbox]
     width: auto
-    margin-left: 170px
+    margin-left: 13em
     margin-right: 1em
     margin-top: 2px
     float: left
@@ -27,7 +27,9 @@
 
 .simple_form
   input[type=submit]
-    margin-left: 10em
+    margin-left: 13em
+  input[type=submit].finish
+    margin: 0
   .error
     margin-left: 1em
     font-size: 0.9em
@@ -45,6 +47,8 @@
       display: none
     &:checked + .hide_if_unchecked
       display: block
+    &:checked + span.hide_if_unchecked
+      display: inline
 
 form.button_to
   display: inline

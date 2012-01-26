@@ -1,5 +1,7 @@
 module AccountingSessionsHelper
-  def format_accounting_entry(from, to, value)
-   I18n.t("views.accounting_entry", :from => link_to("#{from}", from, :class => "facebox") , :to => link_to("#{to}", to, :class => "facebox"), :value => format_currency(value)).html_safe
+  def format_accounting_entry(e)
+    raw "#{link_to("#{e.from}", e.from, :class => "facebox")} / " +
+    "#{link_to("#{e.to}", e.to, :class => "facebox") } #{format_currency(e.value)}" +
+    (e.manual? ? " manuell: #{e.text}" : "")
   end
 end

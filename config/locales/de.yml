@@ -10,7 +10,6 @@ de:
   views:
     confirm: Ja
     aggregate_entries: "Sammeleinträge"
-    accounting_entry: "%{from} / %{to} %{value}"
     add: "Hinzufügen"
     areusure: "Sind Sie sicher?"
     as_csv: "CSV"
@@ -51,6 +50,8 @@ de:
     index:
       title: Buchhaltung
   accounting_sessions:
+    edit:
+      title: "Buchungssitzung bearbeiten"
     index:
       title: Buchungssitzungen
     new:
@@ -138,6 +139,11 @@ de:
       start_time: Dienstbeginn
       sunrise: Sonnenaufgang
       sunset: Sonnenuntergang
+  manual_accounting_entries:
+    new:
+      title: Manuelle Buchungen erstellen
+    index:
+      title: Manuelle Buchungen
   none:
     index:
       title: "nichts"

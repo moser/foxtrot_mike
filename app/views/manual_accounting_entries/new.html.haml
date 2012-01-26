@@ -1,0 +1,31 @@
+%h1= t('.title')
+= back_link([ @accounting_session, :manual_accounting_entries ])
+= form_tag [ @accounting_session, :manual_accounting_entries ] do
+  .input
+    = label_tag :to, AccountingEntry.l(:to)
+    = select_tag :to, options_from_collection_for_select(FinancialAccount.all, "id", "to_s")
+  .input
+    = label_tag :text, AccountingEntry.l(:text)
+    = text_field_tag :text, ""
+  = submit_tag "Ok"
+  %table.filtered{ :"data-filter-by" => "group_id,filter_string" }
+    %tr.no_filter.show_on_startup
+      %th= t("views.filter_search")
+      %th= t("views.filter_group")
+    %tr.no_filter.show_on_startup
+      %td= text_field_tag "filter_string"
+      %td= select :group, "id", Group.all.map { |g| [g.name, g.id] }, { :include_blank => true }
+    %tr.no_filter
+      %th= Person.l(:lastname)
+      %th= Person.l(:firstname)
+      %th= AccountingEntry.l(:from)
+    %tbody.alternate
+      - @people.each do |person|
+        %tr.new_manual_accounting_entry.hover_mark.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
+          %td=h person.lastname
+          %td=h person.firstname
+          %td=h person.financial_account_at(Date.today)
+          %td.choice
+            = check_box_tag "checked[#{person.id}]"
+            %span.hide_if_unchecked
+              = number_field_tag "value[#{person.id}]", 0, :min => 0
