@@ -6,6 +6,19 @@ class AccountingSession < ActiveRecord::Base
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
   end
 
+  attr_reader :problems
+  def soft_validate
+    @problems = {}
+    unaccounted_flights = AbstractFlight.where(AbstractFlight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
+    count = unaccounted_flights.count
+    oldest = unaccounted_flights.order("departure_date ASC").first
+    if count > 0
+      @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date) }
+    end
+    @problems[:financial_account_missing_number] = {} if concerned_financial_accounts.find { |a| !a.number? }
+    @problems.empty?
+  end
+
   def manual_accounting_entries
     accounting_entries_without_default.where(:manual => true)
   end
@@ -74,6 +87,10 @@ class AccountingSession < ActiveRecord::Base
       end
     end
     ae.flatten + manual_accounting_entries
+  end
+
+  def concerned_financial_accounts
+    accounting_entries.map { |e| [e.to, e.from] }.flatten.uniq
   end
 
 #  def self.booking_now

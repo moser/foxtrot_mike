@@ -1,8 +1,6 @@
 # Before release
   - accounting session
     - create: add note, that this can take long
-    - warn about flights w/o accounting session before the start date of new accounting sessions
-      - alt: only set end date of accounting session
   - manual cost
     - add to flight ?
   - layout in ff3.6/windows
@@ -13,7 +11,6 @@
     - create/show stuff only as json or thru the client
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
     - soft validate models
-      - mark if no fin acc (do not let acc sessions finish?)
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights permalink
@@ -22,6 +19,8 @@
   - filtered flights PDF
     - aggregated entry, not visible...
   - export flights grouped by cost responsible w/ cost for group
+  - flight#show
+    - make cost display more clear
 
 # medium run
   - licenses... medical...

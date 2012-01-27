@@ -18,4 +18,8 @@ class FinancialAccount < ActiveRecord::Base
       name
     end
   end
+
+  def number?
+    !number.nil? && number != ""
+  end
 end

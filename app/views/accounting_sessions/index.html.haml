@@ -11,3 +11,4 @@
       %td= l(s.start_date)
       %td= l(s.end_date)
       %td= show_link(s)
+      %td= destroy_confirmation_link(s) unless s.finished?

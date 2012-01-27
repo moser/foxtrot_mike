@@ -1,8 +1,9 @@
 .accounting_session
   %h1= @accounting_session.name
-  = l(@accounting_session.start_date)
-  \-
-  = l(@accounting_session.end_date)
+  %h2
+    = l(@accounting_session.start_date)
+    \-
+    = l(@accounting_session.end_date)
   = edit_link(@accounting_session) unless @accounting_session.finished?
   - if @accounting_session.finished?
     .status
@@ -12,16 +13,20 @@
       = link_to t(".voucher"), accounting_session_path(@accounting_session, :format => :pdf)
   - else
     = link_to t("manual_accounting_entries.index.title"), [ @accounting_session, :manual_accounting_entries ]
-    = simple_form_for(@accounting_session) do |f|
-      = f.input :finished, :input_html => { :value => true }, :as => :hidden
-      = f.button :submit, t(".finish"), :class => "finish"
+    - if !@accounting_session.soft_validate
+      - @accounting_session.problems.each do |key, v|
+        .problem= t("soft_validation.accounting_session.#{key.to_s}", v)
+    - else
+      = simple_form_for(@accounting_session) do |f|
+        = f.input :finished, :input_html => { :value => true }, :as => :hidden
+        = f.button :submit, t(".finish"), :class => "finish"
   .aggregated_entries
     %h2= t(".aggregated_entries")
     - i = 0
     - @accounting_session.aggregated_entries.each do |ae|
       - unless ae.manual?
         - i += 1
-        .aggregated_entry{ :id => "ae-#{i}" }
+        .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
           = format_accounting_entry(ae)
           %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
           %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")

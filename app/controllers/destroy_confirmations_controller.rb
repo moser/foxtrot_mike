@@ -27,7 +27,7 @@ class DestroyConfirmationsController < ApplicationController
 
 private
   def parent
-    [ :flight, :accounting_entry ].each do |o|
+    [ :flight, :accounting_entry, :accounting_session ].each do |o|
       return o.to_s.camelcase.constantize.find(params["#{o}_id"]) if params["#{o}_id"]
     end
   end
