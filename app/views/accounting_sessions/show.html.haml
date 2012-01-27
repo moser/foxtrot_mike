@@ -19,16 +19,20 @@
     %h2= t(".aggregated_entries")
     - i = 0
     - @accounting_session.aggregated_entries.each do |ae|
-      - i += 1
-      .aggregated_entry{ :id => "ae-#{i}" }
-        = format_accounting_entry(ae)
-        %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
-        %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
-        .accounting_entries.hide_on_startup
-          - ae.entries.each do |e|
-            .entry{ :id => e.id }
-              = format_accounting_entry(e)
-              %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
+      - unless ae.manual?
+        - i += 1
+        .aggregated_entry{ :id => "ae-#{i}" }
+          = format_accounting_entry(ae)
+          %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
+          %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
+          .accounting_entries.hide_on_startup
+            - ae.entries.each do |e|
+              .entry{ :id => e.id }
+                = format_accounting_entry(e)
+                %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
+      - else
+        .aggregated_entry{ :id => "ae-#{i}" }
+          = format_accounting_entry(ae)
   .flights
     %h2= t("flights.index.title")
     = render :partial => "flights/title_spans"

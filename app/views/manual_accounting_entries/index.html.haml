@@ -1,8 +1,8 @@
 %h1= @accounting_session.name
 %h2= AccountingEntry.l(:manual_plural)
-= link_to t("views.create", :name => AccountingEntry.l(:manual_plural)), new_accounting_session_manual_accounting_entry_path(@accounting_session)
+= link_to t("views.create", :name => AccountingEntry.l(:manual_plural)), new_accounting_session_manual_accounting_entry_path(@accounting_session) unless @accounting_session.finished?
 = back_link(@accounting_session)
 - @accounting_entries.each do |e|
   .manual_accounting_entry
     = format_accounting_entry(e)
-    delete
+    = destroy_confirmation_link(e) unless @accounting_session.finished?

@@ -89,6 +89,7 @@ de:
   activerecord:
     models:
       account: Benutzerkonto
+      accounting_entry: Buchungs
       advance_payment: Vorauszahlung
       airfield: Flugplatz
       cost_hint: Kostengruppe

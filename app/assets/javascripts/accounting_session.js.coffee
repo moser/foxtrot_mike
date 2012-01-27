@@ -19,6 +19,6 @@ $ ->
       $(".aggregated_entry").removeClass "filtering"
       $(".entry:not(##{$(this).parent().attr("id")})").removeClass "filtering"
       false
-  $(".new_manual_accounting_entry td").click ->
+  $(".new_manual_accounting_entry td.clickable").click ->
     a = $(this).parent().find("input[type=checkbox]")
     a.attr("checked", (typeof a.attr("checked")) == "undefined")

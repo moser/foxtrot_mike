@@ -68,12 +68,12 @@ class AccountingSession < ActiveRecord::Base
   end
 
   def aggregated_entries
-    ae = accounting_entries.group_by { |e| e.from }.map do |from, entries|
+    ae = accounting_entries.select { |e| !e.manual? }.group_by { |e| e.from }.map do |from, entries|
       entries.group_by { |e| e.to }.map do |to, entries|
         AggregatedEntry.new(from, to, entries)
       end
     end
-    ae.flatten
+    ae.flatten + manual_accounting_entries
   end
 
 #  def self.booking_now

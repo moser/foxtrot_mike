@@ -22,9 +22,9 @@
     %tbody.alternate
       - @people.each do |person|
         %tr.new_manual_accounting_entry.hover_mark.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }
-          %td=h person.lastname
-          %td=h person.firstname
-          %td=h person.financial_account_at(Date.today)
+          %td.clickable=h person.lastname
+          %td.clickable=h person.firstname
+          %td.clickable=h person.financial_account_at(Date.today)
           %td.choice
             = check_box_tag "checked[#{person.id}]"
             %span.hide_if_unchecked
