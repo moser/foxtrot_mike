@@ -2,5 +2,7 @@
 %h2= @financial_account.to_s
 = simple_form_for [@financial_account, @advance_payment] do |f|
   = f.input :date
+  = f.association :from
+  = f.input :text
   = f.input :value_f
   = f.button :submit

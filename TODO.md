@@ -1,8 +1,16 @@
 # Before release
   - accounting session
     - create: add note, that this can take long
+    - soft val: no number on manual accounting entry not found
+  - advance payment
+    - free text
+    - create accounting entry
+    - for all accounts
+  - bill for lrst
+    - no accounting entries for these flights
   - manual cost
     - add to flight ?
+  - layout account\_session#new
   - layout in ff3.6/windows
   - layout in ff
     - person#new

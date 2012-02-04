@@ -94,7 +94,7 @@ de:
       account: Benutzerkonto
       accounting_entry: Buchungs
       accounting_session: Bunchungssitzungs
-      advance_payment: Vorauszahlung
+      advance_payment: Gutschrift
       airfield: Flugplatz
       cost_hint: Kostengruppe
       cost_hint_condition: Einschränkung auf Kostengruppe
@@ -137,9 +137,10 @@ de:
         from: "Soll-Konto"
         text: "Beschreibung"
       advance_payment:
-        plural: Vorauszahlungen
+        plural: Gutschriften
         value_f: Betrag
         value: Betrag
+        from: Soll-Konto
       airfield:
         registration: Kennung
         lat: geog. Breite (+ = Nord)
@@ -190,8 +191,8 @@ de:
         value: Wert
         additive_value: Additiver Wert
       financial_account:
-        add_advance_payment: "Vorauszahlung hinzufügen"
-        advance_payment: Vorauszahlung
+        add_advance_payment: "Gutschrift hinzufügen"
+        advance_payment: Gutschrift
         owners: Besitzer
         number: Nummer
       group:

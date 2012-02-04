@@ -5,8 +5,9 @@ class OwnFinancialAccountsController < ApplicationController
     @financial_account = person.try(:financial_account_at, Date.today)
     if @financial_account
       @accounting_entries = AccountingEntry.where(:from_id => @financial_account.id)
+      @accounting_entries += AdvancePayment.where(:financial_account_id => @financial_account.id)
+      @accounting_entries = @accounting_entries.sort_by { |e| e.date }
       if @financial_account.advance_payment?
-        @accounting_entries += AdvancePayment.where(:financial_account_id => @financial_account.id)
         @saldo = AdvancePayment.where(:financial_account_id => @financial_account.id).sum(:value) -
                  AccountingEntry.where(:from_id => @financial_account.id).sum(:value)
       end

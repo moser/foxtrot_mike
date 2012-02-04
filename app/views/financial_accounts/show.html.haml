@@ -14,15 +14,18 @@
           %li= show_link(o, o.to_s)
 = edit_link(@financial_account)
 = back_link(FinancialAccount)
-- if @financial_account.advance_payment?
-  %h2= AdvancePayment.l(:plural)
-  = link_to FinancialAccount.l(:add_advance_payment), new_financial_account_advance_payment_path(@financial_account) if can?(:create, :advance_payment)
-  %table.data
+%h2= AdvancePayment.l(:plural)
+= link_to FinancialAccount.l(:add_advance_payment), new_financial_account_advance_payment_path(@financial_account) if can?(:create, :advance_payment)
+%table.data
+  %tr
+    %th= AdvancePayment.l(:date)
+    %th= AdvancePayment.l(:text)
+    %th= AdvancePayment.l(:value)
+    %th= AdvancePayment.l(:from)
+  - @financial_account.advance_payments.each do |p|
     %tr
-      %th= AdvancePayment.l(:date)
-      %th= AdvancePayment.l(:value)
-    - @financial_account.advance_payments.each do |p|
-      %tr
-        %td=l p.date
-        %td= format_currency p.value
-        %td= link_to t("views.print_voucher"), polymorphic_path([@financial_account, p], :format => :pdf)
+      %td=l p.date
+      %td= p.text
+      %td= format_currency p.value
+      %td= p.from
+      %td= link_to t("views.print_voucher"), polymorphic_path([@financial_account, p], :format => :pdf)
