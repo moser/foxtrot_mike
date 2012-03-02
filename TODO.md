@@ -12,9 +12,6 @@
     - add to flight ?
   - layout account\_session#new
   - layout in ff3.6/windows
-  - layout in ff
-    - person#new
-      - form fields after checkboxes are indented
   - controller role
     - create/show stuff only as json or thru the client
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
@@ -29,6 +26,8 @@
   - export flights grouped by cost responsible w/ cost for group
   - flight#show
     - make cost display more clear
+  - flight
+    - trigger soft validation manually
 
 # medium run
   - licenses... medical...
