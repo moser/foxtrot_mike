@@ -125,6 +125,8 @@ de:
         controller: Flugleiter
         reader: Leser
       accounting_session:
+        voucher_number: Belegnummer
+        without_flights: Ohne Flüge
         must_not_be_in_the_future: Darf nicht in der Zukunft liegen.
         finished: Abgeschlossen
         finished_at: Abgeschlossen am

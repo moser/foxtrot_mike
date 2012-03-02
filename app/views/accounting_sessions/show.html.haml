@@ -1,9 +1,10 @@
 .accounting_session
-  %h1= @accounting_session.name
-  %h2
-    = l(@accounting_session.start_date)
-    \-
-    = l(@accounting_session.end_date)
+  %h1= "#{@accounting_session.voucher_number} - #{@accounting_session.name}"
+  - unless @accounting_session.without_flights?
+    %h2
+      = l(@accounting_session.start_date)
+      \-
+      = l(@accounting_session.end_date)
   = edit_link(@accounting_session) unless @accounting_session.finished?
   - if @accounting_session.finished?
     .status
@@ -38,9 +39,10 @@
       - else
         .aggregated_entry{ :id => "ae-#{i}" }
           = format_accounting_entry(ae)
-  .flights
-    %h2= t("flights.index.title")
-    = render :partial => "flights/title_spans"
-    - @accounting_session.flights.each do |f|
-      .flight.flight_format{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
-        = render :partial => "flights/flight_spans", :locals => { :flight => f }
+  - unless @accounting_session.without_flights?
+    .flights
+      %h2= t("flights.index.title")
+      = render :partial => "flights/title_spans"
+      - @accounting_session.flights.each do |f|
+        .flight.flight_format{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
+          = render :partial => "flights/flight_spans", :locals => { :flight => f }

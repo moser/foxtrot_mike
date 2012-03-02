@@ -5,10 +5,12 @@
     %th= AccountingSession.l(:name)
     %th= AccountingSession.l(:start_date)
     %th= AccountingSession.l(:end_date)
+    %th= AccountingSession.l(:finished_at)
   - @accounting_sessions.each do |s|
     %tr
       %td=h s.name
-      %td= l(s.start_date)
-      %td= l(s.end_date)
+      %td= s.without_flights? ? "-" : l(s.start_date)
+      %td= s.without_flights? ? "-" : l(s.end_date)
+      %td= s.finished? ? l(s.finished_at, :format => :short) : "-"
       %td= show_link(s)
       %td= destroy_confirmation_link(s) unless s.finished?

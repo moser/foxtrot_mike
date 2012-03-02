@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120204110820) do
+ActiveRecord::Schema.define(:version => 20120302092159) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20120204110820) do
     t.datetime "updated_at"
     t.date     "end_date"
     t.date     "start_date"
+    t.string   "voucher_number"
+    t.boolean  "without_flights", :default => false
   end
 
   create_table "accounts", :force => true do |t|

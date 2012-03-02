@@ -22,3 +22,7 @@ $ ->
   $(".new_manual_accounting_entry td.clickable").click ->
     a = $(this).parent().find("input[type=checkbox]")
     a.attr("checked", (typeof a.attr("checked")) == "undefined")
+  if $("form.accounting_session").length > 0
+    $("#accounting_session_without_flights").change ->
+      $("#accounting_session_start_date").attr("disabled", $(this).is(":checked"))
+      $("#accounting_session_end_date").attr("disabled", $(this).is(":checked"))

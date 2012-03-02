@@ -1,19 +1,22 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights, :order => "departure_date ASC, departure_date ASC"
-  validates_presence_of :name, :start_date, :end_date
+  validates_presence_of :name, :voucher_number
+  validates_presence_of :start_date, :end_date, :if => lambda { |s| !s.without_flights? }
   validate do |a|
-    errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if a.end_date && a.end_date > DateTime.now.to_date
+    errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if !a.without_flights? && a.end_date && a.end_date > DateTime.now.to_date
   end
 
   attr_reader :problems
   def soft_validate
     @problems = {}
-    unaccounted_flights = AbstractFlight.where(AbstractFlight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
-    count = unaccounted_flights.count
-    oldest = unaccounted_flights.order("departure_date ASC").first
-    if count > 0
-      @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date) }
+    unless without_flights?
+      unaccounted_flights = AbstractFlight.where(AbstractFlight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
+      count = unaccounted_flights.count
+      oldest = unaccounted_flights.order("departure_date ASC").first
+      if count > 0
+        @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date) }
+      end
     end
     @problems[:financial_account_missing_number] = {} if concerned_financial_accounts.find { |a| !a.number? }
     @problems.empty?
@@ -25,13 +28,17 @@ class AccountingSession < ActiveRecord::Base
 
   #TODO make all other flights methods unaccessible
   def flights_with_default
-    if finished?
-      flights_without_default
+    unless without_flights?
+      if finished?
+        flights_without_default
+      else
+        Flight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(start_date)).
+                              where(AbstractFlight.arel_table[:departure_date].lteq(end_date)).
+                              where(:accounting_session_id => nil).
+                              order('departure_date ASC').all
+      end
     else
-      Flight.include_all.where(AbstractFlight.arel_table[:departure_date].gteq(start_date)).
-                            where(AbstractFlight.arel_table[:departure_date].lteq(end_date)).
-                            where(:accounting_session_id => nil).
-                            order('departure_date ASC').all
+      []
     end
   end
   alias_method_chain :flights, :default

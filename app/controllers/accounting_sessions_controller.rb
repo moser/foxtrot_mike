@@ -11,9 +11,9 @@ class AccountingSessionsController < ResourceController
       f.txt do
           attr = ActiveSupport::OrderedHash.new
           attr[:voucher_date] = lambda { |i| I18n.l(@accounting_session.finished_at.to_date, :format => :default) }
-          attr[:voucher_circle] = lambda { |i| "FM" }
-          attr[:voucher_id] = lambda { |i| @accounting_session.id }
-          attr[:text] = lambda { |i| "Flugabrechnung " + @accounting_session.name }
+          attr[:voucher_circle] = lambda { |i| "" }
+          attr[:voucher_id] = lambda { |i| @accounting_session.voucher_number }
+          attr[:text] = lambda { |i| "#{@accounting_session.name}" + (i.manual? && i.text && i.text != "" ? " - #{i.text}" : "") }
           attr[:value] = lambda { |i| (i.value / 100.0).to_s.gsub(".", ",") }
           attr[:from] = lambda { |i| i.from.number }
           attr[:to] = lambda { |i| i.to.number }
@@ -25,10 +25,10 @@ class AccountingSessionsController < ResourceController
           end
 
           send_data csv_string, :type => 'text/plain; charset=utf8;',
-                    :filename => "#{ @accounting_session.finished_at.to_date }-#{ AccountingSession.l(:entries) }-#{ @accounting_session.name.gsub(" ", "-") }.txt"
+                    :filename => "#{ @accounting_session.finished_at.to_date }-#{ AccountingSession.l(:entries) }-#{@accounting_session.voucher_number}-#{ @accounting_session.name.gsub(" ", "-") }.txt"
       end
       f.pdf do
-          render :pdf => "fm-#{@accounting_session.id}",
+          render :pdf => "#{@accounting_session.voucher_number}",
                  :template => "accounting_sessions/voucher.html.haml",
                  :disable_internal_links => true,
                  :disable_external_links => true,

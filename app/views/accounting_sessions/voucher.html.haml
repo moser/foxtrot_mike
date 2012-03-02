@@ -1,7 +1,8 @@
-%h1= "#{@accounting_session.name} - FM-#{@accounting_session.id}"
-= l(@accounting_session.start_date)
-\-
-= l(@accounting_session.end_date)
+%h1= "#{@accounting_session.voucher_number} - #{@accounting_session.name}"
+- unless @accounting_session.without_flights?
+  = l(@accounting_session.start_date)
+  \-
+  = l(@accounting_session.end_date)
 - @accounting_session.aggregated_entries.each do |ae|
   .ae
     = format_accounting_entry(ae)
