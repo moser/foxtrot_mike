@@ -20,17 +20,23 @@ class ManualAccountingEntriesController < ApplicationController
     if @accounting_session.finished?
       redirect_to [ @accounting_session, :manual_accounting_entries ]
     end
-    @to = FinancialAccount.find(params[:to])
-    params[:checked].keys.each do |person_id|
+    @a = FinancialAccount.find(params[:a])
+    (params[:checked] || []).keys.each do |person_id|
       person = Person.find(person_id)
       value = params[:value][person.id].to_i * 100
       unless value == 0
-        AccountingEntry.create :from => person.financial_account_at(Date.today),
-                               :to => @to,
-                               :value => value,
-                               :text => params[:text],
-                               :manual => true,
-                               :accounting_session => @accounting_session
+        e = AccountingEntry.new :value => value,
+                                :text => params[:text],
+                                :manual => true,
+                                :accounting_session => @accounting_session
+        if params[:direction] == "debit"
+          e.update_attributes :from => person.financial_account_at(Date.today),
+                              :to => @a
+        else
+          e.update_attributes :to => person.financial_account_at(Date.today),
+                              :from => @a
+        end
+        e.save
       end
     end
     redirect_to [ @accounting_session, :manual_accounting_entries ]

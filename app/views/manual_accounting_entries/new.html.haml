@@ -2,11 +2,19 @@
 = back_link([ @accounting_session, :manual_accounting_entries ])
 = form_tag [ @accounting_session, :manual_accounting_entries ] do
   .input
-    = label_tag :to, AccountingEntry.l(:to)
-    = select_tag :to, options_from_collection_for_select(FinancialAccount.all, "id", "to_s")
-  .input
+    = label_tag :a, "#{FinancialAccount.l} A"
+    = select_tag :a, options_from_collection_for_select(FinancialAccount.all, "id", "to_s")
+  .input.required
     = label_tag :text, AccountingEntry.l(:text)
-    = text_field_tag :text, ""
+    = text_field_tag :text, "", :required => "required"
+  .input
+    = label_tag :direction, AccountingEntry.l(:direction)
+    %br
+    = radio_button_tag :direction, :debit, true
+    = AccountingEntry.l(:debit)
+    %br
+    = radio_button_tag :direction, :credit
+    = AccountingEntry.l(:credit)
   = submit_tag "Ok"
   %table.filtered{ :"data-filter-by" => "group_id,filter_string" }
     %tr.no_filter.show_on_startup
@@ -18,7 +26,7 @@
     %tr.no_filter
       %th= Person.l(:lastname)
       %th= Person.l(:firstname)
-      %th= AccountingEntry.l(:from)
+      %th= "#{FinancialAccount.l} B"
     %tbody.alternate
       - @people.each do |person|
         %tr.new_manual_accounting_entry.hover_mark.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id }

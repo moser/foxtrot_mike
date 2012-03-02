@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302092159) do
+ActiveRecord::Schema.define(:version => 20120302105621) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -86,16 +86,6 @@ ActiveRecord::Schema.define(:version => 20120302092159) do
   end
 
   add_index "accounts", ["login"], :name => "index_accounts_on_login", :unique => true
-
-  create_table "advance_payments", :force => true do |t|
-    t.date     "date"
-    t.integer  "financial_account_id"
-    t.integer  "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "from_id"
-    t.string   "text",                 :default => ""
-  end
 
   create_table "airfields", :id => false, :force => true do |t|
     t.string   "id",           :limit => 36

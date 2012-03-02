@@ -13,4 +13,4 @@
         %td= link_to e.text, (AbstractFlight === e.item ? flight_path(e.item) : flight_path(e.item.abstract_flight))
       - else
         %td=h e.text
-      %td= format_currency(AdvancePayment === e ? e.value : (- e.value))
+      %td= "#{(e.to_id == @financial_account.id ? "+" : "-")} #{format_currency(e.value)}"

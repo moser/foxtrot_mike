@@ -9,7 +9,7 @@ class AccountingEntry < ActiveRecord::Base
     if item
       item.departure_date
     else
-      accounting_session.try(:end_date) || created_at
+      (accounting_session.try(:finished_at) || created_at).to_date
     end
   end
 

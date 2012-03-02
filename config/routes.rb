@@ -1,8 +1,6 @@
 Server::Application.routes.draw do
 
-  resources :financial_accounts do
-    resources :advance_payments, :only => [ :show, :new, :create ]
-  end
+  resources :financial_accounts
 
   match '/logout', :to => 'account_sessions#destroy'
   match '/login', :to => 'account_sessions#new'

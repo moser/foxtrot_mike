@@ -7,6 +7,9 @@
     %th= FinancialAccount.l(:number)
     %td=h @financial_account.number
   %tr
+    %th= FinancialAccount.l(:advance_payment)
+    %td= @financial_account.advance_payment? ? t("simple_form.yes") : t("simple_form.no")
+  %tr
     %th= FinancialAccount.l(:owners)
     %td
       %ul.scroll.no_bullet
@@ -14,18 +17,3 @@
           %li= show_link(o, o.to_s)
 = edit_link(@financial_account)
 = back_link(FinancialAccount)
-%h2= AdvancePayment.l(:plural)
-= link_to FinancialAccount.l(:add_advance_payment), new_financial_account_advance_payment_path(@financial_account) if can?(:create, :advance_payment)
-%table.data
-  %tr
-    %th= AdvancePayment.l(:date)
-    %th= AdvancePayment.l(:text)
-    %th= AdvancePayment.l(:value)
-    %th= AdvancePayment.l(:from)
-  - @financial_account.advance_payments.each do |p|
-    %tr
-      %td=l p.date
-      %td= p.text
-      %td= format_currency p.value
-      %td= p.from
-      %td= link_to t("views.print_voucher"), polymorphic_path([@financial_account, p], :format => :pdf)

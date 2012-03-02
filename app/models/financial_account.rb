@@ -1,7 +1,5 @@
 class FinancialAccount < ActiveRecord::Base
   has_many :financial_account_ownerships
-  has_many :advance_payments
-  has_many :advance_payments_from, :foreign_key => "from_id"
 
   include Current
   has_many_current :financial_account_ownerships
