@@ -2,10 +2,6 @@
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found
-  - advance payment
-    - free text
-    - create accounting entry
-    - for all accounts
   - bill for lrst
     - no accounting entries for these flights
   - manual cost
@@ -21,8 +17,6 @@
   - filtered\_flights permalink
     - loaded, invisible flights become visible when switching on aggregation
     - grouped + aggregated => check hover + controls
-  - filtered flights PDF
-    - aggregated entry, not visible...
   - export flights grouped by cost responsible w/ cost for group
   - flight#show
     - make cost display more clear
