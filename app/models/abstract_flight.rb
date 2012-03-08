@@ -6,13 +6,14 @@ class AbstractFlight < ActiveRecord::Base
   before_save :destroy_launch
   before_save :execute_soft_validation
   after_save :notify_launch
+  after_destroy :delete_accouting_entries
 
   belongs_to :plane
   #launch == nil <=> selflaunched
   belongs_to :launch, :polymorphic => true, :autosave => true, :readonly => false
   has_one :manual_cost, :as => :item
   has_many :crew_members, :include => [:person], :after_add => :association_changed, :after_remove => :association_changed, :dependent => :destroy  # , :autosave => true
-  has_many :accounting_entries, :as => :item, :dependent => :destroy
+  has_many :accounting_entries, :as => :item
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
@@ -462,6 +463,12 @@ private
   def execute_soft_validation
     self.problems_exist = !soft_validate
     true
+  end
+
+  def delete_accouting_entries
+    accounting_entries.each do |e|
+      e.delete
+    end
   end
 
   def association_changed(obj)
