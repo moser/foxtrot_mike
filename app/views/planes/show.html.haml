@@ -31,6 +31,6 @@
       %td= Plane.l(:disabled_long)
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @plane }
 = render :partial => "common/memberships", :locals => { :object => @plane, :group => :plane_cost_category }
-= show_link([@plane, :flights], Plane.l(:book))
+= link_to  Plane.l(:book), [@plane, :flights] if can?(:read, :filtered_flights)
 = edit_link(@plane)
 = back_link(Plane)

@@ -44,6 +44,6 @@
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @person }
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
-= show_link([@person, :flights], Person.l(:book))
+= link_to  Person.l(:book), [@person, :flights] if can?(:read, :filtered_flights)
 = edit_link(@person)
 = back_link(Person)
