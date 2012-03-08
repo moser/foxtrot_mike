@@ -1,6 +1,4 @@
 # Before release
-  - plane#show
-    - controller role is shown delete link for financial account ownerships
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found

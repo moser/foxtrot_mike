@@ -36,7 +36,7 @@
                   = l(o.valid_to) rescue t('views.dates.infinity')
                   = o.financial_account.name
                   = edit_link(o, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) })
-                  = button_to t('views.destroy'), polymorphic_path(o), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership])
+                  = button_to t('views.destroy'), polymorphic_path(o), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) if can?(:destroy, o)
     %tr
       %td
       %td= add_link([object, FinancialAccountOwnership], { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) })
