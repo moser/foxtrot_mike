@@ -1,4 +1,6 @@
 # Before release
+  - plane#show
+    - controller role is shown delete link for financial account ownerships
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found
@@ -14,7 +16,8 @@
     - soft validate models
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
-  - filtered\_flights permalink
+  - filtered\_flights
+    - permalink
     - loaded, invisible flights become visible when switching on aggregation
     - grouped + aggregated => check hover + controls
   - export flights grouped by cost responsible w/ cost for group

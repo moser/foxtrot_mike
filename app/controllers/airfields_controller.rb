@@ -1,3 +1,2 @@
-class AirfieldsController < ResourceController
-  #prepend_before_filter :login_required  
+class AirfieldsController < JsonEnabledOnlyController
 end

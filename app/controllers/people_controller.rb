@@ -1,4 +1,2 @@
-class PeopleController < ResourceController
-  #prepend_before_filter :login_required
-  javascript :lala, :timepicker, :filter
+class PeopleController < JsonEnabledOnlyController
 end
