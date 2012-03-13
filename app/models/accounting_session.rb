@@ -7,6 +7,8 @@ class AccountingSession < ActiveRecord::Base
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if !a.without_flights? && a.end_date && a.end_date > DateTime.now.to_date
   end
 
+  before_save :remove_dates_if_without_flights
+
   attr_reader :problems
   def soft_validate
     @problems = {}
@@ -116,5 +118,12 @@ class AccountingSession < ActiveRecord::Base
 
   def self.latest_session_end
     AccountingSession.select(:end_date).maximum(:end_date) || (AbstractFlight.oldest_departure - 1.day).to_date
+  end
+
+private
+  def remove_dates_if_without_flights
+    if without_flights?
+      self.start_date = self.end_date = nil
+    end
   end
 end

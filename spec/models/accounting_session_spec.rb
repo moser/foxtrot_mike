@@ -91,4 +91,10 @@ describe AccountingSession do
     s.finished = true
     f.accounting_entries.map { |e| e.accounting_session == s }.should == [ true ]
   end
+
+  it "should remove start and end dates when without_flights is true" do
+    s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago, :without_flights => true)
+    s.start_date.should == nil
+    s.end_date.should == nil
+  end
 end
