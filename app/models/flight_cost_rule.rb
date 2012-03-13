@@ -13,15 +13,11 @@ class FlightCostRule < ActiveRecord::Base
   has_many :flight_cost_items, :after_add => :association_changed, :after_remove => :association_changed
 
   validates_presence_of :person_cost_category, :plane_cost_category
+  validates_with ValidFromValidator, :attributes => :valid_from
 
   def apply_to(flight)
     costs = flight_cost_items.map { |i| i.apply_to(flight) }
     Cost.new(self, costs)
-#    aggregate = Hash.new { |h,k| h[k] = [] }
-#    costs.each do |c|
-#      aggregate[c.financial_account] << c.value
-#    end
-#    Cost.new(self, aggregate.map { |k,v| CostItem.new(v.sum, k) })
   end
 
   def matches?(flight, conditions = nil)

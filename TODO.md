@@ -4,32 +4,31 @@
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found
-  - bill for lrst
-    - no accounting entries for these flights
-  - manual cost
-    - add to flight ?
-  - layout account\_session#new
-  - layout in ff3.6/windows
-  - controller role
-    - create/show stuff only as json or thru the client
-    - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
-    - soft validate models
-    - may delete flight??
-  - cost\_rule#create
-    - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights
     - permalink
     - loaded, invisible flights become visible when switching on aggregation
     - grouped + aggregated => check hover + controls
-  - export flights grouped by cost responsible w/ cost for group
   - flight#show
     - make cost display more clear
     - from/to tooltip name for registrations (also on flight spans?)
   - flight
     - trigger soft validation manually
+      - add problems when unfinished or plane, seat1 missing
   - account session#create
     - button text -> Anmelden
     - header/footer...
+
+# soon
+  - bill for lrst
+    - no accounting entries for these flights
+  - manual cost
+    - add to flight ?
+  - export flights grouped by cost responsible w/ cost for group
+  - controller role
+    - create/show stuff only as json or thru the client
+    - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
+    - soft validate models
+    - may delete flight??
 
 # medium run
   - licenses... medical...
