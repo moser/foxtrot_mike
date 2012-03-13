@@ -1,4 +1,6 @@
 # Before release
+  - manual accounting entries#new
+    - decimal?
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found
@@ -12,6 +14,7 @@
     - create/show stuff only as json or thru the client
     - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
     - soft validate models
+    - may delete flight??
   - cost\_rule#create
     - make sure that after lastestASEnd (otherwise a rule is created, which cannot be edited)
   - filtered\_flights
@@ -21,8 +24,12 @@
   - export flights grouped by cost responsible w/ cost for group
   - flight#show
     - make cost display more clear
+    - from/to tooltip name for registrations (also on flight spans?)
   - flight
     - trigger soft validation manually
+  - account session#create
+    - button text -> Anmelden
+    - header/footer...
 
 # medium run
   - licenses... medical...

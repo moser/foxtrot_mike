@@ -97,8 +97,9 @@ class ResourceController < ApplicationController
       end
     else
       respond_to do |f|
+        puts @model.errors.to_yaml
         f.html { render :action => :new, :layout => !request.xhr?, :status => 422 }
-        f.json { render :text => "FAIL"}
+        f.json { render :text => "FAIL", :status => 422 }
       end
     end
   end
