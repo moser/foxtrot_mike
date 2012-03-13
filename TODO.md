@@ -1,7 +1,4 @@
 # Before release
-  - accounting session
-    - create: add note, that this can take long
-    - soft val: no number on manual accounting entry not found
   - filtered\_flights
     - permalink
     - loaded, invisible flights become visible when switching on aggregation

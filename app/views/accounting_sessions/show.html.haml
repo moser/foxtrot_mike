@@ -37,7 +37,7 @@
                 = format_accounting_entry(e)
                 %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
       - else
-        .aggregated_entry{ :id => "ae-#{i}" }
+        .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
           = format_accounting_entry(ae)
   - unless @accounting_session.without_flights?
     .flights
