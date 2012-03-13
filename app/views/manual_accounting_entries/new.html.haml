@@ -36,4 +36,4 @@
           %td.choice
             = check_box_tag "checked[#{person.id}]"
             %span.hide_if_unchecked
-              = number_field_tag "value[#{person.id}]", 0, :min => 0
+              = number_field_tag "value[#{person.id}]", 0, :min => 0, :step => 0.01

@@ -1,6 +1,4 @@
 # Before release
-  - manual accounting entries#new
-    - decimal?
   - accounting session
     - create: add note, that this can take long
     - soft val: no number on manual accounting entry not found
@@ -19,6 +17,8 @@
     - header/footer...
 
 # soon
+  - create cost rules (and other places where monetary values are used)
+    - use ct or decimal €
   - bill for lrst
     - no accounting entries for these flights
   - manual cost

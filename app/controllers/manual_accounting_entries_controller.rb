@@ -23,7 +23,7 @@ class ManualAccountingEntriesController < ApplicationController
     @a = FinancialAccount.find(params[:a])
     (params[:checked] || []).keys.each do |person_id|
       person = Person.find(person_id)
-      value = params[:value][person.id].to_i * 100
+      value = params[:value][person.id].to_s.gsub(",",".").to_f * 100
       unless value == 0
         e = AccountingEntry.new :value => value,
                                 :text => params[:text],
