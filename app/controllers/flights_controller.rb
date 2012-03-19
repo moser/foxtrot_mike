@@ -102,7 +102,7 @@ class FlightsController < ApplicationController
     attrs.delete_if { |k,v| k.to_s =~ /^duration/ }
     @flight = (attrs.delete(:type) || "Flight").constantize.new(attrs)
     authorize! :create, @flight
-    @flight.id = attrs[:id] unless attrs[:id].nil?
+    #@flight.id = attrs[:id] unless attrs[:id].nil?
     respond_to do |format|
       if @flight.save
         format.html do
@@ -116,7 +116,7 @@ class FlightsController < ApplicationController
         format.json  { render :json => "OK" }
       else
         format.html { render :action => "new", :layout => !request.xhr?, :status => :unprocessable_entity }
-        format.json  { render :json => "FAIL" }
+        format.json  { render :json => "FAIL", :status => :unprocessable_entity }
       end
     end
   end
