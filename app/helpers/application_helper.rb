@@ -84,12 +84,12 @@ module ApplicationHelper
   end
 
   def back_link(obj, options = {})
-    link_to t('views.back'), obj, *[merge_class_into_options("back", options)] if can?(:read, obj)
+    link_to t('views.back'), obj, *[merge_class_into_options("back", options)] if can(:read, obj)
   end
 
   def show_link(obj, str = nil, options = {})
     unless str
-      link_to t('views.show'), obj, *[merge_class_into_options("show", options)] if can?(:read, obj)
+      link_to t('views.show'), obj, *[merge_class_into_options("show", options)] if can(:read, obj)
     else
       link_to_unless cannot?(:read, obj), str, obj, *[options]
     end
@@ -98,7 +98,7 @@ module ApplicationHelper
   def edit_link(obj, str = nil, options = {})
     options = merge_class_into_options("edit", options)
     unless str
-      link_to t('views.edit'), polymorphic_path(obj, :action => :edit), *[options] if can?(:update, obj)
+      link_to t('views.edit'), polymorphic_path(obj, :action => :edit), *[options] if can(:update, obj)
     else
       link_to_unless cannot?(:update, obj), str, polymorphic_path(obj, :action => :edit), *[options]
     end
@@ -107,22 +107,27 @@ module ApplicationHelper
   def new_link(klass, str = nil, options = {})
     options = merge_class_into_options("new", options)
     unless str
-      link_to t('views.new'), polymorphic_path(klass, :action => :new), *[options] if can?(:create, klass)
+      link_to t('views.new'), polymorphic_path(klass, :action => :new), *[options] if can(:create, klass)
     else
       link_to_unless cannot?(:create, klass), str, polymorphic_path(klass, :action => :new), *[options]
     end
   end
 
   def add_link(klass, options = {})
-    link_to t('views.add'), polymorphic_path(klass, :action => :new), *[merge_class_into_options("add", options)] if can?(:create, [klass].flatten.last)
+    link_to t('views.add'), polymorphic_path(klass, :action => :new), *[merge_class_into_options("add", options)] if can(:create, [klass].flatten.last)
   end
 
   def destroy_link(obj, options = {})
-    #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can?(:destroy, obj)
+    #link_to t('views.destroy'), polymorphic_path(obj, :action => :destroy), *[options] if can(:destroy, obj)
   end
 
   def destroy_confirmation_link(obj, options = {})
-    link_to t('views.destroy'), polymorphic_path([obj, :destroy_confirmation], :action => :new), *[merge_class_into_options("facebox", options)] if can?(:destroy, obj)
+    link_to t('views.destroy'), polymorphic_path([obj, :destroy_confirmation], :action => :new), *[merge_class_into_options("facebox", options)] if can(:destroy, obj)
+  end
+
+  def can(what, obj)
+    obj = obj[0] if Array === obj
+    can?(what, obj)
   end
 
 private
