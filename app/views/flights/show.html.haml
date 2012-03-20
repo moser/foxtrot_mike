@@ -32,10 +32,10 @@
                   = "(#{@flight.seat2.short})" if @flight.seat2.person?
             %tr
               %th= Flight.l(:from)
-              %td= @flight.from || '-'
+              %td{ :title => @flight.from.try(:name) }= @flight.from || '-'
             %tr
               %th= Flight.l(:to)
-              %td= @flight.to || '-'
+              %td{ :title => @flight.to.try(:name) }= @flight.to || '-'
             %tr
               %th= Flight.l(:departure)
               %td= l(@flight.departure, :format => :time)
