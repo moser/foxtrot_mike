@@ -23,7 +23,12 @@ describe Flight do
   end
 
   describe "liabilities_attributes" do
-    it "TODO"
+    it "should work :D" do
+      f = Flight.generate!(:liabilities_attributes => [{ :person => Person.generate!, :proportion => 3 },
+                                                       { :person => Person.generate!, :proportion => 1}])
+      f.liabilities.count.should == 2
+      f.liabilities.map(&:proportion).sort.should == [1,3]
+    end
   end
 
   describe "cost" do

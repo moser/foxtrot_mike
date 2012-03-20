@@ -7,6 +7,8 @@ class Flight < AbstractFlight
   before_update :before_update_invalidate_accounting_entries
   after_update :after_update_invalidate_accounting_entries
 
+  accepts_nested_attributes_for :liabilities
+
   validate do |f|
     errors.add(:base, I18n.t("activerecord.errors.messages.not_editable")) unless f.editable?
   end
@@ -69,17 +71,6 @@ class Flight < AbstractFlight
 
   def proportion_for(liability)
     liability.proportion.to_f / proportion_sum.to_f
-  end
-
-  def liabilities_attributes=(attrs)
-    unless attrs.nil?
-      attrs.each do |h|
-        obj = h.delete(:type).constantize.new(h)
-        obj.id = h[:id]
-        obj.save
-        liabilities << obj
-      end
-    end
   end
 
   def liabilities_attributes
