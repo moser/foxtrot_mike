@@ -409,7 +409,7 @@ $(function() {
         new CrewHelper(el);
         new AirfieldHelper(el, "from");
         new AirfieldHelper(el, "to");
-        new PersonHelper(el, "controller");
+        new PersonHelper(el, "controller", null, false);
       } else { //tow_flight form
         new TowPlaneHelper(el, "tow_flight");
         new CrewHelper(el, "tow_flight");

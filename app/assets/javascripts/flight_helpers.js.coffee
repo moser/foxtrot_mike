@@ -161,7 +161,7 @@ class FieldHelper
   id: ->
     @id_cache ||= "#{@prefix}_#{@field}_id".replace(/[\[\]]/g, "_").replace(/__/g, "_")
   name: ->
-    @name_cache ||= @id().substring(0, @id().length - 4)
+    @name_cache ||= @id().substring(0, @id().length - 3)
   extract: (obj) ->
     if $.isFunction(obj[@method])
       obj[@method].call(obj)

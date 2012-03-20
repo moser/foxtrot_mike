@@ -11,5 +11,6 @@ de:
       flight:
         engine_duration: "Wird ignoriert, wenn nicht zutreffend."
         seat2_id: "'-' eingeben, um das Feld zu leeren."
+        controller: "'-' eingeben, um das Feld zu leeren."
     labels:
       account:
