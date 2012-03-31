@@ -4,7 +4,7 @@ class Plane < ActiveRecord::Base
   include Current
   include AccountingEntryInvalidation
 
-  LAUNCH_METHODS = [ "self", "tow_flight", "wire_launch" ]
+  LAUNCH_METHODS = [ "self_launch", "tow_launch", "wire_launch" ]
 
   after_initialize :init
 
@@ -88,7 +88,7 @@ private
   end
 
   def init
-    self.default_launch_method ||= "self"
+    self.default_launch_method ||= "self_launch"
     self.competition_sign ||= ""
     self.seat_count = 1 if seat_count.nil?
     self.has_engine = false if has_engine.nil?

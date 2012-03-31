@@ -39,6 +39,10 @@ class TowFlight < AbstractFlight
     save if changed?
   end
 
+  def to_s
+    "tow_launch"
+  end
+
 private
   def copy_from_abstract_flight
     if abstract_flight

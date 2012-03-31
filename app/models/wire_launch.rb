@@ -70,6 +70,10 @@ class WireLaunch < ActiveRecord::Base
   def abstract_flight_changed
   end
 
+  def to_s
+    "wire_launch"
+  end
+
 private
   def invalidation_necessary?
     changes.keys.include?("wire_launcher_id")

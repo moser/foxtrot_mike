@@ -1,6 +1,4 @@
 # Before release
-  - plane
-    - self -> self\_launch
   - filtered\_flights
     - permalink
     - loaded, invisible flights become visible when switching on aggregation
@@ -8,6 +6,8 @@
   - flight
     - trigger soft validation manually
       - add problems when unfinished or plane, seat1 missing
+  - wire\_launch#form
+    - allow nil for operator
   - account session#create
     - button text -> Anmelden
     - header/footer...
@@ -17,6 +17,7 @@
     - show comment
   - deploy ssv version
     - check youths and person category memberships
+  - spork!
 
 # soon
   - create cost rules (and other places where monetary values are used)

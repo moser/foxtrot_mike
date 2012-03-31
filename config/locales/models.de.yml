@@ -29,13 +29,13 @@ de:
         long: F-Schlepp
         short: F
     launch_types:
-      tow_flight:
+      tow_launch:
         short: F
         long: F-Schlepp
       wire_launch:
         short: W
         long: Windenstart
-      self:
+      self_launch:
         short: E
         long: Eigenstart
   person:

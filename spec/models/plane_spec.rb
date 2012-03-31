@@ -13,9 +13,9 @@ describe Plane do
   it { should validate_presence_of :legal_plane_class }
   it { should validate_presence_of :default_launch_method }
 
-  it { should allow_value("tow_flight").for(:default_launch_method) }
+  it { should allow_value("tow_launch").for(:default_launch_method) }
   it { should allow_value("wire_launch").for(:default_launch_method) }
-  it { should allow_value("self").for(:default_launch_method) }
+  it { should allow_value("self_launch").for(:default_launch_method) }
   it { should_not allow_value("foo").for(:default_launch_method) }
 
   it "should have one current financial_account_ownership" do
@@ -65,7 +65,7 @@ describe Plane do
 
   it "should set default values" do
     pl = Plane.new
-    pl.default_launch_method.should == "self"
+    pl.default_launch_method.should == "self_launch"
     pl.seat_count.should == 1
     pl.competition_sign.should == ""
     pl.has_engine.should_not be_nil
