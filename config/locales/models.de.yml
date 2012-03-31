@@ -124,6 +124,7 @@ de:
         controller: Flugleiter
         reader: Leser
       accounting_session:
+        accounting_date: Buchungsdatum
         voucher_number: Belegnummer
         without_flights: Ohne Flüge
         must_not_be_in_the_future: Darf nicht in der Zukunft liegen.

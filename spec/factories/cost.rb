@@ -34,4 +34,5 @@ Factory.define(:accounting_session) do |s|
   s.sequence(:name) { |n| "accounting_session #{n} #{DateTime.now}" }
   s.sequence(:end_date) { |n| (500 - n).days.ago }
   s.sequence(:voucher_number) { |n| n }
+  s.accounting_date Date.today
 end

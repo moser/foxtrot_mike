@@ -10,7 +10,7 @@ class AccountingSessionsController < ResourceController
       f.html { render }
       f.txt do
           attr = ActiveSupport::OrderedHash.new
-          attr[:voucher_date] = lambda { |i| I18n.l(@accounting_session.finished_at.to_date, :format => :default) }
+          attr[:voucher_date] = lambda { |i| I18n.l(@accounting_session.accounting_date, :format => :default) }
           attr[:voucher_circle] = lambda { |i| "" }
           attr[:voucher_id] = lambda { |i| @accounting_session.voucher_number }
           attr[:text] = lambda { |i| "#{@accounting_session.name}" + (i.manual? && i.text && i.text != "" ? " - #{i.text}" : "") }

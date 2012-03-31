@@ -1,7 +1,7 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights, :order => "departure_date ASC, departure_date ASC"
-  validates_presence_of :name, :voucher_number
+  validates_presence_of :name, :voucher_number, :accounting_date
   validates_presence_of :start_date, :end_date, :if => lambda { |s| !s.without_flights? }
   validate do |a|
     errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if !a.without_flights? && a.end_date && a.end_date > DateTime.now.to_date

@@ -5,7 +5,7 @@
     - grouped + aggregated => check hover + controls
   - flight
     - trigger soft validation manually
-      - add problems when unfinished or plane, seat1 missing
+      - add problems when unfinished or plane, seat1 missing => prevent accounting of flight
   - wire\_launch#form
     - allow nil for operator
   - account session#create
