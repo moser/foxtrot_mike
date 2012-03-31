@@ -92,7 +92,6 @@
             %table.data
               - if @flight.cost
                 %tr
-                  %th= FlightCostRule.l
                   %td= show_link(@flight.cost.cost_rule, @flight.cost.cost_rule.name, { :class => "facebox" })
                 - @flight.cost.items.each do |i|
                   %tr
@@ -101,7 +100,6 @@
                     %td= format_currency(i.value)
               - if @flight.launch_cost
                 %tr
-                  %th= @flight.launch_cost.cost_rule.class.l
                   %td= show_link(@flight.launch_cost.cost_rule, @flight.launch_cost.cost_rule.name, { :class => "facebox" })
                 - @flight.launch_cost.items.each do |i|
                   %tr
