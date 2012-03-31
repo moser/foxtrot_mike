@@ -25,4 +25,4 @@
       %th= WireLaunchCostRule.l(:cost_items)
       %td
         = render :partial => "wire_launch_cost_items/list", :locals => { :cost_rule => wire_launch_cost_rule }
-  = button_to t('views.destroy'), polymorphic_path(wire_launch_cost_rule), :method => :delete, :class => "delete", :"data-replace" => wire_launch_cost_rules_path(:person_cost_category_id => wire_launch_cost_rule.person_cost_category_id, :wire_launcher_cost_category_id => wire_launch_cost_rule.wire_launcher_cost_category_id), :"data-replace-id" => "wire_launch_cost_rule_list" unless wire_launch_cost_rule.in_effect?
+  = button_to t('views.destroy'), polymorphic_path(wire_launch_cost_rule), :method => :delete, :class => "delete", :"data-replace" => wire_launch_cost_rules_path(:person_cost_category_id => wire_launch_cost_rule.person_cost_category_id, :wire_launcher_cost_category_id => wire_launch_cost_rule.wire_launcher_cost_category_id), :"data-replace-id" => "wire_launch_cost_rule_list" if wire_launch_cost_rule.not_yet_in_effect? && can?(:destroy, wire_launch_cost_rule)

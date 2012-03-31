@@ -11,6 +11,7 @@ class Ability
         end
         if account.controller?
           can [:read, :create], [Person, Plane, Airfield, WireLauncher, Flight, TowFlight]
+          can :read, [FlightCostRule, WireLaunchCostRule]
           can :update, [Flight, TowFlight]
         end
         if account.treasurer?

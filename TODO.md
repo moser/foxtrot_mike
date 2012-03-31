@@ -1,17 +1,22 @@
 # Before release
+  - plane
+    - self -> self\_launch
   - filtered\_flights
     - permalink
     - loaded, invisible flights become visible when switching on aggregation
     - grouped + aggregated => check hover + controls
-  - flight#show
-    - make cost display more clear
-    - from/to tooltip name for registrations (also on flight spans?)
   - flight
     - trigger soft validation manually
       - add problems when unfinished or plane, seat1 missing
   - account session#create
     - button text -> Anmelden
     - header/footer...
+  - airfields, planes, wire\_launchers, people#index
+    - hover mark
+  - person#show
+    - show comment
+  - deploy ssv version
+    - check youths and person category memberships
 
 # soon
   - create cost rules (and other places where monetary values are used)
