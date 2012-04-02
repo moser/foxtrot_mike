@@ -113,21 +113,21 @@ loop do
           putc ch
           if ch == "\n"
             if l =~ /([0-9]*) examples, 0 failures, ([0-9]*) pending/
-              `notify-send '#{$1} example#{$1 == "1" ? "" : "s"}, #{$2} pending' -i ~/code/foxtrot_mike/.notify-img/pending.png &> /dev/null`
+              `notify-send --hint=int:transient:1 '#{$1} example#{$1 == "1" ? "" : "s"}, #{$2} pending' -i ~/code/foxtrot_mike/.notify-img/pending.png &> /dev/null`
               notified = true
               if @run_all_when_green 
                 #@run_all = true 
                 @run_all_when_green = false
               end
             elsif l =~ /([0-9]*) examples*, 0 failures/
-              `notify-send '#{$1} example#{$1 == "1" ? "" : "s"} passed' -i ~/code/foxtrot_mike/.notify-img/passed.png &> /dev/null`
+              `notify-send --hint=int:transient:1 '#{$1} example#{$1 == "1" ? "" : "s"} passed' -i ~/code/foxtrot_mike/.notify-img/passed.png &> /dev/null`
               notified = true
               if @run_all_when_green && ((DateTime.now - @last_time_all) * 1440) > 5 #only run all after green every 5 minutes
                 #@run_all = true 
                 @run_all_when_green = false
               end
             elsif l =~ /([0-9]*) examples*, ([0-9]*) failures*/
-              `notify-send '#{$1} example#{$1 == "1" ? "" : "s"}, #{$2} failed' -i ~/code/foxtrot_mike/.notify-img/failed.png &> /dev/null`
+              `notify-send --hint=int:transient:1 '#{$1} example#{$1 == "1" ? "" : "s"}, #{$2} failed' -i ~/code/foxtrot_mike/.notify-img/failed.png &> /dev/null`
               notified = true
               @run_all_when_green = true
             end
@@ -139,9 +139,9 @@ loop do
         err = stderr.readlines
       end
       unless notified
-        `notify-send 'Specs could not be run' -i ~/traffic-light-red.jpg &> /dev/null` 
+        #`notify-send 'Specs could not be run' -i ~/traffic-light-red.jpg &> /dev/null` 
         puts err
-      end  
+      end
   else
     sleep 5
   end
