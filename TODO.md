@@ -11,7 +11,7 @@
   - account session#create
     - button text -> Anmelden
     - header/footer...
-  - airfields, planes, wire\_launchers, people#index
+  - airfields, planes, wire\_launchers, people, financial\_accounts#index
     - hover mark
   - person#show
     - show comment

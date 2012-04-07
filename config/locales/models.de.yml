@@ -194,6 +194,9 @@ de:
         owners: Besitzer
         number: Nummer
         advance_payment: Vorauszahlung
+        bank_account_holder: Kontoinhaber
+        bank_account_number: Kontonummer
+        bank_code: BLZ
       group:
         members: Mitglieder
         planes: Flugzeuge

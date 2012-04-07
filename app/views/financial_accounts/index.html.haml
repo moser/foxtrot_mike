@@ -8,11 +8,17 @@
     %th= FinancialAccount.l(:name)
     %th= FinancialAccount.l(:number)
     %th= FinancialAccount.l(:advance_payment)
+    %th= FinancialAccount.l(:bank_account_holder)
+    %th= FinancialAccount.l(:bank_account_number)
+    %th= FinancialAccount.l(:bank_code)
   - @financial_accounts.each do |financial_account|
     %tr.alternate_color{ :"data-filter_string" => financial_account.name.downcase }
       %td= h financial_account.name
       %td= h financial_account.number
       %td= financial_account.advance_payment? ? t("simple_form.yes") : ""
+      %td= h financial_account.bank_account_holder
+      %td= h financial_account.bank_account_number
+      %td= h financial_account.bank_code
       %td= show_link(financial_account)
       %td= edit_link(financial_account)
 = new_link(FinancialAccount)
