@@ -42,5 +42,9 @@ describe ApplicationHelper do
     it "should render 1,01 €" do
       helper.format_currency(101).should == "1,01 €"
     end
+
+    it "should render -1,01 €" do
+      helper.format_currency(-101).should == "-1,01 €"
+    end
   end
 end
