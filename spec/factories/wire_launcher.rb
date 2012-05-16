@@ -1,21 +1,23 @@
-Factory.define :wire_launcher_cost_category_membership do |m|
-  m.valid_from 1.year.ago.to_date
-  m.valid_to 1.year.from_now.to_date
-  m.association :wire_launcher, :factory => :wire_launcher
-  m.association :wire_launcher_cost_category, :factory => :wire_launcher_cost_category
-end
+FactoryGirl.define do
+  factory :wire_launcher_cost_category_membership do
+    valid_from 1.year.ago.to_date
+    valid_to 1.year.from_now.to_date
+    wire_launcher
+    wire_launcher_cost_category
+  end
 
-Factory.define :wire_launcher do |p|
-  p.sequence(:registration) {|n| "BY-#{n} #{DateTime.now}" }
-  p.financial_account { FinancialAccount.generate! }
-end
+  factory :wire_launcher do
+    sequence(:registration) {|n| "BY-#{n} #{DateTime.now}" }
+    financial_account { FactoryGirl.create(:financial_account) }
+  end
 
-Factory.define :wire_launcher_cost_category do |c|
-  c.sequence(:name) {|n| "wire_launcher_cost_category #{n} #{DateTime.now}" }
-end
+  factory :wire_launcher_cost_category do
+    sequence(:name) {|n| "wire_launcher_cost_category #{n} #{DateTime.now}" }
+  end
 
-Factory.define :wire_launch do |w|
-  w.association :wire_launcher, :factory => :wire_launcher
-  w.association :operator, :factory => :person
-  w.association :abstract_flight, :factory => :flight
+  factory :wire_launch do
+    wire_launcher
+    operator
+    abstract_flight
+  end
 end

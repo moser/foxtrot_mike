@@ -1,6 +1,8 @@
-Factory.define :airfield do |a|
-  a.sequence(:name) {|n| "Airfield #{n} #{DateTime.now}" }
-  a.sequence(:registration) {|n| "#{n} #{DateTime.now}" }
-  a.lat 49.0
-  a.long 12.0
+FactoryGirl.define do
+  factory :airfield do
+    sequence(:name) {|n| "Airfield #{n} #{DateTime.now}" }
+    sequence(:registration) {|n| "#{n} #{DateTime.now}" }
+    lat 49.0
+    long 12.0
+  end
 end

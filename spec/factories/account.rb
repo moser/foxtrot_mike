@@ -1,10 +1,12 @@
-Factory.define :account do |a|
-  a.sequence(:login) { |n| "foo#{n}#{Time.now.to_i}" }
-  a.password '123123'
-  a.password_confirmation '123123'
-  a.association :person, :factory => :person
-  a.admin true
-end
+FactoryGirl.define do
+  factory :account do
+    sequence(:login) { |n| "foo#{n}#{Time.now.to_i}" }
+    password '123123'
+    password_confirmation '123123'
+    admin true
+    person
+  end
 
-Factory.define :account_session do |f|
+  factory :account_session do
+  end
 end

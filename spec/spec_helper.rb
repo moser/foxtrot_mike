@@ -10,9 +10,6 @@ unless defined?(SetupSpec)
   # in ./support/ and its subdirectories.
   Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
-  Dir["#{::Rails.root}/shared/spec/factories/**/*.rb"].each {|f| require f}
-  Dir["#{::Rails.root}/spec/factories/**/*.rb"].each {|f| require f}
-
   require 'factory_girl/syntax/generate'
 
   class ActionView::TestCase::TestController

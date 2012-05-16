@@ -32,7 +32,7 @@ group :test do
   gem "rspec"
   gem "rspec-rails"
   gem "shoulda-matchers"
-  gem "factory_girl"
+  gem "factory_girl_rails"
   gem "capybara"
   gem "launchy"
   gem "database_cleaner"
