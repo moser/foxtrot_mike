@@ -1,6 +1,8 @@
 Server::Application.routes.draw do
 
-  resources :financial_accounts
+  resources :financial_accounts do
+    resource :overview, :controller => "financial_account_overviews"
+  end
 
   match '/logout', :to => 'account_sessions#destroy'
   match '/login', :to => 'account_sessions#new'
@@ -79,7 +81,7 @@ Server::Application.routes.draw do
   end
   resources :legal_plane_classes
   resource :unknown_person
-  resource :own_financial_account
+  resource :own_financial_account, :controller => "financial_account_overviews"
 
   root :to => 'dashboards#show'
 

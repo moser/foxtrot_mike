@@ -5,3 +5,4 @@ require File.expand_path('../application', __FILE__)
 Server::Application.initialize!
 
 Mime::Type.register "text/plain", :txt
+Mime::Type.register "text/dtaus", :dtaus

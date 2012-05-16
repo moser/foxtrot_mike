@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120407171246) do
+ActiveRecord::Schema.define(:version => 20120515125215) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -58,8 +58,10 @@ ActiveRecord::Schema.define(:version => 20120407171246) do
     t.date     "end_date"
     t.date     "start_date"
     t.string   "voucher_number"
-    t.boolean  "without_flights", :default => false
+    t.boolean  "without_flights",             :default => false
     t.date     "accounting_date"
+    t.boolean  "bank_debit",                  :default => false
+    t.integer  "credit_financial_account_id"
   end
 
   create_table "accounts", :force => true do |t|
@@ -166,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20120407171246) do
     t.string   "bank_account_holder", :default => ""
     t.string   "bank_account_number", :default => ""
     t.string   "bank_code",           :default => ""
+    t.boolean  "member_account",      :default => false
   end
 
   create_table "flight_cost_items", :force => true do |t|

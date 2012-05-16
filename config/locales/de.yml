@@ -2,7 +2,7 @@ de:
   unknown_person: Pilot
   change_password: "Passwort ändern"
   password_changed: "Passwort erfolgreich gesetzt."
-  own_financial_account: "Buchungsübersicht"
+  financial_account_overview: "Buchungsübersicht"
   helpers:
     submit:
       create: "Erstellen"
@@ -60,9 +60,11 @@ de:
       finish: Abschließen
       show_entries: Buchungen anzeigen
       aggregated_entries: Summierte Buchungen
+      accounting_entries: Buchungen
       mark_sources: "Quelle(n) markieren"
       entries_txt: "Buchungen exportieren"
       voucher: "Beleg drucken"
+      dtaus: "DTA"
   airfields:
     index:
       title: "Flugplätze"
@@ -144,7 +146,7 @@ de:
   none:
     index:
       title: "nichts"
-  own_financial_accounts:
+  financial_account_overviews:
     show:
       title: "Buchungsübersicht"
       saldo: "Saldo"

@@ -4,7 +4,7 @@
     %ul
       -#%li Personendaten bearbeiten
       -# if current_account && current_account.person && current_account.person.financial_account
-      %li= link_to t("own_financial_account"), own_financial_account_path
+      %li= link_to t("financial_account_overview"), own_financial_account_path
       %li= link_to t("change_password"), new_password_path
   - if Airfield.home.count > 0
     .views

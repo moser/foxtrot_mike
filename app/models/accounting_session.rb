@@ -1,6 +1,9 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights, :order => "departure_date ASC, departure_date ASC"
+
+  belongs_to :credit_financial_account, :class_name => "FinancialAccount"
+
   validates_presence_of :name, :voucher_number, :accounting_date
   validates_presence_of :start_date, :end_date, :if => lambda { |s| !s.without_flights? }
   validate do |a|
@@ -49,10 +52,18 @@ class AccountingSession < ActiveRecord::Base
     if finished?
       accounting_entries_without_default
     else
-      flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
+      unless bank_debit?
+        flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
+      else
+        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => -f.balance, :accounting_session => self, :text => name) }
+      end
     end
   end
   alias_method_chain :accounting_entries, :default
+
+  def negative_financial_accounts 
+    FinancialAccount.where("bank_account_number != ''").where(:advance_payment => false, :member_account => true).select { |f| f.balance < 0 }
+  end
 
   def initialize(*args)
     super(*args)
@@ -84,6 +95,9 @@ class AccountingSession < ActiveRecord::Base
         f.accounting_entries.each do |e|
           e.update_attribute :accounting_session, self
         end
+      end
+      if bank_debit?
+        accounting_entries.each { |e| e.save }
       end
       update_attribute :finished_at, DateTime.now
     end
@@ -120,8 +134,13 @@ class AccountingSession < ActiveRecord::Base
     AccountingSession.select(:end_date).maximum(:end_date) || (AbstractFlight.oldest_departure - 1.day).to_date
   end
 
+  def self.latest_finished_bank_debit_session_end
+    AccountingSession.where(AccountingSession.arel_table[:finished_at].not_eq(nil)).where(:bank_debit => true).select(:end_date).maximum(:end_date) || (AbstractFlight.oldest_departure - 1.year).to_date
+  end
+
 private
   def remove_dates_if_without_flights
+    self.without_flights = true if bank_debit?
     if without_flights?
       self.start_date = self.end_date = nil
     end

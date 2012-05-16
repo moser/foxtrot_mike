@@ -7,6 +7,7 @@
   %tr.no_filter
     %th= FinancialAccount.l(:name)
     %th= FinancialAccount.l(:number)
+    %th= FinancialAccount.l(:member_account)
     %th= FinancialAccount.l(:advance_payment)
     %th= FinancialAccount.l(:bank_account_holder)
     %th= FinancialAccount.l(:bank_account_number)
@@ -15,10 +16,12 @@
     %tr.alternate_color{ :"data-filter_string" => financial_account.name.downcase }
       %td= h financial_account.name
       %td= h financial_account.number
+      %td= financial_account.member_account? ? t("simple_form.yes") : ""
       %td= financial_account.advance_payment? ? t("simple_form.yes") : ""
       %td= h financial_account.bank_account_holder
       %td= h financial_account.bank_account_number
       %td= h financial_account.bank_code
       %td= show_link(financial_account)
       %td= edit_link(financial_account)
+      %td= link_to t("financial_account_overview"), [ financial_account, :overview ] if can?(:read, :financial_account_overview)
 = new_link(FinancialAccount)

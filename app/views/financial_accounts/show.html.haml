@@ -7,6 +7,9 @@
     %th= FinancialAccount.l(:number)
     %td=h @financial_account.number
   %tr
+    %th= FinancialAccount.l(:member_account)
+    %td= @financial_account.member_account? ? t("simple_form.yes") : t("simple_form.no")
+  %tr
     %th= FinancialAccount.l(:advance_payment)
     %td= @financial_account.advance_payment? ? t("simple_form.yes") : t("simple_form.no")
   %tr
@@ -26,3 +29,4 @@
           %li= show_link(o, o.to_s)
 = edit_link(@financial_account)
 = back_link(FinancialAccount)
+= link_to t("financial_account_overview"), [ @financial_account, :overview ] if can?(:read, :financial_account_overview)

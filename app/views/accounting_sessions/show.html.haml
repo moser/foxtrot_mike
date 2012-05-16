@@ -12,8 +12,10 @@
       = l(@accounting_session.finished_at.to_date)
       = link_to t(".entries_txt"), accounting_session_path(@accounting_session, :format => :txt)
       = link_to t(".voucher"), accounting_session_path(@accounting_session, :format => :pdf)
+      = link_to t(".dtaus"), accounting_session_path(@accounting_session, :format => :dtaus) if @accounting_session.bank_debit?
   - else
-    = link_to t("manual_accounting_entries.index.title"), [ @accounting_session, :manual_accounting_entries ]
+    -  unless @accounting_session.bank_debit?
+      = link_to t("manual_accounting_entries.index.title"), [ @accounting_session, :manual_accounting_entries ]
     - if !@accounting_session.soft_validate
       - @accounting_session.problems.each do |key, v|
         .problem= t("soft_validation.accounting_session.#{key.to_s}", v)
@@ -21,24 +23,32 @@
       = simple_form_for(@accounting_session) do |f|
         = f.input :finished, :input_html => { :value => true }, :as => :hidden
         = f.button :submit, t(".finish"), :class => "finish"
-  .aggregated_entries
-    %h2= t(".aggregated_entries")
-    - i = 0
-    - @accounting_session.aggregated_entries.each do |ae|
-      - unless ae.manual?
-        - i += 1
-        .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
-          = format_accounting_entry(ae)
-          %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
-          %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
-          .accounting_entries.hide_on_startup
-            - ae.entries.each do |e|
-              .entry{ :id => e.id }
-                = format_accounting_entry(e)
-                %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
-      - else
-        .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
-          = format_accounting_entry(ae)
+  - unless @accounting_session.without_flights?
+    .aggregated_entries
+      %h2= t(".aggregated_entries")
+      - i = 0
+      - @accounting_session.aggregated_entries.each do |ae|
+        - unless ae.manual?
+          - i += 1
+          .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
+            = format_accounting_entry(ae)
+            %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
+            %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
+            .accounting_entries.hide_on_startup
+              - ae.entries.each do |e|
+                .entry{ :id => e.id }
+                  = format_accounting_entry(e)
+                  %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
+        - else
+          .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
+            = format_accounting_entry(ae)
+  - else
+    .accounting_entries
+      %h2= t(".accounting_entries")
+      .accounting_entry
+        - @accounting_session.aggregated_entries.each do |a|
+          = format_accounting_entry(a)
+  
   - unless @accounting_session.without_flights?
     .flights
       %h2= t("flights.index.title")

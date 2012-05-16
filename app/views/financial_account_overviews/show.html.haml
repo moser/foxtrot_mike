@@ -1,12 +1,12 @@
 %h1= t(".title")
-- if @financial_account.advance_payment?
-  = "#{t(".saldo")}: #{format_currency(@saldo)}"
+%h2= @financial_account.name
+= "#{t(".saldo")}: #{format_currency(@financial_account.balance)}"
 %table
   %tr
     %th= AccountingEntry.l(:date)
     %th= AccountingEntry.l(:text)
     %th= AccountingEntry.l(:value)
-  - @accounting_entries.reverse.find_all { |e| e.date > 60.days.ago.to_date }.each do |e|
+  - (@financial_account.accounting_entries_from + @financial_account.accounting_entries_to).sort_by {|e| e.date }.reverse.each do |e|
     %tr
       %td=l e.date.to_date
       - if e.item

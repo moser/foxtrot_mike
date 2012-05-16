@@ -61,8 +61,8 @@ class AbstractFlight < ActiveRecord::Base
     @problems[:no_cost_calculation_possible] = {} if plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
     sr = nil
     ss = nil
-    if (departure_i >= 0 && from && from.srss? && (sr = from.srss.sunrise_i(departure_date)) > departure_i) ||
-                                           (arrival_i >= 0 && to && to.srss? && (ss = to.srss.sunset_i(departure_date)) < arrival_i)
+    if departure_date && ((departure_i >= 0 && from && from.srss? && (sr = from.srss.sunrise_i(departure_date)) > departure_i) ||
+                                           (arrival_i >= 0 && to && to.srss? && (ss = to.srss.sunset_i(departure_date)) < arrival_i))
       @problems[:not_between_sr_and_ss] = { :sr => DayTime.new(sr), :ss => DayTime.new(ss) }
     end
     [ :departure_i, :arrival_i ].each do |field|

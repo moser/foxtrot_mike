@@ -52,6 +52,6 @@ class WireLauncher < ActiveRecord::Base
   end
 private
   def association_changed(obj = nil)
-    delay.invalidate_concerned_accounting_entries
+    delay.invalidate_concerned_accounting_entries unless new_record?
   end
 end
