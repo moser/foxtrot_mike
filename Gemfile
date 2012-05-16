@@ -19,7 +19,10 @@ gem "authlogic"
 gem "cancan"
 gem "fastercsv"
 gem "delayed_job"
+gem 'delayed_job_active_record'
 gem "wicked_pdf"
+
+gem "king_dtaus"
 
 group :production do
   gem "pg"
@@ -30,7 +33,6 @@ group :test do
   gem "rspec-rails"
   gem "shoulda-matchers"
   gem "factory_girl"
-  gem "rcov"
   gem "capybara"
   gem "launchy"
   gem "database_cleaner"
