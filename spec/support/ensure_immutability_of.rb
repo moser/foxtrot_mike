@@ -1,5 +1,3 @@
-require "rspec/matchers/raise_error"
-
 class EnsureImmutabilityOf
   def initialize(field, value = nil)
     @field = field
@@ -11,9 +9,9 @@ class EnsureImmutabilityOf
   end
   
   def matches?(model)
-    @ematcher = RSpec::Matchers::RaiseError.new
+    @ematcher = RSpec::Matchers::BuiltIn::RaiseError.new
     unless @ematcher.matches?(lambda { model.send("#{@field}=", value) })
-      @ematcher = RSpec::Matchers::RaiseError.new(ImmutableObjectException)
+      @ematcher = RSpec::Matchers::BuiltIn::RaiseError.new(ImmutableObjectException)
       if @ematcher.matches?(lambda { model.send("#{@field}=", value) })
         @ematcher.matches?(lambda { model.update_attributes @field => value })
       end
