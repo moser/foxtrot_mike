@@ -3,7 +3,7 @@ require 'uuidtools'
  
 module UuidHelper
   def self.included(base)
-    base.set_primary_key :id
+    base.primary_key = "id"
     base.before_create :set_uuid
   end
   
