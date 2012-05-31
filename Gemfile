@@ -31,6 +31,7 @@ end
 group :test do
   gem "rspec"
   gem "rspec-rails"
+  gem "rspec-instafail"
   gem "shoulda-matchers"
   gem "factory_girl_rails"
   gem "capybara"
