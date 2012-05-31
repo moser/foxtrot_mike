@@ -12,16 +12,18 @@ unless defined?(SetupSpec)
 
   require 'factory_girl/syntax/generate'
 
+  F = FactoryGirl
+
   class ActionView::TestCase::TestController
     helper_method :current_account
     def current_account
       return @current_account if defined?(@current_account)
-      @current_account = Account.generate!
+      @current_account = F.create(:account)
       @current_account
     end
 
     def current_ability
-      Class.new {
+      @current_ability ||= Class.new {
         include CanCan::Ability
         def initialize(*a)
           can :manage, :all
@@ -33,12 +35,12 @@ unless defined?(SetupSpec)
   class ApplicationController
     def current_account
       return @current_account if defined?(@current_account)
-      @current_account = Account.generate!
+      @current_account = F.create(:account)
       @current_account
     end
 
     def current_ability
-      Class.new {
+      @current_ability ||= Class.new {
         include CanCan::Ability
         def initialize(*a)
           can :manage, :all
@@ -55,11 +57,6 @@ unless defined?(SetupSpec)
     # == Notes
     #
     # For more information take a look at Spec::Runner::Configuration and Spec::Runner
-    config.include Haml::Helpers
-    config.include ActionView::Helpers
-    config.before(:each) do
-      init_haml_helpers
-    end
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
     end

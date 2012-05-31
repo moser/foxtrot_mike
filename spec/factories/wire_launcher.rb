@@ -17,7 +17,7 @@ FactoryGirl.define do
 
   factory :wire_launch do
     wire_launcher
-    operator
-    abstract_flight
+    association :operator, factory: :person
+    association :abstract_flight, factory: :flight
   end
 end

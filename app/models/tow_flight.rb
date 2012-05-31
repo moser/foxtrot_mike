@@ -4,6 +4,8 @@ class TowFlight < AbstractFlight
   after_update :after_update_invalidate_accounting_entries
   has_one :abstract_flight, :as => :launch, :readonly => false #the towed flight
 
+  validates_presence_of :abstract_flight
+
   include LaunchAccountingEntries
 
   def editable?
@@ -29,9 +31,7 @@ class TowFlight < AbstractFlight
 
   def initialize(*args)
     super(*args)
-    if new_record?
-      self.duration ||= 0
-    end
+    copy_from_abstract_flight
   end
 
   def abstract_flight_changed

@@ -3,12 +3,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ApplicationHelper do
-#  describe "navigation items" do
-#    it "should consist of model names and paths" do
-#      h = helper.navigation_items
-#      h.first[1].should =~ /^\/(.*)/
-#    end
-#  end
 
   describe "format_minutes" do
     it "should render - if passed -1 or nil" do

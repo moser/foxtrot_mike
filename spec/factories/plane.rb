@@ -15,7 +15,7 @@ FactoryGirl.define do
     valid_from 1.year.ago.to_date
     valid_to 1.year.from_now.to_date
     plane
-    lane_cost_category
+    plane_cost_category
   end
 
   factory :legal_plane_class do

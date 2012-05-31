@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Group do
-  before(:each) do
+  before(:all) do
     @valid_attributes = {
       :name => "Group"
     }

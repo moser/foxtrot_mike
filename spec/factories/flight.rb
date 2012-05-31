@@ -5,11 +5,12 @@ FactoryGirl.define do
     association :controller, :factory => :person
     association :from, :factory => :airfield
     association :to, :factory => :airfield
+    departure_date Date.today
     departure_i 10
     arrival_i 11
 
     factory :non_editable_flight do
-      after_create do |flight|
+      after(:create) do |flight|
         flight.accounting_session = FactoryGirl.create(:accounting_session)
         flight.save
         flight.accounting_session.finished_at = 1.day.ago

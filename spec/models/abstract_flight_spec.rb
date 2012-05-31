@@ -1,10 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AbstractFlight do
-  before(:each) do
-    @f = Flight.new
-  end
-  
   it { should belong_to :plane }
   it { should belong_to :from }
   it { should belong_to :to }
@@ -52,14 +48,19 @@ describe AbstractFlight do
   
   describe "departure_date" do
     it "should return a date" do
-      @f.departure = DateTime.now
-      @f.departure_date.class.should == Date
-      @f.departure_date = DateTime.now
-      @f.departure_date.class.should == Date
+      f = Flight.new
+      f.departure = DateTime.now
+      f.departure_date.class.should == Date
+      f.departure_date = DateTime.now
+      f.departure_date.class.should == Date
     end
   end
   
   describe "departure" do
+    before(:each) do
+      @f = Flight.new
+    end
+
     it "should set the departure_date" do
       @f.departure = 2.days.from_now
       @f.departure_date.should == 2.days.from_now.to_date
@@ -86,6 +87,10 @@ describe AbstractFlight do
   end
   
   describe "arrival" do
+    before(:each) do
+      @f = Flight.new
+    end
+
     it "should return a DateTime" do
       @f.departure_i = 0
       @f.arrival.should be_nil
@@ -116,29 +121,33 @@ describe AbstractFlight do
   
   describe "duration" do
     it "should be -1 if arrival or departure is unset" do
-      @f.duration.should == -1
-      @f.departure = 1
-      @f.duration.should == -1
-      @f.departure = -1
-      @f.arrival = 10
-      @f.duration.should == -1
+      f = Flight.new
+      f.duration.should == -1
+      f.departure = 1
+      f.duration.should == -1
+      f.departure = -1
+      f.arrival = 10
+      f.duration.should == -1
     end
     
     it "should be the difference between arrival and departure" do
-      @f.departure = 10
-      @f.arrival = 20
-      @f.duration.should == 10
+      f = Flight.new
+      f.departure = 10
+      f.arrival = 20
+      f.duration.should == 10
     end
     
     it "should be positive and less than 1440 when arrival is before departure" do
-      @f.departure = 1430 #23:50
-      @f.arrival = 10 #0:10
-      @f.duration.should == 20
+      f = Flight.new
+      f.departure = 1430 #23:50
+      f.arrival = 10 #0:10
+      f.duration.should == 20
     end
   end
 
   describe "#engine_duration" do
     before(:each) do
+      @f = Flight.new
       @f.departure = 0
       @f.arrival = 10
       @f.plane = Plane.spawn
@@ -164,6 +173,10 @@ describe AbstractFlight do
   end
   
   describe "landed?" do
+    before(:each) do
+      @f = Flight.new
+    end
+
     it "should be false if arrival_i is negative" do
       @f.landed?.should == false
     end
@@ -179,13 +192,13 @@ describe AbstractFlight do
   
   describe "crew member factory" do
     before(:all) do
-      @pilot = Person.generate!
-      @trainee = Person.generate!
-      @instructor = Person.generate!(:lastname => "instructor")
+      @pilot = F.create(:person)
+      @trainee = F.create(:person)
+      @instructor = F.create(:person)
     end
 
     before(:each) do
-      @f = AbstractFlight.spawn
+      @f = F.create(:flight)
       @pilot.stub(:trainee? => false)
       @trainee.stub(:trainee? => true)
       @instructor.stub(:instructor? => true)
@@ -245,6 +258,7 @@ describe AbstractFlight do
     end
     
     it "should accept a number for seat2" do
+      @f = F.build(:flight, :seat1 => nil)
       @f.seat2 = 3
       @f.crew_members.first.should be_a NCrewMember
       @f.crew_members.first.n.should == 3
@@ -306,43 +320,33 @@ describe AbstractFlight do
     
   end
   
-  describe "shared_attributes" do
-    it "should contain launch_attributes" do
-      @f.launch = WireLaunch.create
-      @f.shared_attributes.keys.should include :launch_attributes
-    end
-    
-    it "should contain crew_members_attributes" do
-      @f.shared_attributes.keys.should include :crew_members_attributes
-    end
-  end
-  
   describe "cost" do
     it "should be nil if there is no crew" do
-      @f.cost.should be_nil
+      f = Flight.new
+      f.cost.should be_nil
     end
   end
   
   describe "aggregation_id" do
     it "should change when plane, departure_date, seat1 or seat2 change" do
-      f = Flight.spawn
+      f = F.build(:flight)
       f.from = f.to
       s = f.generate_aggregation_id
-      f.plane = Plane.generate!
+      f.plane = F.create(:plane)
       f.generate_aggregation_id.should_not == s
       f.departure_date = 1.day.ago
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat1 = Person.generate!
+      f.seat1 = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat2 = Person.generate!
+      f.seat2 = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat1 = Person.generate!
+      f.seat1 = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.from = Airfield.generate!
+      f.from = F.create(:airfield)
       f.generate_aggregation_id.should be_false
       f.to = f.from
       f.generate_aggregation_id.should_not == s
@@ -365,7 +369,7 @@ describe AbstractFlight do
 
   describe "#soft_validate" do
     it "should report a problem if there are more crew members than seats" do
-      p = Plane.generate! :seat_count => 1
+      p = F.create(:plane, :seat_count => 1)
       f = Flight.create :plane => p
       f.seat2 = 2
       f.soft_validate.should be_false
@@ -373,24 +377,24 @@ describe AbstractFlight do
     end
 
     it "should report a problem if a trainee has a passenger" do
-      p = Person.generate!
+      p = F.create(:person) 
       p.stub(:trainee? => true)
-      f = Flight.spawn :seat1 => p, :seat2 => 1
+      f = F.build(:flight, :seat1 => p, :seat2 => 1)
       f.soft_validate.should be_false
       f.problems.should include :seat2_is_not_an_instructor
     end
 
     it "should report a problem if the launch method does not fit the plane" do
-      p = Plane.generate! :selflaunching => false
-      f = Flight.spawn :plane => p
+      p = F.create(:plane, :selflaunching => false)
+      f = F.build(:flight, :plane => p)
       f.soft_validate.should be_false
       f.problems.should include :launch_method_impossible
     end
 
     it "should report a problem if the pilot has no license" do
-      plane = Plane.generate!
-      person = Person.generate!
-      f = Flight.spawn :plane => plane, :seat1 => person
+      plane = F.create(:plane)
+      person = F.create(:person)
+      f = F.build(:flight, :plane => plane, :seat1 => person)
       f.soft_validate.should be_false
       f.problems.should include :seat1_no_license
       person.licenses.create! :valid_from => 2.days.ago, :legal_plane_class_ids => [ plane.legal_plane_class_id ], :name => "fkfdj"
