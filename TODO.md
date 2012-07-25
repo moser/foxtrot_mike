@@ -15,8 +15,6 @@
   - use ct or decimal €
 - bill for lrst
   - no accounting entries for these flights
-- manual cost
-  - add to flight ?
 - export flights grouped by cost responsible w/ cost for group
 - controller role
   - create/show stuff only as json or thru the client
@@ -34,11 +32,8 @@
   - item\_type should be the real class, not the superclass (STI)
     - add column real\_type and keep track of the real class there
   - show diffs or something in views
-- filteredflights
-  - bei pdf mitschicken, welche aggregated entries collapsed sind
 - cost rules
   - hide/collapse old rules
-- ajax/stay on page for people, planes,...
 - member management
 - winch
   - operator charts
@@ -53,10 +48,7 @@
 - srss tables for every airfield (where not lat == 0 && lon == 0)
 
 # ideas / long run
-- accounting session
-  - add manual accountingentries
 - locking for editing (optimistic?) (obj.versions.count?)
-- locking when stuff is booked
 - means to delete flights safely including revisions (+ export to another db) (command line tool?)
 - add concept of a update event (bundles all changes of automatic update thru a client)
   - add possibility to undo all changes
