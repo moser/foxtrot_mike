@@ -31,6 +31,9 @@ class Flight < AbstractFlight
                                  :value => i.value, :item => self)
         end
       end
+      if launch
+        launch.create_accounting_entries
+      end
     end
     update_attribute :accounting_entries_valid, true
   end
