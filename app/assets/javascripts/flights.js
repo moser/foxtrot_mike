@@ -421,7 +421,7 @@ $(function() {
       new TowPlaneHelper(el);
       new CrewHelper(el, "launch[tow_flight]");
       new AirfieldHelper(el, "to", "launch[tow_flight]");
-      new PersonHelper(el, "operator", null, true, "launch[wire_launch]");
+      new PersonHelper(el, "operator", null, false, "launch[wire_launch]");
     });
     $('.flight_form.new').bind('submit', function(e) {
       var form = $(e.target);

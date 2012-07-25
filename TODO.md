@@ -6,8 +6,6 @@
 - flight
   - trigger soft validation manually
     - add problems when unfinished or plane, seat1 missing => prevent accounting of flight
-- wire\_launch#form
-  - allow nil for operator
 - airfields, planes, wire\_launchers, people, financial\_accounts#index
   - hover mark
 - person#show
