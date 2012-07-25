@@ -13,6 +13,11 @@
       = f.simple_fields_for :financial_account, FinancialAccount.new do |ff|
         = ff.input :name
         = ff.input :number
+        = ff.input :member_account
+        = ff.input :advance_payment
+        = ff.input :bank_account_holder
+        = ff.input :bank_account_number
+        = ff.input :bank_code
   = f.input :valid_from
   = f.button :submit
 = link_to t('views.cancel'), @financial_account_ownership.owner, :class => "inline_form_hide"

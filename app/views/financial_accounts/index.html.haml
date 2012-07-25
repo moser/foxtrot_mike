@@ -1,4 +1,5 @@
 %h1= t '.title'
+= new_link(FinancialAccount)
 %table.filtered{ :"data-filter-by" => "filter_string" }
   %tr.no_filter.show_on_startup
     %th= t("views.filter_search")
@@ -24,4 +25,3 @@
       %td= show_link(financial_account)
       %td= edit_link(financial_account)
       %td= link_to t("financial_account_overview"), [ financial_account, :overview ] if can?(:read, :financial_account_overview)
-= new_link(FinancialAccount)
