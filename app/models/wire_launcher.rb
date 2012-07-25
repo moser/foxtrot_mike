@@ -12,7 +12,7 @@ class WireLauncher < ActiveRecord::Base
   has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
 
-  validates_presence_of :registration, :financial_account
+  validates_presence_of :registration
 
   default_scope order("registration asc")
   
