@@ -120,6 +120,6 @@ private
 
   def association_changed(obj)
     super(obj)
-    delay.invalidate_accounting_entries
+    invalidate_accounting_entries(true)
   end
 end

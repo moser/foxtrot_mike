@@ -467,7 +467,7 @@ private
   end
 
   def delete_accouting_entries
-    accounting_entries.each do |e|
+    accounting_entries_without_validity_check.each do |e|
       e.delete
     end
   end

@@ -6,6 +6,9 @@ class Liability < ActiveRecord::Base
 
   has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.flight_id unless l.nil? || l.new_record? || l.flight_id.nil? } }  
 
+  after_save :invalidate_flight
+  after_destroy :invalidate_flight
+
   belongs_to :flight
   belongs_to :person
 
@@ -18,5 +21,10 @@ class Liability < ActiveRecord::Base
 
   def default?
     false
+  end
+
+private
+  def invalidate_flight
+    flight.invalidate_accounting_entries
   end
 end
