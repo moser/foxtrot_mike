@@ -1,6 +1,11 @@
-%table.data
-  %tr
-    %th= WireLauncherCostCategory.l(:name)
-    %td=h @wire_launcher_cost_category.name 
+%h1= "#{WireLauncherCostCategory.l} #{@wire_launcher_cost_category.name}"
 = edit_link(@wire_launcher_cost_category)
 = back_link(WireLauncherCostCategory)
+
+%table.data
+  %tr
+    %th= WireLauncherCostCategory.l(:wire_launchers_now)
+    %td
+      %ul.no_bullet
+        - @wire_launcher_cost_category.current_wire_launchers.each do |w|
+          %li= show_link(w, w.registration, { :class => "facebox" })

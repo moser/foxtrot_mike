@@ -276,6 +276,10 @@ de:
       wire_launcher:
         registration: Kennzeichen
         wire_launcher_cost_categories: Windenkategorien
+      wire_launcher_cost_category:
+        wire_launchers_now: Winden
+      wire_launcher_cost_category_membership:
+        wire_launcher_cost_category: Windenkategorie
       wire_launch_cost_item:
         value: Wert
       time_cost_rule:

@@ -1,8 +1,5 @@
-%table.data
-  %tr
-    %th= WireLauncher.l(:registration)
-    %td=h @wire_launcher.registration
+%h1=h @wire_launcher.registration
+= edit_link(@wire_launcher)
+= back_link(WireLauncher)
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @wire_launcher }
 = render :partial => "common/memberships", :locals => { :object => @wire_launcher, :group => :wire_launcher_cost_category }
-= link_to t('views.edit'), edit_wire_launcher_path(@wire_launcher)
-= link_to t('views.back'), wire_launchers_path
