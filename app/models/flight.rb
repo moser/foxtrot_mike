@@ -14,7 +14,7 @@ class Flight < AbstractFlight
   end
 
   def create_accounting_entries
-    accounting_entries_without_validity_check.delete_all
+    accounting_entries_without_validity_check.destroy_all
     if cost && cost_responsible
       plane_account = plane.financial_account_at(departure_date)
       flight_sum = cost.free_sum

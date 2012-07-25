@@ -5,7 +5,6 @@ describe WireLauncher do
   it { should have_many :wire_launcher_cost_category_memberships }
   it { should have_many :wire_launches }
   it { should have_many :financial_account_ownerships }
-  it { should validate_presence_of :financial_account }
   
   it "should have one current financial_account_ownership" do
     p = WireLauncher.new

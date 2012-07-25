@@ -1,6 +1,6 @@
 module LaunchAccountingEntries
   def create_accounting_entries
-    accounting_entries_without_validity_check.delete_all
+    accounting_entries_without_validity_check.destroy_all
     if cost
       sum = cost.free_sum
       abstract_flight.liabilities_with_default.map do |l|

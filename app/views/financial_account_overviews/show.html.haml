@@ -6,7 +6,7 @@
     %th= AccountingEntry.l(:date)
     %th= AccountingEntry.l(:text)
     %th= AccountingEntry.l(:value)
-  - (@financial_account.accounting_entries_from + @financial_account.accounting_entries_to).sort_by {|e| e.date }.reverse.each do |e|
+  - (@financial_account.accounting_entries_from + @financial_account.accounting_entries_to).sort_by {|e| [e.date, e.id] }.reverse.each do |e|
     %tr
       %td=l e.date.to_date
       - if e.item

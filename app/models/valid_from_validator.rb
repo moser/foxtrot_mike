@@ -1,6 +1,6 @@
 class ValidFromValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    unless value > AccountingSession.latest_finished_session_end
+    unless value.nil? || value > AccountingSession.latest_finished_session_end
       record.errors.add attribute,
                         (options[:message] ||
                          I18n.t("activerecord.errors.messages.greater_than", 
