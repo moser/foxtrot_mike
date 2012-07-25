@@ -1,4 +1,7 @@
 %h1= @person.name
+= link_to  Person.l(:book), [@person, :flights] if can?(:read, :filtered_flights)
+= edit_link(@person)
+= back_link(Person)
 %table.data
   %tr
     %th= Person.l(:group)
@@ -17,7 +20,6 @@
     %tr
       %th= Person.l(:birthdate)
       %td= l(@person.birthdate)
-
     %tr
       %th= Person.l(:address)
       %td
@@ -40,10 +42,11 @@
     %tr
       %th= Person.l(:lvb_member_state)
       %td= t("person.lvb_member_state.#{@person.lvb_member_state}")
+  -if @person.comment?
+    %tr
+      %th= Person.l(:comment)
+      %td=h @person.comment
 
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @person }
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
-= link_to  Person.l(:book), [@person, :flights] if can?(:read, :filtered_flights)
-= edit_link(@person)
-= back_link(Person)

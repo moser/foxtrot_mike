@@ -3,8 +3,9 @@
 %table
   %tr
     %th= LegalPlaneClass.l(:name)
-  - @legal_plane_classes.each do |legal_plane_class|
-    %tr
-      %td= h legal_plane_class.name
-      %td= show_link(legal_plane_class)
-      %td= edit_link(legal_plane_class)
+  %tbody.alternate
+    - @legal_plane_classes.each do |legal_plane_class|
+      %tr.alternate_color.hover_mark
+        %td= h legal_plane_class.name
+        %td= show_link(legal_plane_class)
+        %td= edit_link(legal_plane_class)

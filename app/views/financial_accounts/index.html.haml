@@ -13,15 +13,16 @@
     %th= FinancialAccount.l(:bank_account_holder)
     %th= FinancialAccount.l(:bank_account_number)
     %th= FinancialAccount.l(:bank_code)
-  - @financial_accounts.each do |financial_account|
-    %tr.alternate_color{ :"data-filter_string" => financial_account.name.downcase }
-      %td= h financial_account.name
-      %td= h financial_account.number
-      %td= financial_account.member_account? ? t("simple_form.yes") : ""
-      %td= financial_account.advance_payment? ? t("simple_form.yes") : ""
-      %td= h financial_account.bank_account_holder
-      %td= h financial_account.bank_account_number
-      %td= h financial_account.bank_code
-      %td= show_link(financial_account)
-      %td= edit_link(financial_account)
-      %td= link_to t("financial_account_overview"), [ financial_account, :overview ] if can?(:read, :financial_account_overview)
+  %tbody.alternate
+    - @financial_accounts.each do |financial_account|
+      %tr.alternate_color.hover_mark{ :"data-filter_string" => financial_account.name.downcase }
+        %td= h financial_account.name
+        %td= h financial_account.number
+        %td= financial_account.member_account? ? t("simple_form.yes") : ""
+        %td= financial_account.advance_payment? ? t("simple_form.yes") : ""
+        %td= h financial_account.bank_account_holder
+        %td= h financial_account.bank_account_number
+        %td= h financial_account.bank_code
+        %td= show_link(financial_account)
+        %td= edit_link(financial_account)
+        %td= link_to t("financial_account_overview"), [ financial_account, :overview ] if can?(:read, :financial_account_overview)

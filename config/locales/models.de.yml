@@ -213,6 +213,7 @@ de:
         normal: "Normal"
         instructor: "Lehrberechtigung"
         book: "Flugbuch"
+        holder: Person
       number_cost_rule_condition:
         condition_field: Feld
         condition_operator: Operator

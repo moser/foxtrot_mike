@@ -15,7 +15,7 @@
     %th= Person.l(:financial_account)
   %tbody.alternate
     - @people.each do |person|
-      %tr.alternate_color{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
+      %tr.alternate_color.hover_mark{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
         %td=h person.lastname
         %td=h person.firstname
         %td=h person.group.name

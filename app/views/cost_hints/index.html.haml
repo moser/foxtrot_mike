@@ -3,8 +3,8 @@
 %table
   %tr
     %th= CostHint.l(:name)
-  - @cost_hints.each do |cost_hint|
-    %tr
-      %td= h cost_hint.name
-      %td= show_link(cost_hint)
-      %td= edit_link(cost_hint)
+  %tbody.alternate
+    - @cost_hints.each do |cost_hint|
+      %tr.alternate_color.hover_mark
+        %td= h cost_hint.name
+        %td= edit_link(cost_hint)
