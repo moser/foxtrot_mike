@@ -8,9 +8,6 @@
     - add problems when unfinished or plane, seat1 missing => prevent accounting of flight
 - wire\_launch#form
   - allow nil for operator
-- account session#create
-  - button text -> Anmelden
-  - header/footer...
 - airfields, planes, wire\_launchers, people, financial\_accounts#index
   - hover mark
 - person#show

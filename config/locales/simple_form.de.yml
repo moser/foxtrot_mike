@@ -14,3 +14,7 @@ de:
         controller: "'-' eingeben, um das Feld zu leeren."
     labels:
       account:
+  helpers:
+    submit:
+      account_session:
+        create: "Anmelden"
