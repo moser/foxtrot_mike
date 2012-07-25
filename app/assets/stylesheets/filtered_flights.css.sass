@@ -30,16 +30,16 @@
   margin: 5px 0
   .items
     .flight
-      .date, .plane, .seat, .launch_type, .purpose, .airfield, .time, .duration
-        opacity: 0.5
     .flight:first-child
-      span
-        opacity: 1
-      .arrival, .duration
-        opacity: 0.5
+      .departure
+        font-weight: bold
     .flight:last-child
       .arrival
-        opacity: 1
+        font-weight: bold
+  .foot
+    .sum
+      font-weight: bold
+        
 
 .aggregated_entry.hide_flights
   .items

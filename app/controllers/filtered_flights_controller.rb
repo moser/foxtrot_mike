@@ -43,7 +43,7 @@ class FilteredFlightsController < ApplicationController
     if request.xhr?
       render :partial => "filtered_flights/index", :locals => { :flights => @flights, :aggregate_entries => false }
     else
-      @aggregate_entries = !!params[:aggregate_entries]
+      @aggregate_entries = params.key?(:aggregate_entries) && params[:aggregate_entries] == "1"
       respond_to do |f|
         f.csv do
           attr = ActiveSupport::OrderedHash.new

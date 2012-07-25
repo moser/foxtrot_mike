@@ -258,8 +258,9 @@ $(function() {
       uri.params.filter.from_parse_date = Format.date_to_s(Book.show_range.from);
       uri.params.filter.to_parse_date = Format.date_to_s(Book.show_range.to);
       uri.params.ignore = $(".print_off").map(function(i, e) { return $(e).attr("id"); }).toArray();
-      uri.params.aggregate_entries = $("#aggregate_entries").is(":checked") ? 1 : undefined;
+      uri.params.aggregate_entries = $("#aggregate_entries").is(":checked") ? 1 : 0;
       this.href = uri.reconstruct();
+      console.log("dflkj");
       //return false;
     });
     Groupable.init(function() {
