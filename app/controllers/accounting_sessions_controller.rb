@@ -44,7 +44,7 @@ class AccountingSessionsController < ResourceController
                                            :owner_name => a.to.bank_account_holder,
                                            :bank_number => a.to.bank_code)
           booking = KingDta::Booking.new(rec_acnt, a.value.to_f / 100.0)
-          booking.text = "dkfj"
+          booking.text = @accounting_session.name
           dta.add( booking )
         end
 
