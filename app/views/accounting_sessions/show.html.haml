@@ -45,8 +45,8 @@
   - else
     .accounting_entries
       %h2= t(".accounting_entries")
-      .accounting_entry
-        - @accounting_session.aggregated_entries.each do |a|
+      - @accounting_session.aggregated_entries.each do |a|
+        .accounting_entry
           = format_accounting_entry(a)
   
   - unless @accounting_session.without_flights?

@@ -5,7 +5,7 @@
     = radio_button_tag "fin_acc", "existing", true
     Bestehendes Buchhaltungskonto verwenden
     .hide_if_unchecked
-      = f.association :financial_account
+      = f.association :financial_account, include_blank: false
   .choice
     = radio_button_tag "fin_acc", "new", false
     Neues Buchhaltungskonto erstellen

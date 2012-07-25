@@ -6,8 +6,9 @@ class AccountingSession < ActiveRecord::Base
 
   validates_presence_of :name, :voucher_number, :accounting_date
   validates_presence_of :start_date, :end_date, :if => lambda { |s| !s.without_flights? }
+  validates_presence_of :credit_financial_account, :if => lambda { |s| s.bank_debit? }
   validate do |a|
-    errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if !a.without_flights? && a.end_date && a.end_date > DateTime.now.to_date
+    errors.add(:end_date, AccountingSession.l(:must_not_be_in_the_future)) if !(a.without_flights? || a.bank_debit?) && a.end_date && a.end_date > DateTime.now.to_date
   end
 
   before_save :remove_dates_if_without_flights

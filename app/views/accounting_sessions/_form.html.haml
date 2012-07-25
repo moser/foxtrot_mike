@@ -3,8 +3,8 @@
   = f.input :voucher_number
   = f.input :accounting_date
   = f.input :bank_debit
-  = f.input :without_flights
-  = f.input :start_date
-  = f.input :end_date
-  = f.association :credit_financial_account, :disabled => true
+  = f.input :without_flights, disabled: accounting_session.bank_debit?
+  = f.input :start_date, disabled: accounting_session.without_flights? || accounting_session.bank_debit?
+  = f.input :end_date, disabled: accounting_session.without_flights? || accounting_session.bank_debit?
+  = f.association :credit_financial_account, disabled: !accounting_session.bank_debit?
   = f.submit

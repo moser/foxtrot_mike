@@ -34,6 +34,9 @@ var DateTimePickers = {
     var d = $('<input id="'+ model_name + '_'+ attribute +'" name="'+ model_name + '['+ attribute +'_parse_'+ type +']"/>');
     d.val(DateTimePickers.orig(e, type));
     e.empty().append(label).append(d).append(spans).addClass('replaced');
+    if(e.hasClass("disabled")) {
+      e.children("input").attr("disabled", "disabled")
+    }
     return $(d);
   },
   
