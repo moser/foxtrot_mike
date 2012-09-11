@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter { javascript; stylesheet; true }
   before_filter do
     if request.format == Mime::JSON && !current_account_session
-      authenticate_or_request_with_http_basic do |u, pass|
+      authenticate_with_http_basic do |u, pass|
         @current_account_session = AccountSession.find
       end
     end
