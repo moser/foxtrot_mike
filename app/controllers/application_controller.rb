@@ -167,7 +167,9 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    if current_account
+    if request.format == Mime::JSON
+      render :text => "", :status => 401
+    elsif current_account
       redirect_to "/403.html"
     else
       session[:redirect_to_after_login] = current_path
