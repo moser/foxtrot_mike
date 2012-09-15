@@ -21,8 +21,11 @@
   - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
   - soft validate models
   - may delete flight??
+- import people (with financial account data and licenses), planes as CSV
 
 # medium run
+- import csv data
+  - for flights
 - licenses... medical...
 - ajaxify other pages
 - flight#history ...
