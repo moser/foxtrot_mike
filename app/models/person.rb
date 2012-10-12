@@ -9,7 +9,8 @@ class Person < ActiveRecord::Base
   has_paper_trail
 
   has_many :accounts
-  has_many :crew_members
+  has_many :flights_on_seat1, :foreign_key => 'seat1_person_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll 
+  has_many :flights_on_seat2, :foreign_key => 'seat2_person_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll 
   has_many :financial_account_ownerships, :as => :owner, :autosave => true, :after_add => :association_changed, :after_remove => :association_changed
   has_one_current :financial_account_ownership
   has_many :person_cost_category_memberships
@@ -111,7 +112,7 @@ class Person < ActiveRecord::Base
 
   def flights(relation = nil)
     relation ||= AbstractFlight.include_all
-    relation.where(:id => [Trainee.where(:person_id => id), PilotInCommand.where(:person_id => id)].flatten.map(&:abstract_flight_id))
+    relation.where("seat1_person_id = ? OR seat2_person_id = ?", id, id) #TODO reject those flights, where the person is not involved 
   end
 
   def flights_liable_for(relation = nil)

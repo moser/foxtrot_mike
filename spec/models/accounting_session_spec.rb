@@ -68,13 +68,13 @@ describe AccountingSession do
     AccountingSession.destroy_all
     f = Flight.generate!(:departure_date => 1.day.ago)
     planecc = PlaneCostCategoryMembership.generate!(:plane => f.plane).plane_cost_category
-    personcc = PersonCostCategoryMembership.generate!(:person => f.seat1.person).person_cost_category
+    personcc = PersonCostCategoryMembership.generate!(:person => f.seat1_person).person_cost_category
     r = FlightCostRule.create!(:plane_cost_category => planecc, :person_cost_category => personcc, :valid_from => 2.days.ago, :flight_type => "Flight")
     r.flight_cost_items.create :depends_on => "duration", :value => 10
     f.reload
     s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago)
     a = s.aggregated_entries.first
-    a.from.should == f.seat1.person.financial_account
+    a.from.should == f.seat1_person.financial_account
     a.to.should == f.plane.financial_account
   end
 
@@ -82,7 +82,7 @@ describe AccountingSession do
     AccountingSession.destroy_all
     f = Flight.generate!(:departure_date => 1.day.ago)
     planecc = PlaneCostCategoryMembership.generate!(:plane => f.plane).plane_cost_category
-    personcc = PersonCostCategoryMembership.generate!(:person => f.seat1.person).person_cost_category
+    personcc = PersonCostCategoryMembership.generate!(:person => f.seat1_person).person_cost_category
     r = FlightCostRule.create!(:plane_cost_category => planecc, :person_cost_category => personcc, :valid_from => 2.days.ago, :flight_type => "Flight")
     r.flight_cost_items.create :depends_on => "duration", :value => 10
     f.reload

@@ -8,10 +8,10 @@ def wire_launcher_with_cost_category(cc)
 end
 
 def person_with_cost_category(cc)
-  p = Person.generate!
-  p.person_cost_category_memberships.create :person_cost_category => cc, :valid_from => 1.day.ago
+  person = Person.generate!
+  person.person_cost_category_memberships.create :person_cost_category => cc, :valid_from => 1.day.ago
   cc.reload
-  p
+  person
 end
 
 describe WireLaunchCostRule do
@@ -42,7 +42,8 @@ describe WireLaunchCostRule do
     cr = WireLaunchCostRule.create :name => "Lala", :person_cost_category => PersonCostCategory.generate!,  
                                  :wire_launcher_cost_category => WireLauncherCostCategory.generate!, :valid_from => 1.day.ago
     cr.matches?(l.abstract_flight).should be_false
-    l.abstract_flight.seat1 = person_with_cost_category(cr.person_cost_category)
+    l.abstract_flight.seat1_person = person_with_cost_category(cr.person_cost_category)
+    l.abstract_flight.save
     l.wire_launcher = wire_launcher_with_cost_category(cr.wire_launcher_cost_category)
     l.save
     l.reload

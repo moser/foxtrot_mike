@@ -1,8 +1,0 @@
-- calculated_flights.each do |cf|
-  - cf[:flights].each do |flight|
-    .flight_format.flight{ :id => "flight-#{flight.id}", :'data-duration' => flight.duration, 
-                           :'data-departure' => flight.departure.to_date.to_s, :'data-group-id' => cf[:group_id] }
-      = render :partial => "flights/flight_spans", :locals => { :flight => flight }
-      %a.group_up{ :href => '#' }
-      %a.group_down{ :href => '#' }
-      %a.ungroup{ :href => '#' }

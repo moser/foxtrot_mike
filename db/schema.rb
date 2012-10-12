@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120515125215) do
+ActiveRecord::Schema.define(:version => 20121012192045) do
 
   create_table "abstract_flights", :id => false, :force => true do |t|
     t.string   "id",                       :limit => 36
@@ -33,6 +33,9 @@ ActiveRecord::Schema.define(:version => 20120515125215) do
     t.integer  "accounting_session_id"
     t.boolean  "accounting_entries_valid",               :default => false
     t.boolean  "problems_exist"
+    t.string   "seat1_person_id"
+    t.string   "seat2_person_id"
+    t.integer  "seat2_n",                                :default => 0
   end
 
   add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
@@ -122,18 +125,6 @@ ActiveRecord::Schema.define(:version => 20120515125215) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "crew_members", :id => false, :force => true do |t|
-    t.string   "id",                 :limit => 36
-    t.string   "abstract_flight_id"
-    t.string   "person_id"
-    t.integer  "n"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "crew_members", ["id"], :name => "index_crew_members_on_id", :unique => true
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

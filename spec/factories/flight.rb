@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :flight do
     plane
-    association :seat1, :factory => :person
+    association :seat1_person, :factory => :person
     association :controller, :factory => :person
     association :from, :factory => :airfield
     association :to, :factory => :airfield
@@ -21,7 +21,7 @@ FactoryGirl.define do
 
   factory :tow_flight do
     plane
-    association :seat1, :factory => :person
+    association :seat1_person, :factory => :person
     association :controller, :factory => :person
     association :from, :factory => :airfield
     association :to, :factory => :airfield

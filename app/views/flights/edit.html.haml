@@ -1,7 +1,0 @@
-- if @dates
-  .list{ :style => "display: none;" }
-    = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @flight.departure_date, :dates => @dates }
-.item_container
-  .item.flight_form
-    = render :partial => "flights/form", :locals => { :flight => @flight }
-    = link_to t('views.cancel'), @flight, :class => "inline_form_hide"

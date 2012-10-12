@@ -3,8 +3,8 @@ class Airfield < ActiveRecord::Base
 
   has_paper_trail
 
-  has_many :flights_from, :foreign_key => 'from_id', :class_name => 'AbstractFlight', :include => [:plane, :from, :to, :crew_members]
-  has_many :flights_to, :foreign_key => 'to_id', :class_name => 'AbstractFlight', :include => [:plane, :from, :to, :crew_members]
+  has_many :flights_from, :foreign_key => 'from_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll
+  has_many :flights_to, :foreign_key => 'to_id', :class_name => 'AbstractFlight', :include =>  AbstractFlight::IncludeAll
 
   validates_presence_of :name
   validates_uniqueness_of :registration, :if => Proc.new { |airfield| airfield.registration != "" }

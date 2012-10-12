@@ -58,7 +58,7 @@ describe "Costs" do
     [ @pilot_a, @tow_plane, @glider, @winch ].each { |o| o.reload }
 
   #it "should calculate costs for a winch launch and a short flight" do
-    flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => Time.now, 
+    flight = Flight.create! :plane => @glider, :seat1_person => @pilot_a, :departure => Time.now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
     flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight, :operator => Person.generate!
@@ -66,17 +66,17 @@ describe "Costs" do
     flight.launch.abstract_flight.cost_responsible.should == @pilot_a
     flight.free_cost_sum.should == 550
 
-    flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => 1.month.from_now, 
+    flight = Flight.create! :plane => @glider, :seat1_person => @pilot_a, :departure => 1.month.from_now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
     flight.launch = WireLaunch.create! :wire_launcher => @winch, :abstract_flight => flight, :operator => Person.generate!
     flight.free_cost_sum.should == 700
 
   #it "should calculate costs for a towed flight" do
-    flight = Flight.create! :plane => @glider, :seat1 => @pilot_a, :departure => t = Time.now, 
+    flight = Flight.create! :plane => @glider, :seat1_person => @pilot_a, :departure => t = Time.now, 
                              :duration => 15, :from => Airfield.generate!, :to => Airfield.generate!,
                              :controller => Person.generate!
-    flight.launch = TowFlight.create! :plane => @tow_plane, :seat1 => Person.generate!, :arrival => (t + 6.minutes), 
+    flight.launch = TowFlight.create! :plane => @tow_plane, :seat1_person => Person.generate!, :arrival => (t + 6.minutes), 
                                        :abstract_flight => flight, :from => Airfield.generate!, :to => Airfield.generate!,
                                        :controller => Person.generate!
     flight.launch.cost_responsible.should == @pilot_a

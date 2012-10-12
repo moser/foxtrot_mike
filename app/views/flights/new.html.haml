@@ -1,8 +1,0 @@
-- if @dates
-  .list{ :style => "display: none;" }
-    = render :partial => "flights/list", :locals => { :flights => nil, :current_day => @current_day, :dates => @dates }
-.item_container
-  .item.flight_form.new{ :"data-departure_date" => AbstractFlight.latest_departure.to_date.to_s }
-    %h1= t "views.create", :name => Flight.model_name.human
-    = render :partial => "flights/form", :locals => { :flight => @flight }
-    = back_link(Flight, {:class => "sop back index"})

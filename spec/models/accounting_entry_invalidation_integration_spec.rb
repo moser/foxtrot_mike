@@ -18,7 +18,7 @@ describe "Accounting entry invalidation" do
                                          :person_cost_category => @pm.person_cost_category,
                                          :name => "foo", :valid_from => 1.month.ago)
       @cr.wire_launch_cost_items.create(:name => "1", :value => 10)
-      @f = Flight.generate!(:seat1_id => @p.id)
+      @f = Flight.generate!(:seat1_person_id => @p.id)
       @f.launch = WireLaunch.create!(:abstract_flight => @f, :wire_launcher => @wl, :operator => Person.generate!)
       
       [ @wm, @wl, @pm, @p, @cr, @f ].each { |o| o.reload }
@@ -72,7 +72,7 @@ describe "Accounting entry invalidation" do
                                      :name => "foo", :valid_from => 1.month.ago,
                                      :flight_type => "Flight")
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
-      @f = Flight.generate!(:plane_id => @plane.id, :seat1_id => @person.id, :duration => 20)
+      @f = Flight.generate!(:plane_id => @plane.id, :seat1_person_id => @person.id, :duration => 20)
 
       [ @plm, @plane, @pm, @person, @cr, @f ].each { |o| o.reload }
       
@@ -122,7 +122,7 @@ describe "Accounting entry invalidation" do
         @f.update_attribute :plane, Plane.generate!
       end
       check_change do
-        @f.seat1 = Person.generate!
+        @f.seat1_person = Person.generate!
       end
       check_change do
         @f.liabilities.create :person => Person.generate!, :proportion => 1
@@ -152,8 +152,8 @@ describe "Accounting entry invalidation" do
                                      :name => "foo", :valid_from => 1.month.ago,
                                      :flight_type => "TowFlight")
       @cr.flight_cost_items.create!(:value => 10, :depends_on => "duration")
-      @f = Flight.generate!(:seat1_id => @person.id, :duration => 20)
-      @l = TowFlight.generate!(:plane => @tplane, :seat1_id => @other_person.id, :abstract_flight => @f, :duration => 5)
+      @f = Flight.generate!(:seat1_person_id => @person.id, :duration => 20)
+      @l = TowFlight.generate!(:plane => @tplane, :seat1_person_id => @other_person.id, :abstract_flight => @f, :duration => 5)
       
       [ @plm, @tplane, @pm, @person, @other_person, @cr, @f, @l ].each { |o| o.reload }
       

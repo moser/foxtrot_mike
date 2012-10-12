@@ -2,10 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AbstractFlight do
   it { should belong_to :plane }
+  it { should belong_to :seat1_person }
+  it { should belong_to :seat2_person }
   it { should belong_to :from }
   it { should belong_to :to }
   
-  it { should have_many :crew_members }
   it { should have_many :accounting_entries }
   it { should belong_to :launch }
   
@@ -190,7 +191,7 @@ describe AbstractFlight do
     end
   end
   
-  describe "crew member factory" do
+  describe "crew members" do
     before(:all) do
       @pilot = F.create(:person)
       @trainee = F.create(:person)
@@ -204,116 +205,45 @@ describe AbstractFlight do
       @instructor.stub(:instructor? => true)
     end
 
-    it "should accept ids" do
-      @f.should_receive(:seat1=).with(1)
-      @f.seat1_id = 1
-      
-      @f.should_receive(:seat2=).with(1)
-      @f.seat2_id = 1
-    end
-    
-    it "should make a single pilot a PIC" do
-      @f.seat1 = @pilot
-      @f.crew_members.first.should be_a PilotInCommand
-    end
-
-    it "should create a unknown crew member when passed 'unknown'" do
-      @f.seat1 = "unknown"
-      @f.crew_members.first.should be_a UnknownCrewMember
-    end
-    
-    it "should make a single pilot without license a Trainee" do
-      @f.seat1 = @trainee
-      @f.crew_members.first.should be_a Trainee
-    end
-    
-    it "should make a standalone person on seat2 a PersonCrewMember" do
-      @f.seat2 = @pilot
-      @f.crew_members.first.should be_a PersonCrewMember
-    end
-    
-    it "should make a instructor an Instructor when he flies with a trainee" do
-      @f.seat1 = @trainee
-      @f.seat2 = @instructor
-      @f.crew_members.last.should be_a Instructor
-    end
-    
-    it "should make a instructor an PersonCrewMember when he flies with a licensed pilot" do
-      @f.seat1 = @pilot
-      @f.seat2 = @instructor
-      @f.crew_members.last.should be_a PersonCrewMember
-    end
-    
-    it "should make anyone an PersonCrewMember when he flies with a licensed pilot" do
-      @f.seat1 = @pilot
-      @f.seat2 = @pilot
-      @f.crew_members.last.should be_a PersonCrewMember
-    end
-    
-    it "should check seat2 if seat1 is changed" do
-      @f.seat2 = @instructor
-      @f.seat2.person.stub(:instructor? => true) #hack
-      @f.seat1 = @trainee
-      @f.crew_members.map { |m| m.class }.should include(Instructor, Trainee)
-    end
-    
-    it "should accept a number for seat2" do
-      @f = F.build(:flight, :seat1 => nil)
-      @f.seat2 = 3
-      @f.crew_members.first.should be_a NCrewMember
-      @f.crew_members.first.n.should == 3
-      @f.seat2 = nil
-      @f.seat2 = "+2"
-      @f.crew_members.first.should be_a NCrewMember
-      @f.crew_members.first.n.should == 2
-    end
-    
-    it "should remove a crew member if passed nil" do
-      @f.seat1 = @pilot
-      @f.seat1 = nil
-      @f.crew_members.size.should == 0
-      
-      @f.seat2 = @pilot
-      @f.seat2 = nil
-      @f.crew_members.size.should == 0
-    end
-
-    it "should remove a crew member if passed id=''" do
-      @f.seat1 = @pilot
-      @f.seat1_id = ''
-      @f.crew_members.size.should == 0
-      
-      @f.seat2 = @pilot
-      @f.seat2_id = ''
-      @f.crew_members.size.should == 0
-    end
-    
-    describe "pic" do
-      it "should return seat1 if no trainee" do
-        @f.seat1 = @pilot
-        @f.pic.should == @f.seat1
+    describe "seat1_role" do
+      it "returns :unknown if there is no person set" do
+        @f.seat1_person = nil
+        @f.seat1_role.should == :unknown
       end
-      
-      it "should return seat1 if a solo trainee" do
-        @f.seat1 = @trainee
-        @f.pic.should == @f.seat1
+
+      it "returns :pic if the person on seat1 has a license" do
+        @f.seat1_person = @pilot
+        @f.seat1_role.should == :pic
       end
-      
-      it "should return seat2 if trainee and instructor" do
-        @f.seat1 = @trainee
-        @f.seat2 = @instructor
-        @f.pic.should == @f.seat2
+
+      it "returns :trainee it the person on seat1 has no license" do
+        @f.seat1_person = @trainee
+        @f.seat1_role.should == :trainee
       end
     end
-
-    it "should make the crew members persistent" do
-      @f.seat1 = @pilot
-      @f.seat1.should_not be_nil
-    end
-  end
   
-  describe "crew_members_attributes" do
-    
+    describe "seat2_role" do
+      it "returns :empty if there is no person set and seat2_n is 0" do
+        @f.seat2_role.should == :empty
+      end
+
+      it "returns instructor if seat1 is not a trainee and seat2 an instructor" do
+        @f.seat1_person = @trainee
+        @f.seat2_person = @instructor
+        @f.seat2_role.should == :instructor
+      end
+
+      it "returns passenger if seat1 is not a trainee and seat2 not an instructor" do
+        @f.seat1_person = @pilot
+        @f.seat2_person = @trainee
+        @f.seat2_role.should == :passenger
+      end
+
+      it "returns :multiple_passengers if seat2_n is >0" do
+        @f.seat2_n = 2
+        @f.seat2_role.should == :multiple_passengers
+      end
+    end
   end
   
   describe "launch_attributes" do
@@ -337,13 +267,13 @@ describe AbstractFlight do
       f.departure_date = 1.day.ago
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat1 = F.create(:person)
+      f.seat1_person = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat2 = F.create(:person)
+      f.seat2_person = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
-      f.seat1 = F.create(:person)
+      f.seat1_person = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
       f.from = F.create(:airfield)
@@ -367,39 +297,43 @@ describe AbstractFlight do
     f.problems_exist?.should be_true
   end
 
-  describe "#soft_validate" do
-    it "should report a problem if there are more crew members than seats" do
+  describe "#too_many_people_for_plane?" do
+    it "indicates that there too many people on the plane" do
       p = F.create(:plane, :seat_count => 1)
       f = Flight.create :plane => p
-      f.seat2 = 2
-      f.soft_validate.should be_false
-      f.problems.should include :too_many_people
+      f.too_many_people_for_plane?.should be_false
+      f.seat2_n = 2
+      f.too_many_people_for_plane?.should be_true
     end
+  end
 
-    it "should report a problem if a trainee has a passenger" do
+  describe "#seat2_is_not_an_instructor" do
+    it "indicates that an trainee has a passenger" do
       p = F.create(:person) 
       p.stub(:trainee? => true)
-      f = F.build(:flight, :seat1 => p, :seat2 => 1)
-      f.soft_validate.should be_false
-      f.problems.should include :seat2_is_not_an_instructor
+      f = F.build(:flight, :seat1_person => p)
+      f.seat2_not_an_instructor?.should be_false
+      f.seat2_n = 2
+      f.seat2_not_an_instructor?.should be_true
     end
+  end
 
-    it "should report a problem if the launch method does not fit the plane" do
+  describe "#launch_method_impossible?" do
+    it "returns true if the launch method does not fit the plane" do
       p = F.create(:plane, :selflaunching => false)
       f = F.build(:flight, :plane => p)
-      f.soft_validate.should be_false
-      f.problems.should include :launch_method_impossible
+      f.launch_method_impossible?.should be_true
     end
+  end
 
-    it "should report a problem if the pilot has no license" do
+  describe "#seat1_no_license?" do
+    it "indicates that the person on seat1 has no proper license" do
       plane = F.create(:plane)
       person = F.create(:person)
-      f = F.build(:flight, :plane => plane, :seat1 => person)
-      f.soft_validate.should be_false
-      f.problems.should include :seat1_no_license
+      f = F.build(:flight, :plane => plane, :seat1_person => person)
+      f.seat1_no_license?.should be_true
       person.licenses.create! :valid_from => 2.days.ago, :legal_plane_class_ids => [ plane.legal_plane_class_id ], :name => "fkfdj"
-      f.soft_validate
-      f.problems.should_not include :seat1_no_license
+      f.seat1_no_license?.should be_false
     end
   end
 end

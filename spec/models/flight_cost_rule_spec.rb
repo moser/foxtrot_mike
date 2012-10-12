@@ -44,7 +44,7 @@ describe FlightCostRule do
                                  :plane_cost_category => PlaneCostCategory.generate!, :valid_from => 1.day.ago,
                                  :flight_type => "Flight"
     cr.matches?(f).should be_false
-    f.seat1 = person_with_cost_category(cr.person_cost_category)
+    f.seat1_person = person_with_cost_category(cr.person_cost_category)
     f.plane = plane_with_cost_category(cr.plane_cost_category)
     cr.matches?(f).should be_true
     cr.cost_rule_conditions << CostHintCondition.create(:cost_hint => ch = CostHint.generate!)
@@ -52,7 +52,7 @@ describe FlightCostRule do
     f.cost_hint = ch
     cr.matches?(f).should be_true
     f.launch = TowFlight.create :abstract_flight => f, :plane => plane_with_cost_category(cr.plane_cost_category), 
-                                 :seat1 => Person.generate!, :to => Airfield.generate!, :duration => 4
+                                 :seat1_person => Person.generate!, :to => Airfield.generate!, :duration => 4
     cr.matches?(f.launch).should be_false
     f.departure = 3.days.ago
     cr.matches?(f).should be_false

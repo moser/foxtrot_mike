@@ -2,6 +2,7 @@ require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
   #Purposes = ['training', 'exercise', 'tow', nil] 
+  IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to]
   include UuidHelper
   before_save :destroy_launch
   before_save :execute_soft_validation
@@ -9,14 +10,15 @@ class AbstractFlight < ActiveRecord::Base
   after_destroy :delete_accouting_entries
 
   belongs_to :plane
-  #launch == nil <=> selflaunched
-  belongs_to :launch, :polymorphic => true, :readonly => false
-  has_one :manual_cost, :as => :item
-  has_many :crew_members, :include => [:person], :after_add => :association_changed, :after_remove => :association_changed, :dependent => :destroy  # , :autosave => true
-  has_many :accounting_entries, :as => :item
+  belongs_to :seat1_person, :class_name => "Person"
+  belongs_to :seat2_person, :class_name => "Person"
   belongs_to :from, :class_name => "Airfield"
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
+  #launch == nil <=> selflaunched
+  belongs_to :launch, :polymorphic => true, :readonly => false
+  has_one :manual_cost, :as => :item
+  has_many :accounting_entries, :as => :item
 
   class << self
     def between(from, to)
@@ -40,7 +42,6 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
 
-  #accepts_nested_attributes_for :crew_members
   #accepts_nested_attributes_for :launch
 
   has_paper_trail :meta => { :abstract_flight_id => Proc.new do |l| 
@@ -50,19 +51,60 @@ class AbstractFlight < ActiveRecord::Base
           end }
 
   attr_reader :problems
+  def seats_used
+    (seat1_person ? 1 : 0 ) +
+      (seat2_person ? 1: seat2_n)
+  end
+
+  def too_many_people_for_plane?
+    plane && plane.seat_count < seats_used
+  end
+
+  def seat2_not_an_instructor?
+    seat1_role == :trainee && (seat2_role != :instructor && seat2_role != :empty)
+  end
+
+  def launch_method_impossible?
+    plane && ((self_launch? && !plane.selflaunching?) ||
+              (tow_launch? && !plane.can_be_towed?) ||
+              (wire_launch? && !plane.can_be_wire_launched?))
+  end
+
+  def self_launch?
+    launch.nil?
+  end
+
+  def tow_launch?
+    launch.is_a?(TowFlight)
+  end
+
+  def wire_launch?
+    launch.is_a?(WireLaunch)
+  end
+
+  def seat1_no_license?
+    plane && seat1_person && !seat1_person.has_relevant_licenses_for(self)
+  end
+
+  def no_cost_calculation_possible?
+    plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
+  end
+
+  def not_between_sr_and_ss?
+    departure_date && ((departure_i >= 0 && from && from.srss? && (sr = from.srss.sunrise_i(departure_date)) > departure_i) ||
+                       (arrival_i >= 0 && to && to.srss? && (ss = to.srss.sunset_i(departure_date)) < arrival_i))
+  end
+
   def soft_validate
     @problems = {}
-    @problems[:too_many_people] = {} if plane && crew_members.map { |e| e.size }.sum > plane.seat_count
-    @problems[:seat2_is_not_an_instructor] = {} if seat1 && seat1.trainee? && seat2 && !seat2.instructor?
-    @problems[:launch_method_impossible] = {} if plane && ((!plane.selflaunching? && launch.nil?) ||
-                                                        (!plane.can_be_towed && launch.is_a?(TowFlight)) ||
-                                                        (!plane.can_be_wire_launched && launch.is_a?(WireLaunch)))
-    @problems[:seat1_no_license] = {} if plane && seat1 && seat1.person && !seat1.person.has_relevant_licenses_for(self)
-    @problems[:no_cost_calculation_possible] = {} if plane && plane.warn_when_no_cost_rules && (cost_responsible.nil? || FlightCostRule.for(self).empty?)
+    @problems[:too_many_people] = {} if too_many_people_for_plane?
+    @problems[:seat2_is_not_an_instructor] = {} if seat2_not_an_instructor?
+    @problems[:launch_method_impossible] = {} if launch_method_impossible?
+    @problems[:seat1_no_license] = {} if seat1_no_license?
+    @problems[:no_cost_calculation_possible] = {} if no_cost_calculation_possible?
     sr = nil
     ss = nil
-    if departure_date && ((departure_i >= 0 && from && from.srss? && (sr = from.srss.sunrise_i(departure_date)) > departure_i) ||
-                                           (arrival_i >= 0 && to && to.srss? && (ss = to.srss.sunset_i(departure_date)) < arrival_i))
+    if not_between_sr_and_ss?
       @problems[:not_between_sr_and_ss] = { :sr => DayTime.new(sr), :ss => DayTime.new(ss) }
     end
     [ :departure_i, :arrival_i ].each do |field|
@@ -81,7 +123,6 @@ class AbstractFlight < ActiveRecord::Base
 
   validates_presence_of :plane
   validates_presence_of :departure
-  validates_presence_of :seat1_id
   validates_presence_of :from
   validates_presence_of :to
 
@@ -129,7 +170,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def cost_responsible
-    seat1.nil? ? nil : seat1.person
+    seat1_person
   end
 
   def engine_duration
@@ -216,100 +257,25 @@ class AbstractFlight < ActiveRecord::Base
     arrival_i > 0
   end
 
-  def seat1
-    crew_members.find_all { |m| [ UnknownCrewMember, PilotInCommand, Trainee ].include?(m.class) }.first
-  end
-
-  def seat2
-    crew_members.find_all { |m| [ Instructor, PersonCrewMember, NCrewMember ].include?(m.class) }.first
-  end
-
-  def seat1_id
-    seat1 && seat1.person? && seat1.person.id
-  end
-
-  def seat2_id
-    seat2 && ((seat2.person? && seat2.person.id) || (seat2.n? && "+#{seat2.n}"))
-  end
-
-  def seat1_id=(id)
-    self.seat1 = (id != '' ? id : nil)
-  end
-
-  def seat2_id=(id)
-    self.seat2 = (id != '' ? id : nil)
-  end
-
-  def seat1=(obj)
-    unless obj.nil?
-      old = seat1
-      unless obj == "unknown"
-        obj = Person.find(obj) unless obj.is_a?(Person)
-        if obj.trainee?(self)
-          new = Trainee.new(:person => obj)
-        else
-          new = PilotInCommand.new(:person => obj)
-        end
-      else
-        new = UnknownCrewMember.new
-      end
-      if !new.equals?(old)
-        crew_members.delete old unless old.nil?
-        crew_members << new
-        new.save
-      end
+  def seat1_role
+    if seat1_person.nil?
+      :unknown #like in "we do not know neither care who flew this plane"
+    elsif seat1_person.trainee?(self)
+      :trainee
     else
-      old = seat1
-      crew_members.delete old unless old.nil?
-    end
-    unless seat2.nil? #check if this one should be changed by reassigning it
-      if seat2.is_a?(PersonCrewMember) #don't need to check if seat2 is a number (NCrewMember)
-        self.seat2 = seat2.person
-      end
+      :pic
     end
   end
 
-  def seat2=(obj)
-    unless obj.nil?
-      obj = $1.to_i if obj =~ /^\+([0-9]+)$/
-      obj = Person.find(obj) unless obj.is_a?(Person) || obj.is_a?(Integer)
-      old = seat2
-      if obj.is_a?(Person)
-        if seat1.is_a?(Trainee) && obj.instructor?(self)
-          new = Instructor.new(:person => obj)
-        else #we do allow other people to fly with trainees, but should warn about that
-          new = PersonCrewMember.new(:person => obj)
-        end
-      else
-        new = NCrewMember.new(:n => obj)
-      end
-      if !new.equals?(old)
-        crew_members.delete old unless old.nil?
-        crew_members << new
-        new.save
-      end
+  def seat2_role
+    if seat2_person.nil? && seat2_n == 0
+      :empty
+    elsif seat2_n > 0
+      :multiple_passengers
+    elsif seat1_role == :trainee && seat2_person.instructor?(self)
+      :instructor
     else
-      old = seat2
-      crew_members.delete old unless old.nil?
-    end
-  end
-
-  def pic
-    if seat1.is_a?(PilotInCommand) || (seat1.is_a?(Trainee) && seat2.nil?)
-      seat1
-    else
-      seat2
-    end
-  end
-
-  def crew_members_attributes=(attrs)
-    unless attrs.nil?
-      attrs.each do |h|
-        obj = h.delete(:type).constantize.new(h)
-        obj.id = h[:id]
-        obj.save
-        crew_members << obj
-      end
+      :passenger
     end
   end
 
@@ -329,24 +295,17 @@ class AbstractFlight < ActiveRecord::Base
 
   def shared_attributes
     a = self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
-    a[:crew_members_attributes] = crew_members.map { |m| m.attributes }
     a[:launch_attributes] = launch.shared_attributes unless launch.nil?
     a[:type] = self.class.to_s if a[:type].nil?
     a
   end
 
   def purpose
-    if seat1.is_a?(Trainee)
+    if seat1_role == :trainee
       Purpose.get('training')
     else
       Purpose.get('exercise')
     end
-  end
-
-  def history
-    #TODO add manual cost?
-    #[revisions, [PilotInCommandRevision, TraineeRevision, PersonCrewMemberRevision,
-    #  NCrewMemberRevision, WireLaunchRevision, TowLaunchRevision].map { |c| c.find(:all, :conditions => { :abstract_flight_id => id }) }].flatten.sort_by { |r| r.revisable_current_at }
   end
 
   def aggregation_id
@@ -355,7 +314,8 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def generate_aggregation_id
-    from == to && Digest::SHA256.hexdigest("#{plane_id.to_s}" + ((crew_members.sort_by { |c| c.class.to_s }).map {|m| m.person_id.to_s + m.class.name}).join + "#{departure_date}" + from_id.to_s)
+    from == to && 
+      Digest::SHA256.hexdigest("#{plane_id.to_s}#{seat1_person_id}#{seat2_person_id}#{seat2_n}#{departure_date}#{from_id}")
   end
 
   def grouping_purposes
@@ -367,7 +327,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def grouping_people
-    crew_members.select { |m| [ UnknownCrewMember, PilotInCommand, Trainee, Instructor ].include?(m.class) }.map(&:person).reject(&:'nil?')
+    [ seat1_person, seat2_person ].compact
   end
 
   def grouping_licenses
@@ -375,7 +335,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def grouping_people_groups
-    grouping_people.map(&:group).uniq.reject(&:'nil?')
+    grouping_people.map(&:group).compact.uniq
   end
 
   def grouping_groups
@@ -391,7 +351,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def self.include_all
-    includes(:plane, :from, :to, :crew_members)
+    includes(IncludeAll)
   end
 
   def self.latest_departure(rel = AbstractFlight)
@@ -401,32 +361,6 @@ class AbstractFlight < ActiveRecord::Base
   def self.oldest_departure(rel = AbstractFlight)
     rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue 2.years.ago
   end
-
-=begin
-  def to_j
-    { :id => id,
-      :plane =>
-        { :id => plane_id,
-          :registration => plane.registration },
-      :seat1 => 
-        { :person => 
-          { :id => seat1.person.id,
-            :name => seat1.person.name },
-          :type => seat1.type,
-          :pic => seat1.is_a?(PilotInCommand) || (seat1.is_a?(Trainee) && seat2.nil?) },
-      :seat2 => 
-        { :person => 
-          { :id => seat2.person.id,
-            :name => seat2.person.name },
-          :type => seat2.type,
-          :pic => !seat1.is_a?(PilotInCommand) && (!seat1.is_a?(Trainee) || !seat2.nil?) },
-      :from => 
-        { :id => from_id,
-          :name => from.name,
-          :re
-    }
-  end
-=end
 
 protected
   def rational_day_to_minutes(r)

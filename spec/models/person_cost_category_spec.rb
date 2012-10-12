@@ -20,7 +20,7 @@ describe PersonCostCategory do
     c = PersonCostCategory.generate!
     f = Flight.generate!
     c.matches?(f).should be_false 
-    f.seat1 = p = Person.generate!
+    f.seat1_person = p = Person.generate!
     c.person_cost_category_memberships.create :person => p, :valid_from => 1.day.ago
     c.matches?(f).should be_true
     f.departure = 2.days.ago

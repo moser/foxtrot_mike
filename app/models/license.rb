@@ -14,16 +14,6 @@ class License < ActiveRecord::Base
     level == "trainee"
   end
 
-  def to_crew_member_types
-    if instructor?
-      [ PilotInCommand, Instructor ]
-    elsif trainee?
-      [ Trainee ]
-    else
-      [ PilotInCommand ]
-    end
-  end
-
   def editable?
     new_record? || flights.empty?
   end
@@ -31,9 +21,7 @@ class License < ActiveRecord::Base
   def flights
     AbstractFlight.where(AbstractFlight.arel_table[:departure_date].gteq(valid_from).
                              and(AbstractFlight.arel_table[:departure_date].lteq(valid_to || 1.day.from_now.to_date))).
-           joins(:crew_members).
-           where('crew_members.type' => to_crew_member_types.map(&:to_s),
-                 'crew_members.person_id' => person_id).joins(:plane).
+           where('abstract_flights.seat1_person_id OR abstract_flights.seat2_person_id', person_id).joins(:plane).
            where('planes.legal_plane_class_id' => legal_plane_class_ids)
   end
 

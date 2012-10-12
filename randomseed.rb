@@ -12,5 +12,5 @@ af = Airfield.all
 
 1500.times do |n|
   puts n
-  Flight.create :departure => rt, :plane => r(planes), :seat1 => r(people), :from => r(af), :to => r(af), :duration => rand(90) + 1, :controller => r(people)
+  Flight.create :departure => rt, :plane => r(planes), :seat1_person => r(people), :from => r(af), :to => r(af), :duration => rand(90) + 1, :controller => r(people)
 end

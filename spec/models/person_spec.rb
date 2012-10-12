@@ -83,7 +83,7 @@ describe Person do
 
   it "should return a persons flights" do
     p = Person.generate!
-    f = Flight.generate! :seat1 => p
+    f = Flight.generate! :seat1_person => p
     p.flights.should include(f)
   end
   
@@ -107,7 +107,7 @@ describe Person do
   
   it "should not include tow flights in " do
     p = Person.generate!
-    f = TowFlight.generate! :seat1_id => p
+    f = TowFlight.generate! :seat1_person => p
     p.reload
     p.find_concerned_accounting_entry_owners.should_not include(f)
   end
