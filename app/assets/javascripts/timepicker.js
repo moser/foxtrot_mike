@@ -17,10 +17,6 @@ var DateTimePickers = {
     if(d.blank) { return ''; }
     if(type == 'datetime') {
       return Format.date_time_short(new Date(d['1i'], d['2i'] - 1, d['3i'], d['4i'], d['5i'], 0));
-    } else if(type == 'time') {
-      return Format.time_of_date(new Date(2000, 0, 1, d['4i'], d['5i'], 0));
-    } else if(type == 'date') {
-      return Format.date_short(new Date(d['1i'], d['2i'] - 1, d['3i'], 0, 0, 0));
     }
   },
   
@@ -54,11 +50,7 @@ var DateTimePickers = {
   },
 
   replaceAllAndAttachPickers: function(q) {
-    DateTimePickers.replacePickers(q, 'datetime');
     DateTimePickers.replacePickers(q, 'date');
-    DateTimePickers.replacePickers(q, 'time');
-    q.find('.datetimepicker').datetimepicker();
-    q.find('.timepicker').timepicker();
     q.find('.datepicker').datepicker();
   }
 }
