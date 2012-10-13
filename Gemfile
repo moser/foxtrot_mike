@@ -4,14 +4,16 @@ gem "rails", ">=3.1"
 gem "rails3-generators"
 
 gem "sass"
+gem "haml"
+gem "haml-rails"
+gem 'haml_coffee_assets'
 gem "coffee-script"
 gem "therubyracer"
 gem "uglifier"
 gem "jquery-rails"
-gem "jquery-historyjs"
+gem "rails-backbone"
+gem "i18n-js"
 
-gem "haml"
-gem "haml-rails"
 gem "uuidtools"
 gem "paper_trail"
 gem "simple_form", :git => "git://github.com/plataformatec/simple_form.git"
@@ -21,7 +23,6 @@ gem "fastercsv"
 gem "delayed_job"
 gem 'delayed_job_active_record'
 gem "wicked_pdf"
-
 gem "king_dtaus"
 
 group :production do
@@ -40,6 +41,5 @@ group :test do
 end
 
 group :development, :test do
-  gem "railroady"
   gem "sqlite3"
 end
