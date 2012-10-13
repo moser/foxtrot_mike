@@ -8,6 +8,9 @@
     = stylesheet_link_tag 'application', :media => "all"
     = stylesheet_link_tag 'print/print', :media => "print"
     = javascript_include_tag 'application'
+    :javascript
+      I18n.defaultLocale = "#{ I18n.default_locale }";
+      I18n.locale = "#{ I18n.locale }";
   %body
     .header_container
       .header
