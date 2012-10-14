@@ -2,6 +2,7 @@
 //= require i18n/translations
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require jquery-ui-1.8.16.custom.min
 //= require timepicker
 //= require core_ext

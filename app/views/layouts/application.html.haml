@@ -12,20 +12,75 @@
       I18n.defaultLocale = "#{ I18n.default_locale }";
       I18n.locale = "#{ I18n.locale }";
   %body
-    .header_container
-      .header
-        - #= render :partial => "common/account_bar"
-        = render :partial => "common/navigation_bar"
-        .please_wait
-          = image_tag "/images/loading.gif"
-    .content_container
-      .content
-        %noscript.block.flash.error
-          = t(".js_warning")
-        - if flash[:notice]
-          .flash.notice= flash[:notice]
-        - if flash[:success]
-          .flash.success= flash[:success]
-        - if flash[:error]
-          .flash.error= flash[:error]
-        = yield
+    .navbar-fixed-top
+      .navbar.navbar-inner
+        .container
+          %a.brand
+            FM
+          %ul.nav
+            - if can?(:read, :dashboards)
+              =h navigation_li(:name => "dashboard", :path => dashboard_path)
+            - if can?(:read, Flight)
+              =h navigation_li(:name => "flights", :path => flights_path)
+            - if can?(:read, Plane) || can?(:read, WireLauncher) || can?(:read, Airfield) || can?(:read, Person)
+              %li.dropdown
+                %a.dropdown-toggle{ "data-toggle" => "dropdown", :href => "#" }= t("master_data.index.title")
+                %ul.dropdown-menu
+                  - if can?(:read, Plane)
+                    =h navigation_li(:name => "planes", :path => planes_path)  
+                  - if can?(:read, WireLauncher)
+                    =h navigation_li(:name => "wire_launchers", :path => wire_launchers_path)  
+                  - if can?(:read, Airfield) 
+                    =h navigation_li(:name => "airfields", :path => airfields_path)
+                  - if can?(:read, FinancialAccount)
+                    =h navigation_li(:name => "financial_accounts", :path => financial_accounts_path)
+                  - if can?(:read, Person)
+                    =h navigation_li(:name => "people", :path => people_path)
+                  - if can?(:read, License)
+                    =h navigation_li(:name => "licenses", :path => licenses_path)
+                  - if can?(:read, Account)
+                    =h navigation_li(:name => "accounts", :path => accounts_path)
+            - if can?(:read, Group) || can?(:read, LegalPlaneClass) || can?(:read, CostHint) || can?(:read, PersonCostCategory) || can?(:read, PlaneCostCategory) || can?(:read, WireLauncherCostCategory)
+              %li.dropdown
+                %a.dropdown-toggle{ "data-toggle" => "dropdown", :href => "#" }= t("categories.index.title")
+                %ul.dropdown-menu
+                  - if can?(:read, Group)
+                    =h navigation_li(:name => "groups", :path => groups_path)  
+                  - if can?(:read, LegalPlaneClass)
+                    =h navigation_li(:name => "legal_plane_classes", :path => legal_plane_classes_path)  
+                  - if can?(:read, CostHint) 
+                    =h navigation_li(:name => "cost_hints", :path => cost_hints_path)
+                  - if can?(:read, PersonCostCategory)
+                    =h navigation_li(:name => "person_cost_categories", :path => person_cost_categories_path)
+                  - if can?(:read, PlaneCostCategory)
+                    =h navigation_li(:name => "plane_cost_categories", :path => plane_cost_categories_path)
+                  - if can?(:read, WireLauncherCostCategory)
+                    =h navigation_li(:name => "wire_launcher_cost_categories", :path => wire_launcher_cost_categories_path)
+            - if can?(:read, :cost_rules) || can?(:read, AccountingSession)
+              %li.dropdown
+                %a.dropdown-toggle{ "data-toggle" => "dropdown", :href => "#" }= t("accounting.index.title")
+                %ul.dropdown-menu
+                  - if can?(:read, :cost_rules)
+                    =h navigation_li(:name => "cost_rules", :path => cost_rules_path)  
+                  - if can?(:read, AccountingSession)
+                    =h navigation_li(:name => "accounting_sessions", :path => accounting_sessions_path)  
+    %noscript
+      .alert
+        %button.close{ :type => "button", "data-dismiss" => "alert" } x
+        = t(".js_warning")
+    - if flash[:notice]
+      .alert.alert-info
+        %button.close{ :type => "button", "data-dismiss" => "alert" } x
+        = flash[:notice]
+    - if flash[:success]
+      .alert.alert-success
+        %button.close{ :type => "button", "data-dismiss" => "alert" } x
+        = flash[:success]
+    - if flash[:error]
+      .alert.alert-error
+        %button.close{ :type => "button", "data-dismiss" => "alert" } x
+        = flash[:error]
+    .container
+      .row
+        .span12
+          = yield

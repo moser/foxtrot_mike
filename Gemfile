@@ -4,6 +4,7 @@ gem "rails", ">=3.1"
 gem "rails3-generators"
 
 gem "sass"
+gem "twitter-bootstrap-rails"
 gem "haml"
 gem "haml-rails"
 gem 'haml_coffee_assets'
