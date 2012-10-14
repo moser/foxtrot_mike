@@ -26,7 +26,7 @@ class TowFlight < AbstractFlight
   end
 
   def purpose
-    @purpose ||= Purpose.get('tow')
+    :tow
   end
 
   def initialize(*args)

@@ -1,0 +1,20 @@
+.flights_index
+  %h2
+    = I18n.t("flights.index.title")
+  .flights.alternate
+    .head
+      %span.date= I18n.t("activerecord.attributes.abstract_flight.departure_date")
+      %span.plane= I18n.t("activerecord.attributes.abstract_flight.plane")
+      %span.seat= I18n.t("activerecord.attributes.abstract_flight.seat1")
+      %span.seat= I18n.t("activerecord.attributes.abstract_flight.seat2")
+      %span.launch_type{ title: I18n.t("activerecord.attributes.abstract_flight.launch_type") }= I18n.t("activerecord.attributes.abstract_flight.launch_type_short")
+      %span.purpose{ title: I18n.t("activerecord.attributes.abstract_flight.purpose") }= I18n.t("activerecord.attributes.abstract_flight.purpose_short")
+      %span.airfield= I18n.t("activerecord.attributes.abstract_flight.from")
+      %span.airfield= I18n.t("activerecord.attributes.abstract_flight.to")
+      %span.time= I18n.t("activerecord.attributes.abstract_flight.departure")
+      %span.time= I18n.t("activerecord.attributes.abstract_flight.arrival")
+      %span.time= I18n.t("activerecord.attributes.abstract_flight.duration")
+      %span.seat= I18n.t("activerecord.attributes.abstract_flight.controller")
+      %span.comment= I18n.t("attributes.comment")
+    .main
+      .flight_group

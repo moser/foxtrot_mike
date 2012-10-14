@@ -138,12 +138,8 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
 
-  def launch_type_short
-    I18n.t("flight.launch_types.#{ launch.nil? ? "self_launch" : launch.to_s }.short")
-  end
-
-  def launch_type_long
-    I18n.t("flight.launch_types.#{ launch.nil? ? "self_launch" : launch.to_s }.long")
+  def launch_kind
+    launch.nil? ? "self_launch" : launch.to_s
   end
 
   def cost
@@ -288,23 +284,15 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
 
-  def self.shared_attribute_names
-    [ :plane_id, :from_id, :to_id, :departure, :duration, :engine_duration,
-      :purpose, :comment, :id, :type ]
-  end
-
-  def shared_attributes
-    a = self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
-    a[:launch_attributes] = launch.shared_attributes unless launch.nil?
-    a[:type] = self.class.to_s if a[:type].nil?
-    a
+  def as_json(options = {})
+    super(options.merge(methods: [ :launch_kind, :editable, :purpose ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json })
   end
 
   def purpose
     if seat1_role == :trainee
-      Purpose.get('training')
+      :training
     else
-      Purpose.get('exercise')
+      :exercise
     end
   end
 
@@ -360,6 +348,14 @@ class AbstractFlight < ActiveRecord::Base
 
   def self.oldest_departure(rel = AbstractFlight)
     rel.order('departure_date ASC, departure_i ASC').limit(1).first.departure rescue 2.years.ago
+  end
+
+  def editable?
+    true
+  end
+
+  def editable
+    editable?
   end
 
 protected

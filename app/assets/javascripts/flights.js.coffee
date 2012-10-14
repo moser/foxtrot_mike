@@ -4,8 +4,9 @@
 #= require_tree ./views
 #= require_tree ./routers
 
-window.Server =
+window.Flights =
   Models: {}
   Collections: {}
   Routers: {}
   Views: {}
+  Presenters: {}

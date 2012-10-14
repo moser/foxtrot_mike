@@ -52,16 +52,6 @@ class Plane < ActiveRecord::Base
     registration || ""
   end
 
-  def self.shared_attribute_names
-    [ :id, :registration, :make, :competition_sign, :group_id, :default_launch_method, :has_engine, :default_engine_duration_to_duration,
-      :can_fly_without_engine, :can_tow, :can_be_towed, :can_be_wire_launched, :disabled, :legal_plane_class_id, :selflaunching, :seat_count ]
-
-  end
-
-  def shared_attributes
-    self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
-  end
-
   def engine_duration_possible?
     has_engine && can_fly_without_engine
   end
@@ -79,8 +69,23 @@ class Plane < ActiveRecord::Base
     blk.call(flights)
   end
 
-  def to_j
-    shared_attributes.merge({ :group_name => group.name })
+  def as_json(options)
+    a = [ :id, 
+      :registration, 
+      :make, 
+      :competition_sign,
+      :group_id,
+      :default_launch_method,
+      :has_engine,
+      :default_engine_duration_to_duration,
+      :can_fly_without_engine,
+      :can_tow, :can_be_towed,
+      :can_be_wire_launched,
+      :disabled,
+      :legal_plane_class_id,
+      :selflaunching,
+      :seat_count ]
+    self.attributes.reject { |k,v| !a.include?(k.to_sym) }.merge({ :group_name => group.name })
   end
 private
   def association_changed(obj = nil)

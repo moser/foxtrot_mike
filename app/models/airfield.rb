@@ -24,14 +24,6 @@ class Airfield < ActiveRecord::Base
     end
   end
 
-  def self.shared_attribute_names
-    [ :id, :registration, :name ]
-  end
-
-  def shared_attributes
-    self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
-  end
-
   def flights
     AbstractFlight.include_all.where(AbstractFlight.arel_table[:from_id].eq(id).or(AbstractFlight.arel_table[:to_id].eq(id)))
   end
@@ -45,7 +37,7 @@ class Airfield < ActiveRecord::Base
     lat != 0.0 && long != 0.0 #there should not be an airfield, somewhere in the ocean
   end
 
-  def to_j
+  def as_json(options)
     { :id => id, :name => name, :registration => registration, :disabled => disabled }
   end
 

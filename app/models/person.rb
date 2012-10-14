@@ -102,14 +102,6 @@ class Person < ActiveRecord::Base
     name
   end
 
-  def self.shared_attribute_names
-    [ :id, :lastname, :firstname, :birthdate, :email, :group_id ]
-  end
-
-  def shared_attributes
-    self.attributes.reject { |k, v| !self.class.shared_attribute_names.include?(k.to_sym) }
-  end
-
   def flights(relation = nil)
     relation ||= AbstractFlight.include_all
     relation.where("seat1_person_id = ? OR seat2_person_id = ?", id, id) #TODO reject those flights, where the person is not involved 
@@ -133,7 +125,7 @@ class Person < ActiveRecord::Base
     blk.call(flights(Flight.include_all)) + blk.call(flights_liable_for)
   end
 
-  def to_j
+  def as_json(options)
     { :id => id,
       :firstname => firstname,
       :lastname => lastname,

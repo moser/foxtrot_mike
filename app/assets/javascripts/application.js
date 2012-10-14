@@ -9,5 +9,7 @@
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
-//= require backbone/server
+//= require backbone-relational
+//= require hamlcoffee
+//= require flights
 //= require_tree .
