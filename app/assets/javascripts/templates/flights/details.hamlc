@@ -1,1 +1,15 @@
-%h1= @flight.id
+.edit_flight
+  %form
+    %label.control-label= I18n.t("activerecord.attributes.abstract_flight.departure_date")
+    %input.input-small{ :type => "text" }
+    %label.control-label= I18n.t("activerecord.attributes.abstract_flight.plane")
+    %input.string{ type: "hidden", name: "plane_id", value: @flight.raw.plane_id }
+    %a.edit_field(href="#" data-edit="plane")= @flight.plane
+
+.edit_launch
+
+.cost
+
+.liabilities
+
+.history

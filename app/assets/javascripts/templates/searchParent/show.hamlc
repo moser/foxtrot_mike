@@ -1,0 +1,2 @@
+%input.search{ type: "text" }
+%ul.results

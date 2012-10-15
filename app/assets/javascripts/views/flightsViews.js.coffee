@@ -52,6 +52,29 @@ Flights.Views.Details = Backbone.View.extend
   tagName: "div"
   className: "details"
 
+  events:
+    'click a.edit_field': 'edit_field'
+
+  edit_field: (e) =>
+    target = @$(e.target)
+    field = target.attr("data-edit")
+    unless target.siblings(".searchParent").length > 0
+      switch field
+        when "plane"
+          params =
+            for: @$(e.target).siblings("input[name=plane_id]")
+            span: @$(e.target)
+            list: Flights.planes.models
+            label: (p) -> p.get("registration")
+            score: (p) -> 1
+            match: (p, q) -> p.get("registration").toLowerCase().indexOf(q.toLowerCase()) > -1
+
+      target.data("searchParent", c = new Flights.Views.SearchParent(params))
+      c.$el.appendTo(target.parent())
+    else
+      target.data("searchParent").release()
+    false
+
   template: (o) ->
     JST["flights/details"](o)
 
