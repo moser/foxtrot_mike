@@ -1,31 +1,36 @@
 .row
   .span6
-    %h2 Benutzerkonto
-    %ul
-      -#%li Personendaten bearbeiten
-      -# if current_account && current_account.person && current_account.person.financial_account
-      %li= link_to t("financial_account_overview"), own_financial_account_path
-      %li= link_to t("change_password"), new_password_path
+    .well
+      %h2 Benutzerkonto
+      %ul.nav.nav-tabs.nav-stacked
+        -#%li Personendaten bearbeiten
+        -# if current_account && current_account.person && current_account.person.financial_account
+        %li= link_to t("financial_account_overview"), own_financial_account_path
+        %li= link_to t("change_password"), new_password_path
   - if Airfield.home.count > 0
     .span6
-      %h2 Ansichten
-      %ul
-        - Airfield.home.each do |a|
-          %li= link_to t("views.main_flight_book", :name => a.to_s), airfield_main_log_book_path(a)
-          %li= link_to t("views.controller_log", :name => a.to_s), airfield_main_log_book_path(a, :as => "controller_log")
+      .well
+        %h2 Ansichten
+        %ul.nav.nav-tabs.nav-stacked
+          - Airfield.home.each do |a|
+            %li= link_to t("views.main_flight_book", :name => a.to_s), airfield_main_log_book_path(a)
+            %li= link_to t("views.controller_log", :name => a.to_s), airfield_main_log_book_path(a, :as => "controller_log")
   .span6
-    %h2= t('views.bordbooks')
-    %ul
-      - @planes.each do |p|
-        %li= link_to p.registration, polymorphic_path([p, :flights])
+    .well
+      %h2= t('views.bordbooks')
+      %ul.nav.nav-tabs.nav-stacked
+        - @planes.each do |p|
+          %li= link_to p.registration, polymorphic_path([p, :flights])
   .span6
-    %h2= t('views.flightbooks')
-    %ul
-      %li= link_to "Alle", polymorphic_path([@current_person, :flights])
-      - @licenses.each do |l|
-        %li= link_to l.name, polymorphic_path([l, :flights])
+    .well
+      %h2= t('views.flightbooks')
+      %ul.nav.nav-tabs.nav-stacked
+        %li= link_to "Alle", polymorphic_path([@current_person, :flights])
+        - @licenses.each do |l|
+          %li= link_to l.name, polymorphic_path([l, :flights])
   .span6
-    %h2= Group.l(:plural)
-    %ul
-      - @groups.each do |g|
-        %li= link_to g.name, polymorphic_path([g, :flights])
+    .well
+      %h2= Group.l(:plural)
+      %ul.nav.nav-tabs.nav-stacked
+        - @groups.each do |g|
+          %li= link_to g.name, polymorphic_path([g, :flights])
