@@ -1,4 +1,7 @@
-= simple_form_for(@account_session) do |f|
-  = f.input :login
-  = f.input :password
-  = f.button :submit
+.row
+  .span4.offset3.well
+    %h1= I18n.t("login")
+    = simple_form_for(@account_session) do |f|
+      = f.input :login
+      = f.input :password
+      = f.button :submit

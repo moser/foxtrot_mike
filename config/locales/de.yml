@@ -3,6 +3,8 @@ de:
   change_password: "Passwort ändern"
   password_changed: "Passwort erfolgreich gesetzt."
   financial_account_overview: "Buchungsübersicht"
+  login: "Anmelden"
+  logout: "Abmelden (%{name})"
   helpers:
     submit:
       create: "Erstellen"
@@ -123,9 +125,6 @@ de:
   licenses:
     index:
       title: "Lizenzen"
-  logout:
-    index:
-      title: "Abmelden (%{name})"
   master_data:
     index:
       title: "Stammdaten"
