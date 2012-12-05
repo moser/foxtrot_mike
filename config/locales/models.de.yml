@@ -97,6 +97,7 @@ de:
       airfield: Flugplatz
       cost_hint: Kostengruppe
       cost_hint_condition: Einschränkung auf Kostengruppe
+      cost_rule: Kostenregel
       flight: Flug
       flight_cost_rule: Kostenregel für Flüge
       financial_account: Buchhaltungskonto

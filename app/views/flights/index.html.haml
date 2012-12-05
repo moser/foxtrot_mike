@@ -1,6 +1,7 @@
 .app_container
 :javascript
   $(function() {
+    Flights.wire_launchers = new Flights.Collections.WireLaunchers(#{ @wire_launchers.to_json.html_safe });
     Flights.people = new Flights.Collections.People(#{ @people.to_json.html_safe });
     Flights.airfields = new Flights.Collections.Airfields(#{ @airfields.to_json.html_safe });
     Flights.planes = new Flights.Collections.Planes(#{ @planes.to_json.html_safe });

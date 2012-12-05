@@ -1,0 +1,13 @@
+%form.form-horizontal
+  .control-group
+    %label.control-label
+      Launch type
+    .controls
+      %select.launch_type
+        %option{ value: "self_launch" }
+          = I18n.t("flight.launch_types.self_launch.long")
+        %option{ value: "wire_launch" }
+          = I18n.t("flight.launch_types.wire_launch.long")
+        %option{ value: "tow_launch" }
+          = I18n.t("flight.launch_types.tow_launch.long")
+  .launch_form

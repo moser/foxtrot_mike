@@ -17,4 +17,8 @@ class Cost
   def bound_items
     items.select { |i| !i.free? }
   end
+
+  def as_json
+    super.merge({ sum: sum, free_sum: free_sum })
+  end
 end

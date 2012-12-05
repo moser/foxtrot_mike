@@ -3,6 +3,12 @@
   .main, .flight_group
 
   .flight, .head
+    border-bottom: 1px solid #aaa
+    padding: 3px 0px
+    .summary
+      cursor: pointer
+    .details
+      padding-top: 5px
     span
       display: inline-block
       padding: 0 0.2em
@@ -12,7 +18,7 @@
       &.plane
         width: 4em
       &.seat
-        width: 8em
+        width: 9em
       &.launch_type, &.purpose
         width: 0.5em
       &.airfield
@@ -20,5 +26,11 @@
       &.time
         width: 3.5em
       &.comment
+    .form-horizontal
+      .control-group
+        margin-bottom: 9px
+    .nav li.dirty a:after
+      content: "*"
 
-  .details
+  .relative
+    position: relative

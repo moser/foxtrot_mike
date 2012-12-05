@@ -1,15 +1,33 @@
-.edit_flight
-  %form
-    %label.control-label= I18n.t("activerecord.attributes.abstract_flight.departure_date")
-    %input.input-small{ :type => "text" }
-    %label.control-label= I18n.t("activerecord.attributes.abstract_flight.plane")
-    %input.string{ type: "hidden", name: "plane_id", value: @flight.raw.plane_id }
-    %a.edit_field(href="#" data-edit="plane")= @flight.plane
+.row-fluid
+  .span5.edit
 
-.edit_launch
-
-.cost
-
-.liabilities
-
-.history
+  .additional.span7
+    %ul.nav.nav-tabs
+      %li.active
+        %a.launch.cost{ "data-toggle": "tab", href: "#cost" } Cost
+      %li
+        %a.launch.liabilities{ "data-toggle": "tab", href: "#liabilities" } Liabilities
+      %li
+        %a.launch.history{ "data-toggle": "tab", href: "#history" } History
+    .tab-content
+      .tab-pane.active#cost
+        - if @flight.cost
+          %table.table
+            %thead
+              %tr
+                %th= I18n.t("activerecord.models.cost_rule")
+                %th Formula
+                %th Value
+            %tbody
+              - for item in @flight.cost.items
+                %tr
+                  %td= @flight.cost.cost_rule.name
+                  %td
+                    = "#{@flight.raw[item.cost_item.depends_on]()} * #{Flights.Util.currencyToString(item.cost_item.value)}"
+                    - if item.cost_item.additive_value != 0
+                      = " + #{Flights.Util.currencyToString(item.cost_item.additive_value)}"
+                  %td= Flights.Util.currencyToString(item.value)
+      .tab-pane.fade#liabilities
+        Liabilities
+      .tab-pane.fade#history
+        History

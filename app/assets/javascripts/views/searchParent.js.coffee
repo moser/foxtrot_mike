@@ -34,7 +34,6 @@ class Flights.Views.SearchParent extends Backbone.View
         if @filter != @$(".search").val()
           @filter = @$(".search").val()
           @results = (p for p in @list when @match(p, @filter))
-          console.log(@filter, @results)
           if @results.indexOf(@old) > 0
             @selected = @old
           else if @results.length > 0
@@ -55,21 +54,25 @@ class Flights.Views.SearchParent extends Backbone.View
   select: (i) =>
     if i
       @for.val(i.id)
-      @span.html(@label(i))
+      @span.val(@label(i))
+      @callback(i) if @callback && i != @old
 
   renderList: =>
-    @$("ul.results").html(JST["searchParent/results"](results: @results, label: @label, selected: @selected))
+    sorted_results = _.sortBy @results, @score, @
+    @$("ul.results").html(JST["searchParent/results"](results: sorted_results, label: @label, selected: @selected))
+    window.setTimeout((=> @$("li.result.ui-widget-header").scrollintoview({offset: 50})), 100)
       
   listFindById: (id) =>
     (x for x in @list when x.id == id)[0]
 
   initialize: ->
-    [@for, @span, @list, @label, @match, @score] = [@options.for, @options.span, @options.list, @options.label, @options.match, @options.score]
+    [@for, @span, @list, @label, @match, @score, @callback] = [@options.for, @options.span, @options.list, @options.label, @options.match, @options.score, @options.callback]
     throw "@for, @span, @list, @label, @match, @score are needed" unless @for && @span && @list && @label && @match && @score
     @filter = ""
     @results = @list
     @old = @listFindById(@for.val())
-    if @list.indexOf(@old) > 0
+    #@$(".search").val(@label(@old)) #TODO
+    if @old
       @selected = @old
     else if @list.length > 0
       @selected = @results[0]

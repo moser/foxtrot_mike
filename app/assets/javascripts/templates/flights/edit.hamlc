@@ -1,0 +1,15 @@
+%form.form-horizontal
+  %ul.nav.nav-tabs
+    %li.tab_flight.active
+      %a{ "data-toggle": "tab", href: "#flight" } Flug
+    %li.tab_launch
+      %a{ "data-toggle": "tab", href: "#launch" } Start
+  .tab-content{ style: "overflow: inherit;" }
+    .tab-pane.active#flight
+      .edit_flight
+    .tab-pane.fade#launch
+      .edit_launch
+  .control-group
+    .controls
+      %a.save.btn= I18n.t("helpers.submit.update")
+      %a.reset.btn= I18n.t("helpers.submit.reset")

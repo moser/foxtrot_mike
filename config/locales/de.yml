@@ -8,7 +8,8 @@ de:
   helpers:
     submit:
       create: "Erstellen"
-      update: "Ok"
+      update: "Speichern"
+      reset: "Zurücksetzen"
   views:
     confirm: Ja
     aggregate_entries: "Sammeleinträge"

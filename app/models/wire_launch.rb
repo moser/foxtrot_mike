@@ -1,6 +1,10 @@
 class WireLaunch < ActiveRecord::Base
   include UuidHelper
 
+  def self.writable_attributes
+    [ :operator_id, :wire_launcher_id ]
+  end
+
   before_update :before_update_invalidate_accounting_entries
   after_update :after_update_invalidate_accounting_entries
 
@@ -40,6 +44,9 @@ class WireLaunch < ActiveRecord::Base
 
   def cost
     unless @cost
+      p self
+      p self.abstract_flight
+      puts "$"*100
       candidates = WireLaunchCostRule.for(self.abstract_flight).map { |cr| cr.apply_to(self) }
       candidates = candidates.sort_by { |a| a.free_sum }
       @cost = candidates.first
@@ -72,6 +79,14 @@ class WireLaunch < ActiveRecord::Base
 
   def to_s
     "wire_launch"
+  end
+
+  def as_json(options = {})
+    super(options.merge(methods: [ :cost, :type ], except: [ :created_at, :updated_at, :accounting_entries_valid ]))
+  end
+
+  def type
+    self.class.to_s
   end
 
 private

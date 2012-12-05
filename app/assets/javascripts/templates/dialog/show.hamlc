@@ -1,0 +1,9 @@
+.modal.hide.fade
+  .modal-header
+    %h3= @info.title
+  .modal-body
+    = @info.message
+  .modal-footer
+    %a.btn.cancel Cancel
+    %a.btn.reset Reset
+    %a.btn.btn-primary.save Save

@@ -42,6 +42,8 @@ de:
       week: "Woche %W (bis %d.%m.%Y)"
       month: "%B %Y"
       year: "%Y"
+      js:
+        default: "dd.mm.yy"
     month_names:
     - 
     - Januar

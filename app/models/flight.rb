@@ -97,6 +97,14 @@ class Flight < AbstractFlight
     accounting_session.nil? || !accounting_session.finished? 
   end
 
+  def self.writable_attributes
+    AbstractFlight.writable_attributes + [ :controller_id, :departure_date, :departure_i, :from_id, :cost_hint_id ] #TODO add launch
+  end
+
+  def as_json(options={})
+    super(options).merge({ liabilities: liabilities })
+  end
+
 private
   def check_editability
     #raise "not editable" unless editable?

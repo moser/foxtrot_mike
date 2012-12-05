@@ -2,7 +2,9 @@
 //= require i18n/translations
 //= require jquery
 //= require jquery_ujs
+//= require jquery_scrollintoview
 //= require twitter/bootstrap
+//= require twitter/bootstrap/bootstrap-button
 //= require jquery-ui-1.8.16.custom.min
 //= require timepicker
 //= require core_ext
@@ -13,4 +15,9 @@
 //= require backbone-relational
 //= require hamlcoffee
 //= require flights
+//= require underscore
+//= require backbone
+//= require backbone_rails_sync
+//= require backbone_datalink
+//= require backbone/server
 //= require_tree .

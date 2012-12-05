@@ -7,5 +7,5 @@
 .alternate > .alternate_color:nth-child(even)
   background-color: #d0d0d0
 
-.hover_mark:hover, .flight:hover, .flight.problems:hover, .alternate > .flight.problems.alternate_color:nth-child(even):hover, .alternate > .flight.alternate_color:nth-child(even):hover, .alternate > .hover_mark:nth-child(even):hover
+.hover_mark:hover, .flight:not(.expanded):hover, .flight.problems:not(.expanded):hover, .alternate > .flight.problems.alternate_color:not(.expanded):nth-child(even):hover, .alternate > .flight.alternate_color:not(.expanded):nth-child(even):hover, .alternate > .hover_mark:nth-child(even):hover
   background: #fa0

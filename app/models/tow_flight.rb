@@ -42,6 +42,14 @@ class TowFlight < AbstractFlight
   def to_s
     "tow_launch"
   end
+  
+  def is_tow
+    true
+  end
+
+  def as_json(options = {})
+    super(options).merge({ abstract_flight_id: abstract_flight.id })    
+  end
 
 private
   def copy_from_abstract_flight

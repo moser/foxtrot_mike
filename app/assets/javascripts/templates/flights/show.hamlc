@@ -1,15 +1,16 @@
-%span.date
-  %a{ name: @flight.id }
-  = @flight.date
-%span.plane= @flight.plane
-%span.seat= @flight.seat1
-%span.seat= @flight.seat2
-%span.launch_type{ title: @flight.launch_kind_long }= @flight.launch_kind_short
-%span.purpose{ title: @flight.purpose_long }= @flight.purpose_short
-%span.airfield= @flight.from
-%span.airfield= @flight.to
-%span.time= @flight.departure
-%span.time= @flight.arrival
-%span.time= @flight.duration
-%span.seat= @flight.controller
-%span.comment{ title: @flight.comment_long }= @flight.comment_short
+.summary
+  %span.date
+    %a{ name: @flight.id }
+    = @flight.date
+  %span.plane= @flight.plane
+  %span.seat= @flight.seat1
+  %span.seat= @flight.seat2
+  %span.launch_type{ title: @flight.launch_type_long }= @flight.launch_type_short
+  %span.purpose{ title: @flight.purpose_long }= @flight.purpose_short
+  %span.airfield= @flight.from.short
+  %span.airfield= @flight.to.short
+  %span.time= @flight.departure
+  %span.time= @flight.arrival
+  %span.time= @flight.duration
+  %span.seat= @flight.controller
+  %span.comment{ title: @flight.comment_long }= @flight.comment_short

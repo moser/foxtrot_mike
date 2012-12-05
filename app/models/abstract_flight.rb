@@ -42,6 +42,11 @@ class AbstractFlight < ActiveRecord::Base
     end
   end
 
+  def self.writable_attributes
+    [ :plane_id, :seat1_person_id, :seat2_person_id, :seat2_n, 
+      :to_id, :arrival_i, :engine_duration, :comment, :launch_attributes, :liabilities_attributes ]
+  end
+
   #accepts_nested_attributes_for :launch
 
   has_paper_trail :meta => { :abstract_flight_id => Proc.new do |l| 
@@ -277,15 +282,31 @@ class AbstractFlight < ActiveRecord::Base
 
   def launch_attributes=(attrs)
     unless attrs.nil?
-      obj = attrs.delete(:type).constantize.new(attrs)
-      obj.save
-      self.launch = obj
-      save
+        unless attrs == "none"
+        klass = attrs.delete(:type).constantize
+        if attrs[:id]
+          obj = klass.find(attrs[:id])
+          obj.update_attributes(attrs.select { |k,_| klass.writable_attributes.include?(k.to_sym) })
+        else
+          obj = klass.new(attrs.select { |k,_| klass.writable_attributes.include?(k.to_sym) })
+          obj.abstract_flight = self
+          obj.save
+          self.launch = obj
+          save
+        end
+      else
+        self.launch = nil
+        save
+      end
     end
   end
 
   def as_json(options = {})
-    super(options.merge(methods: [ :launch_kind, :editable, :purpose ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json })
+    super(options.merge(methods: [ :editable, :purpose, :cost, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json })
+  end
+  
+  def is_tow
+    false
   end
 
   def purpose
