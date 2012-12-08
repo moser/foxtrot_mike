@@ -10,6 +10,7 @@ de:
       create: "Erstellen"
       update: "Speichern"
       reset: "Zurücksetzen"
+      delete: "Löschen"
   views:
     confirm: Ja
     aggregate_entries: "Sammeleinträge"

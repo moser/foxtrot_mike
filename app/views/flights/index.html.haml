@@ -5,7 +5,8 @@
     Flights.people = new Flights.Collections.People(#{ @people.to_json.html_safe });
     Flights.airfields = new Flights.Collections.Airfields(#{ @airfields.to_json.html_safe });
     Flights.planes = new Flights.Collections.Planes(#{ @planes.to_json.html_safe });
-    Flights.flights = new Flights.Collections.Flights(#{ @flights.to_json.html_safe });
+    Flights.flights = new Flights.Collections.Flights();
+    Flights.flights.reset(#{ @flights.to_json.html_safe });
     window.router = new Flights.Routers.FlightsRouter();
     Backbone.history.start();
   });

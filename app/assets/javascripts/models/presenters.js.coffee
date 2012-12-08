@@ -30,6 +30,7 @@ Flights.Presenters.FlightPresenter =
       comment_short: comment
       comment_long: model.get("comment")
       is_tow: model.get("is_tow")
+      editable: model.get("editable")
       raw: model
 
 WireLaunchPresenter = Flights.Presenters.WireLaunch =
@@ -37,6 +38,7 @@ WireLaunchPresenter = Flights.Presenters.WireLaunch =
     r =
       wire_launcher: if model.wire_launcher()? then model.wire_launcher().get("registration") else ""
       operator: if model.operator()? then PersonPresenter.present(model.operator()).name else ""
+      editable: model.get("editable")
       raw: model
 
 PersonPresenter = Flights.Presenters.Person =

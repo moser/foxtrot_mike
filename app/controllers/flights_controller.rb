@@ -1,7 +1,7 @@
 class FlightsController < ApplicationController
   def index
     authorize! :read, AbstractFlight
-    @flights = AbstractFlight.where(departure_date: AbstractFlight.latest_departure.to_date)
+    @flights = AbstractFlight.order("departure_date DESC, departure_i DESC").limit(40) #.where(departure_date: AbstractFlight.latest_departure.to_date)
     respond_to do |f|
       f.html do
         @people = Person.all
@@ -20,7 +20,6 @@ class FlightsController < ApplicationController
   end
 
   def update
-    puts params[:flight].to_yaml
     flight = AbstractFlight.find(params[:id])
     authorize! :update, flight
     flight.update_attributes!(params[:flight].select { |k,_| flight.class.writable_attributes.include?(k.to_sym) })
@@ -32,5 +31,12 @@ class FlightsController < ApplicationController
     flight_klass = (params[:flight][:type] ? params[:flight][:type].constantize : Flight)
     flight = flight_klass.create(params[:flight].select { |k,_| flight_klass.writable_attributes.include?(k.to_sym) })
     render json: flight
+  end
+
+  def destroy
+    flight = Flight.find(params[:id])
+    authorize! :destroy, flight
+    flight.destroy
+    render json: {}
   end
 end

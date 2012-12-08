@@ -1,15 +1,19 @@
 %form.form-horizontal
   %ul.nav.nav-tabs
     %li.tab_flight.active
-      %a{ "data-toggle": "tab", href: "#flight" } Flug
+      %a{ "data-tab_name": "flight", "data-toggle": "tab", href: "#flight" } Flug
     %li.tab_launch
-      %a{ "data-toggle": "tab", href: "#launch" } Start
+      %a{ "data-tab_name": "launch",  "data-toggle": "tab", href: "#launch" } Start
   .tab-content{ style: "overflow: inherit;" }
     .tab-pane.active#flight
       .edit_flight
     .tab-pane.fade#launch
       .edit_launch
-  .control-group
-    .controls
-      %a.save.btn= I18n.t("helpers.submit.update")
-      %a.reset.btn= I18n.t("helpers.submit.reset")
+  - if @flight.editable
+    .control-group
+      .controls
+        %a.save.btn= I18n.t("helpers.submit.update")
+        - unless @flight.raw.isNew()
+          %a.reset.btn= I18n.t("helpers.submit.reset")
+          - unless @flight.is_tow
+            %a.btn-danger.delete.btn= I18n.t("helpers.submit.delete")

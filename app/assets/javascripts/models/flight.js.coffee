@@ -7,6 +7,10 @@ class Flights.Models.Flight extends Flights.BaseModel
     arrival_i: -1
     comment: ""
     is_tow: false
+    editable: true
+
+  sortBy: ->
+    "#{@get("departure_date")}-#{@get("departure_i")}"
 
   plane: ->
     if @get("plane_id")?
@@ -64,7 +68,6 @@ class Flights.Models.Flight extends Flights.BaseModel
       @ilaunch = new Flights.Models.WireLaunch({ type: "WireLaunch" })
     @set("launch", if @ilaunch? then @ilaunch.toJSON() else null)
     
-
   dirty: ->
     super() || (@launch()? && @launch().dirty())
 
@@ -78,16 +81,28 @@ class Flights.Models.Flight extends Flights.BaseModel
     @save_launch()
     super {},
       success: =>
-        @ilaunch = null
+        @trigger("sync")
         if @launch_type() == "tow_launch"
           unless Flights.flights.get(@launch().id)?
             Flights.flights.add(@launch())
           @launch().fetch()
+          @launch().trigger("sync")
+        else if @launch_type() == "wire_launch"
+          @launch().trigger("sync")
         f = Flights.flights.find((f) => f.get("abstract_flight_id") == @id)
         f.fetch() if f?
 
+  destroy: ->
+    super success: =>
+      @trigger("destroy")
+      f = Flights.flights.find((f) => f.get("abstract_flight_id") == @id)
+      f.fetch() if f?
+
+
   fetch: ->
     super
+      success: =>
+        @trigger("sync")
       error: (m, x, o) =>
         if x.status == 404
           Flights.flights.remove(m)
@@ -98,11 +113,18 @@ class Flights.Models.Flight extends Flights.BaseModel
     else
       @set("launch_attributes", "none")
 
-  initialize: ->
-    super()
-    
-
-
 Flights.Collections.Flights = Backbone.Collection.extend
   model: Flights.Models.Flight
   url: '/flights'
+  comparator: (a,b) ->
+    a = a.sortBy().split("-").map((e) -> parseInt(e))
+    b = b.sortBy().split("-").map((e) -> parseInt(e))
+    r = 0
+    _.each _.zip(a,b).map((e) => @srt(e)), (e) ->
+      r = e if e != 0 && r == 0
+    r
+
+  srt: (arr) ->
+    a = arr[0]
+    b = arr[1]
+    if a == b then 0 else if a < b then 1 else -1

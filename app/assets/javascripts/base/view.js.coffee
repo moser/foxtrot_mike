@@ -10,7 +10,7 @@ class Flights.TemplateView extends Flights.BaseView
 
 class Flights.ModelBasedView extends Flights.TemplateView
   dirty: ->
-    @model.dirty
+    @model.dirty()
 
   change: ->
     @update_model()
@@ -18,3 +18,7 @@ class Flights.ModelBasedView extends Flights.TemplateView
 
   update_model: ->
     throw "Thou shalt implement #update_model"
+
+  initialize: ->
+    @model = @options.model
+    @model.on("sync", => @trigger("changed"))

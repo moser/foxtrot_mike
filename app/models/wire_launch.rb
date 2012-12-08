@@ -82,11 +82,15 @@ class WireLaunch < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge(methods: [ :cost, :type ], except: [ :created_at, :updated_at, :accounting_entries_valid ]))
+    super(options.merge(methods: [ :cost, :type, :editable ], except: [ :created_at, :updated_at, :accounting_entries_valid ]))
   end
 
   def type
     self.class.to_s
+  end
+
+  def editable
+    abstract_flight.editable?
   end
 
 private

@@ -16,7 +16,7 @@ class AbstractFlight < ActiveRecord::Base
   belongs_to :to, :class_name => "Airfield"
   belongs_to :controller, :class_name => "Person"
   #launch == nil <=> selflaunched
-  belongs_to :launch, :polymorphic => true, :readonly => false
+  belongs_to :launch, :polymorphic => true, :readonly => false, :dependent => :destroy
   has_one :manual_cost, :as => :item
   has_many :accounting_entries, :as => :item
 

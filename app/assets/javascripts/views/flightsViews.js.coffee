@@ -33,9 +33,11 @@ class Flights.Views.Index extends Flights.TemplateView
 
   remove: (model) =>
     #remove shows from DOM
-    @$("##{model.id}").remove()
+    @$("##{model.id}").fadeOut =>
+      @$("##{model.id}").remove()
   
   initialize: ->
+    @new_view = null
     @collection = Flights.flights
     @collection.on("change", @change)
     @collection.on("add", @add)
@@ -44,12 +46,17 @@ class Flights.Views.Index extends Flights.TemplateView
 
   #creates a new flight
   new: ->
-    @new_flight = new Flights.Models.Flight()
-    Flights.flights.add(@new_flight)
-    @view = new Flights.Views.Show({ model: @new_flight })
-    @view.details()
-    @$(".flights .flight_group").prepend(@view.el)
-    #@view.$el.scrollintoview({offset: 60})
+    unless @new_view?
+      @new_flight = new Flights.Models.Flight()
+      @new_flight.on("sync", => @new_view = null)
+      Flights.flights.add(@new_flight)
+      @new_view = new Flights.Views.Show({ model: @new_flight })
+      @new_view.details()
+      @$(".flights .flight_group").prepend(@new_view.el)
+    else
+      @new_view.$el.slideUp SlideDuration, =>
+        @new_view.$el.remove()
+        @new_view = null
     false
     
 
@@ -58,10 +65,14 @@ class Flights.Views.Show extends Flights.TemplateView
   templateName: "flights/show"
 
   events:
-    "click span": "details"
-    "click .summary": "details"
+    "click span": "detailsEvent"
+    "click .summary": "detailsEvent"
 
   expanded: false
+
+  detailsEvent: ->
+    @details(true)
+
 
   details: (check_dirty) ->
     unless @detailsView?
@@ -72,7 +83,7 @@ class Flights.Views.Show extends Flights.TemplateView
         @detailsView.$el.scrollintoview({offset: 40})
       @$el.addClass("expanded")
     else
-      if @detailsView.dirty() && check_dirty
+      unless @model.dirty() && check_dirty
         @detailsView.$el.slideUp SlideDuration, =>
           @detailsView.$el.remove()
           @detailsView = null
@@ -95,7 +106,7 @@ class Flights.Views.Show extends Flights.TemplateView
   initialize: ->
     @model = @options.model
     @model.on("change", @renderSummary)
-    @model.on("sync", @render)
+    @model.on("sync", @renderSummary)
     @$el.attr("data-duration", Math.abs(@model.duration() + 1) - 1)
 
   renderSummary: () =>
@@ -113,9 +124,6 @@ class Flights.Views.Details extends Flights.TemplateView
   className: "details"
   templateName: "flights/details"
 
-  dirty: ->
-    @edit.dirty()
-
   initialize: ->
     @model = @options.model
     @render()
@@ -131,10 +139,7 @@ class Flights.Views.Edit extends Flights.TemplateView
   events:
     'click .save': 'save'
     'click .reset': 'reset'
-    'click form li a': 'change_tab'
-
-  change_tab: (e) ->
-    @active_tab_link = $(e.target)
+    'click .delete': 'delete'
 
   save: (e) ->
     _.each [@edit_flight, @edit_launch], ((v) -> v.update_model())
@@ -148,27 +153,25 @@ class Flights.Views.Edit extends Flights.TemplateView
     @subview_changed()
     false
 
-  dirty: ->
-    #@model.dirty()
-    @edit_flight.dirty() || @edit_launch.dirty()
+  delete: (e) ->
+    @model.destroy()
+    false
 
   initialize: ->
     @model = @options.model
     @render()
-    @active_tab_link = @$("form li a").first()
     @edit_flight = new Flights.Views.EditFlight({el: @$(".edit_flight"), model: @model})
     @edit_launch = new Flights.Views.EditLaunch({el: @$(".edit_launch"), model: @model})
     _.each [@edit_flight, @edit_launch], ((v) -> v.bind("changed", @subview_changed)), @
 
   render: ->
-    @$el.html(@template())
+    @$el.html(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) }))
 
   renderSubViews: ->
     _.each [@edit_flight, @edit_launch], ((v) -> v.render())
-    @active_tab_link.tab("show")
 
   subview_changed: =>
-    if @dirty()
+    if @model.dirty()
       @$("a.btn.save").addClass("btn-warning")
     else
       @$("a.btn.save").removeClass("btn-warning")
@@ -232,14 +235,18 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
     false
 
   update_model: ->
+    attr = {}
     _.each [ "departure_date", "plane_id", "seat1_person_id", "seat2_person_id", "from_id",
-             "to_id", "departure_i", "arrival_i", "controller_id", "comment" ], ((f) ->
+             "to_id", "departure_i", "arrival_i", "controller_id" ], ((f) ->
                if @$("input[name=#{f}]").length > 0
-                 @model.set(f, @$("input[name=#{f}]").val())), @
+                 attr[f] = @$("input[name=#{f}]").val()), @
+    attr["comment"] = @$("textarea[name=comment]").val()
+    @model.set(attr)
 
   initialize: ->
-    @model = @options.model
+    super()
     @render()
+    @model.on("change", => @render())
 
   render: ->
     @$el.html(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) }))
@@ -253,15 +260,13 @@ class Flights.Views.EditLaunch extends Flights.TemplateView
   events:
     'change .launch_type': 'change_launch_type'
 
-  dirty: ->
-    @subview? && @subview.dirty()
-
   update_model: ->
     @subview? && @subview.update_model()
 
   change_launch_type: ->
     @model.change_launch_type(@$(".launch_type").val())
     @render()
+    @trigger("changed")
 
   initialize: ->
     @model = @options.model
@@ -318,12 +323,14 @@ class Flights.Views.EditWireLaunch extends Flights.ModelBasedView
     false
 
   update_model: ->
+    attr = {}
     _.each [ "wire_launcher_id", "operator_id" ], ((f) ->
                if @$("input[name=#{f}]").length > 0
-                 @model.set(f, @$("input[name=#{f}]").val())), @
+                 attr[f] = @$("input[name=#{f}]").val()), @
+    @model.set(attr)
 
   initialize: ->
-    @model = @options.model
+    super()
     @render()
 
   render: ->

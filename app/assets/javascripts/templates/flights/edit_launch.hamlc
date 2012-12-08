@@ -3,7 +3,7 @@
     %label.control-label
       Launch type
     .controls
-      %select.launch_type
+      %select.launch_type{ disabled: !@flight.editable }
         %option{ value: "self_launch" }
           = I18n.t("flight.launch_types.self_launch.long")
         %option{ value: "wire_launch" }

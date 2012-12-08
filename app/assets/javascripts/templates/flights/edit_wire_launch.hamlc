@@ -2,9 +2,9 @@
   %label.control-label= I18n.t("activerecord.attributes.wire_launch.wire_launcher")
   .controls.relative
     %input{ type: "hidden", name: "wire_launcher_id", value: @wire_launch.raw.get("wire_launcher_id") }
-    %input.edit_field{ type: "text", data-edit: "wire_launcher", value: @wire_launch.wire_launcher }
+    %input.edit_field{ type: "text", data-edit: "wire_launcher", value: @wire_launch.wire_launcher, disabled: !@wire_launch.editable }
 .control-group
   %label.control-label= I18n.t("activerecord.attributes.wire_launch.operator")
   .controls.relative
     %input{ type: "hidden", name: "operator_id", value: @wire_launch.raw.get("operator_id") }
-    %input.edit_field{ type: "text", data-edit: "operator", value: @wire_launch.operator }
+    %input.edit_field{ type: "text", data-edit: "operator", value: @wire_launch.operator, disabled: !@wire_launch.editable }
