@@ -22,14 +22,14 @@ class FlightsController < ApplicationController
   def update
     flight = AbstractFlight.find(params[:id])
     authorize! :update, flight
-    flight.update_attributes!(params[:flight].select { |k,_| flight.class.writable_attributes.include?(k.to_sym) })
+    flight.update_attributes!(params[:flight].slice(*flight.class.writable_attributes))
     render json: flight
   end
 
   def create
     authorize! :create, Flight
     flight_klass = (params[:flight][:type] ? params[:flight][:type].constantize : Flight)
-    flight = flight_klass.create(params[:flight].select { |k,_| flight_klass.writable_attributes.include?(k.to_sym) })
+    flight = flight_klass.create(params[:flight].slice(*flight_klass.writable_attributes))
     render json: flight
   end
 
