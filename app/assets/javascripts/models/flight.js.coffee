@@ -1,7 +1,7 @@
 class Flights.Models.Flight extends Flights.BaseModel
   paramRoot: 'flight'
   defaults:
-    departure_date: new Date()
+    departure_date: Format.date_to_s(new Date())
     purpose: "training"
     departure_i: -1
     arrival_i: -1
@@ -9,8 +9,9 @@ class Flights.Models.Flight extends Flights.BaseModel
     is_tow: false
     editable: true
 
+  #departure time in ms
   sortBy: ->
-    "#{@get("departure_date")}-#{@get("departure_i")}"
+    Date.parse(@get("departure_date")) + (@get("departure_i") || 0) * 60000
 
   plane: ->
     if @get("plane_id")?
@@ -111,20 +112,12 @@ class Flights.Models.Flight extends Flights.BaseModel
     if @launch_type() == "tow_launch" || @launch_type() == "wire_launch"
       @set("launch_attributes", @launch().toJSON())
     else
-      @set("launch_attributes", "none")
+      @unset("launch_attributes")
 
 Flights.Collections.Flights = Backbone.Collection.extend
   model: Flights.Models.Flight
   url: '/flights'
   comparator: (a,b) ->
-    a = a.sortBy().split("-").map((e) -> parseInt(e))
-    b = b.sortBy().split("-").map((e) -> parseInt(e))
-    r = 0
-    _.each _.zip(a,b).map((e) => @srt(e)), (e) ->
-      r = e if e != 0 && r == 0
-    r
-
-  srt: (arr) ->
-    a = arr[0]
-    b = arr[1]
+    a = a.sortBy()
+    b = b.sortBy()
     if a == b then 0 else if a < b then 1 else -1

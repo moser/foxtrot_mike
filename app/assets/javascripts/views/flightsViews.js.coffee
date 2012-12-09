@@ -16,28 +16,43 @@ class Flights.Views.Index extends Flights.TemplateView
 
   render: ->
     @$el.html(@template({}))
-    @collection.each (e) ->
-      x = new Flights.Views.Show({ model: e })
-      @$(".flights .flight_group").append(x.el)
-      x.render()
+    @collection.each (e) =>
+      @$(".flights .flight_group").append (@views[e.id] = new Flights.Views.Show({ model: e })).el
+      @views[e.id].render()
 
-  change: ->
-    #TODO sort
+  change: (model) =>
+    if _.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date")
+      @add(model)
   
   add: (model) =>
-    #TODO sort
-    x = new Flights.Views.Show({ model: model })
-    @$(".flights .flight_group").append(x.el)
-    x.render()
-
+    if @views[model.id]?
+      view = @views[model.id]
+    else
+      view = @views[model.id] = new Flights.Views.Show({ model: model })
+      view.render()
+    @$("##{model.id}").remove()
+    if @collection.get(model.id)?
+      sorted_models = _.sortBy(@collection.models, (e) -> e.sortBy()).reverse()
+      i = _.indexOf(sorted_models, model)
+      if i == 0
+        @$(".flights .flight_group").prepend(view.el)
+      else if i == sorted_models.length - 1
+        @$(".flights .flight_group").append(view.el)
+      else
+        @$("##{sorted_models[i-1].id}").after(view.el)
+    else
+      @$(".flights .flight_group").prepend(view.el)
+    #make sure the events are delegated correctly
+    view.delegateEvents()
 
   remove: (model) =>
-    #remove shows from DOM
     @$("##{model.id}").fadeOut =>
       @$("##{model.id}").remove()
+      @views[model.id] = null
   
   initialize: ->
     @new_view = null
+    @views = {}
     @collection = Flights.flights
     @collection.on("change", @change)
     @collection.on("add", @add)
@@ -68,11 +83,14 @@ class Flights.Views.Show extends Flights.TemplateView
     "click span": "detailsEvent"
     "click .summary": "detailsEvent"
 
+  delegateEvents: ->
+    super()
+    @detailsView.delegateEvents() if @detailsView?
+
   expanded: false
 
   detailsEvent: ->
     @details(true)
-
 
   details: (check_dirty) ->
     unless @detailsView?
@@ -124,13 +142,17 @@ class Flights.Views.Details extends Flights.TemplateView
   className: "details"
   templateName: "flights/details"
 
+  delegateEvents: ->
+    super()
+    @edit_view.delegateEvents() if @edit_view?
+
   initialize: ->
     @model = @options.model
     @render()
 
   render: ->
     @$el.html(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) }))
-    @edit = new Flights.Views.Edit({el: @$(".edit"), model: @model, parentView: this})
+    @edit_view = new Flights.Views.Edit({el: @$(".edit"), model: @model, parentView: this})
 
 
 class Flights.Views.Edit extends Flights.TemplateView
@@ -140,6 +162,10 @@ class Flights.Views.Edit extends Flights.TemplateView
     'click .save': 'save'
     'click .reset': 'reset'
     'click .delete': 'delete'
+
+  delegateEvents: ->
+    super()
+    _.each [@edit_flight, @edit_launch], ((v) -> v.delegateEvents())
 
   save: (e) ->
     _.each [@edit_flight, @edit_launch], ((v) -> v.update_model())
@@ -240,6 +266,9 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
              "to_id", "departure_i", "arrival_i", "controller_id" ], ((f) ->
                if @$("input[name=#{f}]").length > 0
                  attr[f] = @$("input[name=#{f}]").val()), @
+    _.each [ "departure_i", "arrival_i" ], ((f) ->
+               if @$("input[name=#{f}]").length > 0
+                 attr[f] = parseInt(@$("input[name=#{f}]").val())), @
     attr["comment"] = @$("textarea[name=comment]").val()
     @model.set(attr)
 
@@ -260,8 +289,12 @@ class Flights.Views.EditLaunch extends Flights.TemplateView
   events:
     'change .launch_type': 'change_launch_type'
 
+  delegateEvents: ->
+    super()
+    @subview.delegateEvents if @subview?
+
   update_model: ->
-    @subview? && @subview.update_model()
+    @subview.update_model() if @subview?
 
   change_launch_type: ->
     @model.change_launch_type(@$(".launch_type").val())

@@ -6,6 +6,7 @@
 //= require twitter/bootstrap
 //= require twitter/bootstrap/bootstrap-button
 //= require jquery-ui-1.8.16.custom.min
+//= require app
 //= require timepicker
 //= require core_ext
 //= require underscore
