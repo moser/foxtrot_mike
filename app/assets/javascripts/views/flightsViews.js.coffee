@@ -63,10 +63,13 @@ class Flights.Views.Index extends Flights.TemplateView
   new: ->
     unless @new_view?
       @new_flight = new Flights.Models.Flight()
-      @new_flight.on("sync", => @new_view = null)
-      Flights.flights.add(@new_flight)
-      @new_view = new Flights.Views.Show({ model: @new_flight })
+      @new_flight.on("sync", =>
+        @new_view.$el.remove()
+        @new_view = null)
+      @new_view = new Flights.Views.Show({ model: @new_flight, no_summary: true })
       @new_view.details()
+      @new_view.$(".summary").remove()
+      Flights.flights.add(@new_flight, { silent: true })
       @$(".flights .flight_group").prepend(@new_view.el)
     else
       @new_view.$el.slideUp SlideDuration, =>
@@ -122,6 +125,7 @@ class Flights.Views.Show extends Flights.TemplateView
     false
 
   initialize: ->
+    @no_summary = @options.no_summary || false
     @model = @options.model
     @model.on("change", @renderSummary)
     @model.on("sync", @renderSummary)
@@ -130,7 +134,7 @@ class Flights.Views.Show extends Flights.TemplateView
   renderSummary: () =>
     @$el.attr("data-aggregation-id", @model.get("aggregation_id"))
     @$el.find(".summary").remove()
-    @$el.prepend(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) }))
+    @$el.prepend(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) })) unless @no_summary
 
   render: () =>
     @renderSummary()
