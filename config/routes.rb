@@ -83,6 +83,8 @@ Server::Application.routes.draw do
   resource :unknown_person
   resource :own_financial_account, :controller => "financial_account_overviews"
 
+  resources :pdfs
+
   root :to => 'dashboards#show'
 
   match "/flights/day/:day_parse_date", :controller => "flights", :action => "index"

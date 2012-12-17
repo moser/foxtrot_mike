@@ -1,0 +1,14 @@
+.summary
+  %span.date= I18n.l(flight.departure_date, format: :default)
+  %span.plane= flight.plane
+  %span.seat= flight.seat1_person
+  %span.seat= flight.seat2_person || flight.seat2_n > 0 ? "+#{flight.seat2_n}" : ""
+  %span.launch_type= I18n.t("flight.launch_types.#{ flight.launch_kind }.short")
+  %span.purpose= I18n.t("flight.purposes.#{ flight.purpose }.short")
+  %span.airfield= flight.from
+  %span.airfield= flight.to
+  %span.time= DayTime.new(flight.departure_i)
+  %span.time= DayTime.new(flight.arrival_i)
+  %span.time= format_minutes(flight.duration)
+  %span.seat= flight.controller
+  %span.comment= flight.comment.length > 38 ? "#{flight.comment[0..35]}..." : flight.comment

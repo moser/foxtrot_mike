@@ -1,0 +1,5 @@
+.flights
+  = render partial: "flights/title_spans"
+  - @flights.each do |flight|
+    .flight
+      = render partial: "flights/flight_spans", locals: { flight: flight }

@@ -38,6 +38,7 @@ de:
     no_controller: "Keiner"
     previous: "Ehemalig"
     print_voucher: "Beleg drucken"
+    print: "Drucken"
     show: "Anzeigen"
     signature: "Unterschrift"
     to: "Bis"

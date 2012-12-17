@@ -13,6 +13,7 @@ class Flights.Views.Index extends Flights.TemplateView
 
   events:
     "click a.new_flight": "new"
+    "click a.print": "print"
 
   render: ->
     @$el.html(@template({}))
@@ -75,6 +76,13 @@ class Flights.Views.Index extends Flights.TemplateView
       @new_view.$el.slideUp SlideDuration, =>
         @new_view.$el.remove()
         @new_view = null
+    false
+
+  # create a pdf document the user can print
+  print: ->
+    ids = JSON.stringify(@collection.models.map((f) -> f.id))
+    $("<form action=\"/pdfs\" method=\"POST\">
+      <input type=\"hidden\" name=\"flight_ids\" value='#{ids}'></form>").appendTo($("body")).submit().remove()
     false
     
 

@@ -54,5 +54,5 @@
       %h2= t("flights.index.title")
       = render :partial => "flights/title_spans"
       - @accounting_session.flights.each do |f|
-        .flight.flight_format{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
+        .flight{ :class => f.accounting_entries.map { |e| ["filter-#{e.from.id}-#{e.to.id}", "e-#{e.id}"] }.flatten.join(" ") }
           = render :partial => "flights/flight_spans", :locals => { :flight => f }

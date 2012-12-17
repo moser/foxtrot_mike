@@ -1,7 +1,8 @@
 .flights_index
   %h2
     = I18n.t("flights.index.title")
-  %a.new_flight= I18n.t("views.new")
+  %a.new_flight{ href: "#" }= I18n.t("views.new")
+  %a.print{ href: "#" }= I18n.t("views.print")
   .flights.alternate
     .head
       %span.date= I18n.t("activerecord.attributes.abstract_flight.departure_date")
