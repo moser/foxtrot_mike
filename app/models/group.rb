@@ -17,7 +17,7 @@ class Group < ActiveRecord::Base
     AbstractFlight.include_all.
       joins(:seat1_person).
       joins("INNER JOIN groups ON groups.id =  people.group_id").
-      where("groups.id = 1")
+      where("groups.id = ?", id)
   end
 
   def to_j

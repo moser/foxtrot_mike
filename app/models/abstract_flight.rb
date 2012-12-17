@@ -20,6 +20,10 @@ class AbstractFlight < ActiveRecord::Base
   has_one :manual_cost, :as => :item
   has_many :accounting_entries, :as => :item
 
+
+  default_scope order("departure_date DESC, departure_i DESC")
+  scope :reverse_order, order("departure_date ASC, departure_i ASC")
+
   class << self
     def between(from, to)
       if from && to
