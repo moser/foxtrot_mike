@@ -8,15 +8,11 @@ Server::Application.routes.draw do
   match '/login', :to => 'account_sessions#new'
   match 'dashboard', :to => 'dashboards#show'
 
-  resources :filtered_flights, :only => [:index]
-  resources :groups do
-    resources :flights, :controller => 'filtered_flights', :only => [:index]
-  end
+  resources :groups
   resources :headers, :only => [:index]
   resources :people do
     resources :person_cost_category_memberships
     resources :licenses
-    resources :flights, :controller => 'filtered_flights', :only => [:index]
     resources :financial_account_ownerships
   end
   resources :accounts do
@@ -28,8 +24,10 @@ Server::Application.routes.draw do
     resource :launch
     resources :liabilities
     resources :accounting_entries
-    resource :destroy_confirmation
   end
+
+  match ":filter_model/:filter_id/flights", to: "flights#index"
+
   resources :accounting_entries do
     resource :destroy_confirmation
   end
@@ -38,9 +36,7 @@ Server::Application.routes.draw do
     resources :manual_accounting_entries
     resources :flights, :controller => 'accounting_session_flights'
   end
-  resources :tow_flights, :controller => 'flights'
   resources :planes do
-    resources :flights, :controller => 'filtered_flights', :only => [:index]
     resources :plane_cost_category_memberships
     resources :financial_account_ownerships
   end
@@ -76,9 +72,7 @@ Server::Application.routes.draw do
 
   resources :cost_rules
   resources :cost_hints
-  resources :licenses do
-    resources :flights, :controller => 'filtered_flights', :only => [:index]
-  end
+  resources :licenses
   resources :legal_plane_classes
   resource :unknown_person
   resource :own_financial_account, :controller => "financial_account_overviews"

@@ -3,8 +3,13 @@ class FlightsController < ApplicationController
     authorize! :read, AbstractFlight
     @flights = AbstractFlight.scoped
     if params[:filter_model] && params[:filter_id]
-      raise "Nope" unless %w(Group Plane Person).include?(params[:filter_model])
-      @flights = params[:filter_model].constantize.find(params[:filter_id]).flights
+      filter_by = (params[:filter_model] || "").singularize.camelcase
+      p %w(Group Plane Person).include?(filter_by)
+      unless %w(Group Plane Person).include?(filter_by)
+        render status: 404, text: ""
+        return
+      end
+      @flights = filter_by.constantize.find(params[:filter_id]).flights
     end
     if params[:range]
       min, max = params[:range].split(".").map { |s| Date.parse(s) }.sort

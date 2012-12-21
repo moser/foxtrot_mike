@@ -3,10 +3,11 @@ SlideDuration = 200
 Flights.Routers.FlightsRouter = Backbone.Router.extend
   routes:
     "flights": "showIndex"
+    ":filter_model/:filter_id/flights": "showIndex"
     "flights/:id": "show"
 
-  showIndex: ->
-    @index = new Flights.Views.Index(el: $('.app_container'))
+  showIndex: (filter_model, filter_id)->
+    @index = new Flights.Views.Index(el: $('.app_container'), filter: { model: filter_model, id: filter_id })
 
   show: (id) ->
     unless @index?
