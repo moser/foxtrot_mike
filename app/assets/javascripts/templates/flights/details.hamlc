@@ -1,14 +1,15 @@
 .row-fluid
+  %a{ href: "/flights/#{@flight.id}" } Permalink
   .span5.edit
 
   .additional.span7
     %ul.nav.nav-tabs
       %li.active
-        %a.launch.cost{ "data-toggle": "tab", href: "#cost" } Cost
+        %a.cost{ "data-toggle": "tab", href: "#cost" } Cost
       %li
-        %a.launch.liabilities{ "data-toggle": "tab", href: "#liabilities" } Liabilities
+        %a.liabilities{ "data-toggle": "tab", href: "#liabilities" } Liabilities
       %li
-        %a.launch.history{ "data-toggle": "tab", href: "#history" } History
+        %a.history{ "data-toggle": "tab", href: "#history" } History
     .tab-content
       .tab-pane.active#cost
         - if @flight.cost

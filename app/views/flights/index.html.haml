@@ -8,5 +8,5 @@
     Flights.flights = new Flights.Collections.Flights();
     Flights.flights.reset(#{ @flights.to_json.html_safe });
     window.router = new Flights.Routers.FlightsRouter();
-    Backbone.history.start();
+    Backbone.history.start({pushState: true});
   });

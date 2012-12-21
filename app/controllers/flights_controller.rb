@@ -12,12 +12,17 @@ class FlightsController < ApplicationController
     else
       @flights = @flights.limit(40)
     end
+    render_index
+  end
+
+  def render_index
     respond_to do |f|
       f.html do
         @people = Person.all
         @airfields = Airfield.all
         @planes = Plane.all
         @wire_launchers = WireLauncher.all
+        render :action => :index
       end
       f.json { render json: @flights }
     end
@@ -26,7 +31,8 @@ class FlightsController < ApplicationController
   def show
     flight = AbstractFlight.find(params[:id])
     authorize! :read, flight
-    render json: flight
+    @flights = [ flight, AbstractFlight.where("departure_date <= ? AND departure_i <= ?", flight.departure_date, flight.departure_i).limit(40) ].flatten.uniq
+    render_index
   end
 
   def update

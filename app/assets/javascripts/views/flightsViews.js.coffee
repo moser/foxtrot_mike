@@ -2,10 +2,17 @@ SlideDuration = 200
 
 Flights.Routers.FlightsRouter = Backbone.Router.extend
   routes:
-    "": "index"
+    "flights": "showIndex"
+    "flights/:id": "show"
 
-  index: ->
+  showIndex: ->
     @index = new Flights.Views.Index(el: $('.app_container'))
+
+  show: (id) ->
+    unless @index?
+      @showIndex()
+    @index.show(id)
+      
 
 class Flights.Views.Index extends Flights.TemplateView
   className: "flights_index"
@@ -45,6 +52,12 @@ class Flights.Views.Index extends Flights.TemplateView
       @$(".flights .flight_group").prepend(view.el)
     #make sure the events are delegated correctly
     view.delegateEvents()
+
+
+  show: (id) ->
+    console.log(id)
+    if @views[id]? && !@views[id].detailsView?
+      @views[id].details()
 
   remove: (model) =>
     @$("##{model.id}").fadeOut =>
