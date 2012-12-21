@@ -261,6 +261,13 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
             label: (p) -> present(p).name
             score: (p) -> "#{1} #{present(p).lastname} #{present(p).firstname}"
             match: (p, q) -> present(p).name.toLowerCase().indexOf(q.toLowerCase()) > -1
+        when "seat2"
+          present = (p) -> Flights.Presenters.Person.present(p)
+          params =
+            list: _.flatten([new Flights.Models.NoPerson(), Flights.people.models, new Flights.Models.NPersons(1), new Flights.Models.NPersons(2), new Flights.Models.NPersons(3)]),
+            label: (p) -> p.present().name
+            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
         when "controller"
           present = (p) -> Flights.Presenters.Person.present(p)
           params =
@@ -287,7 +294,7 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
 
   update_model: ->
     attr = {}
-    _.each [ "departure_date", "plane_id", "seat1_person_id", "seat2_person_id", "from_id",
+    _.each [ "departure_date", "plane_id", "seat1_person_id", "from_id",
              "to_id", "departure_i", "arrival_i", "controller_id" ], ((f) ->
                if @$("input[name=#{f}]").length > 0
                  attr[f] = @$("input[name=#{f}]").val()), @
@@ -295,6 +302,16 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
                if @$("input[name=#{f}]").length > 0
                  attr[f] = parseInt(@$("input[name=#{f}]").val())), @
     attr["comment"] = @$("textarea[name=comment]").val()
+    seat2_val = @$("input[name=seat2_id]").val()
+    if seat2_val.indexOf("+") == 0
+      attr["seat2_n"] = parseInt(seat2_val)
+      attr["seat2_person_id"] = undefined
+    else if seat2_val.length > 0
+      attr["seat2_n"] = 0
+      attr["seat2_person_id"] = seat2_val
+    else
+      attr["seat2_n"] = 0
+      attr["seat2_person_id"] = undefined
     @model.set(attr)
 
   initialize: ->

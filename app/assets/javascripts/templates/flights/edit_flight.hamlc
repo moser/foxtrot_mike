@@ -17,7 +17,7 @@
 .control-group
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.seat2")
   .controls.relative
-    %input{ type: "hidden", name: "seat2_person_id", value: @flight.raw.get("seat2_person_id") }
+    %input{ type: "hidden", name: "seat2_id", value: @flight.raw.get("seat2_person_id") || if @flight.raw.get("seat2_n") > 0 then "+#{@flight.raw.get("seat2_n")}" else "" }
     %input.edit_field{ type: "text", data-edit: "seat2", value: @flight.seat2, disabled: !@flight.editable }
 .control-group
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.from")
