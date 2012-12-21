@@ -41,7 +41,7 @@ Server::Application.routes.draw do
     resources :financial_account_ownerships
   end
   resources :airfields do
-    resource :main_log_book, :only => [:show]
+    resource :main_log_book, :only => [:show], :controller => "pdfs"
   end
   resources :wire_launchers do
     resources :wire_launcher_cost_category_memberships
