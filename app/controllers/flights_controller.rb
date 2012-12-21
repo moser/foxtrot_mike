@@ -1,18 +1,16 @@
 class FlightsController < ApplicationController
   def index
     authorize! :read, AbstractFlight
-    if params[:range] || (params[:filter_model] && params[:filter_id])
-      @flights = AbstractFlight.all
-      if params[:filter_model] && params[:filter_id]
-        raise "Nope" unless %w(Group Plane Person).include?(params[:filter_model])
-        @flights = params[:filter_model].constantize.find(params[:filter_id]).flights
-      end
-      if params[:range]
-        min, max = params[:range].split(".").map { |s| Date.parse(s) }.sort
-        @flights = @flights.where("departure_date <= ? AND departure_date >= ?", max, min)
-      end
+    @flights = AbstractFlight.scoped
+    if params[:filter_model] && params[:filter_id]
+      raise "Nope" unless %w(Group Plane Person).include?(params[:filter_model])
+      @flights = params[:filter_model].constantize.find(params[:filter_id]).flights
+    end
+    if params[:range]
+      min, max = params[:range].split(".").map { |s| Date.parse(s) }.sort
+      @flights = @flights.where("departure_date <= ? AND departure_date >= ?", max, min)
     else
-      @flights = AbstractFlight.limit(40)
+      @flights = @flights.limit(40)
     end
     respond_to do |f|
       f.html do
