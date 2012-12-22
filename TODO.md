@@ -6,8 +6,6 @@
 - show liabilities
 - edit liabilities
 - show problems
-- kick delayed job -> flag & cronjob?
-  - persist cost?
 - cost rule view?
 
 # really soon
