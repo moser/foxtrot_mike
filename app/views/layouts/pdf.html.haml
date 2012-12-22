@@ -5,9 +5,6 @@
     %title
       FoxtrotMike
     %style{ :type => "text/css" }
-      = Rails.application.assets['application.css'].to_s.html_safe
-    %style{ :type => "text/css" }
       = Rails.application.assets['print/print.css'].to_s.html_safe
   %body
-    .content
-      = yield
+    = yield

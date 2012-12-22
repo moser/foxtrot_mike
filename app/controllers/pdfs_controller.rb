@@ -5,15 +5,6 @@ class PdfsController < ApplicationController
     render_pdf
   end
 
-  #main log book
-  def show
-    authorize! :read, Flight
-    scope = Airfield.find(params[:airfield_id]).flights
-    p scope.to_sql
-    @flights = scope.where("departure_date = ?", AbstractFlight.latest_departure(scope).to_date)
-    render_pdf
-  end
-
   def render_pdf
     render :pdf => "flights",
            :template => "flights/_grouped.html.haml",
