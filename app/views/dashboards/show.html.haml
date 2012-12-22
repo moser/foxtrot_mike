@@ -20,17 +20,17 @@
       %h2= t('views.bordbooks')
       %ul.nav.nav-tabs.nav-stacked
         - @planes.each do |p|
-          %li= link_to p.registration, polymorphic_path([p, :flights])
+          %li= link_to p.registration, "#{plane_path(p)}/flights"
   .span6
     .well
       %h2= t('views.flightbooks')
       %ul.nav.nav-tabs.nav-stacked
-        %li= link_to "Alle", polymorphic_path([@current_person, :flights])
+        %li= link_to "Alle", "#{person_path(@current_person)}/flights"
         - @licenses.each do |l|
-          %li= link_to l.name, polymorphic_path([l, :flights])
+          %li= link_to l.name, "#{license_path(l)}/flights"
   .span6
     .well
       %h2= Group.l(:plural)
       %ul.nav.nav-tabs.nav-stacked
         - @groups.each do |g|
-          %li= link_to g.name, polymorphic_path([g, :flights])
+          %li= link_to g.name, "#{group_path(g)}/flights"

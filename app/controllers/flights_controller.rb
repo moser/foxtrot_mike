@@ -4,8 +4,7 @@ class FlightsController < ApplicationController
     @flights = AbstractFlight.scoped
     if params[:filter_model] && params[:filter_id]
       filter_by = (params[:filter_model] || "").singularize.camelcase
-      p %w(Group Plane Person).include?(filter_by)
-      unless %w(Group Plane Person).include?(filter_by)
+      unless %w(License Group Plane Person).include?(filter_by)
         render status: 404, text: ""
         return
       end
