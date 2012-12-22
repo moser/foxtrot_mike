@@ -422,9 +422,7 @@ private
   end
 
   def delete_accouting_entries
-    accounting_entries_without_validity_check.each do |e|
-      e.delete
-    end
+    accounting_entries_without_validity_check.delete_all
   end
 
   def association_changed(obj)
