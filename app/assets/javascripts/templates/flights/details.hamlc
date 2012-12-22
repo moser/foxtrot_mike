@@ -1,5 +1,4 @@
 .row-fluid
-  %a{ href: "/flights/#{@flight.id}" } Permalink
   .span5.edit
 
   .additional.span7
@@ -32,3 +31,6 @@
         Liabilities
       .tab-pane.fade#history
         History
+    %a{ href: "/flights/#{@flight.id}" }
+      %i.icon-link
+      = I18n.t("views.permalink")
