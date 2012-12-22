@@ -78,9 +78,11 @@ class Flights.Views.Index extends Flights.TemplateView
   new: ->
     unless @new_view?
       @new_flight = new Flights.Models.Flight()
-      @new_flight.on("sync", =>
+      chng = =>
+        @new_flight.off("sync", chng)
         @new_view.$el.remove()
-        @new_view = null)
+        @new_view = null
+      @new_flight.on("sync", chng)
       @new_view = new Flights.Views.Show({ model: @new_flight, no_summary: true })
       @new_view.details()
       @new_view.$(".summary").remove()
