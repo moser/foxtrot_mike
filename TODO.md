@@ -1,12 +1,12 @@
 # Before release
 - filter frontend
 - date range frontend
-- sums/counts
 - show cost
 - show liabilities
 - edit liabilities
 - show problems
 - cost rule view?
+- delete flight -> confirm
 
 # really soon
 - grouping

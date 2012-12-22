@@ -28,8 +28,10 @@ class Flights.Views.Index extends Flights.TemplateView
     @collection.each (e) =>
       @$(".flights .flight_group").append (@views[e.id] = new Flights.Views.Show({ model: e })).el
       @views[e.id].render()
+    @updateAggregation()
 
   change: (model) =>
+    @updateAggregation()
     if _.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date")
       @add(model)
   
@@ -53,6 +55,7 @@ class Flights.Views.Index extends Flights.TemplateView
       @$(".flights .flight_group").prepend(view.el)
     #make sure the events are delegated correctly
     view.delegateEvents()
+    @updateAggregation()
 
 
   show: (id) ->
@@ -64,6 +67,11 @@ class Flights.Views.Index extends Flights.TemplateView
     @$("##{model.id}").fadeOut =>
       @$("##{model.id}").remove()
       @views[model.id] = null
+    @updateAggregation()
+
+  updateAggregation: ->
+    @$("span.count").html("# #{@collection.length}")
+    @$("span.sum").html("#{Flights.Util.intTimeToString(@collection.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))}")
   
   initialize: ->
     @new_view = null

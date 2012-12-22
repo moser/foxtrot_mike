@@ -21,3 +21,6 @@
       %span.comment= I18n.t("attributes.comment")
     .main
       .flight_group
+      .foot
+        %span.count
+        %span.sum
