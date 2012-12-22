@@ -12,46 +12,15 @@ Spork.prefork do
 
   F = FactoryGirl
 
-  class ActionView::TestCase::TestController
-    helper_method :current_account
-    def current_account
-      return @current_account if defined?(@current_account)
-      @current_account = F.create(:account)
-      @current_account
-    end
-
-    def current_ability
-      @current_ability ||= Class.new {
-        include CanCan::Ability
-        def initialize(*a)
-          can :manage, :all
-        end
-      }.new
-    end
-  end
-
-  class ApplicationController
-    def current_account
-      return @current_account if defined?(@current_account)
-      @current_account = F.create(:account)
-      @current_account
-    end
-
-    def current_ability
-      @current_ability ||= Class.new {
-        include CanCan::Ability
-        def initialize(*a)
-          can :manage, :all
-        end
-      }.new
-    end
-  end
+  
 
   require 'database_cleaner'
   RSpec.configure do |config|
     config.use_transactional_fixtures = false
     config.use_instantiated_fixtures  = false
     config.mock_with "rspec"
+    config.include Capybara::DSL, :type => :controller
+    config.include Capybara::DSL, :type => :request
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
@@ -68,10 +37,28 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  puts "creating in mem DB"
-  silence_stream(STDOUT) do
-    silence_stream(STDERR) do
-      load "#{Rails.root}/db/schema.rb"
+  ActiveRecord::Schema.verbose = false
+  load "#{Rails.root}/db/schema.rb"
+
+
+  [ ActionView::TestCase::TestController, ApplicationController ].each do |klass|
+    klass.class_eval do 
+      helper_method :current_account
+      def current_account
+        return @current_account if defined?(@current_account)
+        @current_account = F.create(:account)
+        @current_account
+      end
+
+      def current_ability
+        @current_ability ||= Class.new {
+          include CanCan::Ability
+          def initialize(*a)
+            can :manage, :all
+          end
+        }.new
+      end
     end
   end
+  
 end

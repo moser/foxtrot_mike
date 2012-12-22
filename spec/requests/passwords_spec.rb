@@ -7,19 +7,24 @@ def generate_account
 end
 
 describe "Passwords" do
-  context "when setting the own password" do
-    xit "should " do
-      
+  describe "when setting the own password" do
+    it "should set the password" do
+      visit new_password_path
+      fill_in "account_password", :with => "aaaa"
+      fill_in "account_password_confirmation", :with => "aaaa"
+      click_button I18n.t("helpers.submit.update")
+      page.should have_content(I18n.t("password_changed"))
+      page.current_path.should == "/"
     end
   end
 
-  context "when setting another users password" do
+  describe "when setting another users password" do
     it "should set the password" do
       a = generate_account
       visit new_account_password_path(a)
       fill_in "account_password", :with => "aaaa"
       fill_in "account_password_confirmation", :with => "aaaa"
-      click_button "Ok"
+      click_button I18n.t("helpers.submit.update")
       page.should have_content(I18n.t("password_changed"))
       page.current_path.should == account_path(a)
     end

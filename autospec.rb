@@ -104,7 +104,7 @@ loop do
         c = "bundle exec rspec --tty #{changed_files.map { |f| specs_for(f) }.flatten.uniq.join(' ')}"
       end
       15.times { puts }
-      puts "\e[34m##############################################################################\e[0m"
+      puts "\e[34m##{'#'*45}\e[0m"
       Open3.popen3(c) do |_, stdout, stderr|
         n = 0
         puts "running #{c}"

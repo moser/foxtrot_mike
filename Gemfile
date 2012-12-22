@@ -31,7 +31,7 @@ group :production do
   gem "pg"
 end
 
-group :test do
+group :development, :test do
   gem "rspec"
   gem "rspec-rails"
   gem "shoulda-matchers"
@@ -41,13 +41,7 @@ group :test do
   gem "database_cleaner"
   gem "spork-rails"
   gem "fuubar"
-end
-
-group :development, :test do
   gem "sqlite3"
-end
-
-group :development do
   gem "better_errors"
   gem "binding_of_caller"
 end
