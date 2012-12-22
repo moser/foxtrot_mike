@@ -1,11 +1,12 @@
 %h1= t '.title'
 = new_link(LegalPlaneClass)
-%table
-  %tr
-    %th= LegalPlaneClass.l(:name)
-  %tbody.alternate
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th= LegalPlaneClass.l(:name)
+  %tbody
     - @legal_plane_classes.each do |legal_plane_class|
-      %tr.alternate_color.hover_mark
+      %tr
         %td= h legal_plane_class.name
         %td= show_link(legal_plane_class)
         %td= edit_link(legal_plane_class)

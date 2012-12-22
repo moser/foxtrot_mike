@@ -1,11 +1,12 @@
 %h1= t '.title'
 = new_link(PlaneCostCategory)
-%table
-  %tr
-    %th= PlaneCostCategory.human_attribute_name(:name)
-  %tbody.alternate
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th= PlaneCostCategory.human_attribute_name(:name)
+  %tbody
     - @plane_cost_categories.each do |plane_cost_category|
-      %tr.alternate_color.hover_mark
+      %tr
         %td=h plane_cost_category.name
         %td= show_link(plane_cost_category)
         %td= edit_link(plane_cost_category)

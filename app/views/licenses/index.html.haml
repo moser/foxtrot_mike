@@ -2,17 +2,18 @@
   = render :partial => "licenses/list", :locals => { :person => @nested }
 - else
   %h1= t('.title')
-  %table
-    %tr
-      %th= License.l(:name)
-      %th= License.l(:holder)
-      %th= License.l(:valid_from)
-      %th= License.l(:valid_to)
-    %tbody.alternate
+  %table.table.table-striped.table-hover
+    %thead
+      %tr
+        %th= License.l(:name)
+        %th= License.l(:holder)
+        %th= License.l(:valid_from)
+        %th= License.l(:valid_to)
+    %tbody
       - (@models.sort_by { |l| l.valid_to || 1.day.ago }).each do |license|
-        %tr.alternate_color.hover_mark
+        %tr
           %td= link_to license.name, license
           %td= link_to license.person.name, license.person
           %td= l(license.valid_from)
           %td= l(license.valid_to) rescue t('views.dates.infinity')
-          %td= link_to License.l(:book), polymorphic_path([license, :flights])
+          %td= link_to License.l(:book), "#{license_path(license)}/flights"

@@ -1,21 +1,22 @@
 %h1= t '.title'
 = new_link(FinancialAccount)
-%table.filtered{ :"data-filter-by" => "filter_string" }
-  %tr.no_filter.show_on_startup
-    %th= t("views.filter_search")
-  %tr.no_filter.show_on_startup
-    %td= text_field_tag "filter_string"
-  %tr.no_filter
-    %th= FinancialAccount.l(:name)
-    %th= FinancialAccount.l(:number)
-    %th= FinancialAccount.l(:member_account)
-    %th= FinancialAccount.l(:advance_payment)
-    %th= FinancialAccount.l(:bank_account_holder)
-    %th= FinancialAccount.l(:bank_account_number)
-    %th= FinancialAccount.l(:bank_code)
-  %tbody.alternate
+%table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "filter_string" }
+  %thead
+    %tr.no_filter.show_on_startup
+      %th= t("views.filter_search")
+    %tr.no_filter.show_on_startup
+      %td= text_field_tag "filter_string"
+    %tr.no_filter
+      %th= FinancialAccount.l(:name)
+      %th= FinancialAccount.l(:number)
+      %th= FinancialAccount.l(:member_account)
+      %th= FinancialAccount.l(:advance_payment)
+      %th= FinancialAccount.l(:bank_account_holder)
+      %th= FinancialAccount.l(:bank_account_number)
+      %th= FinancialAccount.l(:bank_code)
+  %tbody
     - @financial_accounts.each do |financial_account|
-      %tr.alternate_color.hover_mark{ :"data-filter_string" => financial_account.name.downcase }
+      %tr{ :"data-filter_string" => financial_account.name.downcase }
         %td= h financial_account.name
         %td= h financial_account.number
         %td= financial_account.member_account? ? t("simple_form.yes") : ""

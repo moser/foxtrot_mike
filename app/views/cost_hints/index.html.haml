@@ -1,10 +1,11 @@
 %h1= t '.title'
 = new_link(CostHint)
-%table
-  %tr
-    %th= CostHint.l(:name)
-  %tbody.alternate
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th= CostHint.l(:name)
+  %tbody
     - @cost_hints.each do |cost_hint|
-      %tr.alternate_color.hover_mark
+      %tr
         %td= h cost_hint.name
         %td= edit_link(cost_hint)

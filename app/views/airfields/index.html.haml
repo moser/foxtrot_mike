@@ -1,16 +1,17 @@
 %h1= t '.title'
 = new_link(Airfield)
-%table.filtered{ :"data-filter-by" => "filter_string" }
-  %tr.no_filter.show_on_startup
-    %th= t("views.filter_search")
-  %tr.no_filter.show_on_startup
-    %td= text_field_tag "filter_string"
-  %tr.no_filter
-    %th= Airfield.human_attribute_name(:name)
-    %th= Airfield.human_attribute_name(:registration)
+%table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "filter_string" }
+  %thead
+    %tr.no_filter.show_on_startup
+      %th= t("views.filter_search")
+    %tr.no_filter.show_on_startup
+      %td= text_field_tag "filter_string"
+    %tr.no_filter
+      %th= Airfield.human_attribute_name(:name)
+      %th= Airfield.human_attribute_name(:registration)
   %tbody.alternate
     - @airfields.each do |airfield|
-      %tr.alternate_color.hover_mark{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}", :class => airfield.disabled? ? "disabled_record" : "" }
+      %tr{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}", :class => airfield.disabled? ? "disabled_record" : "" }
         %td{ :class => airfield.home? ? "marked" : "" }=h airfield.name
         %td=h airfield.registration
         %td= show_link(airfield)

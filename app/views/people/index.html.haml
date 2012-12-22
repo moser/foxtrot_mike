@@ -1,21 +1,22 @@
 %h1= t('.title')
 = new_link(Person)
-%table.filtered{ :"data-filter-by" => "group_id,filter_string" }
-  %tr.no_filter.show_on_startup
-    %th= t("views.filter_search")
-    %th= t("views.filter_group")
-  %tr.no_filter.show_on_startup
-    %td= text_field_tag "filter_string"
-    %td= select :group, "id", Group.all.map { |g| [g.name, g.id] }, { :include_blank => true }
-  %tr.no_filter
-    %th= Person.l(:lastname)
-    %th= Person.l(:firstname)
-    %th= Person.l(:group)
-    %th= Person.l(:person_cost_categories)
-    %th= Person.l(:financial_account)
-  %tbody.alternate
+%table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "group_id,filter_string" }
+  %thead
+    %tr.no_filter.show_on_startup
+      %th= t("views.filter_search")
+      %th= t("views.filter_group")
+    %tr.no_filter.show_on_startup
+      %td= text_field_tag "filter_string"
+      %td= select :group, "id", Group.all.map { |g| [g.name, g.id] }, { :include_blank => true }
+    %tr.no_filter
+      %th= Person.l(:lastname)
+      %th= Person.l(:firstname)
+      %th= Person.l(:group)
+      %th= Person.l(:person_cost_categories)
+      %th= Person.l(:financial_account)
+  %tbody
     - @people.each do |person|
-      %tr.alternate_color.hover_mark{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
+      %tr{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
         %td=h person.lastname
         %td=h person.firstname
         %td=h person.group.name

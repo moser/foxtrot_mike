@@ -1,9 +1,10 @@
 %h1= t '.title'
 = new_link(Account)
-%table
-  %tr
-    %th= Account.l(:login)
-    %th= Account.l(:person)
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th= Account.l(:login)
+      %th= Account.l(:person)
   %tbody.alternate
     - @accounts.each do |account|
       %tr.alternate_color.hover_mark

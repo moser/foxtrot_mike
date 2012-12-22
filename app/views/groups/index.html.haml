@@ -1,15 +1,16 @@
 %h1= t '.title'
 = new_link(Group)
-%table.filtered{ :"data-filter-by" => "filter_string" }
-  %tr.no_filter.show_on_startup
-    %th= t("views.filter_search")
-  %tr.no_filter.show_on_startup
-    %td= text_field_tag "filter_string"
-  %tr.no_filter
-    %th= Group.l(:name)
-  %tbody.alternate
+%table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "filter_string" }
+  %thead
+    %tr.no_filter.show_on_startup
+      %th= t("views.filter_search")
+    %tr.no_filter.show_on_startup
+      %td= text_field_tag "filter_string"
+    %tr.no_filter
+      %th= Group.l(:name)
+  %tbody
     - @groups.each do |group|
-      %tr.alternate_color.hover_mark{ :"data-filter_string" => group.name.downcase }
+      %tr{ :"data-filter_string" => group.name.downcase }
         %td= h group.name
         %td= show_link(group)
         %td= edit_link(group)

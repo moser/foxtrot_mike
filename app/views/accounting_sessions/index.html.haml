@@ -1,15 +1,16 @@
 %h1= t(".title")
 = new_link(AccountingSession)
-%table
-  %tr
-    %th= AccountingSession.l(:name)
-    %th= AccountingSession.l(:accounting_date)
-    %th= AccountingSession.l(:start_date)
-    %th= AccountingSession.l(:end_date)
-    %th= AccountingSession.l(:finished_at)
-  %tbody.alternate
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th= AccountingSession.l(:name)
+      %th= AccountingSession.l(:accounting_date)
+      %th= AccountingSession.l(:start_date)
+      %th= AccountingSession.l(:end_date)
+      %th= AccountingSession.l(:finished_at)
+  %tbody
     - @accounting_sessions.each do |s|
-      %tr.alternate_color.hover_mark
+      %tr
         %td=h s.name
         %td= l(s.accounting_date) if s.accounting_date
         %td= s.without_flights? ? "-" : l(s.start_date)
