@@ -1,13 +1,11 @@
-unless defined?(SetupSpec)
-  #puts "server/spec/spec_helper"
-  # This file is copied to ~/spec when you run 'ruby script/generate rspec'
-  # from the project root directory.
+require 'rubygems'
+require 'spork'
+
+Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
-  require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
+  require File.dirname(__FILE__) + "/../config/environment" 
   require 'rspec/rails'
 
-  # Requires supporting files with custom matchers and macros, etc,
-  # in ./support/ and its subdirectories.
   Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
   require 'factory_girl/syntax/generate'
@@ -49,14 +47,12 @@ unless defined?(SetupSpec)
     end
   end
 
+  require 'database_cleaner'
   RSpec.configure do |config|
     config.use_transactional_fixtures = false
     config.use_instantiated_fixtures  = false
     config.mock_with "rspec"
-    #
-    # == Notes
-    #
-    # For more information take a look at Spec::Runner::Configuration and Spec::Runner
+
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
     end
@@ -67,6 +63,15 @@ unless defined?(SetupSpec)
 
     config.after(:each) do
       DatabaseCleaner.clean
+    end
+  end
+end
+
+Spork.each_run do
+  puts "creating in mem DB"
+  silence_stream(STDOUT) do
+    silence_stream(STDERR) do
+      load "#{Rails.root}/db/schema.rb"
     end
   end
 end

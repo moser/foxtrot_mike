@@ -73,14 +73,6 @@ describe Person do
     [b, c, a].sort.should == [a, b, c]
   end
   
-  it "should only shared some attributes" do
-    Person.shared_attribute_names.should == [ :id, :lastname, :firstname, :birthdate, :email, :group_id ]
-  end
-  
-  it "should return shared_attributes" do
-    Person.generate!.shared_attributes.keys.to_set.should == Person.shared_attribute_names.map { |n| n.to_s }.to_set
-  end
-
   it "should return a persons flights" do
     p = Person.generate!
     f = Flight.generate! :seat1_person => p
@@ -110,15 +102,6 @@ describe Person do
     f = TowFlight.generate! :seat1_person => p
     p.reload
     p.find_concerned_accounting_entry_owners.should_not include(f)
-  end
-
-  it "should include license information in custom json return by to_j" do
-    p = Person.generate!
-    l = License.generate! :person => p
-    p.reload
-
-    p.licenses.each { |e| e.should_receive(:to_j) }
-    p.to_j.keys.should include(:licenses, :id, :firstname, :lastname, :group_id, :group_name)
   end
 
   describe "#lvb_member_state" do

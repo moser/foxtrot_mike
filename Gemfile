@@ -21,8 +21,6 @@ gem "simple_form"
 gem "authlogic"
 gem "cancan"
 gem "fastercsv"
-gem "delayed_job"
-gem 'delayed_job_active_record'
 gem "wicked_pdf"
 gem "king_dtaus"
 
@@ -33,14 +31,20 @@ end
 group :test do
   gem "rspec"
   gem "rspec-rails"
-  gem "rspec-instafail"
   gem "shoulda-matchers"
   gem "factory_girl_rails", "=3.3.0"
   gem "capybara"
   gem "launchy"
   gem "database_cleaner"
+  gem "spork-rails"
+  gem "fuubar"
 end
 
 group :development, :test do
   gem "sqlite3"
+end
+
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
 end

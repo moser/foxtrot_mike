@@ -58,11 +58,6 @@ describe Plane do
     wl.find_concerned_accounting_entry_owners { |r| m.lala; r.should include(1) }
   end
 
-  it "should return a hash for to_j" do
-    pl = Plane.spawn
-    pl.to_j.keys.map(&:to_sym).sort.should include(:registration, :id, :legal_plane_class_id, :make, :group_name, :default_launch_method, :has_engine, :can_fly_without_engine, :can_tow, :selflaunching, :can_be_towed, :can_be_wire_launched, :disabled, :default_engine_duration_to_duration, :seat_count, :group_id, :competition_sign)
-  end
-
   it "should set default values" do
     pl = Plane.new
     pl.default_launch_method.should == "self_launch"

@@ -1,3 +1,3 @@
 --colour
---require rspec/instafail
---format RSpec::Instafail
+--format Fuubar
+--drb

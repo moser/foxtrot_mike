@@ -58,33 +58,20 @@ describe WireLaunch do
   end
 
   describe "accounting_entries" do
-    it "should invalidate accounting_entries and start a delayed job for their creation" do
+    it "should invalidate accounting_entries" do
       f = WireLaunch.generate!
       f.accounting_entries
       f.accounting_entries_valid?.should be_true
-      f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
       f.invalidate_accounting_entries
       f.accounting_entries_valid?.should be_false
-    end
-
-    it "should create accounting entries without a delayed job, if called with delayed = false" do
-      f = WireLaunch.generate!
-      f.accounting_entries
-      f.accounting_entries_valid?.should be_true 
-      f.should_not_receive(:delay)
-      f.should_receive(:create_accounting_entries)
-      f.invalidate_accounting_entries(false)
-      f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
     end
 
     it "should not invalidate accounting_entries if not editable" do
       f = WireLaunch.generate!
       f.accounting_entries
-      f.abstract_flight.should_receive(:"editable?").exactly(2).times.and_return(false)
-      f.should_not_receive(:delay) 
+      f.abstract_flight.should_receive(:"editable?").and_return(false)
       f.should_not_receive(:create_accounting_entries)
-      f.invalidate_accounting_entries(true)
-      f.invalidate_accounting_entries(false)
+      f.invalidate_accounting_entries
     end
 
     it "should create accounting entries if invalid" do

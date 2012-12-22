@@ -122,7 +122,7 @@ describe "Accounting entry invalidation" do
         @f.update_attribute :plane, Plane.generate!
       end
       check_change do
-        @f.seat1_person = Person.generate!
+        @f.update_attribute :seat1_person, Person.generate!
       end
       check_change do
         @f.liabilities.create :person => Person.generate!, :proportion => 1

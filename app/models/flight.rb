@@ -5,7 +5,6 @@ class Flight < AbstractFlight
 
   before_save :check_editability
   before_update :before_update_invalidate_accounting_entries
-  after_update :after_update_invalidate_accounting_entries
 
   accepts_nested_attributes_for :liabilities
 
@@ -38,11 +37,10 @@ class Flight < AbstractFlight
     update_attribute :accounting_entries_valid, true
   end
 
-  def invalidate_accounting_entries(delayed = true)
+  def invalidate_accounting_entries
     if editable? && !id.nil?
       update_attribute :accounting_entries_valid, false
-      (delayed ? delay : self).create_accounting_entries
-      launch.invalidate_accounting_entries(delayed) if launch
+      launch.invalidate_accounting_entries if launch
     end
   end
 
@@ -112,7 +110,7 @@ private
   end
 
   def invalidation_necessary?
-    !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure_date", "departure_i", "arrival_i", "engine_duration", "cost_hint_id"]).empty?
+    !(changes.keys & ["plane_id", "launch_id", "launch_type", "departure_date", "departure_i", "arrival_i", "engine_duration", "cost_hint_id", "seat1_person_id"]).empty?
   end
 
   def before_update_invalidate_accounting_entries
@@ -120,14 +118,8 @@ private
     true
   end
 
-  def after_update_invalidate_accounting_entries
-    delay.create_accounting_entries if invalidation_necessary? && editable? && !Rails.env.test? #HACK...
-    # delay = false in test env sucks here, because when this is executed immediatly we get an infinite loop here.
-    # this should work in test and other envs.
-  end
-
   def association_changed(obj)
     super(obj)
-    invalidate_accounting_entries(true)
+    invalidate_accounting_entries
   end
 end

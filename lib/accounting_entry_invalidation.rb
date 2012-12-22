@@ -2,7 +2,7 @@ module AccountingEntryInvalidation
   def invalidate_concerned_accounting_entries(*args)
     #puts "invalidate_accounting_entries"
     find_concerned_accounting_entry_owners(*args).each do |o|
-      o.invalidate_accounting_entries(false) #false => do not delay
+      o.invalidate_accounting_entries
     end
   end
   

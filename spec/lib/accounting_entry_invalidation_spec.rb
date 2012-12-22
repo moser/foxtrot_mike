@@ -9,7 +9,7 @@ describe AccountingEntryInvalidation do
   
   it "should call invalidate_accounting_entries on every concerned owner" do
     m = mock("owner")
-    m.should_receive(:invalidate_accounting_entries).with(false)
+    m.should_receive(:invalidate_accounting_entries)
     @f.should_receive(:find_concerned_accounting_entry_owners).with(:a, 1, 2).and_return([m])
     @f.invalidate_concerned_accounting_entries(:a, 1, 2)
   end

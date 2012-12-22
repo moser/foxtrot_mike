@@ -89,7 +89,7 @@ class Plane < ActiveRecord::Base
   end
 private
   def association_changed(obj = nil)
-    delay.invalidate_concerned_accounting_entries
+    invalidate_concerned_accounting_entries
   end
 
   def init

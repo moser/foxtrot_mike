@@ -8,7 +8,7 @@ end
 
 describe "Passwords" do
   context "when setting the own password" do
-    it "should " do
+    xit "should " do
       
     end
   end

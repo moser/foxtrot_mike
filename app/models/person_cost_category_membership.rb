@@ -20,9 +20,9 @@ private
   def after_save_invalidate_accounting_entries
     created = changes.keys.include?("id")
     if created
-      delay.invalidate_concerned_accounting_entries
+      invalidate_concerned_accounting_entries
     else
-      delay.invalidate_concerned_accounting_entries(old_or_current(:valid_from), old_or_current(:valid_to))
+      invalidate_concerned_accounting_entries(old_or_current(:valid_from), old_or_current(:valid_to))
     end
   end
 end

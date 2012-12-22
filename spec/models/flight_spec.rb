@@ -43,13 +43,6 @@ describe Flight do
     end
   end
 
-  describe "shared_attributes" do
-    it "should contain liabilities_attributes" do
-      f = F.create(:flight)
-      f.shared_attributes.keys.should include :liabilities_attributes
-    end
-  end
-
   describe "l" do
     it "should translate FLIGHT" do
       Flight.l.should == "Flug"
@@ -62,11 +55,10 @@ describe Flight do
   end
 
   describe "accounting_entries" do
-    it "should invalidate accounting_entries and start a delayed job for their creation" do
+    it "should invalidate accounting_entries" do
       f = F.create(:flight)
       f.accounting_entries
       f.accounting_entries_valid?.should be_true
-      f.should_receive(:delay) { m = mock("delay proxy"); m.should_receive(:create_accounting_entries); m }
       launch = mock("launch")
       launch.should_receive(:invalidate_accounting_entries).at_least(:once)
       launch.stub(:abstract_flight_changed)
@@ -75,29 +67,13 @@ describe Flight do
       f.accounting_entries_valid?.should be_false
     end
 
-    it "should create accounting entries without a delayed job, if called with delayed = false" do
-      f = F.create(:flight)
-      f.accounting_entries
-      f.accounting_entries_valid?.should be_true
-      f.should_not_receive(:delay)
-      launch = mock("launch")
-      launch.should_receive(:invalidate_accounting_entries).at_least(:once)
-      launch.stub(:abstract_flight_changed)
-      f.should_receive(:launch).at_least(:once).and_return(launch)
-      f.should_receive(:create_accounting_entries)
-      f.invalidate_accounting_entries(false)
-      f.accounting_entries_valid?.should be_false #create_accounting_entries was mocked
-    end
-
     it "should not invalidate accounting_entries if not editable" do
       f = F.create(:flight)
       f.accounting_entries
-      f.should_receive(:"editable?").exactly(2).times.and_return(false)
-      f.should_not_receive(:delay) 
+      f.should_receive(:"editable?").and_return(false)
       f.should_not_receive(:launch)
       f.should_not_receive(:create_accounting_entries)
-      f.invalidate_accounting_entries(true)
-      f.invalidate_accounting_entries(false)
+      f.invalidate_accounting_entries
     end
 
     it "should create accounting entries if invalid" do

@@ -5,7 +5,7 @@ describe StringCostRuleCondition do
     f = Flight.generate! 
     c = StringCostRuleCondition.new :condition_field => "purpose", :condition_value_s => "training"
     c.matches?(f).should be_true
-    f.stub(:purpose).and_return(Purpose.get("exercise"))
+    f.stub(:purpose).and_return(:exercise)
     c.matches?(f).should be_false
   end
 end

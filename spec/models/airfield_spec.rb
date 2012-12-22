@@ -29,22 +29,9 @@ describe Airfield do
     p.to_s.should == "XXXX"
   end
   
-  it "should only shared some attributes" do
-    Airfield.shared_attribute_names.should == [ :id, :registration, :name ]
-  end
-  
-  it "should return shared_attributes" do
-    Airfield.generate!.shared_attributes.keys.to_set.should == Airfield.shared_attribute_names.map { |n| n.to_s }.to_set
-  end
-  
   it "should return a sunrise/sunset calculator" do
     a = Airfield.generate!(:lat => 11.0, :long => 13.0)
     a.srss.should respond_to(:sunrise)
     a.srss.should respond_to(:sunset)
-  end
-
-  it "should return a hash for to_j" do
-    a = Airfield.spawn
-    a.to_j.keys.should include(:id, :name, :registration)
   end
 end

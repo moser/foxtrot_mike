@@ -20,10 +20,9 @@ module LaunchAccountingEntries
     update_attribute :accounting_entries_valid, true
   end
 
-  def invalidate_accounting_entries(delayed = true)
+  def invalidate_accounting_entries
     if abstract_flight.editable?
       update_attribute :accounting_entries_valid, false
-      (delayed ? delay : self).create_accounting_entries
     end
   end
 
