@@ -1,5 +1,5 @@
 %h1= @person.name
-= link_to  Person.l(:book), "#{person_path(@person)}/flights" if can?(:read, :filtered_flights)
+= link_to  Person.l(:book), scoped_flights_path(@person) if can?(:read, :filtered_flights)
 = edit_link(@person)
 = back_link(Person)
 %table.data

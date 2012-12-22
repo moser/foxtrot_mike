@@ -1,5 +1,5 @@
 %h1=h @plane.registration
-= link_to  Plane.l(:book), "#{plane_path(@plane)}/flights" if can?(:read, :filtered_flights)
+= link_to  Plane.l(:book), scoped_flights_path(@plane) if can?(:read, :filtered_flights)
 = edit_link(@plane)
 = back_link(Plane)
 %table.data

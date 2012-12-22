@@ -41,4 +41,15 @@ describe ApplicationHelper do
       helper.format_currency(-101).should == "-1,01 €"
     end
   end
+
+  describe "scoped_flights_path" do
+    let(:person) { F.create(:person) }
+    it "returns a path with a /flights appended" do
+      helper.scoped_flights_path(person).should == "/people/#{person.id}/flights"
+    end
+
+    it "appends query parameters" do
+      helper.scoped_flights_path(person, foo: "bar", bar: 1).should == "/people/#{person.id}/flights?bar=1&foo=bar"
+    end
+  end
 end

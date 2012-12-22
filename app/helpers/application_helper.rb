@@ -83,6 +83,14 @@ module ApplicationHelper
     can?(what, obj)
   end
 
+  def scoped_flights_path(scope, params = nil)
+    unless params
+      "#{polymorphic_path(scope)}/flights"
+    else
+      polymorphic_path(scope, params).gsub("?", "/flights?")
+    end
+  end
+
 private
   def merge_class_into_options(cls, options)
     if options[:class]

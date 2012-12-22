@@ -13,24 +13,24 @@
         %h2 Ansichten
         %ul.nav.nav-tabs.nav-stacked
           - Airfield.home.each do |a|
-            %li= link_to t("views.main_flight_book", :name => a.to_s), airfield_main_log_book_path(a)
-            %li= link_to t("views.controller_log", :name => a.to_s), airfield_main_log_book_path(a, :as => "controller_log")
+            - date = AbstractFlight.latest_departure(a.flights).to_date
+            %li= link_to t("views.main_flight_book", :name => a.to_s), scoped_flights_path(a, range: "#{date}.#{date}")
   .span6
     .well
       %h2= t('views.bordbooks')
       %ul.nav.nav-tabs.nav-stacked
         - @planes.each do |p|
-          %li= link_to p.registration, "#{plane_path(p)}/flights"
+          %li= link_to p.registration, scoped_flights_path(p)
   .span6
     .well
       %h2= t('views.flightbooks')
       %ul.nav.nav-tabs.nav-stacked
-        %li= link_to "Alle", "#{person_path(@current_person)}/flights"
+        %li= link_to "Alle", scoped_flights_path(@current_person)
         - @licenses.each do |l|
-          %li= link_to l.name, "#{license_path(l)}/flights"
+          %li= link_to l.name, scoped_flights_path(l)
   .span6
     .well
       %h2= Group.l(:plural)
       %ul.nav.nav-tabs.nav-stacked
         - @groups.each do |g|
-          %li= link_to g.name, "#{group_path(g)}/flights"
+          %li= link_to g.name, scoped_flights_path(g)
