@@ -1,4 +1,5 @@
 .summary
+  %span.id= @flight.raw.id
   %span.date
     %a{ name: @flight.id }
     = @flight.date

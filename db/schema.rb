@@ -11,15 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121012192045) do
+ActiveRecord::Schema.define(:version => 20121222111102) do
 
-  create_table "abstract_flights", :id => false, :force => true do |t|
-    t.string   "id",                       :limit => 36
+  create_table "abstract_flights", :force => true do |t|
     t.string   "plane_id",                 :limit => 36
     t.string   "from_id",                  :limit => 36
     t.string   "to_id",                    :limit => 36
     t.string   "controller_id",            :limit => 36
-    t.string   "launch_id",                :limit => 36
+    t.integer  "launch_id"
     t.string   "launch_type"
     t.date     "departure_date"
     t.integer  "departure_i",                            :default => -1
@@ -38,19 +37,17 @@ ActiveRecord::Schema.define(:version => 20121012192045) do
     t.integer  "seat2_n",                                :default => 0
   end
 
-  add_index "abstract_flights", ["id"], :name => "index_abstract_flights_on_id", :unique => true
-
   create_table "accounting_entries", :force => true do |t|
     t.integer  "from_id"
     t.integer  "to_id"
     t.integer  "value"
     t.integer  "accounting_session_id"
-    t.string   "item_id"
     t.string   "item_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "manual",                :default => false
     t.string   "text"
+    t.integer  "item_id"
   end
 
   create_table "accounting_sessions", :force => true do |t|
@@ -204,11 +201,11 @@ ActiveRecord::Schema.define(:version => 20121012192045) do
 
   create_table "liabilities", :id => false, :force => true do |t|
     t.string   "id"
-    t.string   "flight_id"
     t.string   "person_id"
     t.integer  "proportion"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "flight_id"
   end
 
   create_table "licenses", :force => true do |t|
@@ -365,8 +362,8 @@ ActiveRecord::Schema.define(:version => 20121012192045) do
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
-    t.string   "abstract_flight_id"
     t.text     "object_changes"
+    t.integer  "abstract_flight_id"
   end
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
@@ -415,15 +412,12 @@ ActiveRecord::Schema.define(:version => 20121012192045) do
 
   add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true
 
-  create_table "wire_launches", :id => false, :force => true do |t|
-    t.string   "id",                       :limit => 36
+  create_table "wire_launches", :force => true do |t|
     t.string   "wire_launcher_id",         :limit => 36
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "accounting_entries_valid",               :default => false
     t.string   "operator_id"
   end
-
-  add_index "wire_launches", ["id"], :name => "index_wire_launches_on_id", :unique => true
 
 end

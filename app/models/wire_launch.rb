@@ -1,6 +1,4 @@
 class WireLaunch < ActiveRecord::Base
-  include UuidHelper
-
   def self.writable_attributes
     [ :operator_id, :wire_launcher_id ]
   end

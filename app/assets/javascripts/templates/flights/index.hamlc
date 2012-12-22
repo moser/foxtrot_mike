@@ -5,6 +5,7 @@
   %a.print{ href: "#" }= I18n.t("views.print")
   .flights.alternate
     .head
+      %span.id= I18n.t("activerecord.attributes.abstract_flight.id")
       %span.date= I18n.t("activerecord.attributes.abstract_flight.departure_date")
       %span.plane= I18n.t("activerecord.attributes.abstract_flight.plane")
       %span.seat= I18n.t("activerecord.attributes.abstract_flight.seat1")

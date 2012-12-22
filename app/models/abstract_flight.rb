@@ -3,7 +3,6 @@ require "digest/sha2"
 class AbstractFlight < ActiveRecord::Base
   #Purposes = ['training', 'exercise', 'tow', nil] 
   IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to]
-  include UuidHelper
   before_save :destroy_launch
   before_save :execute_soft_validation
   after_save :notify_launch

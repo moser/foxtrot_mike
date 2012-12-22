@@ -12,6 +12,7 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    permalink: "Link für diesen Flug"
     confirm: Ja
     aggregate_entries: "Sammeleinträge"
     add: "Hinzufügen"
