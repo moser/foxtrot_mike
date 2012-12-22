@@ -1,4 +1,22 @@
 # Before release
+- flight id -> int
+- filter frontend
+- date range frontend
+- sums/counts
+- show cost
+- show liabilities
+- edit liabilities
+- show problems
+- kick delayed job -> flag & cronjob?
+  - persist cost?
+- cost rule view?
+
+# really soon
+- grouping
+- aggegrate entries
+- table views
+
+# soon... :D
 - filtered\_flights
   - permalink
   - loaded, invisible flights become visible when switching on aggregation
