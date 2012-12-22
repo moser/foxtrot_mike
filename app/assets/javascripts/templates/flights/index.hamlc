@@ -1,8 +1,12 @@
 .flights_index
   %h2
     = I18n.t("flights.index.title")
-  %a.new_flight{ href: "#" }= I18n.t("views.new")
-  %a.print{ href: "#" }= I18n.t("views.print")
+  %a.btn.new_flight{ href: "#" }
+    %i.icon-paste
+    = I18n.t("views.new")
+  %a.btn.print{ href: "#" }
+    %i.icon-print
+    = I18n.t("views.print")
   .flights.alternate
     .head
       %span.id= I18n.t("activerecord.attributes.abstract_flight.id")

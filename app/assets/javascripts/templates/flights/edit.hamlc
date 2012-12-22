@@ -10,10 +10,14 @@
     .tab-pane.fade#launch
       .edit_launch
   - if @flight.editable
-    .control-group
-      .controls
-        %a.save.btn= I18n.t("helpers.submit.update")
-        - unless @flight.raw.isNew()
-          %a.reset.btn= I18n.t("helpers.submit.reset")
-          - unless @flight.is_tow
-            %a.btn-danger.delete.btn= I18n.t("helpers.submit.delete")
+    %a.save.btn
+      %i.icon-save
+      = I18n.t("helpers.submit.update")
+    - unless @flight.raw.isNew()
+      %a.reset.btn
+        %i.icon-undo
+        = I18n.t("helpers.submit.reset")
+      - unless @flight.is_tow
+        %a.btn-danger.delete.btn
+          %i.icon-minus-sign
+          = I18n.t("helpers.submit.delete")
