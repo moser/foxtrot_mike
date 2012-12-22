@@ -1,5 +1,4 @@
 # Before release
-- flight id -> int
 - filter frontend
 - date range frontend
 - sums/counts
