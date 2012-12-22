@@ -7,6 +7,7 @@
 - show problems
 - cost rule view?
 - delete flight -> confirm
+- backups !!
 
 # really soon
 - grouping
@@ -14,32 +15,24 @@
 - table views
 
 # soon... :D
-- filtered\_flights
-  - permalink
-  - loaded, invisible flights become visible when switching on aggregation
-  - grouped + aggregated => check hover + controls
 - flight
   - trigger soft validation manually
     - add problems when unfinished or plane, seat1 missing => prevent accounting of flight
 - deploy ssv version
   - check youths and person category memberships
-- spork!
 
 # soon
 - create cost rules (and other places where monetary values are used)
   - use ct or decimal €
-- bill for lrst
-  - no accounting entries for these flights
 - export flights grouped by cost responsible w/ cost for group
 - controller role
   - create/show stuff only as json or thru the client
   - create people,planes,wire\_launchers (mark as incomplete, show to admin/treasurer)
   - soft validate models
-  - may delete flight??
-- import people (with financial account data and licenses), planes as CSV
 
 # medium run
 - import csv data
+  - import people (with financial account data and licenses), planes as CSV
   - for flights
 - licenses... medical...
 - ajaxify other pages
