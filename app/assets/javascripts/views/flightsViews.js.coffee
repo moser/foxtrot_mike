@@ -70,7 +70,7 @@ class Flights.Views.Index extends Flights.TemplateView
     @updateAggregation()
 
   updateAggregation: ->
-    @$("span.count").html("# #{@collection.length}")
+    @$("span.count").html("#{@collection.length}")
     @$("span.sum").html("#{Flights.Util.intTimeToString(@collection.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))}")
   
   initialize: ->

@@ -3,3 +3,8 @@
   - @flights.each do |flight|
     .flight
       = render partial: "flights/flight_spans", locals: { flight: flight }
+  .foot
+    \#
+    %span.count= @flights.count
+    t
+    %span.sum= format_minutes(@flights.map { |f| f.duration > 0 ? f.duration : 0 }.sum)
