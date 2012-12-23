@@ -11,32 +11,35 @@ class FlightsController < ApplicationController
       @flights = filter_by.constantize.find(params[:filter_id]).flights
     end
     if params[:range]
-      min, max = params[:range].split(".").map { |s| Date.parse(s) }.sort
+      min, max = params[:range].split("_").map { |s| Date.parse(s) }.sort
       @flights = @flights.where("departure_date <= ? AND departure_date >= ?", max, min)
     else
       @flights = @flights.limit(40)
     end
-    render_index
+    respond_to do |f|
+      f.html { render_index }
+      f.json { render json: @flights }
+    end
   end
 
   def render_index
-    respond_to do |f|
-      f.html do
-        @people = Person.all
-        @airfields = Airfield.all
-        @planes = Plane.all
-        @wire_launchers = WireLauncher.all
-        render :action => :index
-      end
-      f.json { render json: @flights }
-    end
+    @people = Person.all
+    @airfields = Airfield.all
+    @planes = Plane.all
+    @wire_launchers = WireLauncher.all
+    render :action => :index
   end
 
   def show
     flight = AbstractFlight.find(params[:id])
     authorize! :read, flight
-    @flights = [ flight, AbstractFlight.where("departure_date <= ? AND departure_i <= ?", flight.departure_date, flight.departure_i).limit(40) ].flatten.uniq
-    render_index
+    respond_to do |f|
+      f.html do
+        @flights = [ flight, AbstractFlight.where("departure_date <= ? AND departure_i <= ?", flight.departure_date, flight.departure_i).limit(40) ].flatten.uniq
+        render_index
+      end
+      f.json { render json: flight }
+    end
   end
 
   def update

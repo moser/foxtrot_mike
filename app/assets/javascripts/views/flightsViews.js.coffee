@@ -3,11 +3,12 @@ SlideDuration = 200
 Flights.Routers.FlightsRouter = Backbone.Router.extend
   routes:
     "flights": "showIndex"
-    ":filter_model/:filter_id/flights": "showIndex"
+    ":filter_resource/:filter_id/flights": "showIndex"
+    ":filter_resource/:filter_id/flights/range/:range": "showIndex"
     "flights/:id": "show"
 
-  showIndex: (filter_model, filter_id)->
-    @index = new Flights.Views.Index(el: $('.app_container'), filter: { model: filter_model, id: filter_id })
+  showIndex: (filter_resource, filter_id, range)->
+    @index = new Flights.Views.Index(el: $('.app_container'), filter: { resource: filter_resource, id: filter_id }, range: range)
 
   show: (id) ->
     unless @index?
@@ -22,6 +23,8 @@ class Flights.Views.Index extends Flights.TemplateView
   events:
     "click a.new_flight": "new"
     "click a.print": "print"
+    "change #range_from_front" : "updateRange"
+    "change #range_to_front" : "updateRange"
 
   render: ->
     @$el.html(@template({}))
@@ -42,24 +45,15 @@ class Flights.Views.Index extends Flights.TemplateView
       view = @views[model.id] = new Flights.Views.Show({ model: model })
       view.render()
     @$("##{model.id}").remove()
-    if @collection.get(model.id)?
-      sorted_models = _.sortBy(@collection.models, (e) -> e.sortBy()).reverse()
-      i = _.indexOf(sorted_models, model)
-      if i == 0
-        @$(".flights .flight_group").prepend(view.el)
-      else if i == sorted_models.length - 1
-        @$(".flights .flight_group").append(view.el)
-      else
-        @$("##{sorted_models[i-1].id}").after(view.el)
-    else
-      @$(".flights .flight_group").prepend(view.el)
+    @$(".flights .flight_group").prepend(view.el)
+    _.sortBy(@collection.models, (e) -> e.sortBy()).reverse().map (f) =>
+      @$(".flights .flight_group").append(@views[f.id].$el) if @views[f.id]?
     #make sure the events are delegated correctly
     view.delegateEvents()
     @updateAggregation()
 
 
   show: (id) ->
-    console.log(id)
     if @views[id]? && !@views[id].detailsView?
       @views[id].details()
 
@@ -72,15 +66,32 @@ class Flights.Views.Index extends Flights.TemplateView
   updateAggregation: ->
     @$("span.count").html("#{@collection.length}")
     @$("span.sum").html("#{Flights.Util.intTimeToString(@collection.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))}")
+
+  updateRange: =>
+    @range._from = Parse.date_to_s(@$("#range_from").val())
+    @range._to = Parse.date_to_s(@$("#range_to").val())
+    if @collection.range != @range.toString()
+      @collection.setRange(@range.toString())
+      @collection.fetch({ update: true })
   
   initialize: ->
     @new_view = null
     @views = {}
     @collection = Flights.flights
+    @collection.setFilter(@options.filter)
+    @collection.setRange(@options.range)
     @collection.on("change", @change)
     @collection.on("add", @add)
     @collection.on("remove", @remove)
     @render()
+    if @options.range?
+      @range = Flights.Models.Range.fromString(@options.range)
+    else
+      @range = new Flights.Models.Range(@collection.last().departure_date(), @collection.first().departure_date())
+    @$("#range_from").val(Format.date_to_s(@range.from()))
+    @$("#range_to").val(Format.date_to_s(@range.to()))
+    @$("#range_from_front").val(Format.date_short(@range.from())).datepicker(dateFormat: I18n.t("date.formats.js.default"), altField: "#range_from", altFormat: "yy-mm-dd")
+    @$("#range_to_front").val(Format.date_short(@range.to())).datepicker(dateFormat: I18n.t("date.formats.js.default"), altField: "#range_to", altFormat: "yy-mm-dd")
 
   #creates a new flight
   new: ->

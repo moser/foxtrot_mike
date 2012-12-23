@@ -1,5 +1,6 @@
 class Flights.Models.Flight extends Flights.BaseModel
   paramRoot: 'flight'
+  urlRoot: '/flights'
   defaults:
     departure_date: Format.date_to_s(new Date())
     purpose: "training"
@@ -8,6 +9,9 @@ class Flights.Models.Flight extends Flights.BaseModel
     comment: ""
     is_tow: false
     editable: true
+
+  departure_date: ->
+    Parse.date_to_s(@get("departure_date"))
 
   #departure time in ms
   sortBy: ->
@@ -117,6 +121,22 @@ class Flights.Models.Flight extends Flights.BaseModel
 Flights.Collections.Flights = Backbone.Collection.extend
   model: Flights.Models.Flight
   url: '/flights'
+
+  setFilter: (filter) ->
+    @filter = filter
+    @updateUrl()
+
+  setRange: (range) ->
+    @range = range
+    @updateUrl()
+
+  updateUrl: ->
+    @url = "/flights"
+    if @filter.resource? && @filter.id?
+      @url = "/#{@filter.resource}/#{@filter.id}/flights"
+    if @range?
+      @url = "#{@url}/range/#{@range}"
+
   comparator: (a,b) ->
     a = a.sortBy()
     b = b.sortBy()

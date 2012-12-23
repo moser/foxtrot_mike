@@ -27,6 +27,8 @@ Server::Application.routes.draw do
   end
 
   match ":filter_model/:filter_id/flights", to: "flights#index"
+  match ":filter_model/:filter_id/flights/range/:range", to: "flights#index"
+  match "/flights/range/:range", to: "flights#index"
 
   resources :accounting_entries do
     resource :destroy_confirmation

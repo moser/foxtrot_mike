@@ -7,6 +7,12 @@
   %a.btn.print{ href: "#" }
     %i.icon-print
     = I18n.t("views.print")
+  .range
+    %input#range_from_front{ type: "text" }
+    %input#range_to_front{ type: "text" }
+    %input#range_from{ type: "hidden" }
+    %input#range_to{ type: "hidden" }
+
   .flights.alternate
     .head
       %span.id= I18n.t("activerecord.attributes.abstract_flight.id")
@@ -26,5 +32,7 @@
     .main
       .flight_group
       .foot
+        %i.icon-plane
         %span.count
+        %i.icon-time
         %span.sum
