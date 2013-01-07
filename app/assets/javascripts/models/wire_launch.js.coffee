@@ -10,3 +10,12 @@ class Flights.Models.WireLaunch extends Flights.BaseModel
   operator: ->
     if @get("operator_id")?
       Flights.people.get(@get("operator_id"))
+
+  cost_free_sum: ->
+    if @cost()?
+      @cost().free_sum
+    else
+      0
+
+  cost: ->
+    @get("cost")

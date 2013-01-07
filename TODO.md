@@ -1,9 +1,5 @@
 # Before release
 - filter frontend
-- date range frontend
-- show cost
-- show liabilities
-- edit liabilities
 - show problems
 - cost rule view?
 - delete flight -> confirm

@@ -1,0 +1,7 @@
+%td.person
+%td.proportion
+%td.percentage
+%td.value
+%td
+  %a.btn.edit= I18n.t("views.edit")
+  %a.btn.btn-danger.destroy= I18n.t("views.destroy")

@@ -192,6 +192,7 @@ class Flights.Views.Details extends Flights.TemplateView
   delegateEvents: ->
     super()
     @edit_view.delegateEvents() if @edit_view?
+    @liabilities_view.delegateEvents() if @liabilities_view?
 
   initialize: ->
     @model = @options.model
@@ -200,6 +201,8 @@ class Flights.Views.Details extends Flights.TemplateView
   render: ->
     @$el.html(@template({ flight: Flights.Presenters.FlightPresenter.present(@model) }))
     @edit_view = new Flights.Views.Edit({el: @$(".edit"), model: @model, parentView: this})
+    if !@model.get("is_tow") && @model.id?
+      @liabilities_view = new Flights.Views.LiabilitiesIndex({ el: @$(".liabilities"), collection: @model.liabilities(), flight: @model })
 
 
 class Flights.Views.Edit extends Flights.TemplateView
@@ -432,3 +435,168 @@ class Flights.Views.EditWireLaunch extends Flights.ModelBasedView
 
   render: ->
     @$el.html(@template({ wire_launch: Flights.Presenters.WireLaunch.present(@model) }))
+
+class Flights.Views.LiabilitiesIndex extends Flights.TemplateView
+  className: 'liabilities'
+  templateName: 'liabilities/index'
+
+  events:
+    "click a.new": "new"
+
+  new: =>
+    @collection.add(new Flights.Models.Liability(flight_id: @flight.id))
+
+  add: (model) =>
+    @$("tbody").append (@views[model.cid] = new Flights.Views.LiabilityShow({ model: model, collection: @collection })).el
+    @views[model.cid].render()
+    @views[model.cid].edit()
+
+  remove: (model) =>
+    view = @views[model.cid]
+    view.remove()
+    view.$el.remove()
+    @views[model.cid] = null
+  
+  initialize: ->
+    super()
+    @flight = @options.flight
+    @collection = @options.collection
+    @collection.on("change", @change)
+    @collection.on("add", @add)
+    @collection.on("remove", @remove)
+    @views = {}
+    @render()
+
+  render: ->
+    @$el.html(@template({}))
+    @collection.each (e) =>
+      @$("tbody").append (@views[e.cid] = new Flights.Views.LiabilityShow({ model: e, collection: @collection })).el
+      @views[e.cid].render()
+
+class Flights.Views.LiabilityShow extends Flights.TemplateView
+  className: "liability"
+  tagName: "tr"
+  templateName: "liabilities/show"
+
+  events:
+    'click a.edit': 'edit'
+    'click a.destroy': 'destroy'
+
+  edit: ->
+    unless @editView?
+      @editView = new Flights.Views.EditLiability(model: @model, collection: @collection, parent: @)
+      @$el.hide().after(@editView.el)
+
+  destroy: =>
+    @stopListening()
+    @model.destroy()
+
+  show: =>
+    @editView = null
+    @$el.show()
+
+  remove: (model) =>
+    unless model == @model
+      @updateView()
+    else
+      @stopListening()
+
+  initialize: ->
+    super()
+    @listenTo(@options.collection, "add", @updateView)
+    @listenTo(@options.collection, "change", @updateView)
+    @listenTo(@options.collection, "remove", @remove)
+    @model = @options.model
+    @render()
+
+  render: ->
+    @$el.html(@template({ liability: @model }))
+    @updateView()
+
+  updateView: ->
+    @$("td.person").html(Flights.Presenters.Person.present(@model.person()).name)
+    @$("td.proportion").html(@model.get("proportion"))
+    @$("td.percentage").html(Flights.Util.percentageToString(@model.collection.percentage_for(@model)))
+    @$("td.value").html(Flights.Util.currencyToString(@model.collection.percentage_for(@model) * @model.flight().cost_free_sum()))
+    
+class Flights.Views.EditLiability extends Flights.ModelBasedView
+  className: "edit_liability"
+  tagName: "tr"
+  templateName: "liabilities/form"
+
+  events:
+    'focus input.edit_field': 'edit_field'
+    'change input': 'change'
+    'click a.save': 'save'
+    'click a.cancel': 'reset'
+
+  edit_field: (e) ->
+    target = @$(e.target)
+    unless target.siblings(".searchParent").length > 0
+      present = (p) -> Flights.Presenters.Person.present(p)
+      params =
+        list: Flights.people.models
+        label: (p) -> present(p).name
+        score: (p) -> "#{1} #{present(p).lastname} #{present(p).firstname}"
+        match: (p, q) -> present(p).name.toLowerCase().indexOf(q.toLowerCase()) > -1
+        for: @$(e.target).siblings("input[name=person_id]")
+        span: @$(e.target)
+      target.data("searchParent", c = new Flights.Views.SearchParent(params))
+      target.before(c.$el)
+    else
+      target.data("searchParent").release()
+    false
+
+  update_model: ->
+    @model.set(proportion: parseInt(@$("input[name=proportion]").val()), person_id: @$("input[name=person_id]").val())
+
+  save: =>
+    @update_model()
+    if @model.valid()
+      @model.save()
+      @hide()
+    else
+      @markInvalid()
+
+  reset: =>
+    if @model.id?
+      @model.reset()
+    else
+      @model.destroy()
+    @hide()
+
+  hide: =>
+    console.log("hide", @)
+    @stopListening()
+    @$el.remove()
+    @parent.show()
+
+  destroy: =>
+    @stopListening()
+
+  initialize: ->
+    super()
+    @parent = @options.parent
+    @listenTo(@model, "change", @updateView)
+    @listenTo(@options.collection, "change", @updateView)
+    @listenTo(@options.collection, "remove", @updateView)
+    @listenTo(@model, "remove", @destroy)
+    @render()
+
+  render: ->
+    @$el.html(@template({ liability: @model }))
+    @updateView()
+
+  updateView: =>
+    console.log("updateView", @)
+    @$("input[name=person_id]").val(@model.get("person_id"))
+    @$("input[name=person_front]").val(if @model.person()? then Flights.Presenters.Person.present(@model.person()).name else "")
+    @$("input[name=proportion]").val(@model.get("proportion"))
+    @$("td.percentage").html(Flights.Util.percentageToString(@model.collection.percentage_for(@model)))
+    @$("td.value").html(Flights.Util.currencyToString(@model.collection.percentage_for(@model) * @model.flight().cost_free_sum()))
+
+  markInvalid: =>
+    @$(".control-group").removeClass("error")
+    @$(".person").addClass("error") unless @model.personValid()
+    @$(".proportion").addClass("error") unless @model.proportionValid()
+    

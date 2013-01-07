@@ -6,6 +6,8 @@ class LiabilitiesController < ResourceController
     model_by_id
     @nested = Flight.find(params[:flight_id])
     @model.destroy
-    redirect_to(flight_liabilities_path(@nested))
+    respond_to do |format|
+      format.json { head :ok }
+    end
   end  
 end

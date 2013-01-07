@@ -1,0 +1,12 @@
+%table.table.table-hover{ style: "position: relative" }
+  %thead
+    %tr
+      %th= I18n.t("activerecord.models.person")
+      %th= I18n.t("activerecord.attributes.liability.proportion")
+      %th= I18n.t("activerecord.attributes.liability.percentage")
+      %th
+      %th
+  %tbody
+%a.btn.new
+  %i.icon-create
+  = I18n.t("views.new")

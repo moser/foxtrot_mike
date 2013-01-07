@@ -35,7 +35,7 @@ class FlightsController < ApplicationController
     authorize! :read, flight
     respond_to do |f|
       f.html do
-        @flights = [ flight, AbstractFlight.where("departure_date <= ? AND departure_i <= ?", flight.departure_date, flight.departure_i).limit(40) ].flatten.uniq
+        @flights = [ flight, AbstractFlight.where("departure_date = ?", flight.departure_date).limit(40) ].flatten.uniq
         render_index
       end
       f.json { render json: flight }

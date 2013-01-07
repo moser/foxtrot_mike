@@ -118,6 +118,22 @@ class Flights.Models.Flight extends Flights.BaseModel
     else
       @unset("launch_attributes")
 
+  liabilities: ->
+    if !@liabilities_collection? && @id?
+      @liabilities_collection = new Flights.Collections.Liabilities(@get("liabilities"))
+      @liabilities_collection.url = "#{@url()}/liabilities"
+      @liabilities_collection.flight = @
+    @liabilities_collection
+
+  cost_free_sum: ->
+    if cost = @get("cost")
+      free_sum = cost.free_sum
+      if @launch()?
+        free_sum = free_sum + @launch().cost_free_sum()
+      free_sum
+    else
+      0
+
 Flights.Collections.Flights = Backbone.Collection.extend
   model: Flights.Models.Flight
   url: '/flights'

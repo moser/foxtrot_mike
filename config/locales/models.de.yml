@@ -169,7 +169,9 @@ de:
         duration: Dauer
         engine_duration: Motorlaufzeit
         crew: Besatzung
+        cost: Kosten
         launch: Start
+        history: Änderungen
         cost: Kosten
         controller: Flugleiter
         lauch_cost: Startkosten
@@ -177,7 +179,7 @@ de:
         cost_sum: Summe
         free_cost_sum: Freie Summe
         free_cost_sum_hint: Der Teil der Kosten, der durch Zahlungsverpflichtungen gedeckt werden muss.
-        liabilities: Zahlungsverpflichtungen
+        liabilities: Zahlung
         problems: Probleme
         versions: Änderungen
         tow_plane: Schleppflugzeug
@@ -188,6 +190,9 @@ de:
         launch_type_short: S
       crew_member:
         no_crew: "Begleiter"
+      cost_rule:
+        formula: Formel
+        value: Wert
       flight_cost_rule:
         flight_type: Flugart
       flight_cost_item:
@@ -208,6 +213,9 @@ de:
         plural: Gruppen
       legal_plane_class:
         planes: Flugzeuge
+      liability:
+        proportion: Anteil
+        percentage: in Prozent
       license:
         name: Bezeichnung
         level: Stufe

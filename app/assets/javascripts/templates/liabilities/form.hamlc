@@ -1,0 +1,12 @@
+%td
+  .control-group.person.relative
+    %input{ type: "hidden", name: "person_id" }
+    %input.input-medium.edit_field{ type: "text", name: "person_front", data-edit: "person" }
+%td
+  .control-group.proportion
+    %input.input-mini{ type: "text", name: "proportion" }
+%td.percentage
+%td.value
+%td
+  %a.btn.save= I18n.t("helpers.submit.update")
+  %a.btn.cancel= I18n.t("views.cancel")

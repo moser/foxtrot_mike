@@ -31,6 +31,7 @@ Flights.Presenters.FlightPresenter =
       comment_long: model.get("comment")
       is_tow: model.get("is_tow")
       editable: model.get("editable")
+      cost: model.get("cost")
       raw: model
 
 WireLaunchPresenter = Flights.Presenters.WireLaunch =
@@ -45,12 +46,16 @@ PersonPresenter = Flights.Presenters.Person =
   present: (model) ->
     if model?
       name = "#{model.get("firstname")} #{model.get("lastname")}"
+      firstname = model.get("firstname")
+      lastname = model.get("lastname")
     else
       name = I18n.t("unknown_person")
+      firstname = ""
+      lastname = ""
     r =
       name: name
-      firstname: model.get("firstname")
-      lastname: model.get("lastname")
+      firstname: firstname
+      lastname: lastname
 
 AirfieldPresenter = Flights.Presenters.Airfield =
   present: (model) ->
@@ -81,10 +86,14 @@ Util = Flights.Util =
     else
       -1
   currencyToString: (i) ->
+    i = Math.round(i)
     e = Math.floor(i / 100.0)
     c = i % 100
     if c < 10
       "#{e},0#{c} €"
     else
       "#{e},#{c} €"
+
+  percentageToString: (f) ->
+    "#{Math.round(f * 100)} %"
     

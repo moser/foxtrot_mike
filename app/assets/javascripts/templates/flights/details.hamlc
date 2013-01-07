@@ -4,21 +4,22 @@
   .additional.span7
     %ul.nav.nav-tabs
       %li.active
-        %a.cost{ "data-toggle": "tab", href: "#cost" } Cost
-      %li
-        %a.liabilities{ "data-toggle": "tab", href: "#liabilities" } Liabilities
-      %li
-        %a.history{ "data-toggle": "tab", href: "#history" } History
+        %a.cost_tab{ "data-toggle": "tab", href: "#cost_tab" }= I18n.t("activerecord.attributes.abstract_flight.cost")
+      - if !@flight.is_tow && @flight.raw.id
+        %li
+          %a.liabilities_tab{ "data-toggle": "tab", href: "#liabilities_tab" }= I18n.t("activerecord.attributes.abstract_flight.liabilities")
+      -#%li
+      -#  %a.history{ "data-toggle": "tab", href: "#history" }= I18n.t("activerecord.attributes.abstract_flight.history")
     .tab-content
-      .tab-pane.active#cost
-        - if @flight.cost
-          %table.table
-            %thead
-              %tr
-                %th= I18n.t("activerecord.models.cost_rule")
-                %th Formula
-                %th Value
-            %tbody
+      .tab-pane.active#cost_tab
+        %table.table
+          %thead
+            %tr
+              %th= I18n.t("activerecord.models.cost_rule")
+              %th= I18n.t("activerecord.attributes.cost_rule.formula")
+              %th= I18n.t("activerecord.attributes.cost_rule.value")
+          %tbody
+            - if @flight.cost
               - for item in @flight.cost.items
                 %tr
                   %td= @flight.cost.cost_rule.name
@@ -27,10 +28,30 @@
                     - if item.cost_item.additive_value != 0
                       = " + #{Flights.Util.currencyToString(item.cost_item.additive_value)}"
                   %td= Flights.Util.currencyToString(item.value)
-      .tab-pane.fade#liabilities
-        Liabilities
-      .tab-pane.fade#history
-        History
+            - if @flight.raw.launch_type() == "tow_launch" && @flight.raw.launch().get("cost")
+              - for item in @flight.raw.launch().get("cost").items
+                %tr
+                  %td= @flight.raw.launch().get("cost").cost_rule.name
+                  %td
+                    = "#{@flight.raw.launch()[item.cost_item.depends_on]()} * #{Flights.Util.currencyToString(item.cost_item.value)}"
+                    - if item.cost_item.additive_value != 0
+                      = " + #{Flights.Util.currencyToString(item.cost_item.additive_value)}"
+                  %td= Flights.Util.currencyToString(item.value)
+            - if @flight.raw.launch_type() == "wire_launch" && @flight.raw.launch().get("cost")
+              - for item in @flight.raw.launch().get("cost").items
+                %tr
+                  %td= @flight.raw.launch().get("cost").cost_rule.name
+                  %td
+                  %td= Flights.Util.currencyToString(item.value)
+            %tr
+              %td= I18n.t("views.sum")
+              %td
+              %td= Flights.Util.currencyToString(@flight.raw.cost_free_sum())
+      - if !@flight.is_tow && @flight.raw.id
+        .tab-pane.fade#liabilities_tab
+          .liabilities
+      -#.tab-pane.fade#history
+      -#  History
     %a{ href: "/flights/#{@flight.id}" }
       %i.icon-link
       = I18n.t("views.permalink")

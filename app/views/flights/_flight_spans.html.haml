@@ -3,7 +3,7 @@
   %span.date= I18n.l(flight.departure_date, format: :default)
   %span.plane= flight.plane
   %span.seat= flight.seat1_person
-  %span.seat= flight.seat2_person || flight.seat2_n > 0 ? "+#{flight.seat2_n}" : ""
+  %span.seat= flight.seat2_person || (flight.seat2_n > 0 ? "+#{flight.seat2_n}" : "")
   %span.launch_type= I18n.t("flight.launch_types.#{ flight.launch_kind }.short")
   %span.purpose= I18n.t("flight.purposes.#{ flight.purpose }.short")
   %span.airfield= flight.from

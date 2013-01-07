@@ -93,7 +93,7 @@ class ResourceController < ApplicationController
             render :text => "ok"
           end
         end
-        f.json { render :text => "OK"}
+        f.json { render json: @model }
       end
     else
       respond_to do |f|
