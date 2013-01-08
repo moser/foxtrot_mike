@@ -1,9 +1,10 @@
 # Before release
-- filter frontend
-- show problems
-- cost rule view?
+- update costs, liabilities when flight is updated
+- clean up cost stuff
 - delete flight -> confirm
 - backups !!
+- filter frontend
+- show problems
 
 # really soon
 - grouping

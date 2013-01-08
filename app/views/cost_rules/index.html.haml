@@ -1,24 +1,23 @@
 %h1= t(".title")
-.colspace.cost_rules
-  .person_cost_categories.col.left.side
-    %h3= PersonCostCategory.l
-    %ul.categories
+.row
+  .person_cost_categories.span2
+    %h4= PersonCostCategory.l
+    %ul.nav.nav-pills.nav-stacked
       - @person_cost_categories.each do |c|
-        %li{:id => "person_cost_category_id-#{c.id}", :class => (c == @current_person_cost_category ? "current" : "")}
+        %li{:id => "person_cost_category_id-#{c.id}", :class => (c == @current_person_cost_category ? "active" : "")}
           = select_cost_parameter_link(c.name, c.id, :person_cost_category_id)
-  .other_cost_categories.col.right.side
-    %h3= PlaneCostCategory.l
-    %ul.categories.plane_cost_categories
-      - @plane_cost_categories.each do |c|
-        %li{:id => "plane_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "current" : "")}
-          = select_cost_parameter_link(c.name, c.id, :plane_cost_category_id)
-    %h3= WireLauncherCostCategory.l
-    %ul.categories.wire_launcher_cost_categories
-      - @wire_launcher_cost_categories.each do |c|
-        %li{:id => "wire_launcher_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "current" : "")}
-          = select_cost_parameter_link(c.name, c.id, :wire_launcher_cost_category_id)
-  .middle
-    #cost_rules
+  .span8
+    .cost_rules
       = render :partial => "#{@current_cost_rule_klass.name.pluralize.underscore}/list", :locals => { :not_valid_anymore => @not_valid_anymore, :valid => @valid, :not_yet_valid => @not_yet_valid, :person_cost_category_id => @current_person_cost_category.id, :"#{@current_other_cost_category.class.name.underscore}_id" => @current_other_cost_category.id }
-  .clear
+  .other_cost_categories.span2
+    %h4= PlaneCostCategory.l
+    %ul.nav.nav-pills.nav-stacked
+      - @plane_cost_categories.each do |c|
+        %li{:id => "plane_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "active" : "")}
+          = select_cost_parameter_link(c.name, c.id, :plane_cost_category_id)
+    %h4= WireLauncherCostCategory.l
+    %ul.nav.nav-pills.nav-stacked
+      - @wire_launcher_cost_categories.each do |c|
+        %li{:id => "wire_launcher_cost_category_id-#{c.id}", :class => (c == @current_other_cost_category ? "active" : "")}
+          = select_cost_parameter_link(c.name, c.id, :wire_launcher_cost_category_id)
 
