@@ -282,26 +282,23 @@ class Flights.Views.EditFlight extends Flights.ModelBasedView
             score: (p) -> 1
             match: (p, q) -> p.get("registration").toLowerCase().indexOf(q.toLowerCase()) > -1
         when "seat1_person"
-          present = (p) -> Flights.Presenters.Person.present(p)
           params =
             list: Flights.people.models
-            label: (p) -> present(p).name
-            score: (p) -> "#{1} #{present(p).lastname} #{present(p).firstname}"
-            match: (p, q) -> present(p).name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            label: (p) -> p.present().name
+            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
         when "seat2"
-          present = (p) -> Flights.Presenters.Person.present(p)
           params =
-            list: _.flatten([new Flights.Models.NoPerson(), Flights.people.models, new Flights.Models.NPersons(1), new Flights.Models.NPersons(2), new Flights.Models.NPersons(3)]),
+            list: _.flatten([new Flights.Models.NoPerson(), Flights.people.models, new Flights.Models.NPersons(1), new Flights.Models.NPersons(2), new Flights.Models.NPersons(3)])
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
         when "controller"
-          present = (p) -> Flights.Presenters.Person.present(p)
           params =
-            list: Flights.people.models
-            label: (p) -> present(p).name
-            score: (p) -> "#{1} #{present(p).lastname} #{present(p).firstname}"
-            match: (p, q) -> present(p).name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            list: _.flatten([new Flights.Models.NoPerson(), Flights.people.models])
+            label: (p) -> p.present().name
+            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
         when "from", "to"
           present = (p) -> Flights.Presenters.Airfield.present(p)
           params =
