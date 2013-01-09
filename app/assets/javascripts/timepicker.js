@@ -15,9 +15,7 @@ var DateTimePickers = {
   orig: function(el, type) {
     var d = DateTimePickers.findVals(el);
     if(d.blank) { return ''; }
-    if(type == 'datetime') {
-      return Format.date_time_short(new Date(d['1i'], d['2i'] - 1, d['3i'], d['4i'], d['5i'], 0));
-    }
+    return Format.date_short(new Date(d['1i'], d['2i'] - 1, d['3i'], 0, 0, 0));
   },
   
   replace: function(i,e, type) {
@@ -27,7 +25,7 @@ var DateTimePickers = {
     var orig_name = e.children('select').first().attr('name');
     var model_name = orig_name.split("[")[0];
     var attribute = orig_name.split("[")[1].replace(/\(.*\)\]$/, '');
-    var d = $('<input id="'+ model_name + '_'+ attribute +'" name="'+ model_name + '['+ attribute +'_parse_'+ type +']"/>');
+    var d = $('<input type="text" id="'+ model_name + '_'+ attribute +'" name="'+ model_name + '['+ attribute +'_parse_'+ type +']"/>');
     d.val(DateTimePickers.orig(e, type));
     e.empty().append(label).append(d).append(spans).addClass('replaced');
     if(e.hasClass("disabled")) {
