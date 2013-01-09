@@ -35,7 +35,7 @@ class Flights.Views.Index extends Flights.TemplateView
 
   change: (model) =>
     @updateAggregation()
-    if _.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date")
+    if model.id? && (_.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date"))
       @add(model)
   
   add: (model) =>
@@ -51,7 +51,6 @@ class Flights.Views.Index extends Flights.TemplateView
     #make sure the events are delegated correctly
     view.delegateEvents()
     @updateAggregation()
-
 
   show: (id) ->
     if @views[id]? && !@views[id].detailsView?
@@ -101,6 +100,9 @@ class Flights.Views.Index extends Flights.TemplateView
         @new_flight.off("sync", chng)
         @new_view.$el.remove()
         @new_view = null
+        @add(@new_flight)
+        @show(@new_flight.id)
+        @new_flight = null
       @new_flight.on("sync", chng)
       @new_view = new Flights.Views.Show({ model: @new_flight, no_summary: true })
       @new_view.details()
