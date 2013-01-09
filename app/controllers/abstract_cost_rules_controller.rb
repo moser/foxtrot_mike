@@ -108,6 +108,6 @@ class AbstractCostRulesController < ApplicationController
 
 private
   def now
-    AccountingSession.latest_session_end
+    AccountingSession.latest_finished_session_end
   end
 end
