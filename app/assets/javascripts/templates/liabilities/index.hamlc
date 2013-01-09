@@ -7,6 +7,13 @@
       %th
       %th
   %tbody
+    - if @flight.cost_responsible()?
+      %tr.default
+        %td= Flights.Presenters.Person.present(@flight.cost_responsible()).name
+        %td
+        %td
+          100 %
+        %td= Flights.Util.currencyToString(@flight.cost_free_sum())
 %a.btn.new
   %i.icon-create
   = I18n.t("views.new")

@@ -41,6 +41,10 @@ class Flights.Models.Flight extends Flights.BaseModel
     if @get("to_id")?
       Flights.airfields.get(@get("to_id"))
 
+  cost_responsible: ->
+    if @get("cost_responsible_id")?
+      Flights.people.get(@get("cost_responsible_id"))
+
   duration: ->
     if @get("arrival_i") >= 0 && @get("departure_i") >= 0
       @get("arrival_i") - @get("departure_i")

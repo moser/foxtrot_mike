@@ -100,7 +100,7 @@ class Flight < AbstractFlight
   end
 
   def as_json(options={})
-    super(options).merge({ liabilities: liabilities })
+    super(options).merge({ liabilities: liabilities, cost_responsible_id: cost_responsible.try(:id) })
   end
 
 private

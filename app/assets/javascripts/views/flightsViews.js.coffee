@@ -443,6 +443,12 @@ class Flights.Views.LiabilitiesIndex extends Flights.TemplateView
   events:
     "click a.new": "new"
 
+  checkDefault: =>
+    if @collection.length == 0
+      @$("tr.default").show()
+    else
+      @$("tr.default").hide()
+
   new: =>
     @collection.add(new Flights.Models.Liability(flight_id: @flight.id))
 
@@ -450,12 +456,14 @@ class Flights.Views.LiabilitiesIndex extends Flights.TemplateView
     @$("tbody").append (@views[model.cid] = new Flights.Views.LiabilityShow({ model: model, collection: @collection })).el
     @views[model.cid].render()
     @views[model.cid].edit()
+    @checkDefault()
 
   remove: (model) =>
     view = @views[model.cid]
     view.remove()
     view.$el.remove()
     @views[model.cid] = null
+    @checkDefault()
   
   initialize: ->
     super()
@@ -466,9 +474,10 @@ class Flights.Views.LiabilitiesIndex extends Flights.TemplateView
     @collection.on("remove", @remove)
     @views = {}
     @render()
+    @checkDefault()
 
   render: ->
-    @$el.html(@template({}))
+    @$el.html(@template({ flight: @flight }))
     @collection.each (e) =>
       @$("tbody").append (@views[e.cid] = new Flights.Views.LiabilityShow({ model: e, collection: @collection })).el
       @views[e.cid].render()
@@ -566,7 +575,6 @@ class Flights.Views.EditLiability extends Flights.ModelBasedView
     @hide()
 
   hide: =>
-    console.log("hide", @)
     @stopListening()
     @$el.remove()
     @parent.show()
@@ -588,7 +596,6 @@ class Flights.Views.EditLiability extends Flights.ModelBasedView
     @updateView()
 
   updateView: =>
-    console.log("updateView", @)
     @$("input[name=person_id]").val(@model.get("person_id"))
     @$("input[name=person_front]").val(if @model.person()? then Flights.Presenters.Person.present(@model.person()).name else "")
     @$("input[name=proportion]").val(@model.get("proportion"))
