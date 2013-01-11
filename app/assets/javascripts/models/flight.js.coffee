@@ -1,14 +1,17 @@
 class F.Models.Flight extends F.BaseModel
   paramRoot: 'flight'
   urlRoot: '/flights'
-  defaults:
-    departure_date: Format.date_to_s(new Date())
-    purpose: "training"
-    departure_i: -1
-    arrival_i: -1
-    comment: ""
-    is_tow: false
-    editable: true
+  defaults: ->
+    r =
+      departure_date: Format.date_to_s(new Date())
+      purpose: "training"
+      departure_i: -1
+      arrival_i: -1
+      comment: ""
+      is_tow: false
+      editable: true
+      from_id: F.airfields.firstHomeAirfieldId()
+      to_id: F.airfields.firstHomeAirfieldId()
 
   departure_date: ->
     Parse.date_to_s(@get("departure_date"))

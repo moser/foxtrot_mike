@@ -1,5 +1,4 @@
 # Before release
-- update costs, liabilities when flight is updated
 - clean up cost stuff
 - delete flight -> confirm
 - backups !!

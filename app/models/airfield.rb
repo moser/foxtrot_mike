@@ -37,10 +37,6 @@ class Airfield < ActiveRecord::Base
     lat != 0.0 && long != 0.0 #there should not be an airfield, somewhere in the ocean
   end
 
-  def as_json(options)
-    { :id => id, :name => name, :registration => registration, :disabled => disabled }
-  end
-
   def controller_log(date)
     @controller_log ||= ControllerLog.new(self, date)
   end

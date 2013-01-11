@@ -4,3 +4,10 @@ F.Models.Airfield = Backbone.Model.extend
 F.Collections.Airfields = Backbone.Collection.extend
   model: F.Models.Airfield
   url: '/airfields'
+
+  firstHomeAirfieldId: ->
+    h = _(@where(home: true)).first()
+    if h?
+      h.id
+    else
+      ""

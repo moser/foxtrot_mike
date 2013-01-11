@@ -30,6 +30,7 @@ class F.Views.Liabilities.Index extends F.TemplateView
   initialize: ->
     super()
     @flight = @options.flight
+    @flight.on("sync", (=> @render(); @checkDefault()))
     @collection = @options.collection
     @collection.on("change", @change)
     @collection.on("add", @add)
