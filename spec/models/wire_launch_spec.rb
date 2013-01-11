@@ -80,4 +80,11 @@ describe WireLaunch do
       f.accounting_entries
     end
   end
+
+  describe "#concerned_people" do
+    it "returns an array containing the operator" do
+      w = F.create(:wire_launch, operator: F.create(:person))
+      w.concerned_people.should be_include(w.operator)
+    end
+  end
 end

@@ -341,4 +341,13 @@ describe AbstractFlight do
       f.seat1_no_license?.should be_false
     end
   end
+
+  describe "#concerned_people" do
+    it "returns all the people which are somehow concerned by this flight" do
+      f = F.create(:flight, seat2_person: F.create(:person))
+      f.concerned_people.should be_include(f.seat1_person)
+      f.concerned_people.should be_include(f.seat2_person)
+      f.concerned_people.should be_include(f.controller)
+    end
+  end
 end

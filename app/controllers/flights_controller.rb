@@ -23,8 +23,8 @@ class FlightsController < ApplicationController
   end
 
   def render_index
-    @people = Person.all
-    @airfields = Airfield.all
+    @people = @flights.map(&:concerned_people).flatten.uniq.compact
+    @airfields = @flights.map { |f| [f.from, f.to] }.flatten.uniq.compact
     @planes = Plane.all
     @wire_launchers = WireLauncher.all
     render :action => :index

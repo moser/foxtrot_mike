@@ -384,6 +384,10 @@ class AbstractFlight < ActiveRecord::Base
     editable?
   end
 
+  def concerned_people
+    [ seat1_person, seat2_person, controller, launch ? launch.concerned_people : [] ].flatten.uniq.compact
+  end
+
 protected
   def rational_day_to_minutes(r)
     (r * 1440).to_i

@@ -88,6 +88,10 @@ class WireLaunch < ActiveRecord::Base
     abstract_flight.editable?
   end
 
+  def concerned_people
+    [ operator ]
+  end
+
 private
   def invalidation_necessary?
     changes.keys.include?("wire_launcher_id")

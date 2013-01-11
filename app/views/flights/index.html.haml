@@ -9,4 +9,6 @@
     F.flights.reset(#{ @flights.to_json.html_safe });
     window.router = new F.Routers.FlightsRouter();
     Backbone.history.start({pushState: true});
+    F.people.fetch()
+    F.airfields.fetch()
   });
