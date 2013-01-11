@@ -37,10 +37,10 @@ class F.Views.Flights.Show extends F.TemplateView
               title: "Unsaved..."
               message: "There is unsaved state, would you really like to BLA"
             reset: =>
-              @detailsView.edit.reset()
+              @detailsView.edit_view.reset()
               @details(false)
             save: =>
-              @detailsView.edit.save()
+              @detailsView.edit_view.save()
               @details(false)
     false
 
