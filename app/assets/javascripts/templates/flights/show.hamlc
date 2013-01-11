@@ -15,3 +15,4 @@
   %span.time= @flight.duration
   %span.seat= @flight.controller
   %span.comment{ title: @flight.comment_long }= @flight.comment_short
+  %span.badge.badge-warning= @flight.problem_count

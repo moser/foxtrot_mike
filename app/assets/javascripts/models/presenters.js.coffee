@@ -32,6 +32,9 @@ F.Presenters.Flight =
       is_tow: model.get("is_tow")
       editable: model.get("editable")
       cost: model.get("cost")
+      problems_exist: model.get("problems_exist")
+      problem_count: if model.get("problems_exist") then _.keys(model.get("problems")).length else ""
+      problems: model.get("problems")
       raw: model
 
 WireLaunchPresenter = F.Presenters.WireLaunch =

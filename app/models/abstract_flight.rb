@@ -110,10 +110,10 @@ class AbstractFlight < ActiveRecord::Base
     @problems[:launch_method_impossible] = {} if launch_method_impossible?
     @problems[:seat1_no_license] = {} if seat1_no_license?
     @problems[:no_cost_calculation_possible] = {} if no_cost_calculation_possible?
-    sr = nil
-    ss = nil
     if not_between_sr_and_ss?
-      @problems[:not_between_sr_and_ss] = { :sr => DayTime.new(sr), :ss => DayTime.new(ss) }
+      sr = (from && from.srss? && from.srss.sunrise_i(departure_date)) ||-1
+      ss = (to && to.srss? && to.srss.sunset_i(departure_date)) ||-1
+      @problems[:not_between_sr_and_ss] = { :sr => DayTime.format(sr), :ss => DayTime.format(ss) }
     end
     [ :departure_i, :arrival_i ].each do |field|
       @problems["#{field}_needed"] = {} if send(field) < 0
@@ -306,7 +306,8 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super(options.merge(methods: [ :editable, :purpose, :cost, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json })
+    soft_validate if problems_exist
+    super(options.merge(methods: [ :editable, :purpose, :cost, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json, problems: problems })
   end
   
   def is_tow

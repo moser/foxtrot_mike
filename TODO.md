@@ -3,7 +3,6 @@
 - delete flight -> confirm
 - backups !!
 - filter frontend
-- show problems
 
 # really soon
 - grouping
