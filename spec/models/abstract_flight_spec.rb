@@ -9,6 +9,11 @@ describe AbstractFlight do
   
   it { should have_many :accounting_entries }
   it { should belong_to :launch }
+
+  it { should validate_presence_of :plane }
+  it { should validate_presence_of :seat1_person }
+  it { should validate_presence_of :from }
+  it { should validate_presence_of :to }
   
   it "should be able to return flights for a given date range" do
     a, b = 10.days.ago, 1.day.ago

@@ -130,7 +130,8 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   validates_presence_of :plane
-  validates_presence_of :departure
+  validates_presence_of :departure_date
+  validates_presence_of :seat1_person
   validates_presence_of :from
   validates_presence_of :to
 
