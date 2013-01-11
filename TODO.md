@@ -1,5 +1,4 @@
 # Before release
-- clean up cost stuff
 - delete flight -> confirm
 - backups !!
 - filter frontend

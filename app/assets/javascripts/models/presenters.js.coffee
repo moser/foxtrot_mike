@@ -19,6 +19,7 @@ F.Presenters.Flight =
       launch_type: model.launch_type()
       launch_type_short: I18n.t("flight.launch_types.#{ model.launch_type() }.short")
       launch_type_long: I18n.t("flight.launch_types.#{ model.launch_type() }.long")
+      launch: model.launch()
       purpose_short: I18n.t("flight.purposes.#{ model.get("purpose") }.short")
       purpose_long: I18n.t("flight.purposes.#{ model.get("purpose") }.long")
       from: if model.from()? then AirfieldPresenter.present(model.from()) else {short: "", long: ""}
@@ -32,6 +33,7 @@ F.Presenters.Flight =
       is_tow: model.get("is_tow")
       editable: model.get("editable")
       cost: model.get("cost")
+      cost_free_sum: model.cost_free_sum()
       problems_exist: model.get("problems_exist")
       problem_count: if model.get("problems_exist") then _.keys(model.get("problems")).length else ""
       problems: model.get("problems")

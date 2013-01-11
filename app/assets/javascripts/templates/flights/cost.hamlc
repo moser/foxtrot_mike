@@ -14,22 +14,22 @@
             - if item.cost_item.additive_value != 0
               = " + #{F.Util.currencyToString(item.cost_item.additive_value)}"
           %td= F.Util.currencyToString(item.value)
-    - if @flight.raw.launch_type() == "tow_launch" && @flight.raw.launch().get("cost")
-      - for item in @flight.raw.launch().get("cost").items
+    - if @flight.launch_type == "tow_launch" && @flight.launch.get("cost")
+      - for item in @flight.launch.get("cost").items
         %tr
-          %td= @flight.raw.launch().get("cost").cost_rule.name
+          %td= @flight.launch.get("cost").cost_rule.name
           %td
-            = "#{@flight.raw.launch()[item.cost_item.depends_on]()} * #{F.Util.currencyToString(item.cost_item.value)}"
+            = "#{@flight.launch[item.cost_item.depends_on]()} * #{F.Util.currencyToString(item.cost_item.value)}"
             - if item.cost_item.additive_value != 0
               = " + #{F.Util.currencyToString(item.cost_item.additive_value)}"
           %td= F.Util.currencyToString(item.value)
-    - if @flight.raw.launch_type() == "wire_launch" && @flight.raw.launch().get("cost")
-      - for item in @flight.raw.launch().get("cost").items
+    - if @flight.launch_type == "wire_launch" && @flight.launch.get("cost")
+      - for item in @flight.launch.get("cost").items
         %tr
-          %td= @flight.raw.launch().get("cost").cost_rule.name
+          %td= @flight.launch.get("cost").cost_rule.name
           %td
           %td= F.Util.currencyToString(item.value)
     %tr
       %td= I18n.t("views.sum")
       %td
-      %td= F.Util.currencyToString(@flight.raw.cost_free_sum())
+      %td= F.Util.currencyToString(@flight.cost_free_sum)
