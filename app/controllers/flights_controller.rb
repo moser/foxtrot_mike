@@ -31,14 +31,21 @@ class FlightsController < ApplicationController
   end
 
   def show
-    flight = AbstractFlight.find(params[:id])
-    authorize! :read, flight
-    respond_to do |f|
-      f.html do
-        @flights = [ flight, AbstractFlight.where("departure_date = ?", flight.departure_date).limit(40) ].flatten.uniq
-        render_index
+    flight = AbstractFlight.where(id: params[:id]).first
+    if flight
+      authorize! :read, flight
+      respond_to do |f|
+        f.html do
+          @flights = [ flight, AbstractFlight.where("departure_date = ?", flight.departure_date).limit(40) ].flatten.uniq
+          render_index
+        end
+        f.json { render json: flight }
       end
-      f.json { render json: flight }
+    else
+      respond_to do |f|
+        f.html { render file: "#{RAILS_ROOT}/public/404.html", status: 404 }
+        f.json { render json: {}, status: 404 }
+      end
     end
   end
 

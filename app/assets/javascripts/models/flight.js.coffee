@@ -91,6 +91,7 @@ class F.Models.Flight extends F.BaseModel
     super {},
       success: =>
         @trigger("sync")
+        @ilaunch = null
         if @launch_type() == "tow_launch"
           unless F.flights.get(@launch().id)?
             F.flights.add(@launch())
@@ -112,9 +113,9 @@ class F.Models.Flight extends F.BaseModel
     super
       success: =>
         @trigger("sync")
-      error: (m, x, o) =>
+      error: (x) =>
         if x.status == 404
-          F.flights.remove(m)
+          F.flights.remove(@)
 
   save_launch: ->
     if @launch_type() == "tow_launch" || @launch_type() == "wire_launch"
