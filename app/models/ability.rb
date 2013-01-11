@@ -12,7 +12,7 @@ class Ability
         if account.controller?
           can [:read, :create], [Person, Plane, Airfield, WireLauncher, Flight, TowFlight]
           can :read, [FlightCostRule, WireLaunchCostRule]
-          can :update, [Flight, TowFlight]
+          can [:update,:destroy], [Flight, TowFlight]
         end
         if account.treasurer?
           can :manage, [  Person, Plane, Airfield, Flight, TowFlight, Group,
