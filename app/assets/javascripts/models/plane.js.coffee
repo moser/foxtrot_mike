@@ -1,6 +1,6 @@
-Flights.Models.Plane = Backbone.Model.extend
+F.Models.Plane = Backbone.Model.extend
   paramRoot: 'plane'
 
-Flights.Collections.Planes = Backbone.Collection.extend
-  model: Flights.Models.Plane
+F.Collections.Planes = Backbone.Collection.extend
+  model: F.Models.Plane
   url: '/planes'

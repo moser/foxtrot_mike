@@ -1,4 +1,4 @@
-Flights.Presenters.FlightPresenter =
+F.Presenters.Flight =
   present: (model) ->
     if model.seat2_person()?
       seat2 = PersonPresenter.present(model.seat2_person()).name
@@ -34,7 +34,7 @@ Flights.Presenters.FlightPresenter =
       cost: model.get("cost")
       raw: model
 
-WireLaunchPresenter = Flights.Presenters.WireLaunch =
+WireLaunchPresenter = F.Presenters.WireLaunch =
   present: (model) ->
     r =
       wire_launcher: if model.wire_launcher()? then model.wire_launcher().get("registration") else ""
@@ -42,7 +42,7 @@ WireLaunchPresenter = Flights.Presenters.WireLaunch =
       editable: model.get("editable")
       raw: model
 
-PersonPresenter = Flights.Presenters.Person =
+PersonPresenter = F.Presenters.Person =
   present: (model) ->
     if model?
       name = "#{model.get("firstname")} #{model.get("lastname")}"
@@ -57,7 +57,7 @@ PersonPresenter = Flights.Presenters.Person =
       firstname: firstname
       lastname: lastname
 
-AirfieldPresenter = Flights.Presenters.Airfield =
+AirfieldPresenter = F.Presenters.Airfield =
   present: (model) ->
     if model.get("registration")? && model.get("registration") != ""
       short = model.get("registration")
@@ -69,7 +69,7 @@ AirfieldPresenter = Flights.Presenters.Airfield =
       short: short
       long: long
 
-Util = Flights.Util =
+Util = F.Util =
   intTimeToString: (i) ->
     if i < 0
       "--:--"

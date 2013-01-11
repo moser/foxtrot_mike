@@ -1,14 +1,13 @@
+class F.BaseView extends Backbone.View
 
-class Flights.BaseView extends Backbone.View
-
-class Flights.TemplateView extends Flights.BaseView
+class F.TemplateView extends F.BaseView
   template: (o) ->
     if @templateName
       JST[@templateName](o)
     else
       throw "templateName not defined"
 
-class Flights.ModelBasedView extends Flights.TemplateView
+class F.ModelBasedView extends F.TemplateView
   dirty: ->
     @model.dirty()
 

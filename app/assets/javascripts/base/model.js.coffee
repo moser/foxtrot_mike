@@ -1,4 +1,4 @@
-class Flights.BaseModel extends Backbone.Model
+class F.BaseModel extends Backbone.Model
   updateSaved: ->
     @savedAttributes = _.clone(@attributes)
 

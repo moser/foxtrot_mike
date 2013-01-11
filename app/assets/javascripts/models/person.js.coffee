@@ -1,21 +1,21 @@
-Flights.Models.Person = Backbone.Model.extend
+F.Models.Person = Backbone.Model.extend
   paramRoot: 'person'
   present: ->
-    Flights.Presenters.Person.present(@)
+    F.Presenters.Person.present(@)
 
-class Flights.Models.NoPerson
+class F.Models.NoPerson
   constructor: ->
     @name = @id = "-"
     @firstname = @lastname = "0"
   present: ->
     @
 
-class Flights.Models.NPersons extends Flights.Models.NoPerson
+class F.Models.NPersons extends F.Models.NoPerson
   constructor: (@n) ->
     @name = @id = "+#{@n}"
     @firstname = @lastname = @n
     
 
-Flights.Collections.People = Backbone.Collection.extend
-  model: Flights.Models.Person
+F.Collections.People = Backbone.Collection.extend
+  model: F.Models.Person
   url: '/people'

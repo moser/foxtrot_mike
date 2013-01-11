@@ -1,6 +1,6 @@
-class Flights.Models.WireLauncher extends Flights.BaseModel
+class F.Models.WireLauncher extends F.BaseModel
   paramRoot: 'wire_launcher'
 
-Flights.Collections.WireLaunchers = Backbone.Collection.extend
-  model: Flights.Models.WireLauncher
+F.Collections.WireLaunchers = Backbone.Collection.extend
+  model: F.Models.WireLauncher
   url: '/wire_launchers'

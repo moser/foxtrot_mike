@@ -5,9 +5,14 @@
 #= require_tree ./views
 #= require_tree ./routers
 
-window.Flights =
+window.SlideDuration = 200
+
+window.F =
   Models: {}
   Collections: {}
   Routers: {}
-  Views: {}
+  Views:
+    Flights: {}
+    Liabilities: {}
+    WireLaunches: {}
   Presenters: {}

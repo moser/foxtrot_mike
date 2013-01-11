@@ -1,4 +1,4 @@
-class Flights.Models.Flight extends Flights.BaseModel
+class F.Models.Flight extends F.BaseModel
   paramRoot: 'flight'
   urlRoot: '/flights'
   defaults:
@@ -19,31 +19,31 @@ class Flights.Models.Flight extends Flights.BaseModel
 
   plane: ->
     if @get("plane_id")?
-      Flights.planes.get(@get("plane_id"))
+      F.planes.get(@get("plane_id"))
 
   seat1_person: ->
     if @get("seat1_person_id")?
-      Flights.people.get(@get("seat1_person_id"))
+      F.people.get(@get("seat1_person_id"))
 
   seat2_person: ->
     if @get("seat2_person_id")?
-      Flights.people.get(@get("seat2_person_id"))
+      F.people.get(@get("seat2_person_id"))
 
   controller: ->
     if @get("controller_id")?
-      Flights.people.get(@get("controller_id"))
+      F.people.get(@get("controller_id"))
 
   from: ->
     if @get("from_id")?
-      Flights.airfields.get(@get("from_id"))
+      F.airfields.get(@get("from_id"))
 
   to: ->
     if @get("to_id")?
-      Flights.airfields.get(@get("to_id"))
+      F.airfields.get(@get("to_id"))
 
   cost_responsible: ->
     if @get("cost_responsible_id")?
-      Flights.people.get(@get("cost_responsible_id"))
+      F.people.get(@get("cost_responsible_id"))
 
   duration: ->
     if @get("arrival_i") >= 0 && @get("departure_i") >= 0
@@ -64,17 +64,17 @@ class Flights.Models.Flight extends Flights.BaseModel
   launch: ->
     unless @ilaunch? && @get("launch")?
       if @launch_type() == "tow_launch"
-        @ilaunch = Flights.flights.get(@get("launch").id) || new Flights.Models.Flight(@get("launch"))
+        @ilaunch = F.flights.get(@get("launch").id) || new F.Models.Flight(@get("launch"))
       else if @launch_type() == "wire_launch"
-        @ilaunch = new Flights.Models.WireLaunch(@get("launch"))
+        @ilaunch = new F.Models.WireLaunch(@get("launch"))
     @ilaunch
 
   change_launch_type: (launch_type) ->
     @ilaunch = null
     if launch_type == "tow_launch"
-      @ilaunch = new Flights.Models.Flight({ from_id: @get("from_id"), to_id: @get("from_id"), departure_i: @get("departure_i"), type: "TowFlight", is_tow: true})
+      @ilaunch = new F.Models.Flight({ from_id: @get("from_id"), to_id: @get("from_id"), departure_i: @get("departure_i"), type: "TowFlight", is_tow: true})
     else if launch_type == "wire_launch"
-      @ilaunch = new Flights.Models.WireLaunch({ type: "WireLaunch" })
+      @ilaunch = new F.Models.WireLaunch({ type: "WireLaunch" })
     @set("launch", if @ilaunch? then @ilaunch.toJSON() else null)
     
   dirty: ->
@@ -92,19 +92,19 @@ class Flights.Models.Flight extends Flights.BaseModel
       success: =>
         @trigger("sync")
         if @launch_type() == "tow_launch"
-          unless Flights.flights.get(@launch().id)?
-            Flights.flights.add(@launch())
+          unless F.flights.get(@launch().id)?
+            F.flights.add(@launch())
           @launch().fetch()
           @launch().trigger("sync")
         else if @launch_type() == "wire_launch"
           @launch().trigger("sync")
-        f = Flights.flights.find((f) => f.get("abstract_flight_id") == @id)
+        f = F.flights.find((f) => f.get("abstract_flight_id") == @id)
         f.fetch() if f?
 
   destroy: ->
     super success: =>
       @trigger("destroy")
-      f = Flights.flights.find((f) => f.get("abstract_flight_id") == @id)
+      f = F.flights.find((f) => f.get("abstract_flight_id") == @id)
       f.fetch() if f?
 
 
@@ -114,7 +114,7 @@ class Flights.Models.Flight extends Flights.BaseModel
         @trigger("sync")
       error: (m, x, o) =>
         if x.status == 404
-          Flights.flights.remove(m)
+          F.flights.remove(m)
 
   save_launch: ->
     if @launch_type() == "tow_launch" || @launch_type() == "wire_launch"
@@ -124,7 +124,7 @@ class Flights.Models.Flight extends Flights.BaseModel
 
   liabilities: ->
     if !@liabilities_collection? && @id?
-      @liabilities_collection = new Flights.Collections.Liabilities(@get("liabilities"))
+      @liabilities_collection = new F.Collections.Liabilities(@get("liabilities"))
       @liabilities_collection.url = "#{@url()}/liabilities"
       @liabilities_collection.flight = @
     @liabilities_collection
@@ -138,8 +138,8 @@ class Flights.Models.Flight extends Flights.BaseModel
     else
       0
 
-Flights.Collections.Flights = Backbone.Collection.extend
-  model: Flights.Models.Flight
+F.Collections.Flights = Backbone.Collection.extend
+  model: F.Models.Flight
   url: '/flights'
 
   setFilter: (filter) ->

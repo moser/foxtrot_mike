@@ -1,6 +1,6 @@
-Flights.Models.Airfield = Backbone.Model.extend
+F.Models.Airfield = Backbone.Model.extend
   paramRoot: 'airfield'
 
-Flights.Collections.Airfields = Backbone.Collection.extend
-  model: Flights.Models.Airfield
+F.Collections.Airfields = Backbone.Collection.extend
+  model: F.Models.Airfield
   url: '/airfields'

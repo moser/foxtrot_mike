@@ -1,12 +1,12 @@
 .app_container
 :javascript
   $(function() {
-    Flights.wire_launchers = new Flights.Collections.WireLaunchers(#{ @wire_launchers.to_json.html_safe });
-    Flights.people = new Flights.Collections.People(#{ @people.to_json.html_safe });
-    Flights.airfields = new Flights.Collections.Airfields(#{ @airfields.to_json.html_safe });
-    Flights.planes = new Flights.Collections.Planes(#{ @planes.to_json.html_safe });
-    Flights.flights = new Flights.Collections.Flights();
-    Flights.flights.reset(#{ @flights.to_json.html_safe });
-    window.router = new Flights.Routers.FlightsRouter();
+    F.wire_launchers = new F.Collections.WireLaunchers(#{ @wire_launchers.to_json.html_safe });
+    F.people = new F.Collections.People(#{ @people.to_json.html_safe });
+    F.airfields = new F.Collections.Airfields(#{ @airfields.to_json.html_safe });
+    F.planes = new F.Collections.Planes(#{ @planes.to_json.html_safe });
+    F.flights = new F.Collections.Flights();
+    F.flights.reset(#{ @flights.to_json.html_safe });
+    window.router = new F.Routers.FlightsRouter();
     Backbone.history.start({pushState: true});
   });

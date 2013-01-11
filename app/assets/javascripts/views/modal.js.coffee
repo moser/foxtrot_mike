@@ -1,4 +1,4 @@
-class Flights.Views.CancelResetSaveDialogView extends Flights.TemplateView
+class F.Views.CancelResetSaveDialogView extends F.TemplateView
   templateName: "dialog/show"
   events:
     "click a.cancel": "cancel"

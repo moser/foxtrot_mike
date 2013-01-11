@@ -1,4 +1,4 @@
-class Flights.Views.SearchParent extends Backbone.View
+class F.Views.SearchParent extends Backbone.View
   className: "searchParent"
   events:
     "keydown input.search": "keydown"
