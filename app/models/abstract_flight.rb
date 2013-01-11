@@ -2,7 +2,7 @@ require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
   #Purposes = ['training', 'exercise', 'tow', nil] 
-  IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to]
+  IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to, :liabilities]
   before_save :destroy_launch
   before_save :execute_soft_validation
   after_save :notify_launch
@@ -18,10 +18,10 @@ class AbstractFlight < ActiveRecord::Base
   belongs_to :launch, :polymorphic => true, :readonly => false, :dependent => :destroy
   has_one :manual_cost, :as => :item
   has_many :accounting_entries, :as => :item
+  has_many :liabilities, :after_add => :association_changed, :after_remove => :association_changed, :foreign_key => "flight_id"
 
-
-  default_scope order("departure_date DESC, departure_i DESC")
-  scope :reverse_order, order("departure_date ASC, departure_i ASC")
+  default_scope -> { order("departure_date DESC, departure_i DESC").includes(IncludeAll) }
+  scope :reverse_order, -> { order("departure_date ASC, departure_i ASC").includes(IncludeAll) }
 
   class << self
     def between(from, to)

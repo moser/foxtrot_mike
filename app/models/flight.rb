@@ -1,5 +1,4 @@
 class Flight < AbstractFlight
-  has_many :liabilities, :after_add => :association_changed, :after_remove => :association_changed
   belongs_to :cost_hint
   belongs_to :accounting_session
 
