@@ -26,7 +26,13 @@ class F.Views.Flights.Edit extends F.TemplateView
     false
 
   delete: (e) ->
-    @model.destroy()
+    new F.Views.YesNo
+      model:
+        info:
+          title: I18n.t("views.destroy")
+          message: I18n.t("views.areusure")
+        yes: =>
+          @model.destroy()
     false
 
   initialize: ->

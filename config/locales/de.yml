@@ -12,7 +12,11 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
-    sum: Summe
+    dialog:
+      unsaved:
+        title: "Ungespeicherte Änderungen"
+        message: "Es gibt ungespeicherte Änderungen in diesem Objekt."
+    sum: "Summe"
     permalink: "Link für diesen Flug"
     confirm: Ja
     aggregate_entries: "Sammeleinträge"
@@ -47,6 +51,8 @@ de:
     validity: "Gültigkeit"
     filter_group: Nach Gruppe filtern
     filter_search: Suchen
+    yes: "Ja"
+    no: "Nein"
     dates:
       infinity: "unbegrenzt"
       minus_infinity: "unbegrenzt"

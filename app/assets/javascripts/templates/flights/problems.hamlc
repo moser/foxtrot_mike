@@ -1,7 +1,6 @@
 %table.table
   %tbody
     - problems = @flight.problems
-    - console.log(problems)
     - _.each _.keys(problems), (k) ->
       %tr
         %td= I18n.t("soft_validation.flight.#{k}", problems[k])

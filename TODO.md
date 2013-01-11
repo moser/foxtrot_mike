@@ -1,5 +1,4 @@
 # Before release
-- delete flight -> confirm
 - backups !!
 - filter frontend
 

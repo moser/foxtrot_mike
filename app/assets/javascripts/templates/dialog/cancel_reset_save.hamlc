@@ -1,0 +1,9 @@
+.modal.hide.fade
+  .modal-header
+    %h3= @info.title
+  .modal-body
+    = @info.message
+  .modal-footer
+    %a.btn.cancel= I18n.t("views.cancel")
+    %a.btn.reset= I18n.t("helpers.submit.reset")
+    %a.btn.btn-primary.save= I18n.t("helpers.submit.update")

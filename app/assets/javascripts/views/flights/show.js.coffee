@@ -34,8 +34,8 @@ class F.Views.Flights.Show extends F.TemplateView
         new F.Views.CancelResetSaveDialogView
           model:
             info:
-              title: "Unsaved..."
-              message: "There is unsaved state, would you really like to BLA"
+              title: I18n.t("views.dialog.unsaved.title")
+              message: I18n.t("views.dialog.unsaved.message")
             reset: =>
               @detailsView.edit_view.reset()
               @details(false)
