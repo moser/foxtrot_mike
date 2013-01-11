@@ -1,6 +1,6 @@
 class FlightsController < ApplicationController
   def index
-    authorize! :read, AbstractFlight
+    authorize! :read, Flight
     @flights = AbstractFlight.scoped
     if params[:filter_model] && params[:filter_id]
       filter_by = (params[:filter_model] || "").singularize.camelcase
