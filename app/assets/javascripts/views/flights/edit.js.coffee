@@ -12,8 +12,11 @@ class F.Views.Flights.Edit extends F.TemplateView
 
   save: (e) ->
     _.each [@edit_flight, @edit_launch], ((v) -> v.update_model())
-    @model.save()
-    @renderSubViews()
+    if @model.invalidFields().length == 0
+      @model.save()
+      @renderSubViews()
+    else
+      @$(".error").effect("highlight", {}, 3000)
     false
 
   reset: (e) ->

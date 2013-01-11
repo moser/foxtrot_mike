@@ -138,6 +138,9 @@ class F.Models.Flight extends F.BaseModel
     else
       0
 
+  invalidFields: ->
+    _.compact(_.map([ "plane", "seat1_person", "from", "to" ], ((f) -> if @get("#{f}_id")? && @get("#{f}_id") != "" then undefined else f), @))
+
 F.Collections.Flights = Backbone.Collection.extend
   model: F.Models.Flight
   url: '/flights'

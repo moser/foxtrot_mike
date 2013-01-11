@@ -1,49 +1,49 @@
 - unless @flight.is_tow
-  .control-group
+  .control-group.departure_date
     %label.control-label= I18n.t("activerecord.attributes.abstract_flight.departure_date")
     .controls
-      %input{ type: "hidden", name: "departure_date", value: @flight.raw.get("departure_date") }
-      %input.input-small{ type: "text", name: "departure_date_front", value: @flight.date, disabled: !@flight.editable }
-.control-group
+      %input{ type: "hidden", name: "departure_date" }
+      %input.input-small{ type: "text", name: "departure_date_front", disabled: !@flight.editable }
+.control-group.plane
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.plane")
   .controls.relative
-    %input{ type: "hidden", name: "plane_id", value: @flight.raw.get("plane_id") }
-    %input.edit_field{ type: "text", data-edit: "plane", value: @flight.plane, disabled: !@flight.editable }
-.control-group
+    %input{ type: "hidden", name: "plane_id" }
+    %input.edit_field{ type: "text", name: "plane_front", data-edit: "plane", disabled: !@flight.editable }
+.control-group.seat1_person
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.seat1")
   .controls.relative
-    %input{ type: "hidden", name: "seat1_person_id", value: @flight.raw.get("seat1_person_id") }
-    %input.edit_field{ type: "text", data-edit: "seat1_person", value: @flight.seat1, disabled: !@flight.editable }
-.control-group
+    %input{ type: "hidden", name: "seat1_person_id" }
+    %input.edit_field{ type: "text", name: "seat1_person_front", data-edit: "seat1_person", disabled: !@flight.editable }
+.control-group.seat2
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.seat2")
   .controls.relative
-    %input{ type: "hidden", name: "seat2_id", value: @flight.raw.get("seat2_person_id") || if @flight.raw.get("seat2_n") > 0 then "+#{@flight.raw.get("seat2_n")}" else "" }
-    %input.edit_field{ type: "text", data-edit: "seat2", value: @flight.seat2, disabled: !@flight.editable }
-.control-group
+    %input{ type: "hidden", name: "seat2_id"  }
+    %input.edit_field{ type: "text", name: "seat2_front", data-edit: "seat2", disabled: !@flight.editable }
+.control-group.from
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.from")
   .controls.relative
-    %input{ type: "hidden", name: "from_id", value: @flight.raw.get("from_id") }
-    %input.edit_field{ type: "text", data-edit: "from", value: @flight.from.long, disabled: @flight.is_tow || !@flight.editable }
-.control-group
+    %input{ type: "hidden", name: "from_id"  }
+    %input.edit_field{ type: "text", name: "from_front", data-edit: "from" , disabled: @flight.is_tow || !@flight.editable }
+.control-group.to
   %label.control-label= I18n.t("activerecord.attributes.abstract_flight.to")
   .controls.relative
-    %input{ type: "hidden", name: "to_id", value: @flight.raw.get("to_id") }
-    %input.edit_field{ type: "text", data-edit: "to", value: @flight.to.long, disabled: !@flight.editable }
-.control-group
+    %input{ type: "hidden", name: "to_id" }
+    %input.edit_field{ type: "text", name: "to_front", data-edit: "to", disabled: !@flight.editable }
+.control-group.times
   %label.control-label Von - Bis: Dauer
   .controls
-    %input{ type: "hidden", name: "departure_i", value: @flight.raw.get("departure_i") }
-    %input{ type: "hidden", name: "arrival_i", value: @flight.raw.get("arrival_i") }
-    %input.time.input-mini{ type: "text", name: "departure_i_front", value: @flight.departure, disabled: @flight.is_tow || !@flight.editable }
-    %input.time.input-mini{ type: "text", name: "arrival_i_front", value: @flight.arrival, disabled: !@flight.editable }
-    %input.input-mini{ type: "text", name: "duration_front", value: @flight.duration, disabled: true }
+    %input{ type: "hidden", name: "departure_i" }
+    %input{ type: "hidden", name: "arrival_i" }
+    %input.time.input-mini{ type: "text", name: "departure_i_front", disabled: @flight.is_tow || !@flight.editable }
+    %input.time.input-mini{ type: "text", name: "arrival_i_front", disabled: !@flight.editable }
+    %input.input-mini{ type: "text", name: "duration_front", disabled: true }
 - unless @flight.is_tow
-  .control-group
+  .control-group.controller
     %label.control-label= I18n.t("activerecord.attributes.abstract_flight.controller")
     .controls.relative
-      %input{ type: "hidden", name: "controller_id", value: @flight.raw.get("controller_id") }
-      %input.edit_field{ type: "text", data-edit: "controller", value: @flight.controller, disabled: !@flight.editable }
-.control-group
+      %input{ type: "hidden", name: "controller_id" }
+      %input.edit_field{ type: "text", name: "controller_front", data-edit: "controller", disabled: !@flight.editable }
+.control-group.comment
   %label.control-label= I18n.t("attributes.comment")
   .controls
-    %textarea{ name: "comment", disabled: !@flight.editable }= @flight.comment_long
+    %textarea{ name: "comment", disabled: !@flight.editable }
