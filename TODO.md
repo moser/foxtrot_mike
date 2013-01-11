@@ -1,6 +1,14 @@
 # Before release
 - backups !!
 - filter frontend
+- serialize problems
+- cost:
+  - rename accounting\_entries\_valid to cost\_valid
+  - add relation cost\_rule
+  - calculate cost based on the rule
+  - make sure it is reset when a rule changes... (like now with accounting entries)
+- cron job
+
 
 # really soon
 - grouping
