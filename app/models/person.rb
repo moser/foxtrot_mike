@@ -6,8 +6,6 @@ class Person < ActiveRecord::Base
   include Current
   include AccountingEntryInvalidation
 
-  has_paper_trail
-
   has_many :accounts
   has_many :flights_on_seat1, :foreign_key => 'seat1_person_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll 
   has_many :flights_on_seat2, :foreign_key => 'seat2_person_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll 

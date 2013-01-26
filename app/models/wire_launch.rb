@@ -6,8 +6,6 @@ class WireLaunch < ActiveRecord::Base
   before_update :before_update_invalidate_accounting_entries
   after_destroy :delete_accouting_entries
 
-  has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.abstract_flight.id unless l.nil? || l.new_record? || l.abstract_flight.nil? } }
-
   has_many :accounting_entries, :as => :item
   belongs_to :wire_launcher
   belongs_to :operator, :class_name => "Person"

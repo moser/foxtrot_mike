@@ -39,10 +39,6 @@ describe Person do
     r.class_name.should == "PersonCostCategoryMembership"
     r.macro.should == :has_many
   end
-  
-  it "should be revisable" do
-    Person.new.should respond_to :versions
-  end
 
   it "should tell if she is a trainee" do
     p = Person.spawn

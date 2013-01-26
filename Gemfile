@@ -5,7 +5,6 @@ gem "rails3-generators"
 
 gem "haml-rails"
 gem "uuidtools"
-gem "paper_trail"
 gem "simple_form"
 gem "authlogic"
 gem "cancan"

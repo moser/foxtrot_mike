@@ -50,10 +50,6 @@ describe Flight do
     end
   end
 
-  it "should be revisable" do
-    Flight.new.should respond_to :versions
-  end
-
   describe "accounting_entries" do
     it "should invalidate accounting_entries" do
       f = F.create(:flight)

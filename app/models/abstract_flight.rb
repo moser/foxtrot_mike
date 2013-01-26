@@ -52,12 +52,6 @@ class AbstractFlight < ActiveRecord::Base
 
   #accepts_nested_attributes_for :launch
 
-  has_paper_trail :meta => { :abstract_flight_id => Proc.new do |l| 
-            unless l.nil? || !l.is_a?(TowFlight) || l.new_record? || l.abstract_flight.nil?
-              l.abstract_flight.id  
-            end
-          end }
-
   attr_reader :problems
   def seats_used
     (seat1_person ? 1 : 0 ) +
@@ -119,14 +113,6 @@ class AbstractFlight < ActiveRecord::Base
       @problems["#{field}_needed"] = {} if send(field) < 0
     end
     @problems.empty?
-  end
-
-  def all_versions
-    (versions + Version.where(:abstract_flight_id => id)).sort_by { |e| e.created_at }
-  end
-
-  def all_changes
-    all_versions.select { |version| version.event != "create" }
   end
 
   validates_presence_of :plane

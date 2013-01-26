@@ -3,8 +3,6 @@ class WireLauncher < ActiveRecord::Base
   include Membership
   include Current
   include AccountingEntryInvalidation
-  
-  has_paper_trail
 
   has_many :wire_launcher_cost_category_memberships
   membership :wire_launcher_cost_category_memberships

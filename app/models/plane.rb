@@ -8,8 +8,6 @@ class Plane < ActiveRecord::Base
 
   after_initialize :init
 
-  has_paper_trail
-
   has_many :flights, :class_name => "AbstractFlight", :include => AbstractFlight::IncludeAll 
   has_many :plane_cost_category_memberships, :order => "valid_from ASC"
   has_many :financial_account_ownerships, :as => :owner, :after_add => :association_changed, :after_remove => :association_changed

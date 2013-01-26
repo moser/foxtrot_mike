@@ -46,10 +46,6 @@ describe Plane do
     [b, c, a].sort.should == [c, a, b]
   end
 
-  it "should be revisable" do
-    Plane.new.should respond_to :versions
-  end
-
   it "should find concerned accounting entry owners" do
     m = mock("make sure the block is executed")
     m.should_receive(:lala)

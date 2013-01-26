@@ -4,8 +4,6 @@ class Liability < ActiveRecord::Base
 
   flight_relation :flight
 
-  has_paper_trail :meta => { :abstract_flight_id => Proc.new { |l| l.flight_id unless l.nil? || l.new_record? || l.flight_id.nil? } }  
-
   after_save :invalidate_flight
   after_destroy :invalidate_flight
 

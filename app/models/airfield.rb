@@ -1,8 +1,6 @@
 class Airfield < ActiveRecord::Base
   include UuidHelper
 
-  has_paper_trail
-
   has_many :flights_from, :foreign_key => 'from_id', :class_name => 'AbstractFlight', :include => AbstractFlight::IncludeAll
   has_many :flights_to, :foreign_key => 'to_id', :class_name => 'AbstractFlight', :include =>  AbstractFlight::IncludeAll
 
