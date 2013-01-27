@@ -1,4 +1,18 @@
 module ValidityCheck
+  module ClassMethods
+    def valid_at(time)
+      where("(valid_from <= ? OR valid_from IS NULL) AND (valid_to >= ? OR valid_to IS NULL)", time, time)
+    end
+
+    def not_valid_anymore_at(time)
+      where("(valid_to < ? AND valid_to IS NOT NULL)", time)
+    end
+
+    def not_yet_valid_at(time)
+      where("(valid_from > ? AND valid_from IS NOT NULL)", time)
+    end
+  end
+
   # valid_from == nil <=> valid_from = -infinity
   # valid_to == nil <=> valid_to = infinity
   def valid_at?(time = Time.zone.now)
@@ -34,6 +48,7 @@ module ValidityCheck
   end
 
   def self.included(base)
+    base.extend ClassMethods
     base.validates_presence_of :valid_from
     base.validates_each :valid_to do |record, attr, value|
       unless record.valid_from.nil? || record.valid_to.nil? || record.valid_from < record.valid_to
