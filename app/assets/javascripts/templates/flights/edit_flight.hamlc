@@ -43,6 +43,11 @@
     .controls.relative
       %input{ type: "hidden", name: "controller_id" }
       %input.edit_field{ type: "text", name: "controller_front", data-edit: "controller", disabled: !@flight.editable }
+  .control-group.cost_hint
+    %label.control-label= I18n.t("activerecord.attributes.abstract_flight.cost_hint")
+    .controls.relative
+      %input{ type: "hidden", name: "cost_hint_id" }
+      %input.edit_field{ type: "text", name: "cost_hint_front", data-edit: "cost_hint", disabled: !@flight.editable }
 .control-group.comment
   %label.control-label= I18n.t("attributes.comment")
   .controls

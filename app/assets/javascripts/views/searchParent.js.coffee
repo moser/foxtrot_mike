@@ -63,7 +63,7 @@ class F.Views.SearchParent extends Backbone.View
     window.setTimeout((=> @$("li.result.ui-widget-header").scrollintoview({offset: 50})), 100)
       
   listFindById: (id) =>
-    (x for x in @list when x.id == id)[0]
+    (x for x in @list when x.id == id or x.id == parseInt(id))[0]
 
   initialize: ->
     [@for, @span, @list, @label, @match, @score, @callback] = [@options.for, @options.span, @options.list, @options.label, @options.match, @options.score, @options.callback]

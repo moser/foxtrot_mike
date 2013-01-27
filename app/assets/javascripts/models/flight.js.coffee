@@ -36,6 +36,10 @@ class F.Models.Flight extends F.BaseModel
     if @get("controller_id")?
       F.people.get(@get("controller_id"))
 
+  cost_hint: ->
+    if @get("cost_hint_id")?
+      F.cost_hints.get(@get("cost_hint_id"))
+
   from: ->
     if @get("from_id")?
       F.airfields.get(@get("from_id"))

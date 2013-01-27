@@ -23,6 +23,7 @@ class FlightsController < ApplicationController
   end
 
   def render_index
+    @cost_hints = CostHint.all
     @people = @flights.map(&:concerned_people).flatten.uniq.compact
     @airfields = @flights.map { |f| [f.from, f.to] }.flatten.uniq.compact
     @planes = Plane.all

@@ -1,6 +1,7 @@
 .app_container
 :javascript
   $(function() {
+    F.cost_hints = new F.Collections.CostHints(#{ @cost_hints.to_json.html_safe });
     F.wire_launchers = new F.Collections.WireLaunchers(#{ @wire_launchers.to_json.html_safe });
     F.people = new F.Collections.People(#{ @people.to_json.html_safe });
     F.airfields = new F.Collections.Airfields(#{ @airfields.to_json.html_safe });

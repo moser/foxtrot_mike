@@ -151,6 +151,7 @@ de:
         home: Heimatflugplatz
         disabled_long: Dieser Flugplatz ist deaktiviert. Er wird nicht zur Verwendung angeboten.
       abstract_flight:
+        cost_hint: Kostengruppe
         id: "ID"
         base: "Dieser Flug"
         plane: Flugzeug

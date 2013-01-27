@@ -43,6 +43,12 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
+        when "cost_hint"
+          params =
+            list: _.flatten([new F.Models.NoCostHint(), F.cost_hints.models])
+            label: (p) -> p.present().name
+            score: (p) -> "#{1} #{p.present().name}"
+            match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
         when "from", "to"
           present = (p) -> F.Presenters.Airfield.present(p)
           params =
@@ -63,7 +69,7 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
   update_model: ->
     attr = {}
     _.each [ "departure_date", "plane_id", "seat1_person_id", "from_id",
-             "to_id", "departure_i", "arrival_i", "controller_id" ], ((f) ->
+             "to_id", "departure_i", "arrival_i", "controller_id", "cost_hint_id" ], ((f) ->
                if @$("input[name=#{f}]").length > 0
                  attr[f] = @$("input[name=#{f}]").val()), @
     _.each [ "departure_i", "arrival_i" ], ((f) ->
@@ -113,6 +119,8 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
     @$("input[name=duration_front]").val(p.duration)
     @$("input[name=controller_id]").val(@model.get("controller_id"))
     @$("input[name=controller_front]").val(p.controller)
+    @$("input[name=cost_hint_id]").val(@model.get("cost_hint_id"))
+    @$("input[name=cost_hint_front]").val(p.cost_hint)
     @$("textarea[name=comment]").val(p.comment_long)
     @$(".control-group").removeClass("error")
     _.each(@model.invalidFields(),((f) -> @$(".control-group.#{f}").addClass("error")), @)
