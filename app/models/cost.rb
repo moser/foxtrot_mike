@@ -1,7 +1,7 @@
 class Cost
   attr_accessor :items, :cost_rule
 
-  def initialize(cost_rule, items = [])
+  def initialize(cost_rule = nil, items = [])
     @cost_rule = cost_rule
     @items = items
   end
@@ -19,6 +19,10 @@ class Cost
   end
 
   def as_json
-    super.merge({ sum: sum, free_sum: free_sum })
+    super.merge({ sum: sum, free_sum: free_sum, empty: empty? })
+  end
+
+  def empty?
+    @cost_rule.nil? && @items.empty?
   end
 end

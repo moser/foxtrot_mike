@@ -5,6 +5,7 @@ class AbstractFlight < ActiveRecord::Base
   IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to, :liabilities]
   before_save :destroy_launch
   before_save :execute_soft_validation
+  before_save :execute_cost_calculation
   after_save :notify_launch
   after_destroy :delete_accouting_entries
 
@@ -22,6 +23,9 @@ class AbstractFlight < ActiveRecord::Base
 
   default_scope -> { order("departure_date DESC, departure_i DESC").includes(IncludeAll) }
   scope :reverse_order, -> { order("departure_date ASC, departure_i ASC").includes(IncludeAll) }
+
+  serialize :problems, Hash
+  serialize :cached_cost, Cost
 
   class << self
     def between(from, to)
@@ -52,7 +56,6 @@ class AbstractFlight < ActiveRecord::Base
 
   #accepts_nested_attributes_for :launch
 
-  attr_reader :problems
   def seats_used
     (seat1_person ? 1 : 0 ) +
       (seat2_person ? 1: seat2_n)
@@ -98,21 +101,21 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def soft_validate
-    @problems = {}
-    @problems[:too_many_people] = {} if too_many_people_for_plane?
-    @problems[:seat2_is_not_an_instructor] = {} if seat2_not_an_instructor?
-    @problems[:launch_method_impossible] = {} if launch_method_impossible?
-    @problems[:seat1_no_license] = {} if seat1_no_license?
-    @problems[:no_cost_calculation_possible] = {} if no_cost_calculation_possible?
+    self.problems = {}
+    problems[:too_many_people] = {} if too_many_people_for_plane?
+    problems[:seat2_is_not_an_instructor] = {} if seat2_not_an_instructor?
+    problems[:launch_method_impossible] = {} if launch_method_impossible?
+    problems[:seat1_no_license] = {} if seat1_no_license?
+    problems[:no_cost_calculation_possible] = {} if no_cost_calculation_possible?
     if not_between_sr_and_ss?
       sr = (from && from.srss? && from.srss.sunrise_i(departure_date)) ||-1
       ss = (to && to.srss? && to.srss.sunset_i(departure_date)) ||-1
-      @problems[:not_between_sr_and_ss] = { :sr => DayTime.format(sr), :ss => DayTime.format(ss) }
+      problems[:not_between_sr_and_ss] = { :sr => DayTime.format(sr), :ss => DayTime.format(ss) }
     end
     [ :departure_i, :arrival_i ].each do |field|
-      @problems["#{field}_needed"] = {} if send(field) < 0
+      problems["#{field}_needed"] = {} if send(field) < 0
     end
-    @problems.empty?
+    problems.empty?
   end
 
   validates_presence_of :plane
@@ -137,13 +140,17 @@ class AbstractFlight < ActiveRecord::Base
     launch.nil? ? "self_launch" : launch.to_s
   end
 
+  def calculate_cost
+    candidates = FlightCostRule.for(self).map { |cr| cr.apply_to(self) }
+    candidates = candidates.sort_by { |a| a.free_sum }
+    self.cached_cost = candidates.first || Cost.new
+  end
+
   def cost
-    unless @cost
-      candidates = FlightCostRule.for(self).map { |cr| cr.apply_to(self) }
-      candidates = candidates.sort_by { |a| a.free_sum }
-      @cost = candidates.first
+    if !cached_cost || cached_cost.empty? || !accounting_entries_valid
+      calculate_cost
     end
-    @cost
+    cached_cost
   end
 
   def launch_cost
@@ -153,11 +160,11 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def cost_sum
-    [ (cost || Cost.new(nil)), (launch_cost || Cost.new(nil)) ].map { |c| c.sum }.sum
+    [ cost, (launch_cost || Cost.new) ].map { |c| c.sum }.sum
   end
 
   def free_cost_sum
-    [ (cost || Cost.new(nil)), (launch_cost || Cost.new(nil)) ].map { |c| c.free_sum }.sum
+    [ cost, (launch_cost || Cost.new) ].map { |c| c.free_sum }.sum
   end
 
   def cost_responsible
@@ -293,7 +300,7 @@ class AbstractFlight < ActiveRecord::Base
 
   def as_json(options = {})
     soft_validate if problems_exist
-    super(options.merge(methods: [ :editable, :purpose, :cost, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type ])).merge({ launch: launch.as_json, problems: problems })
+    super(options.merge(methods: [ :editable, :purpose, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type, :cost ])).merge({ launch: launch.as_json, cost: cost.as_json })
   end
   
   def is_tow
@@ -409,6 +416,11 @@ private
 
   def execute_soft_validation
     self.problems_exist = !soft_validate
+    true
+  end
+
+  def execute_cost_calculation
+    calculate_cost
     true
   end
 

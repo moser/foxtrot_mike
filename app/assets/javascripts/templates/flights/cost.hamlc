@@ -5,7 +5,7 @@
       %th= I18n.t("activerecord.attributes.cost_rule.formula")
       %th= I18n.t("activerecord.attributes.cost_rule.value")
   %tbody
-    - if @flight.cost
+    - if @flight.cost && !@flight.cost.empty
       - for item in @flight.cost.items
         %tr
           %td= @flight.cost.cost_rule.name
@@ -14,7 +14,7 @@
             - if item.cost_item.additive_value != 0
               = " + #{F.Util.currencyToString(item.cost_item.additive_value)}"
           %td= F.Util.currencyToString(item.value)
-    - if @flight.launch_type == "tow_launch" && @flight.launch.get("cost")
+    - if @flight.launch_type == "tow_launch" && @flight.launch.get("cost") && !@flight.launch.get("cost").empty
       - for item in @flight.launch.get("cost").items
         %tr
           %td= @flight.launch.get("cost").cost_rule.name
@@ -23,7 +23,7 @@
             - if item.cost_item.additive_value != 0
               = " + #{F.Util.currencyToString(item.cost_item.additive_value)}"
           %td= F.Util.currencyToString(item.value)
-    - if @flight.launch_type == "wire_launch" && @flight.launch.get("cost")
+    - if @flight.launch_type == "wire_launch" && @flight.launch.get("cost") && !@flight.launch.get("cost").empty
       - for item in @flight.launch.get("cost").items
         %tr
           %td= @flight.launch.get("cost").cost_rule.name

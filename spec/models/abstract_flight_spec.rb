@@ -258,7 +258,7 @@ describe AbstractFlight do
   describe "cost" do
     it "should be nil if there is no crew" do
       f = Flight.new
-      f.cost.should be_nil
+      f.cost.should be_empty
     end
   end
   

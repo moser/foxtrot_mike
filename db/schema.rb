@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126165147) do
+ActiveRecord::Schema.define(:version => 20130127213317) do
 
   create_table "abstract_flights", :force => true do |t|
     t.string   "plane_id",                 :limit => 36
@@ -35,6 +35,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "seat1_person_id"
     t.string   "seat2_person_id"
     t.integer  "seat2_n",                                :default => 0
+    t.text     "problems"
+    t.text     "cached_cost"
   end
 
   create_table "accounting_entries", :force => true do |t|
@@ -43,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "value"
     t.integer  "accounting_session_id"
     t.string   "item_type"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "manual",                :default => false
     t.string   "text"
     t.integer  "item_id"
@@ -53,8 +55,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
   create_table "accounting_sessions", :force => true do |t|
     t.string   "name"
     t.datetime "finished_at"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.date     "end_date"
     t.date     "start_date"
     t.string   "voucher_number"
@@ -79,8 +81,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "admin",                             :default => false
     t.boolean  "license_official",                  :default => false
     t.boolean  "treasurer",                         :default => false
@@ -95,8 +97,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "name"
     t.string   "registration"
     t.boolean  "disabled",                   :default => false
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.float    "lat",                        :default => 0.0
     t.float    "long",                       :default => 0.0
     t.boolean  "home",                       :default => false
@@ -106,8 +108,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
 
   create_table "cost_hints", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cost_rule_conditions", :force => true do |t|
@@ -119,8 +121,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "condition_value_s"
     t.string   "cost_rule_type"
     t.string   "type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -132,8 +134,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -143,14 +145,14 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "owner_type"
     t.integer  "financial_account_id"
     t.date     "valid_from"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "financial_accounts", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "number",              :default => ""
     t.boolean  "advance_payment",     :default => false
     t.string   "bank_account_holder", :default => ""
@@ -165,8 +167,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "financial_account_id"
     t.string   "depends_on"
     t.string   "name"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "flight_cost_rule_id"
   end
 
@@ -178,20 +180,20 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.date     "valid_from"
     t.date     "valid_to"
     t.text     "comment"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "legal_plane_classes", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "legal_plane_classes_licenses", :id => false, :force => true do |t|
@@ -203,8 +205,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "id"
     t.string   "person_id"
     t.integer  "proportion"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "flight_id"
   end
 
@@ -214,8 +216,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.date     "valid_from"
     t.date     "valid_to"
     t.string   "person_id",  :limit => 36
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "manual_costs", :id => false, :force => true do |t|
@@ -224,8 +226,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "item_type"
     t.integer  "value"
     t.text     "comment"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "manual_costs", ["id"], :name => "index_manual_costs_on_id", :unique => true
@@ -254,8 +256,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.boolean  "primary_member",               :default => true
     t.date     "entry_date"
     t.string   "member_state"
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "member"
   end
 
@@ -263,8 +265,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
 
   create_table "person_cost_categories", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "person_cost_category_memberships", :force => true do |t|
@@ -272,15 +274,15 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "person_cost_category_id"
     t.date     "valid_from"
     t.date     "valid_to"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "plane_cost_categories", :force => true do |t|
     t.string   "name"
     t.string   "tow_cost_rule_type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "plane_cost_category_memberships", :force => true do |t|
@@ -288,8 +290,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "plane_cost_category_id"
     t.date     "valid_from"
     t.date     "valid_to"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "planes", :id => false, :force => true do |t|
@@ -307,8 +309,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.boolean  "can_be_towed"
     t.boolean  "can_be_wire_launched"
     t.boolean  "disabled",                                          :default => false
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "selflaunching"
     t.integer  "seat_count"
     t.boolean  "default_engine_duration_to_duration"
@@ -331,8 +333,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "additive_cost",           :default => 0
     t.date     "valid_from"
     t.date     "valid_to"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tow_cost_rules", :force => true do |t|
@@ -342,8 +344,8 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.string   "comment"
     t.date     "valid_from"
     t.date     "valid_to"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tow_levels", :force => true do |t|
@@ -351,16 +353,16 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "tow_cost_rule_id"
     t.integer  "cost"
     t.string   "comment"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "wire_launch_cost_items", :force => true do |t|
     t.string   "name"
     t.integer  "value"
     t.integer  "financial_account_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "wire_launch_cost_rule_id"
   end
 
@@ -371,14 +373,14 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.date     "valid_from"
     t.date     "valid_to"
     t.text     "comment"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "wire_launcher_cost_categories", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "wire_launcher_cost_category_memberships", :force => true do |t|
@@ -386,15 +388,15 @@ ActiveRecord::Schema.define(:version => 20130126165147) do
     t.integer  "wire_launcher_cost_category_id"
     t.date     "valid_from"
     t.date     "valid_to"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "wire_launchers", :id => false, :force => true do |t|
     t.string   "id",           :limit => 36
     t.string   "registration"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "wire_launchers", ["id"], :name => "index_wire_launchers_on_id", :unique => true
