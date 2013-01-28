@@ -21,6 +21,10 @@ module Membership
         def #{other_name.pluralize}_at(time)
           #{association}_at(time).map { |e| e.#{other_name} }
         end
+
+        def #{other_name}_ids_at(time)
+          #{association}_at(time).map { |e| e.#{other_name}_id }
+        end
       END
     end
   end

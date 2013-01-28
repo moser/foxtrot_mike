@@ -10,7 +10,7 @@ class PlaneCostCategory < ActiveRecord::Base
 
   def matches?(flight)
     unless flight.plane.nil?
-      planes_at(flight.departure).include?(flight.plane)
+      plane_ids_at(flight.departure).include?(flight.plane.id)
     else
       false
     end

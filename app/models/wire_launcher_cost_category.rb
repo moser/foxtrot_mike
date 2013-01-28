@@ -10,7 +10,7 @@ class WireLauncherCostCategory < ActiveRecord::Base
 
   def matches?(flight)
     if flight.launch.is_a?(WireLaunch)
-      wire_launchers_at(flight.departure).include?(flight.launch.wire_launcher)
+      wire_launcher_ids_at(flight.departure).include?(flight.launch.wire_launcher.id)
     else
       false
     end

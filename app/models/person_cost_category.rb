@@ -11,7 +11,7 @@ class PersonCostCategory < ActiveRecord::Base
 
   def matches?(flight)
     unless flight.cost_responsible.nil?
-      people_at(flight.departure).include?(flight.cost_responsible)
+      person_ids_at(flight.departure).include?(flight.cost_responsible.id)
     else
       false
     end
