@@ -10,7 +10,7 @@ class FinancialAccount < ActiveRecord::Base
   default_scope order("name asc")
 
   def owners
-    financial_account_ownerships.map { |o| o.owner if o.valid_at(Time.now) }.compact.uniq
+    financial_account_ownerships.map { |o| o.owner if o.valid_at?(Time.now) }.compact.uniq
   end
 
   def to_s

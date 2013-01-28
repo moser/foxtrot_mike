@@ -40,19 +40,35 @@ module Current
     def has_many_current(association)
       class_eval <<-END
         def previous_#{association}
-          #{association}.not_valid_anymore_at(Time.now)
+          if #{association}.respond_to?(:not_valid_anymore_at)
+            #{association}.not_valid_anymore_at(Time.now)
+          else
+            #{association}.select { |e| e.not_valid_anymore_at?(Time.now) }
+          end
         end
 
         def current_#{association}
-          #{association}.valid_at(Time.now)
+          if #{association}.respond_to?(:valid_at)
+            #{association}.valid_at(Time.now)
+          else
+            #{association}.select { |e| e.valid_at?(Time.now) }
+          end
         end
 
         def future_#{association}
-          #{association}.not_yet_valid_at(Time.now)
+          if #{association}.respond_to?(:not_yet_valid_at)
+            #{association}.not_yet_valid_at(Time.now)
+          else
+            #{association}.select { |e| e.not_yet_valid_at?(Time.now) }
+          end
         end
 
         def #{association}_at(time)
-          #{association}.valid_at(time)
+          if #{association}.respond_to?(:valid_at)
+            #{association}.valid_at(time)
+          else
+            #{association}.select { |e| e.valid_at?(time) }
+          end
         end
       END
     end

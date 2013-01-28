@@ -5,11 +5,6 @@ class FinancialAccountOwnership < ActiveRecord::Base
 
   validates_presence_of :financial_account, :owner
 
-
-  def self.valid_at(time)
-    all.select { |o| o.valid_at?(time) }
-  end
-
   def valid_from=(date)
     date = date.to_date if date.respond_to?(:to_date)
     write_attribute(:valid_from, date)
