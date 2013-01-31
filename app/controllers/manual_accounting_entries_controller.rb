@@ -41,4 +41,17 @@ class ManualAccountingEntriesController < ApplicationController
     end
     redirect_to [ @accounting_session, :manual_accounting_entries ]
   end
+
+  def import
+    @accounting_session = AccountingSession.find(params[:accounting_session_id])
+    authorize! :update, @accounting_session
+    if file = params[:file]
+      CSV.foreach(file.path, headers: true) do |row|
+        AccountingEntry.create! row.to_hash.merge(manual: true, accounting_session: @accounting_session)
+      end
+      redirect_to [ @accounting_session, :manual_accounting_entries ], notice: "Import: OK"
+    else
+      redirect_to [ @accounting_session, :manual_accounting_entries ]
+    end
+  end
 end
