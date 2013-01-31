@@ -117,6 +117,23 @@ class AccountingSession < ActiveRecord::Base
     accounting_entries.map { |e| [e.to, e.from] }.flatten.uniq
   end
 
+
+  def bookings_csv
+    (RUBY_VERSION =~ /^1\.9/ ? CSV : FasterCSV).generate do |csv|
+      csv << %w(booking_date voucher_number from_account_number to_account_number value_f text)
+      
+      aggregated_entries.each do |entry|
+        csv << [ accounting_date.to_s, voucher_number, %w(from_account_number to_account_number value_f).map { |f| entry.send(f) }, 
+                 "#{ name } #{ entry.manual? ? entry.text : "" }" ].flatten
+      end
+    end
+  end
+
+
+  def filename
+    "#{ finished_at.to_date }-#{ AccountingSession.l(:entries) }-#{ voucher_number }-#{ name.gsub(" ", "-") }.txt"
+  end
+
 #  def self.booking_now
 #    DateTime.now
 #  end

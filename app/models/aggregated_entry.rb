@@ -14,4 +14,16 @@ class AggregatedEntry
   def manual?
     false
   end
+  
+  def from_account_number
+    from.try(:number)
+  end
+
+  def to_account_number
+    to.try(:number)
+  end
+
+  def value_f
+    value / 100.0
+  end
 end
