@@ -34,7 +34,7 @@ class AccountingEntry < ActiveRecord::Base
     if item
       item.departure_date
     else
-      (accounting_session.try(:finished_at) || created_at).to_date
+      (accounting_session.try(:accounting_date) || created_at).to_date
     end
   end
 
