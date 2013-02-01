@@ -3,5 +3,6 @@
 %td.percentage
 %td.value
 %td
-  %a.btn.edit= I18n.t("views.edit")
-  %a.btn.btn-danger.destroy= I18n.t("views.destroy")
+  - if @liability.flight().get("editable")
+    %a.btn.edit= I18n.t("views.edit")
+    %a.btn.btn-danger.destroy= I18n.t("views.destroy")

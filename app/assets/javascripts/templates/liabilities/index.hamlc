@@ -14,6 +14,8 @@
         %td
           100 %
         %td= F.Util.currencyToString(@flight.cost_free_sum())
-%a.btn.new
-  %i.icon-create
-  = I18n.t("views.new")
+
+- if @flight.get("editable")
+  %a.btn.new
+    %i.icon-create
+    = I18n.t("views.new")
