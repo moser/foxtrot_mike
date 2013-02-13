@@ -1,0 +1,5 @@
+%div= link_to("#{accounting_entry.from}", accounting_entry.from, :class => "facebox")
+%div= "/"
+%div= link_to("#{accounting_entry.to}", accounting_entry.to, :class => "facebox")
+%div= format_currency(accounting_entry.value)
+%div= accounting_entry.text

@@ -1,23 +1,23 @@
 $ ->
   if $(".accounting_session").length > 0
     $("a.toggle_accounting_entries").click ->
-      $(this).siblings(".accounting_entries").toggle()
+      $(this).parents('.aggregated_entry').siblings(".accounting_entry.#{$(this).attr('data-id')}").toggle()
       false
     $("a.toggle_filter").click ->
-      $(this).parent().toggleClass("filtering")
+      parent = $(this).parents('.aggregated_entry').toggleClass("filtering")
       $(".flight").removeClass "filtering"
-      if $(this).parent().hasClass("filtering")
+      if parent.hasClass("filtering")
         $(".flight.filter-" + $(this).data("filter")).addClass "filtering"
-      $(".aggregated_entry:not(##{$(this).parent().attr("id")})").removeClass "filtering"
-      $(".entry").removeClass "filtering"
+      $(".aggregated_entry:not(##{parent.attr("id")})").removeClass "filtering"
+      $(".child_entry").removeClass "filtering"
       false
     $("a.toggle_filter_id").click ->
-      $(this).parent().toggleClass("filtering")
+      parent = $(this).parents('.accounting_entry').toggleClass("filtering")
       $(".flight").removeClass "filtering"
-      if $(this).parent().hasClass("filtering")
-        $(".flight.e-" + $(this).parent().attr("id")).addClass "filtering"
+      if parent.hasClass("filtering")
+        $(".flight.e-" + parent.attr("id")).addClass "filtering"
       $(".aggregated_entry").removeClass "filtering"
-      $(".entry:not(##{$(this).parent().attr("id")})").removeClass "filtering"
+      $(".child_entry:not(##{parent.attr("id")})").removeClass "filtering"
       false
   $(".new_manual_accounting_entry td.clickable").click ->
     a = $(this).parent().find("input[type=checkbox]")

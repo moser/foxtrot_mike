@@ -26,4 +26,8 @@ class AggregatedEntry
   def value_f
     value / 100.0
   end
+
+  def text
+    ''
+  end
 end

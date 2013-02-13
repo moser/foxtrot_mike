@@ -24,27 +24,28 @@
         = f.input :finished, :input_html => { :value => true }, :as => :hidden
         = f.button :submit, t(".finish"), :class => "finish"
   - unless @accounting_session.without_flights?
-    .aggregated_entries
-      %h2= t(".aggregated_entries")
+    %h2= t(".aggregated_entries")
+    .aggregated_entries.accounting_entries
       - i = 0
       - @accounting_session.aggregated_entries.each do |ae|
         - unless ae.manual?
           - i += 1
-          .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
+          .aggregated_entry.accounting_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
             = format_accounting_entry(ae)
-            %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
-            %a.toggle_accounting_entries.show_on_startup{ :href => "#" }= t(".show_entries")
-            .accounting_entries.hide_on_startup
-              - ae.entries.each do |e|
-                .entry{ :id => e.id }
-                  = format_accounting_entry(e)
-                  %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
+            .links
+              %a.toggle_filter.show_on_startup{ :href => "#", :"data-filter" => "#{ae.from.id}-#{ae.to.id}" }= t(".mark_sources")
+              %a.toggle_accounting_entries.show_on_startup{ :href => "#", :"data-id" => "ae-#{i}" }= t(".show_entries")
+          - ae.entries.each do |e|
+            .accounting_entry.child_entry.hide_on_startup{ class: "ae-#{i}", :id => e.id }
+              = format_accounting_entry(e)
+              .links
+                %a.toggle_filter_id.show_on_startup{ :href => "#" }= t(".mark_sources")
         - else
-          .aggregated_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
+          .aggregated_entry.accounting_entry{ :id => "ae-#{i}", :class => (ae.from.number? && ae.to.number? ? "" : "problems") }
             = format_accounting_entry(ae)
   - else
+    %h2= t(".accounting_entries")
     .accounting_entries
-      %h2= t(".accounting_entries")
       - @accounting_session.aggregated_entries.each do |a|
         .accounting_entry
           = format_accounting_entry(a)

@@ -15,7 +15,7 @@ class FinancialAccount < ActiveRecord::Base
 
   def to_s
     if number
-      "#{name} (#{number})"
+      "#{number} (#{name})"
     else
       name
     end
