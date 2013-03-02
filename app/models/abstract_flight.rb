@@ -21,8 +21,8 @@ class AbstractFlight < ActiveRecord::Base
   has_many :accounting_entries, :as => :item
   has_many :liabilities, :after_add => :association_changed, :after_remove => :association_changed, :foreign_key => "flight_id"
 
-  default_scope -> { order("departure_date DESC, departure_i DESC").includes(IncludeAll) }
-  scope :reverse_order, -> { order("departure_date ASC, departure_i ASC").includes(IncludeAll) }
+  default_scope -> { order("departure_date DESC, departure_i DESC, type DESC").includes(IncludeAll) }
+  scope :reverse_order, -> { reorder("departure_date ASC, departure_i ASC, type DESC").includes(IncludeAll) }
 
   serialize :problems, Hash
   serialize :cached_cost, Cost
