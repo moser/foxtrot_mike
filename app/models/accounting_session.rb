@@ -17,7 +17,7 @@ class AccountingSession < ActiveRecord::Base
   def soft_validate
     @problems = {}
     unless without_flights?
-      unaccounted_flights = AbstractFlight.where(AbstractFlight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
+      unaccounted_flights = Flight.where(Flight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
       count = unaccounted_flights.count
       oldest = unaccounted_flights.order("departure_date ASC").first
       if count > 0
