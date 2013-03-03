@@ -247,6 +247,7 @@ de:
         financial_account_id: Buchungskonto
         default_launch_method: Bevorzugte Startart
         warn_when_no_cost_rules: "Warnen, wenn keine Kostenregel für einen Flug gefunden wird"
+        default_engine_duration_to_duration: "Motorlaufzeit normalerweise gleich Flugdauer"
       plane_cost_category:
         planes_now: "Flugzeuge"
       person_cost_category:

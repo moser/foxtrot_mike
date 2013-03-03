@@ -1,7 +1,7 @@
 %form.form-horizontal
   .control-group
     %label.control-label
-      Launch type
+      = I18n.t("activerecord.attributes.abstract_flight.launch_type")
     .controls
       %select.launch_type{ disabled: !@flight.editable }
         %option{ value: "self_launch" }
