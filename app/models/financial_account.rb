@@ -29,4 +29,13 @@ class FinancialAccount < ActiveRecord::Base
     AccountingEntry.where(to_id: id).select(:value).map(&:value).sum -
       AccountingEntry.where(from_id: id).select(:value).map(&:value).sum
   end
+
+  def max_debit_value_f
+    max_debit_value / 100.0
+  end
+
+  def max_debit_value_f=(f)
+    f = f.to_f if String === f
+    self.max_debit_value = (f.to_f * 100).to_i
+  end
 end

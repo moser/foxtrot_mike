@@ -22,6 +22,9 @@
     %th= FinancialAccount.l(:bank_code)
     %td=h @financial_account.bank_code
   %tr
+    %th= FinancialAccount.l(:max_debit_value)
+    %td=h format_currency(@financial_account.max_debit_value)
+  %tr
     %th= FinancialAccount.l(:owners)
     %td
       %ul.scroll.no_bullet

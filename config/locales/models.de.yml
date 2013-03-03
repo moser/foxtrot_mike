@@ -208,6 +208,7 @@ de:
         bank_account_number: Kontonummer
         bank_code: BLZ
         member_account: "Mitgliederkonto (Bankeinzug möglich)"
+        max_debit_value: "Maximaler Einzugsbetrag"
       group:
         members: Mitglieder
         planes: Flugzeuge

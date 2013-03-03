@@ -56,7 +56,7 @@ class AccountingSession < ActiveRecord::Base
       unless bank_debit?
         flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
       else
-        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => -f.balance, :accounting_session => self, :text => name) }
+        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => [-f.balance, f.max_debit_value].min, :accounting_session => self, :text => name) }
       end
     end
   end

@@ -1,6 +1,8 @@
 %h1= t(".title")
 %h2= @financial_account.name
-= "#{t(".saldo")}: #{format_currency(@financial_account.balance)}"
+.balance= "#{t(".saldo")}: #{format_currency(@financial_account.balance)}"
+- if @financial_account.member_account
+  .max_debit_value= "#{FinancialAccount.l("max_debit_value")}: #{format_currency(@financial_account.max_debit_value)}"
 %table
   %tr
     %th= AccountingEntry.l(:date)

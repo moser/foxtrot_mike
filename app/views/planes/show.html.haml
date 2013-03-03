@@ -23,7 +23,8 @@
     %td
       %ul
         - [:has_engine, :can_tow, :can_fly_without_engine, :selflaunching,
-           :can_be_towed, :can_be_wire_launched, :warn_when_no_cost_rules ].each do |flag|
+          :can_be_towed, :can_be_wire_launched, :warn_when_no_cost_rules,
+          :default_engine_duration_to_duration ].each do |flag|
           - if @plane.send(flag)
             %li= Plane.l(flag)
   - if @plane.disabled
