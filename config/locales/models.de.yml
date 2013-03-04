@@ -201,13 +201,14 @@ de:
         value: Wert
         additive_value: Additiver Wert
       financial_account:
+        balance: Saldo
         owners: Besitzer
         number: Nummer
-        advance_payment: Vorauszahlung
+        advance_payment: VZ?
         bank_account_holder: Kontoinhaber
         bank_account_number: Kontonummer
         bank_code: BLZ
-        member_account: "Mitgliederkonto (Bankeinzug möglich)"
+        member_account: "BE?"
         max_debit_value: "Maximaler Einzugsbetrag"
       group:
         members: Mitglieder

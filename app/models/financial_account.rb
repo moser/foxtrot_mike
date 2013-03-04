@@ -7,7 +7,7 @@ class FinancialAccount < ActiveRecord::Base
   include Current
   has_many_current :financial_account_ownerships
 
-  default_scope order("name asc")
+  default_scope order("number asc")
 
   def owners
     financial_account_ownerships.map { |o| o.owner if o.valid_at?(Time.now) }.compact.uniq

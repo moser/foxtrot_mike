@@ -32,7 +32,7 @@ class ResourceController < ApplicationController
   end
 
   def index
-    model_all_or_after
+    model_all_or_after(nil, params['order'] || "")
     authorize! :read, model_class
     if nested && nested_id
       find_nested

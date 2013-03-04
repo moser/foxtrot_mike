@@ -7,18 +7,14 @@
     %tr.no_filter.show_on_startup
       %td= text_field_tag "filter_string"
     %tr.no_filter
-      %th= FinancialAccount.l(:name)
-      %th= FinancialAccount.l(:number)
-      %th= FinancialAccount.l(:member_account)
-      %th= FinancialAccount.l(:advance_payment)
-      %th= FinancialAccount.l(:bank_account_holder)
-      %th= FinancialAccount.l(:bank_account_number)
-      %th= FinancialAccount.l(:bank_code)
+      - [ :name, :number, :balance, :member_account, :advance_payment, :bank_account_holder, :bank_account_number, :bank_code ].each do |attr|
+        %th= link_to FinancialAccount.l(attr), financial_accounts_path(order: attr)
   %tbody
     - @financial_accounts.each do |financial_account|
       %tr{ :"data-filter_string" => financial_account.name.downcase }
         %td= h financial_account.name
         %td= h financial_account.number
+        %td= h format_currency(financial_account.balance)
         %td= financial_account.member_account? ? t("simple_form.yes") : ""
         %td= financial_account.advance_payment? ? t("simple_form.yes") : ""
         %td= h financial_account.bank_account_holder

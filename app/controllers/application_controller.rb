@@ -134,15 +134,15 @@ class ApplicationController < ActionController::Base
     eval "@model = @#{model_name.underscore} = #{model_class}.find(params[:id])"
   end
 
-  def model_all(conditions = nil)
-    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions).order()"
+  def model_all(conditions = nil, order = nil)
+    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions)#{order ? ".reorder(order)" : ""}"
   end
 
-  def model_all_or_after
+  def model_all_or_after(conditions = nil, order = nil)
     if @after.nil?
-      model_all
+      model_all(conditions, order)
     else
-      eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(['updated_at > ?', @after])"
+      eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions).where(['updated_at > ?', @after])#{order ? ".reorder(order)" : ""}"
     end
   end
 
