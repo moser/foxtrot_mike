@@ -135,7 +135,7 @@ class ApplicationController < ActionController::Base
   end
 
   def model_all(conditions = nil, order = nil)
-    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions)#{order ? ".reorder(order)" : ""}"
+    eval "@models = @#{model_name.pluralize.underscore} = #{model_class}.where(conditions)#{order && !order.blank? ? ".reorder(order)" : ""}"
   end
 
   def model_all_or_after(conditions = nil, order = nil)

@@ -13,6 +13,8 @@ class AccountingSession < ActiveRecord::Base
 
   before_save :remove_dates_if_without_flights
 
+  default_scope order('accounting_date DESC')
+
   attr_reader :problems
   def soft_validate
     @problems = {}
