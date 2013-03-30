@@ -1,5 +1,6 @@
 %h1= t '.title'
 = new_link(FinancialAccount)
+= link_to 'CSV', financial_accounts_path(format: :csv)
 %table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "filter_string" }
   %thead
     %tr.no_filter.show_on_startup

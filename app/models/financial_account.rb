@@ -1,3 +1,5 @@
+require 'csv'
+
 class FinancialAccount < ActiveRecord::Base
   has_many :financial_account_ownerships
 
@@ -37,5 +39,15 @@ class FinancialAccount < ActiveRecord::Base
   def max_debit_value_f=(f)
     f = f.to_f if String === f
     self.max_debit_value = (f.to_f * 100).to_i
+  end
+
+  def self.to_csv(options = {})
+    cols = [ :number, :name, :balance, :bank_account_holder, :bank_account_number, :bank_code, :member_account, :advance_payment, :max_debit_value ] 
+    CSV.generate(options) do |csv|
+      csv << cols
+      all.each do |acc|
+        csv << cols.map { |col| acc.send(col) }
+      end
+    end
   end
 end

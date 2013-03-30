@@ -8,7 +8,6 @@ gem "uuidtools"
 gem "simple_form"
 gem "authlogic"
 gem "cancan"
-gem "fastercsv"
 gem "wicked_pdf"
 gem "king_dtaus"
 

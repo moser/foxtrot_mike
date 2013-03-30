@@ -80,7 +80,6 @@ GEM
     factory_girl_rails (3.3.0)
       factory_girl (~> 3.3.0)
       railties (>= 3.0.0)
-    fastercsv (1.5.5)
     ffi (1.2.0)
     fuubar (1.1.0)
       rspec (~> 2.0)
@@ -235,7 +234,6 @@ DEPENDENCIES
   coffee-rails
   database_cleaner
   factory_girl_rails (= 3.3.0)
-  fastercsv
   fuubar
   haml-rails
   haml_coffee_assets
