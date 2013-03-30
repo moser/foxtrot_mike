@@ -10,7 +10,7 @@ class Ability
           can :read, [Flight, TowFlight, :dashboards, :filtered_flights, :own_financial_account]
         end
         if account.controller?
-          can [:read, :create], [Person, Plane, Airfield, WireLauncher, Flight, TowFlight]
+          can [:read, :create], [Group, Person, Plane, Airfield, WireLauncher, Flight, TowFlight]
           can :read, [FlightCostRule, WireLaunchCostRule]
           can [:update,:destroy], [Flight, TowFlight]
         end
