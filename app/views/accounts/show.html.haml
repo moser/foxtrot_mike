@@ -4,6 +4,6 @@
     %td=h @account.login 
   %tr
     %th= Account.l(:person)
-    %td= show_link(@account.person, @account.person.name)
+    %td= show_link(@account.person, @account.person.name) if @account.person
 = edit_link(@account)
 = back_link(Account)

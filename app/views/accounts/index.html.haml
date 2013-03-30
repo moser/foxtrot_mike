@@ -9,7 +9,7 @@
     - @accounts.each do |account|
       %tr.alternate_color.hover_mark
         %td=h account.login
-        %td= show_link(account.person, account.person.name)
+        %td= show_link(account.person, account.person.name) if account.person
         %td= edit_link(account)
         %td= destroy_link(account)
         %td= link_to t("change_password"), new_account_password_path(account) if current_account.admin?
