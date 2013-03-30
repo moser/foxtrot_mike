@@ -21,7 +21,7 @@ class License < ActiveRecord::Base
   def flights
     AbstractFlight.where(AbstractFlight.arel_table[:departure_date].gteq(valid_from).
                              and(AbstractFlight.arel_table[:departure_date].lteq(valid_to || 1.day.from_now.to_date))).
-           where('abstract_flights.seat1_person_id OR abstract_flights.seat2_person_id', person_id).joins(:plane).
+           where('abstract_flights.seat1_person_id = ? OR abstract_flights.seat2_person_id = ?', person_id, person_id).joins(:plane).
            where('planes.legal_plane_class_id' => legal_plane_class_ids)
   end
 
