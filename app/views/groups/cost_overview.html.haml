@@ -1,0 +1,44 @@
+%h1= @group.name
+= form_tag '', method: :get do
+  .input.date
+    = date_select :report, :from, default: @from
+  .input.date
+    = date_select :report, :to, default: @to
+  = submit_tag
+
+%table
+  - @group.people.each do |person|
+    - flights = @flights.select { |f| f.cost_responsible == person && !f.launch.nil? }
+    - wire_launch_cost = tow_cost = 0
+    - unless flights.empty?
+      %tr
+        %td= person.name
+      - flights.select { |f| f.launch.is_a?(TowFlight) }.group_by { |f| f.launch.plane }.each do |plane, flights|
+        %tr
+          %td
+          %td
+            = flights.map { |f| f.launch.duration }.sum
+            Minuten F-Schlepp mit
+            = plane
+          %td= format_currency(tow_cost = flights.map { |f| f.launch.cost.try(:free_sum) }.compact.sum)
+
+      - flights.select { |f| f.launch.is_a?(WireLaunch) }.group_by { |f| f.launch.wire_launcher }.each do |wire_launcher, flights|
+        %tr
+          %td
+          %td
+            = flights.count
+            Windenstarts mit
+            = wire_launcher
+          %td= format_currency(wire_launch_cost = flights.map { |f| f.launch.cost.try(:free_sum) }.compact.sum)
+      - if person.financial_account
+        %tr
+          %td
+          %td
+            Sonstiges
+          %td= format_currency(- person.financial_account.balance - wire_launch_cost - tow_cost)
+          %td= format_currency(- person.financial_account.balance)
+      - else
+        %tr
+          %td
+          %td
+            Kein Buchhaltungskonto!
