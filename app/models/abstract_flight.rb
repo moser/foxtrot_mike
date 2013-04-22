@@ -148,6 +148,7 @@ class AbstractFlight < ActiveRecord::Base
 
   def cost
     if !cached_cost || cached_cost.empty? || !accounting_entries_valid
+      #p [ !cached_cost, cached_cost.empty?, !accounting_entries_valid ]
       calculate_cost
     end
     cached_cost
@@ -299,7 +300,7 @@ class AbstractFlight < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    soft_validate if problems_exist
+    #soft_validate if problems_exist
     super(options.merge(methods: [ :editable, :purpose, :is_tow, :type, :editable?, :aggregation_id ], except: [ :created_at, :updated_at, :accounting_entries_valid, :accounting_session_id, :launch_id, :launch_type, :cost ])).merge({ launch: launch.as_json, cost: cost.as_json })
   end
   
