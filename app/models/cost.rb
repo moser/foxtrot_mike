@@ -1,4 +1,6 @@
 class Cost
+  #funny way to make sure that all classes required for deserializing instances of this class:
+  FOO = [ FlightCostRule, WireLaunchCostRule, CostItem, FlightCostItem ]
   attr_accessor :items, :cost_rule
 
   def initialize(cost_rule = nil, items = [])
