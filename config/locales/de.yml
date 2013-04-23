@@ -30,6 +30,7 @@ de:
     controller: "Flugleiter"
     controller_log: "Flugleiterdienstbuch (%{name})"
     copy: Kopieren
+    contact_list: "Kontaktliste (CSV)"
     create: "%{name} erstellen"
     current: "Aktuell"
     date: Datum

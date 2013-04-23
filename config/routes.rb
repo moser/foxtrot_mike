@@ -10,6 +10,7 @@ Server::Application.routes.draw do
 
   resources :groups do
     get :cost_overview, on: :member
+    resources :people
   end
   resources :headers, :only => [:index]
   resources :people do

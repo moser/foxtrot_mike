@@ -1,3 +1,5 @@
+require 'csv'
+
 class Person < ActiveRecord::Base
   MemberStates = [ :active, :passive, :passive_with_voting_right, :donor ]
 
@@ -191,6 +193,17 @@ class Person < ActiveRecord::Base
   def age
     age_at(Date.today)
   end
+
+  def self.to_csv(models, options = {})
+    columns = [ :firstname, :lastname, :phone1, :phone2, :cell, :email, :address1, :address2, :zip, :city, :birthdate ]
+    CSV.generate(options) do |csv|
+      csv << columns.map { |col| Person.l(col) }
+      models.each do |model|
+        csv << columns.map { |col| model.send(col) }
+      end
+    end
+  end
+
 private
   def association_changed(obj = nil)
     invalidate_concerned_accounting_entries

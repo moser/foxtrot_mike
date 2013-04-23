@@ -2,6 +2,7 @@ class JsonEnabledOnlyController < ResourceController
   def render_index
     respond_to do |format|
       format.html { render :layout => !request.xhr? }
+      format.csv { send_data model_class.to_csv(@models) }
       format.json  do
         if model_class.attribute_names.include?("disabled")
           @models = @models.find_all { |m| !m.disabled? }
