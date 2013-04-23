@@ -44,6 +44,12 @@ class F.Views.Flights.Index extends F.TemplateView
       @views[model.id] = null
     @updateAggregation()
 
+  showLoadingIndicator: =>
+    $('.loading').css('display', 'block')
+
+  hideLoadingIndicator: =>
+    $('.loading').css('display', 'none')
+
   updateAggregation: ->
     @$("span.count").html("#{@collection.length}")
     @$("span.sum").html("#{F.Util.intTimeToString(@collection.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))}")
@@ -53,7 +59,11 @@ class F.Views.Flights.Index extends F.TemplateView
     @range._to = Parse.date_to_s(@$("#range_to").val())
     if @collection.range != @range.toString()
       @collection.setRange(@range.toString())
-      @collection.fetch({ update: true })
+      @showLoadingIndicator()
+      @collection.fetch
+        update: true
+        success: =>
+          @hideLoadingIndicator()
   
   initialize: ->
     @new_view = null
