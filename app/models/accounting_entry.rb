@@ -40,7 +40,11 @@ class AccountingEntry < ActiveRecord::Base
 
   def text
     if item
-      item.class.l
+      if AbstractFlight === item
+        "#{item.class.l} (#{item.plane.registration})"
+      else
+        item.class.l
+      end
     else
       read_attribute(:text)
     end
