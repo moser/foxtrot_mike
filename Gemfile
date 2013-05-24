@@ -10,6 +10,7 @@ gem "authlogic"
 gem "cancan"
 gem "wicked_pdf"
 gem "king_dtaus"
+gem 'roo'
 
 gem "less-rails"
 gem "twitter-bootstrap-rails"
