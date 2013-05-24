@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class ResourceController < ApplicationController
   def self.nested(parent = nil)
     @parent ||= parent
@@ -91,7 +93,7 @@ class ResourceController < ApplicationController
       respond_to do |f|
         f.html do 
           unless request.xhr?
-            redirect_to_index ? redirect_to(polymorphic_path(model_class)) : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_to(polymorphic_path(@model)))
+            redirect_to_index ? redirect_index : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_model)
           else
             render :text => "ok"
           end
@@ -112,7 +114,7 @@ class ResourceController < ApplicationController
     authorize! :update, @model
     if @model.update_attributes(params[model_name.underscore.to_sym])
       unless request.xhr?
-        redirect_to_index ? redirect_to(polymorphic_path(model_class)) : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_to(polymorphic_path(@model)))
+        redirect_to_index ? redirect_index : (redirect_to_after_save ? redirect_to(redirect_to_after_save) : redirect_model)
       else
         render :text => "ok"
       end
@@ -131,7 +133,7 @@ class ResourceController < ApplicationController
     respond_to do |format|
       format.html do 
         unless request.xhr?
-          redirect_to(polymorphic_path(model_class)) 
+          redirect_index
         else
           render :text => "ok"
         end
@@ -142,5 +144,30 @@ class ResourceController < ApplicationController
 
   def destroy_check
     true
+  end
+
+  def import
+    if file = params[:file]
+      FileUtils.cp file.path, ext_file_path = "#{file.path}.#{File.extname(file.original_filename)}"
+      begin
+        model_class.import(SpreadSheetNormalizer.new(ext_file_path).to_hashes)
+        notice = 'OK'
+      rescue => e
+        notice = e.message
+      end
+      FileUtils.rm ext_file_path
+    else
+      notice = ''
+    end
+    redirect_index notice: notice
+  end
+
+private
+  def redirect_index(opts={})
+    redirect_to(polymorphic_path(model_class), opts)
+  end
+
+  def redirect_model
+    redirect_to(polymorphic_path(@model))
   end
 end

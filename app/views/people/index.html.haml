@@ -1,4 +1,8 @@
 %h1= t('.title')
+.import
+  = form_tag import_people_path, multipart: true do |f|
+    = file_field_tag :file
+    = submit_tag 'Import'
 = new_link(Person)
 %table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "group_id,filter_string" }
   %thead

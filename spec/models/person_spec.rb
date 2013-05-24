@@ -163,4 +163,72 @@ describe Person do
       p.age.should == 10
     end
   end
+
+  describe ".import" do
+    it 'imports people from an array of hashes' do
+      group = Group.generate!
+      hashes = [
+        { firstname: 'foo', lastname: 'bar', group_id: group.id },
+        { firstname: 'MOOOOOO', lastname: 'cow', group_id: group.id }
+      ]
+      Person.import(hashes)
+      hashes.each do |hash|
+        Person.where(hash).count.should == 1
+      end
+    end
+
+    it 'creates a group if necessary' do
+      hashes = [
+        { firstname: 'foo', lastname: 'bar', group: 'Club' },
+        { firstname: 'MOOOOOO', lastname: 'cow', group: 'Club' }
+      ]
+      Person.import(hashes)
+      Group.where(name: 'Club').count.should == 1
+    end
+
+    it 'creates financial_account_owner_ships' do
+      fa = FinancialAccount.generate!
+      group = Group.generate!
+      hashes = [
+        { firstname: 'foo', lastname: 'bar', financial_account_id: fa.id, group_id: group.id }
+      ]
+      Person.import(hashes)
+      Person.where(firstname: 'foo', lastname: 'bar').first.financial_account.should == fa
+    end
+
+    it 'creates an financial account' do
+      group = Group.generate!
+      hashes = [
+        { firstname: 'foo',
+          lastname: 'bar',
+          financial_account_number: '123',
+          financial_account_name: 'foo',
+          financial_account_bank_account_holder: 'foo bar',
+          financial_account_bank_account_number: '11111',
+          financial_account_bank_code: '22222',
+          financial_account_member_account: '1',
+          financial_account_advance_payment: '0',
+          group_id: group.id }
+      ]
+      Person.import(hashes)
+      fa = Person.where(firstname: 'foo', lastname: 'bar').first.financial_account
+      fa.number.should == '123'
+      fa.name.should == 'foo'
+      fa.bank_account_holder.should == 'foo bar'
+      fa.bank_account_number.should == '11111'
+      fa.bank_code.should == '22222'
+      fa.member_account.should be_true
+      fa.advance_payment.should be_false
+    end
+
+    it 'creates person_category_membership' do
+      pc = PersonCostCategory.generate!(name: 'asdf')
+      group = Group.generate!
+      hashes = [
+        { firstname: 'foo', lastname: 'bar', person_cost_category: 'asdf', group_id: group.id }
+      ]
+      Person.import(hashes)
+      Person.where(firstname: 'foo', lastname: 'bar').first.person_cost_category_memberships_at(Date.today).map(&:person_cost_category).should == [pc]
+    end
+  end
 end

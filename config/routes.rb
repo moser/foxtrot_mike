@@ -14,6 +14,9 @@ Server::Application.routes.draw do
   end
   resources :headers, :only => [:index]
   resources :people do
+    collection do
+      post 'import'
+    end
     resources :person_cost_category_memberships
     resources :licenses
     resources :financial_account_ownerships

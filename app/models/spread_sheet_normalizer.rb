@@ -57,6 +57,6 @@ class SpreadSheetNormalizer
 
 private
   def handler
-    @handler ||= filename_to_handler(@file)
+    @handler ||= self.class.filename_to_handler(@file)
   end
 end

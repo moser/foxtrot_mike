@@ -204,8 +204,56 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.import(hashes)
+    ActiveRecord::Base.transaction do
+      hashes.each do |hash|
+        begin
+          import_group(hash)
+          import_financial_account(hash)
+          person_cost_category = import_person_cost_category(hash)
+          person = Person.create!(hash)
+          if person_cost_category
+            PersonCostCategoryMembership.create!(person: person, person_cost_category: person_cost_category, valid_from: Date.today)
+          end
+        rescue => e
+          raise "#{e.message} - #{hash.inspect}"
+        end
+      end
+    end
+  end
+
 private
   def association_changed(obj = nil)
     invalidate_concerned_accounting_entries
+  end
+
+  def self.import_group(hash)
+    group_name = hash.delete(:group)
+    if group_name
+      hash[:group_id] = Group.where(name: group_name).first_or_create.id
+    end
+  end
+
+  def self.import_financial_account(hash)
+    financial_account_id = hash.delete(:financial_account_id)
+    if financial_account_id
+      hash[:financial_account] = FinancialAccount.find(financial_account_id)
+    else
+      attrs = FinancialAccount.attribute_names - %w(id updated_at created_at)
+      financial_account_attrs = Hash[hash.select { |k,_| attrs.map {|k| "financial_account_#{k}"}.include?(k.to_s) }.map { |k,v| [k.to_s.gsub('financial_account_',''),v] }]
+      hash.delete_if { |k,_| attrs.map {|k| "financial_account_#{k}"}.include?(k.to_s) }
+      if (financial_account_attrs.keys & %w(number name)).count >= 2
+        hash[:financial_account] = FinancialAccount.create!(financial_account_attrs)
+      end
+    end
+  end
+
+  def self.import_person_cost_category(hash)
+    person_cost_category_name = hash.delete(:person_cost_category)
+    if person_cost_category_name
+      person_cost_category = PersonCostCategory.where(name: person_cost_category_name).first
+      raise "Person cost category not found: #{person_cost_category_name}" if person_cost_category.nil?
+    end
+    person_cost_category
   end
 end
