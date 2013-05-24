@@ -102,4 +102,33 @@ private
     self.can_fly_without_engine = false if can_fly_without_engine.nil?
     self.default_engine_duration_to_duration = false if default_engine_duration_to_duration.nil?
   end
+
+  def self.import(hashes)
+    ActiveRecord::Base.transaction do
+      hashes.each do |hash|
+        begin
+          import_group(hash)
+          import_legal_plane_class(hash)
+          Plane.create!(hash)
+        rescue => e
+          raise "#{e.message} - #{hash.inspect}"
+        end
+      end
+    end
+  end
+
+private
+  def self.import_group(hash)
+    group_name = hash.delete(:group)
+    if group_name
+      hash[:group_id] = Group.where(name: group_name).first_or_create.id
+    end
+  end
+
+  def self.import_legal_plane_class(hash)
+    legal_plane_class_name = hash.delete(:legal_plane_class)
+    if legal_plane_class_name
+      hash[:legal_plane_class_id] = LegalPlaneClass.where(name: legal_plane_class_name).first_or_create.id
+    end
+  end
 end

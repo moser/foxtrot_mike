@@ -47,6 +47,9 @@ Server::Application.routes.draw do
     resources :flights, :controller => 'accounting_session_flights'
   end
   resources :planes do
+    collection do
+      post 'import'
+    end
     resources :plane_cost_category_memberships
     resources :financial_account_ownerships
   end

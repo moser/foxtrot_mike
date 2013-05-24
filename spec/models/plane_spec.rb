@@ -71,4 +71,19 @@ describe Plane do
     pl = Plane.new
     lambda { pl.financial_account_id = -1 }.should_not raise_error
   end
+
+  describe ".import" do
+    it "creates planes from an array of hashes" do
+      hashes = [
+        { registration: 'D-XXXX', make: 'bar', group: 'Club', legal_plane_class: 'BAR' },
+        { registration: 'MOO', make: 'cow', group: 'Club', legal_plane_class: 'FOO' }
+      ]
+      Plane.import(hashes)
+      Plane.where(registration: 'D-XXXX').count.should == 1
+      Plane.where(registration: 'MOO').count.should == 1
+      LegalPlaneClass.where(name: 'BAR').count.should == 1
+      LegalPlaneClass.where(name: 'FOO').count.should == 1
+      Group.where(name: 'Club').count.should == 1
+    end
+  end
 end
