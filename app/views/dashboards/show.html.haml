@@ -5,7 +5,8 @@
       %ul.nav.nav-tabs.nav-stacked
         -#%li Personendaten bearbeiten
         -# if current_account && current_account.person && current_account.person.financial_account
-        %li= link_to t("financial_account_overview"), own_financial_account_path
+        - if @current_person
+          %li= link_to t("financial_account_overview"), own_financial_account_path
         %li= link_to t("change_password"), new_password_path
     - if Airfield.home.count > 0
       .well
@@ -24,11 +25,13 @@
     .well
       %h2= t('views.bordbooks')
       %ul.nav.nav-tabs.nav-stacked
-        - @planes.each do |p|
-          %li= link_to p.registration, scoped_flights_path(p)
+        - if @planes
+          - @planes.each do |p|
+            %li= link_to p.registration, scoped_flights_path(p)
     .well
       %h2= t('views.flightbooks')
       %ul.nav.nav-tabs.nav-stacked
-        %li= link_to "Alle", scoped_flights_path(@current_person)
-        - @licenses.each do |l|
-          %li= link_to l.name, scoped_flights_path(l)
+        - if @current_person
+          %li= link_to "Alle", scoped_flights_path(@current_person)
+          - @licenses.each do |l|
+            %li= link_to l.name, scoped_flights_path(l)
