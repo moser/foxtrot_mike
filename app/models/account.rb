@@ -13,4 +13,12 @@ class Account < ActiveRecord::Base
   def self.roles
     [ :admin, :license_official, :treasurer, :controller, :reader ]
   end
+
+  def visible_name
+    if person
+      person.name
+    else
+      login
+    end
+  end
 end

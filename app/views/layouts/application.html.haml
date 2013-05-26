@@ -67,7 +67,7 @@
                     =h navigation_li(:name => "accounting_sessions", :path => accounting_sessions_path)  
           .pull-right
             - if current_account
-              = link_to I18n.t("logout", name: current_account.person.name), "/logout", class: "btn btn-small btn-warning"
+              = link_to I18n.t("logout", name: current_account.visible_name), "/logout", class: "btn btn-small btn-warning"
 
     .container
       .row

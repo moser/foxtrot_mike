@@ -31,8 +31,7 @@ specs.each do |c, as|
             eval "assigns[:#{c.singularize}] = @#{c.singularize} = #{c.singularize.camelcase}.generate!"
           end
         else
-          assigns[:account] = @account = Account.spawn
-          @account.save_without_session_maintenance
+          assigns[:account] = @account = Account.generate!
           assigns[:accounts] = @accounts = [ @account ]
         end
       end
