@@ -40,6 +40,10 @@ describe ApplicationHelper do
     it "should render -1,01 €" do
       helper.format_currency(-101).should == "-1,01 €"
     end
+
+    it "renders -0,01 €" do
+      helper.format_currency(-1).should == "-0,01 €"
+    end
   end
 
   describe "scoped_flights_path" do

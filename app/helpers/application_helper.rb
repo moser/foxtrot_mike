@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def format_currency(i)
-    "#{(i/100.0).to_i},#{i.abs%100 < 10 ? "0" : ""}#{i.abs%100} €" unless i.nil? #TODO i18n/configurable
+    "#{(i < 0) ? '-' : ''}#{(i.abs/100.0).to_i},#{i.abs%100 < 10 ? "0" : ""}#{i.abs%100} €" unless i.nil? #TODO i18n/configurable
   end
 
   def back_link(obj, options = {})
