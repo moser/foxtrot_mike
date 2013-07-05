@@ -1,4 +1,7 @@
 class ManualAccountingEntriesController < ApplicationController
+  class ImportException < Exception; end
+
+
   def index
     @accounting_session = AccountingSession.find(params[:accounting_session_id])
     authorize! :read, @accounting_session
@@ -46,15 +49,25 @@ class ManualAccountingEntriesController < ApplicationController
     @accounting_session = AccountingSession.find(params[:accounting_session_id])
     authorize! :update, @accounting_session
     if file = params[:file]
-      ActiveRecord::Base.transaction do 
-        CSV.foreach(file.path, headers: true) do |row|
-          row = row.to_hash.merge(manual: true, accounting_session: @accounting_session)
-          row['value_f'] = row['value_f'].gsub(',','.')
-          p row
-          AccountingEntry.create!(row)
+      begin
+        ActiveRecord::Base.transaction do
+          @offending_rows = []
+          CSV.foreach(file.path, headers: true) do |row|
+            row = row.to_hash.merge(manual: true, accounting_session: @accounting_session)
+            row['value_f'] = row['value_f'].gsub(',','.')
+            accounting_entry = AccountingEntry.create(row)
+            unless accounting_entry.valid?
+              @offending_rows << [row, accounting_entry]
+            end
+          end
+          raise ImportException.new unless @offending_rows.empty?
         end
+      rescue ImportException
+        render 'manual_accounting_entries/import_error', status: 422
       end
-      redirect_to [ @accounting_session, :manual_accounting_entries ], notice: "Import: OK"
+      if @offending_rows.empty?
+        redirect_to [ @accounting_session, :manual_accounting_entries ], notice: "Import: OK"
+      end
     else
       redirect_to [ @accounting_session, :manual_accounting_entries ]
     end

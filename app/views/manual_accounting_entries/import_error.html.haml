@@ -1,0 +1,14 @@
+%h1
+  Importfehler - Es wurden keine Einträge angelegt.
+= link_to 'Zurück', [ @accounting_session, :manual_accounting_entries ]
+%table
+  %tr
+    - %w(from to text value_f).each do |s|
+      %th= AccountingEntry.l(s)
+    %th
+      Fehler
+  - @offending_rows.each do |row, accounting_entry|
+    %tr
+      - %w(from_account_number to_account_number text value_f).each do |s|
+        %td= row[s]
+      %td= accounting_entry.errors.messages.map { |k,m| "#{AccountingEntry.l(k)} #{m.join(', ')}" }.join(' ')
