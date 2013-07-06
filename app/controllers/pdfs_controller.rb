@@ -1,4 +1,12 @@
 class PdfsController < ApplicationController
+  def show
+    authorize! :read, Flight
+    @flights = AbstractFlight.reverse_order.
+      where("from_id = ? OR to_id = ?", params[:airfield_id], params[:airfield_id]).
+      where(departure_date: Date.parse(params[:date])) 
+    render_pdf
+  end
+
   def create
     authorize! :read, Flight
     @flights = AbstractFlight.reverse_order.where("id in (?)", JSON.parse(params[:flight_ids]))
