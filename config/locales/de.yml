@@ -46,6 +46,7 @@ de:
     previous: "Ehemalig"
     print_voucher: "Beleg drucken"
     print: "Drucken"
+    csv: "Tabelle"
     show: "Anzeigen"
     signature: "Unterschrift"
     to: "Bis"

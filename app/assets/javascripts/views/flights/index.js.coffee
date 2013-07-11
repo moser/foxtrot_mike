@@ -5,6 +5,7 @@ class F.Views.Flights.Index extends F.TemplateView
   events:
     "click a.new_flight": "new"
     "click a.print": "print"
+    "click a.csv": "csv"
     "change #range_from_front" : "updateRange"
     "change #range_to_front" : "updateRange"
 
@@ -111,5 +112,12 @@ class F.Views.Flights.Index extends F.TemplateView
   print: ->
     ids = JSON.stringify(@collection.models.map((f) -> f.id))
     $("<form action=\"/pdfs\" method=\"POST\">
+      <input type=\"hidden\" name=\"flight_ids\" value='#{ids}'></form>").appendTo($("body")).submit().remove()
+    false
+
+  # create a csv file
+  csv: ->
+    ids = JSON.stringify(@collection.models.map((f) -> f.id))
+    $("<form action=\"/csvs\" method=\"POST\">
       <input type=\"hidden\" name=\"flight_ids\" value='#{ids}'></form>").appendTo($("body")).submit().remove()
     false

@@ -91,6 +91,7 @@ Server::Application.routes.draw do
   resource :own_financial_account, :controller => "financial_account_overviews"
 
   resources :pdfs
+  resources :csvs
 
   root :to => 'dashboards#show'
 
