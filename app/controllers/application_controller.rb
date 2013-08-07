@@ -162,6 +162,22 @@ class ApplicationController < ActionController::Base
     Date.new(h["#{k}(1i)"].to_i, h["#{k}(2i)"].to_i, h["#{k}(3i)"].to_i) rescue nil
   end
 
+  def self.nested(parent = nil)
+    @parent ||= parent
+  end
+
+  def nested
+    self.class.nested
+  end
+
+  def nested_id
+    params[:"#{nested}_id"]
+  end
+
+  def find_nested
+    @nested = instance_values[nested.to_s] = nested.to_s.camelize.constantize.find(nested_id)
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     if request.format == Mime::JSON
       render :text => "", :status => 401

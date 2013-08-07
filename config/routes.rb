@@ -20,6 +20,7 @@ Server::Application.routes.draw do
     resources :person_cost_category_memberships
     resources :licenses
     resources :financial_account_ownerships
+    resource :merge, only: [:create]
   end
   resources :accounts do
     resource :password, :only => [ :new, :create ]

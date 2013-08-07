@@ -1,22 +1,6 @@
 require 'fileutils'
 
 class ResourceController < ApplicationController
-  def self.nested(parent = nil)
-    @parent ||= parent
-  end
-
-  def nested
-    self.class.nested
-  end
-
-  def nested_id
-    params[:"#{nested}_id"]
-  end
-
-  def find_nested
-    @nested = instance_values[nested.to_s] = nested.to_s.camelize.constantize.find(nested_id)
-  end
-
   def self.redirect_to_index(x = false)
     @redirect_to_index ||= x
   end

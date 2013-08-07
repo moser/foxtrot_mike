@@ -194,6 +194,20 @@ class Person < ActiveRecord::Base
     age_at(Date.today)
   end
 
+  def merge_to(other_person)
+    flights_on_seat1.each do |f|
+      f.update_attribute :seat1_person, other_person
+    end
+    flights_on_seat2.each do |f|
+      f.update_attribute :seat2_person, other_person
+    end
+    update_attributes disabled: true, lastname: "#{lastname} FALSCH"
+  end
+
+  def merge_info
+    "#{name} #{flights_on_seat1.count + flights_on_seat2.count} #{!current_person_cost_category_memberships.empty? ? 'Cat' : ''} #{current_financial_account_ownership && 'Acc'}"
+  end
+
   def self.to_csv(models, options = {})
     columns = [ :firstname, :lastname, :phone1, :phone2, :cell, :email, :address1, :address2, :zip, :city, :birthdate ]
     CSV.generate(options) do |csv|

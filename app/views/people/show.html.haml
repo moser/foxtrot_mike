@@ -50,3 +50,10 @@
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @person }
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
+
+%h3
+  Merge to
+.merge
+  = form_tag person_merge_path(@person), method: :post do |f|
+    = select_tag 'to_id', options_from_collection_for_select(Person.all, 'id', 'merge_info')
+    = submit_tag 'Merge'

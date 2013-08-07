@@ -164,6 +164,29 @@ describe Person do
     end
   end
 
+  describe "#merge_to" do
+    let(:person) { Person.generate! }
+    let(:other) { Person.generate! }
+    it "makes sure that the flights are assigned to the other person" do
+      flight1 = Flight.generate!(seat1_person: person)
+      flight2 = Flight.generate!(seat2_person: person)
+
+      person.merge_to(other)
+      flight1.reload.seat1_person.should == other
+      flight2.reload.seat2_person.should == other
+    end
+
+    it "deactivates itself" do
+      person.merge_to(other)
+      person.disabled.should be_true
+    end
+
+    it "adds a string to the lastname" do
+      person.merge_to(other)
+      person.lastname.should =~ / FALSCH$/
+    end
+  end
+
   describe ".import" do
     it 'imports people from an array of hashes' do
       group = Group.generate!
