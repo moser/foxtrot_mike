@@ -49,4 +49,8 @@ class AccountingEntry < ActiveRecord::Base
       read_attribute(:text)
     end
   end
+
+  def category_text
+    read_attribute(:text) || self.class.l(:flight_cost_text)
+  end
 end

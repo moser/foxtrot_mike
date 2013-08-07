@@ -144,6 +144,7 @@ de:
         direction: Buchungsrichtung
         debit: "Belastung (Soll B, Haben A)"
         credit: "Gutschrift (Soll A, Haben B)"
+        flight_cost_text: 'Fluggebühren'
       airfield:
         registration: Kennung
         lat: geog. Breite (+ = Nord)
