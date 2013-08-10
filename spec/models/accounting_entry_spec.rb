@@ -15,8 +15,8 @@ describe AccountingEntry do
       a.date.should == a.item.departure_date
     end
 
-    it "should return finished_at of accounting session or created_at if no item is present" do
-      a = AccountingEntry.create :accounting_session => AccountingSession.generate!(:finished_at => 2.days.ago)
+    it "should return accounting date of accounting session or created_at if no item is present" do
+      a = AccountingEntry.create :accounting_session => AccountingSession.generate!(:accounting_date => 2.days.ago)
       a.date.should == 2.days.ago.to_date
     end
   end
