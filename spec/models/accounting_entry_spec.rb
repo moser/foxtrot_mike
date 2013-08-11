@@ -24,7 +24,7 @@ describe AccountingEntry do
   describe "#text" do
     it "should return the localized class name of the item if present" do
       a = AccountingEntry.new :item => Flight.generate!
-      a.text.should == Flight.l
+      a.text.should =~ /#{Flight.l}/
     end
   end
 end
