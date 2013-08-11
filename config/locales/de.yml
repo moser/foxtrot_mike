@@ -42,6 +42,7 @@ de:
     future: "Zukünftig"
     main_flight_book: "Hauptflugbuch (%{name})"
     new: "Erstellen"
+    load: "Laden"
     no_controller: "Keiner"
     previous: "Ehemalig"
     print_voucher: "Beleg drucken"
@@ -53,6 +54,7 @@ de:
     validity: "Gültigkeit"
     filter_group: Nach Gruppe filtern
     filter_search: Suchen
+    filter: "Filtern"
     yes: "Ja"
     no: "Nein"
     dates:

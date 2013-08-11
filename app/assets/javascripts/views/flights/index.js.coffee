@@ -6,8 +6,9 @@ class F.Views.Flights.Index extends F.TemplateView
     "click a.new_flight": "new"
     "click a.print": "print"
     "click a.csv": "csv"
-    "change #range_from_front" : "updateRange"
-    "change #range_to_front" : "updateRange"
+    "click a.load" : "updateRange"
+    "click a.filter": "updateFilter"
+    "submit form.filter": "updateFilter"
 
   render: ->
     @$el.html(@template({}))
@@ -65,6 +66,18 @@ class F.Views.Flights.Index extends F.TemplateView
         update: true
         success: =>
           @hideLoadingIndicator()
+    false
+
+  updateFilter: =>
+    search = @$("#filter_text").val()
+    if @collection.search != search
+      @collection.setSearch(search)
+      @showLoadingIndicator()
+      @collection.fetch
+        update: true
+        success: =>
+          @hideLoadingIndicator()
+    false
   
   initialize: ->
     @new_view = null
@@ -76,6 +89,7 @@ class F.Views.Flights.Index extends F.TemplateView
     @collection.on("add", @add)
     @collection.on("remove", @remove)
     @render()
+    @search = ''
     if @options.range?
       @range = F.Models.Range.fromString(@options.range)
     else

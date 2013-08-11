@@ -161,12 +161,18 @@ F.Collections.Flights = Backbone.Collection.extend
     @range = range
     @updateUrl()
 
+  setSearch: (search) ->
+    @search = search
+    @updateUrl()
+
   updateUrl: ->
     @url = "/flights"
     if @filter.resource? && @filter.id?
       @url = "/#{@filter.resource}/#{@filter.id}/flights"
     if @range?
       @url = "#{@url}/range/#{@range}"
+    if @search? && @search != ''
+      @url = "#{@url}/search/#{@search}"
 
   comparator: (a,b) ->
     a = a.sortBy()

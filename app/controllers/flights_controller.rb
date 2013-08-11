@@ -1,21 +1,10 @@
 class FlightsController < ApplicationController
   def index
     authorize! :read, Flight
-    @flights = AbstractFlight.scoped
-    if params[:filter_model] && params[:filter_id]
-      filter_by = (params[:filter_model] || "").singularize.camelcase
-      unless %w(Airfield License Group Plane Person).include?(filter_by)
-        render status: 404, text: ""
-        return
-      end
-      @flights = filter_by.constantize.find(params[:filter_id]).flights
-    end
-    if params[:range]
-      min, max = params[:range].split("_").map { |s| Date.parse(s) }.sort
-      @flights = @flights.where("departure_date <= ? AND departure_date >= ?", max, min)
-    else
-      @flights = @flights.limit(40)
-    end
+    filter = AbstractFlight.scoped
+    filter = AffiliationFlightFilter.new(filter, params[:filter_model], params[:filter_id])
+    filter = RangeFlightFilter.new(filter, params[:range])
+    @flights = StringFlightFilter.new(filter, params[:search]).flights
     respond_to do |f|
       f.html { render_index }
       f.json { render json: @flights }

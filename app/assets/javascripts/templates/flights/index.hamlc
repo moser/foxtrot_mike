@@ -1,20 +1,29 @@
 .flights_index
   %h2
     = I18n.t("flights.index.title")
-  %a.btn.new_flight{ href: "#" }
-    %i.icon-paste
-    = I18n.t("views.new")
-  %a.btn.print{ href: "#" }
-    %i.icon-print
-    = I18n.t("views.print")
-  %a.btn.csv{ href: "#" }
-    %i.icon-download-alt
-    = I18n.t("views.csv")
-  .range
-    %input#range_from_front{ type: "text" }
-    %input#range_to_front{ type: "text" }
+  .btn-toolbar
+    %a.btn.new_flight{ href: "#" }
+      %i.icon-paste
+      = I18n.t("views.new")
+    %a.btn.print{ href: "#" }
+      %i.icon-print
+      = I18n.t("views.print")
+    %a.btn.csv{ href: "#" }
+      %i.icon-download-alt
+      = I18n.t("views.csv")
+  %form.form-inline.range
+    %input#range_from_front.input-small{ type: "text" }
+    %input#range_to_front.input-small{ type: "text" }
     %input#range_from{ type: "hidden" }
     %input#range_to{ type: "hidden" }
+    %a.btn.load{ href: '#' }
+      %i.icon-ok
+      = I18n.t("views.load")
+  %form.form-inline.filter
+    %input#filter_text.input-large{ type: 'text' }
+    %a.btn.filter{ href: '#' }
+      %i.icon-filter
+      = I18n.t("views.filter")
 
   .flights.alternate
     .head
