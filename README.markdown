@@ -1,7 +1,8 @@
 Foxtrot Mike
 ============
 
-![Build status](https://travis-ci.org/moser/foxtrot_mike.png)
+[![Build status](https://travis-ci.org/moser/foxtrot_mike.png)](https://travis-ci.org/moser/foxtrot_mike)
+[![Code Climate](https://codeclimate.com/github/moser/foxtrot_mike.png)](https://codeclimate.com/github/moser/foxtrot_mike)
 
 FM is a rails app that allows gliding clubs or companies running glider sites to manage 
 flight data.
