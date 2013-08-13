@@ -13,9 +13,9 @@ class PdfsController < ApplicationController
     render_pdf
   end
 
-  def render_pdf
+  def render_pdf(template = "flights/_grouped.html.haml")
     render pdf: "flights",
-           template: "flights/_grouped.html.haml",
+           template: template,
            disable_internal_links: true,
            disable_external_links: true,
            dpi: "90",

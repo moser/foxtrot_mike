@@ -8,6 +8,8 @@ Server::Application.routes.draw do
   match '/login', :to => 'account_sessions#new'
   match 'dashboard', :to => 'dashboards#show'
 
+  resource :bordbook
+
   resources :groups do
     get :cost_overview, on: :member
     resources :people

@@ -1,0 +1,13 @@
+- @flights_grouped.each do |group, flights|
+  .page
+    %h1= group.to_s
+    .flights
+      = render partial: "flights/title_spans"
+      - flights.each do |flight|
+        .flight
+          = render partial: "flights/flight_spans", locals: { flight: flight }
+      .foot
+        \#
+        %span.count= flights.count
+        t
+        %span.sum= format_minutes(flights.map { |f| f.duration > 0 ? f.duration : 0 }.sum)
