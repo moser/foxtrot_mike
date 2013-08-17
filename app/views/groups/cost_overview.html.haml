@@ -36,9 +36,20 @@
           %td
             Sonstiges
           %td= format_currency(- person.financial_account.balance - wire_launch_cost - tow_cost)
+        %tr
+          %td
+          %td
+            Gesamt
+          %td
           %td= format_currency(- person.financial_account.balance)
       - else
         %tr
           %td
           %td
             Kein Buchhaltungskonto!
+  %tr
+    %td
+      Summe
+    %td
+    %td
+    %td= format_currency(- @group.people.map { |p| p.financial_account.try(:balance) || 0}.sum)
