@@ -12,6 +12,7 @@ class AccountingSession < ActiveRecord::Base
   end
 
   before_save :remove_dates_if_without_flights
+  before_destroy :destroy_manual_accounting_entries
 
   default_scope order('accounting_date DESC')
 
@@ -164,5 +165,9 @@ private
     if without_flights?
       self.start_date = self.end_date = nil
     end
+  end
+
+  def destroy_manual_accounting_entries
+    self.manual_accounting_entries.destroy_all
   end
 end
