@@ -42,7 +42,7 @@ class WireLaunch < ActiveRecord::Base
     unless @cost
       candidates = WireLaunchCostRule.for(self.abstract_flight).map { |cr| cr.apply_to(self) }
       candidates = candidates.sort_by { |a| a.free_sum }
-      @cost = candidates.first
+      @cost = candidates.first || Cost.new
     end
     @cost
   end

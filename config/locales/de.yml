@@ -123,6 +123,10 @@ de:
   groups:
     index:
       title: "Gruppen"
+    cost_overview:
+      cost_item:
+        wire_launcher: "%{count} Windenstarts mit %{what}"
+        plane: "%{count} Minuten mit %{what}"
   launches:
     edit:
       selflaunch: Eigenstart
