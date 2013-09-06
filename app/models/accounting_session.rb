@@ -59,14 +59,14 @@ class AccountingSession < ActiveRecord::Base
       unless bank_debit?
         flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
       else
-        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => [-f.balance, f.max_debit_value].min, :accounting_session => self, :text => name) }
+        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => [-f.accounted_balance, f.max_debit_value].min, :accounting_session => self, :text => name) }
       end
     end
   end
   alias_method_chain :accounting_entries, :default
 
   def negative_financial_accounts 
-    FinancialAccount.where("bank_account_number != ''").where(:advance_payment => false, :member_account => true).select { |f| f.balance < 0 }
+    FinancialAccount.where("bank_account_number != ''").where(:advance_payment => false, :member_account => true).select { |f| f.accounted_balance < 0 }
   end
 
   def initialize(*args)

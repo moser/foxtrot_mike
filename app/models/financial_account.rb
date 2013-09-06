@@ -32,6 +32,12 @@ class FinancialAccount < ActiveRecord::Base
       AccountingEntry.where(from_id: id).select(:value).map(&:value).sum
   end
 
+  def accounted_balance
+    accounted = AccountingEntry.joins(:accounting_session).where('accounting_sessions.finished_at IS NOT NULL')
+    accounted.where(to_id: id).select(:value).map(&:value).sum -
+      accounted.where(from_id: id).select(:value).map(&:value).sum
+  end
+
   def max_debit_value_f
     max_debit_value / 100.0
   end
