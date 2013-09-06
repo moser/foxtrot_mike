@@ -49,6 +49,8 @@
       - @accounting_session.aggregated_entries.each do |a|
         .accounting_entry
           = format_accounting_entry(a)
+  .sum
+    = format_currency(@accounting_session.aggregated_entries.map(&:value).sum)
   
   - unless @accounting_session.without_flights?
     .flights
