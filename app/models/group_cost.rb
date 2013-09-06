@@ -29,6 +29,14 @@ class GroupCost
     liabilities.map(&:value).sum
   end
 
+  def settle(text, account)
+    accounting_session = AccountingSession.create(name: text, voucher_number: 0, accounting_date: Date.today, without_flights: true)
+    group.people.each do |person|
+      accounting_session.manual_accounting_entries.create(from: account, to: person.financial_account, text: text, value: sum_for_person(person))
+    end
+    accounting_session
+  end
+
 private
   def sorted_cost_for(person)
     foo = liabilities_for(person).map do |liability|

@@ -29,3 +29,16 @@
     %td
     %td
     %td= format_currency(@group_cost.sum)
+
+%h1
+  Settle
+= form_tag settle_group_cost_overview_path(@group),  method: :post do
+  .input.date
+    = date_select :report, :from, default: @from
+  .input.date
+    = date_select :report, :to, default: @to
+  .input
+    = select_tag :account_id, options_for_select(FinancialAccount.all.map { |account| [ account.to_s, account.id ] })
+  .input
+    = text_field_tag :text
+  = submit_tag

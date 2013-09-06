@@ -11,7 +11,9 @@ Server::Application.routes.draw do
   resource :bordbook
 
   resources :groups do
-    get :cost_overview, on: :member
+    resource :cost_overview, only: [:show] do
+      post :settle, on: :member
+    end
     resources :people
   end
   resources :headers, :only => [:index]
