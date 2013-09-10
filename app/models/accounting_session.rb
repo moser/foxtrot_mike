@@ -33,6 +33,11 @@ class AccountingSession < ActiveRecord::Base
     @problems.empty?
   end
 
+  def exclusions_with_default
+    exclusions_without_default || []
+  end
+  alias_method_chain :exclusions, :default
+
   def add_excluded_account(financial_account)
     self.exclusions << financial_account
     self.save
