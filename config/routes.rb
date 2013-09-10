@@ -54,6 +54,7 @@ Server::Application.routes.draw do
       post :import, on: :collection
     end
     resources :flights, :controller => 'accounting_session_flights'
+    resources :exclusions, only: [ :create, :destroy ]
   end
   resources :planes do
     collection do

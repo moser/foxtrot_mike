@@ -49,8 +49,22 @@
       - @accounting_session.aggregated_entries.each do |a|
         .accounting_entry
           = format_accounting_entry(a)
+          - if @accounting_session.bank_debit?
+            = form_tag accounting_session_exclusions_path(@accounting_session) do
+              = hidden_field_tag :id, a.to.id
+              = submit_tag 'Ausschließen'
+
   .sum
     = format_currency(@accounting_session.aggregated_entries.map(&:value).sum)
+
+  - unless @accounting_session.exclusions.empty?
+    %h1
+      Ausschlüße
+    - @accounting_session.exclusions.each do |financial_account|
+      .remove_exclusion
+        = form_tag accounting_session_exclusion_path(@accounting_session, financial_account.id), method: :delete do
+          = financial_account.name
+          = submit_tag 'Ausschluß löschen'
   
   - unless @accounting_session.without_flights?
     .flights

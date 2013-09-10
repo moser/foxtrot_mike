@@ -97,4 +97,25 @@ describe AccountingSession do
     s.start_date.should == nil
     s.end_date.should == nil
   end
+
+  context "exclusions" do
+    subject { s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago, :bank_debit => true, credit_financial_account: FinancialAccount.generate!) }
+
+    it "adds an excluded financial account id" do
+      subject.add_excluded_account(fa = FinancialAccount.generate!)
+      subject.reload
+
+      subject.exclusions.count.should == 1
+      subject.exclusions.should include(fa)
+    end
+
+    it "removes an excluded financial account" do
+      subject.add_excluded_account(fa = FinancialAccount.generate!)
+      subject.reload
+      subject.remove_excluded_account(fa)
+      subject.reload
+
+      subject.exclusions.should_not include(fa)
+    end
+  end
 end

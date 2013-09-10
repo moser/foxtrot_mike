@@ -4,6 +4,8 @@ class AccountingSession < ActiveRecord::Base
 
   belongs_to :credit_financial_account, :class_name => "FinancialAccount"
 
+  serialize :exclusions, Array
+
   validates_presence_of :name, :voucher_number, :accounting_date
   validates_presence_of :start_date, :end_date, :if => lambda { |s| !s.without_flights? }
   validates_presence_of :credit_financial_account, :if => lambda { |s| s.bank_debit? }
@@ -29,6 +31,16 @@ class AccountingSession < ActiveRecord::Base
     end
     @problems[:financial_account_missing_number] = {} if concerned_financial_accounts.find { |a| !a.number? }
     @problems.empty?
+  end
+
+  def add_excluded_account(financial_account)
+    self.exclusions << financial_account
+    self.save
+  end
+
+  def remove_excluded_account(financial_account)
+    self.exclusions.delete(financial_account)
+    self.save
   end
 
   def manual_accounting_entries
@@ -59,7 +71,15 @@ class AccountingSession < ActiveRecord::Base
       unless bank_debit?
         flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
       else
-        negative_financial_accounts.map { |f| AccountingEntry.new(:from => credit_financial_account, :to => f, :value => [-f.accounted_balance, f.max_debit_value].min, :accounting_session => self, :text => name) }
+        negative_financial_accounts.select do |financial_account|
+          !self.exclusions.include?(financial_account)
+        end.map do |financial_account|
+          AccountingEntry.new(:from => credit_financial_account, 
+                              :to => financial_account, 
+                              :value => [-financial_account.accounted_balance, financial_account.max_debit_value].min, 
+                              :accounting_session => self, 
+                              :text => name)
+        end
       end
     end
   end
