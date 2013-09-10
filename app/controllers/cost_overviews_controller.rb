@@ -1,6 +1,7 @@
 class CostOverviewsController < ApplicationController
   def show
     @group = Group.find(params[:group_id])
+    authorize! :read, @group
     @from = get_date(:from)
     @to = get_date(:to)
     @from ||= @group.flights.last.try(:departure_date) || Date.today
@@ -9,6 +10,7 @@ class CostOverviewsController < ApplicationController
   end
 
   def settle
+    authorize! :create, AccountingSession
     @group = Group.find(params[:group_id])
     @account = FinancialAccount.find(params[:account_id])
     @from = get_date(:from)
