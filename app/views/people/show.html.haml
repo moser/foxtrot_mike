@@ -1,4 +1,6 @@
 %h1= @person.name
+- if @person.member
+  %h4 Mitglied
 = link_to  Person.l(:book), scoped_flights_path(@person) if can?(:read, :filtered_flights)
 = edit_link(@person)
 = back_link(Person)
@@ -10,29 +12,31 @@
     %tr
       %th
       %td= Person.l(:disabled_long)
-  - if @person.member
-    %tr
-      %th= Person.l(:title)
-      %td= @person.title
+  %tr
+    %th= Person.l(:title)
+    %td= @person.title
+  - if @person.sex?
     %tr
       %th= Person.l(:sex)
       %td= t("person.sex.#{@person.sex}")
+  - if @person.birthdate?
     %tr
       %th= Person.l(:birthdate)
       %td= l(@person.birthdate)
-    %tr
-      %th= Person.l(:address)
-      %td
-        .address1= @person.address1
-        .address2= @person.address2
-        .zip.city
-          = @person.zip
-          = @person.city
-    - [ :email, :phone1, :phone2, :cell, :facsimile ].each do |m|
-      - unless @person.send(m).nil? || @person.send(m) == ""
-        %tr
-          %th= Person.l(m)
-          %td= @person.send(m)
+  %tr
+    %th= Person.l(:address)
+    %td
+      .address1= @person.address1
+      .address2= @person.address2
+      .zip.city
+        = @person.zip
+        = @person.city
+  - [ :email, :phone1, :phone2, :cell, :facsimile ].each do |m|
+    - unless @person.send(m).nil? || @person.send(m) == ""
+      %tr
+        %th= Person.l(m)
+        %td= @person.send(m)
+  - if @person.member
     %tr
       %th= Person.l(:entry_date)
       %td= l(@person.entry_date)
