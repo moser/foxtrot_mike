@@ -4,6 +4,7 @@
     = file_field_tag :file
     = submit_tag 'Import'
 = new_link(Person)
+= link_to 'Mitgliederliste', status_list_people_path(format: :csv)
 %table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "group_id,filter_string" }
   %thead
     %tr.no_filter.show_on_startup

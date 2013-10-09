@@ -20,6 +20,7 @@ Server::Application.routes.draw do
   resources :people do
     collection do
       post 'import'
+      get 'status_list'
     end
     resources :person_cost_category_memberships
     resources :licenses
