@@ -28,6 +28,7 @@ $ ->
       $("#accounting_session_start_date").attr("disabled", $(this).is(":checked"))
       $("#accounting_session_end_date").attr("disabled", $(this).is(":checked"))
       $("#accounting_session_credit_financial_account_id").attr("disabled", !$(this).is(":checked"))
+      $("#accounting_session_debit_type").attr("disabled", !$(this).is(":checked"))
     $("#accounting_session_without_flights").change ->
       $("#accounting_session_start_date").attr("disabled", $(this).is(":checked"))
       $("#accounting_session_end_date").attr("disabled", $(this).is(":checked"))

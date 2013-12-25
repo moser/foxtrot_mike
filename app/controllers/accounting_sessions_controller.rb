@@ -23,6 +23,10 @@ class AccountingSessionsController < ResourceController
         dta = DtaCreator.new(@accounting_session)
         send_data dta.create, :type => 'text/plain; charset=utf8;', :filename => "#{@accounting_session.voucher_number}.dtaus"
       end
+      f.sepa do
+        sepa = SepaCreator.new(@accounting_session)
+        send_data sepa.create(params[:filter]), :type => 'text/plain; charset=utf8;', :filename => "#{@accounting_session.voucher_number}.#{params[:filter]}.xml"
+      end
     end
   end
 end

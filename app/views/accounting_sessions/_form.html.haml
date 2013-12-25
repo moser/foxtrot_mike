@@ -7,4 +7,5 @@
   = f.input :start_date, disabled: accounting_session.without_flights? || accounting_session.bank_debit? unless accounting_session.finished?
   = f.input :end_date, disabled: accounting_session.without_flights? || accounting_session.bank_debit? unless accounting_session.finished?
   = f.association :credit_financial_account, disabled: !accounting_session.bank_debit? unless accounting_session.finished?
+  = f.input :debit_type, collection: %w(dta sepa), default: 'sepa', include_blank: false, disabled: !accounting_session.bank_debit? unless accounting_session.finished?
   = f.submit

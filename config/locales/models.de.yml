@@ -134,6 +134,7 @@ de:
         finished: Abgeschlossen
         finished_at: Abgeschlossen am
         entries: Buchungen
+        debit_type: Einzug mit
       accounting_entry:
         plural: Buchungen
         manual_plural: "Manuelle Buchungen"
@@ -209,6 +210,11 @@ de:
         bank_account_holder: Kontoinhaber
         bank_account_number: Kontonummer
         bank_code: BLZ
+        iban: IBAN
+        bic: BIC
+        mandate_id: Mandatsreferenz
+        mandate_date_of_signature: Datum der MR
+        creditor_identifier: "Gläubiger-ID"
         member_account: "BE?"
         max_debit_value: "Maximaler Einzugsbetrag"
       group:

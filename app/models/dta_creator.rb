@@ -1,8 +1,4 @@
-class DtaCreator
-  def initialize(accounting_session)
-    @accounting_session = accounting_session
-  end
-
+class DtaCreator < DirectDebitFileCreator
   def create
     dta = KingDta::Dtaus.new('LK')
     dta.account = KingDta::Account.new(:bank_account_number => @accounting_session.credit_financial_account.bank_account_number,
@@ -19,21 +15,5 @@ class DtaCreator
     end
 
     dta.create
-  end
-
-  def booking_text(account)
-    concerned_entries(account).map(&:category_text).uniq.join(" ")
-  end
-
-  def concerned_entries(account)
-    accounting_entries = account.accounting_entries_from.select do |accounting_entry| 
-      accounting_entry.accounting_session &&
-      accounting_entry.accounting_session.accounting_date &&
-      accounting_entry.accounting_session.accounting_date >= last_debit_date
-    end
-  end
-    
-  def last_debit_date
-    AccountingSession.where(bank_debit: true).order('accounting_date DESC').first.try(:accounting_date) || Time.new(0).to_date
   end
 end

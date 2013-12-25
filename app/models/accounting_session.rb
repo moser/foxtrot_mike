@@ -1,6 +1,7 @@
 class AccountingSession < ActiveRecord::Base
   has_many :accounting_entries
   has_many :flights, :order => "departure_date ASC, departure_date ASC"
+  has_many :first_debit_financial_accounts, class_name: 'FinancialAccount', foreign_key: 'first_debit_accounting_session_id'
 
   belongs_to :credit_financial_account, :class_name => "FinancialAccount"
 
@@ -90,7 +91,11 @@ class AccountingSession < ActiveRecord::Base
   alias_method_chain :accounting_entries, :default
 
   def negative_financial_accounts 
-    FinancialAccount.where("bank_account_number != ''").where(:advance_payment => false, :member_account => true).select { |f| f.accounted_balance < 0 }
+    if debit_type == 'dta'
+      FinancialAccount.where("bank_account_number != ''").where(:advance_payment => false, :member_account => true).select { |f| f.accounted_balance < 0 }
+    else
+      FinancialAccount.where("iban != ''").where(:advance_payment => false, :member_account => true).select { |f| f.accounted_balance < 0 }
+    end
   end
 
   def initialize(*args)
@@ -111,6 +116,22 @@ class AccountingSession < ActiveRecord::Base
     write_attribute(:end_date, d)
   end
 
+  def dta?
+    debit_type == 'dta'
+  end
+
+  def sepa?
+    debit_type == 'sepa'
+  end
+
+  def any_first?
+    !first_debit_financial_accounts.empty?
+  end
+
+  def any_recurring?
+    accounting_entries.any? { |ae| ae.to.first_debit_accounting_session != self }
+  end
+
   def finished?
     !finished_at.nil?
   end
@@ -125,7 +146,12 @@ class AccountingSession < ActiveRecord::Base
         end
       end
       if bank_debit?
-        accounting_entries.each { |e| e.save }
+        accounting_entries.each do |e|
+          if e.to.first_debit_accounting_session.nil?
+            e.to.update_attribute :first_debit_accounting_session_id, self.id
+          end
+          e.save
+        end
       end
       update_attribute :finished_at, DateTime.now
     end
