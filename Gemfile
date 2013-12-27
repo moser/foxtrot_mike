@@ -10,6 +10,7 @@ gem "authlogic"
 gem "cancan"
 gem "wicked_pdf"
 gem "king_dtaus"
+gem "sepa_king"
 gem 'roo'
 
 gem "less-rails"

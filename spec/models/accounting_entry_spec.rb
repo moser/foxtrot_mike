@@ -1,3 +1,4 @@
+#encoding: UTF-8
 require 'spec_helper'
 
 describe AccountingEntry do
@@ -15,7 +16,7 @@ describe AccountingEntry do
       a.date.should == a.item.departure_date
     end
 
-    it "should return accounting date of accounting session or created_at if no item is present" do
+    it "should return finished_at of accounting session or created_at if no item is present" do
       a = AccountingEntry.create :accounting_session => AccountingSession.generate!(:accounting_date => 2.days.ago)
       a.date.should == 2.days.ago.to_date
     end
@@ -25,6 +26,18 @@ describe AccountingEntry do
     it "should return the localized class name of the item if present" do
       a = AccountingEntry.new :item => Flight.generate!
       a.text.should =~ /#{Flight.l}/
+    end
+  end
+
+  describe "#category_text" do
+    it "returns the text if set" do
+      a = AccountingEntry.new text: 'foobar'
+      a.category_text.should == 'foobar'
+    end
+
+    it "returns a flight_cost_text if no text is set" do
+      a = AccountingEntry.new
+      a.category_text.should == 'Fluggebühren'
     end
   end
 end

@@ -13,6 +13,9 @@
     %th= FinancialAccount.l(:advance_payment)
     %td= @financial_account.advance_payment? ? t("simple_form.yes") : t("simple_form.no")
   %tr
+    %th= FinancialAccount.l(:max_debit_value)
+    %td=h format_currency(@financial_account.max_debit_value)
+  %tr
     %th= FinancialAccount.l(:bank_account_holder)
     %td=h @financial_account.bank_account_holder
   %tr
@@ -22,8 +25,20 @@
     %th= FinancialAccount.l(:bank_code)
     %td=h @financial_account.bank_code
   %tr
-    %th= FinancialAccount.l(:max_debit_value)
-    %td=h format_currency(@financial_account.max_debit_value)
+    %th= FinancialAccount.l(:iban)
+    %td=h @financial_account.iban
+  %tr
+    %th= FinancialAccount.l(:bic)
+    %td=h @financial_account.bic
+  %tr
+    %th= FinancialAccount.l(:mandate_id)
+    %td=h @financial_account.mandate_id
+  %tr
+    %th= FinancialAccount.l(:mandate_date_of_signature)
+    %td=h @financial_account.mandate_date_of_signature
+  %tr
+    %th= FinancialAccount.l(:creditor_identifier)
+    %td=h @financial_account.creditor_identifier
   %tr
     %th= FinancialAccount.l(:owners)
     %td

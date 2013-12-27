@@ -6,3 +6,4 @@ Server::Application.initialize!
 
 Mime::Type.register "text/plain", :txt
 Mime::Type.register "text/dtaus", :dtaus
+Mime::Type.register "text/sepa", :sepa

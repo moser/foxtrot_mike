@@ -7,11 +7,29 @@ describe AccountingSession do
   it { should validate_presence_of :end_date }
   it { should_not allow_value(5.days.from_now).for(:end_date) }
 
+  context '#negative_financial_accounts' do
+    xit 'finds accounts with bank_account_number or iban set'
+  end
+
   it "should not be finished unless the finished_at date is present" do
     s = AccountingSession.new
     s.finished?.should be_false
     s.finished_at = 1.hour.ago
     s.finished?.should be_true
+  end
+
+  it "sets the first_debit_accounting_session_id on accounts" do
+    d = FinancialAccount.generate!(member_account: true, iban: 'DE000000000000000000000', bic: 'CASFKL09238')
+    c = FinancialAccount.generate!
+    o = FinancialAccount.generate!
+    a = AccountingSession.generate!
+    a.accounting_entries_without_default.create(from: d, to: o, value: 1000, text: 'barr', manual: true)
+    a.update_attribute(:finished_at, 1.day.ago)
+    s = AccountingSession.new(debit_type: 'sepa', name: 'a', bank_debit: true, credit_financial_account: c, voucher_number: '1', accounting_date: 1.day.from_now)
+    s.save!
+    s.finished = true
+    d.reload
+    d.first_debit_accounting_session.should == s
   end
 
   it "should convert end_date to a date" do

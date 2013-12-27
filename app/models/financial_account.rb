@@ -6,6 +6,10 @@ class FinancialAccount < ActiveRecord::Base
   has_many :accounting_entries_from, :foreign_key => 'from_id', :class_name => 'AccountingEntry'
   has_many :accounting_entries_to, :foreign_key => 'to_id', :class_name => 'AccountingEntry'
 
+  belongs_to :first_debit_accounting_session, foreign_key: 'first_debit_accounting_session_id', class_name: 'AccountingSession'
+
+  before_save :reset_first_debit_accounting_session
+
   include Current
   has_many_current :financial_account_ownerships
 
@@ -47,6 +51,22 @@ class FinancialAccount < ActiveRecord::Base
     self.max_debit_value = (f.to_f * 100).to_i
   end
 
+  def mandate_date_of_signature
+    if mandate_id.blank? 
+      nil
+    else
+      read_attribute(:mandate_date_of_signature)
+    end
+  end
+
+  def sequence_type(accounting_session)
+    if first_debit_accounting_session.nil? || first_debit_accounting_session == accounting_session
+      'FRST'
+    else
+      'RCUR'
+    end
+  end
+
   def self.to_csv(options = {})
     cols = [ :number, :name, :balance, :bank_account_holder, :bank_account_number, :bank_code, :member_account, :advance_payment, :max_debit_value ] 
     CSV.generate(options) do |csv|
@@ -54,6 +74,13 @@ class FinancialAccount < ActiveRecord::Base
       all.each do |acc|
         csv << cols.map { |col| acc.send(col) }
       end
+    end
+  end
+
+private
+  def reset_first_debit_accounting_session
+    if iban_changed? || bic_changed? || mandate_id_changed? || mandate_date_of_signature_changed?
+      self.first_debit_accounting_session_id = nil
     end
   end
 end

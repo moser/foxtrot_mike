@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910190437) do
+ActiveRecord::Schema.define(:version => 20131224151619) do
 
   create_table "abstract_flights", :force => true do |t|
     t.string   "plane_id",                 :limit => 36
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20130910190437) do
     t.boolean  "bank_debit",                  :default => false
     t.integer  "credit_financial_account_id"
     t.text     "exclusions"
+    t.string   "debit_type",                  :default => "dta"
   end
 
   create_table "accounts", :force => true do |t|
@@ -154,13 +155,19 @@ ActiveRecord::Schema.define(:version => 20130910190437) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "number",              :default => ""
-    t.boolean  "advance_payment",     :default => false
-    t.string   "bank_account_holder", :default => ""
-    t.string   "bank_account_number", :default => ""
-    t.string   "bank_code",           :default => ""
-    t.boolean  "member_account",      :default => false
-    t.integer  "max_debit_value",     :default => 100000
+    t.string   "number",                            :default => ""
+    t.boolean  "advance_payment",                   :default => false
+    t.string   "bank_account_holder",               :default => ""
+    t.string   "bank_account_number",               :default => ""
+    t.string   "bank_code",                         :default => ""
+    t.boolean  "member_account",                    :default => false
+    t.integer  "max_debit_value",                   :default => 100000
+    t.string   "iban"
+    t.string   "bic"
+    t.string   "mandate_id"
+    t.date     "mandate_date_of_signature"
+    t.integer  "first_debit_accounting_session_id"
+    t.string   "creditor_identifier"
   end
 
   create_table "flight_cost_items", :force => true do |t|

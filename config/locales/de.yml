@@ -82,6 +82,8 @@ de:
       entries_txt: "Buchungen exportieren"
       voucher: "Beleg drucken"
       dtaus: "DTA"
+      sepa_first: SEPA-XML (Ersteinzug)
+      sepa_recurring: SEPA-XML (Folge-Einzug)
   airfields:
     index:
       title: "Flugplätze"
