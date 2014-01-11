@@ -1,0 +1,8 @@
+= form_tag "/training_statistic", method: :post do
+  .input
+    = label_tag :legal_plane_class_id, LegalPlaneClass.l
+    = select_tag :legal_plane_class_id, options_from_collection_for_select(@legal_plane_classes, "id", "name")
+  .input
+    = label_tag :year, t('views.year')
+    = text_field_tag :year
+  = submit_tag "Ok"

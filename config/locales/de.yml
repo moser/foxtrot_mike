@@ -12,6 +12,15 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    training_statistic: "Schulbericht"
+    training_statistics:
+      wire_launch_count: "Anzahl Windenstarts"
+      tow_launch_count: "Anzahl F-Schlepps"
+      self_launch_count: "Anzahl Eigenstarts"
+      flight_time: "Gesamtflugzeit"
+      instructors: "Lehrer mit Flügen"
+      trainees: "Schüler mit Flügen"
+    year: "Jahr"
     dialog:
       unsaved:
         title: "Ungespeicherte Änderungen"

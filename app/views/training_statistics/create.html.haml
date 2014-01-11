@@ -1,0 +1,21 @@
+%h1= "#{t('views.training_statistic')} #{@year} (#{@legal_plane_class.name})"
+= t('views.training_statistics.trainees')
+%ul
+  - @training_statistic.trainees.each do |person|
+    %li= person.name
+.p
+  = t('views.training_statistics.wire_launch_count')
+  = @training_statistic.wire_launch_count
+.p
+  = t('views.training_statistics.tow_launch_count')
+  = @training_statistic.tow_launch_count
+.p
+  = t('views.training_statistics.self_launch_count')
+  = @training_statistic.self_launch_count
+.p
+  = t('views.training_statistics.flight_time')
+  = format_minutes @training_statistic.flight_time
+= t('views.training_statistics.instructors')
+%ul
+  - @training_statistic.instructors.each do |person|
+    %li= "#{person.name} (#{@training_statistic.instructor_flight_count(person)})"

@@ -4,6 +4,8 @@ Server::Application.routes.draw do
     resource :overview, :controller => "financial_account_overviews"
   end
 
+  resource :training_statistic, controller: 'training_statistics', only: [:new, :create]
+
   match '/logout', :to => 'account_sessions#destroy'
   match '/login', :to => 'account_sessions#new'
   match 'dashboard', :to => 'dashboards#show'
