@@ -1,12 +1,12 @@
 class TrainingStatisticsController < ApplicationController
   def new
-    authorize! :read, AbstractFlight
+    authorize! :read, Flight
     @legal_plane_classes = LegalPlaneClass.all
     @groups = Group.all
   end
 
   def create
-    authorize! :read, AbstractFlight
+    authorize! :read, Flight
     @year = params[:year]
     @legal_plane_class = LegalPlaneClass.find(params[:legal_plane_class_id])
     @group = Group.find(params[:group_id])
