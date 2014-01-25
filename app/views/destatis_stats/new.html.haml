@@ -1,0 +1,8 @@
+= form_tag "/destatis_stats", method: :post do
+  .input
+    = label_tag :airfield_id, Airfield.l
+    = select_tag :airfield_id, options_from_collection_for_select(@airfields, "id", "name")
+  .input
+    = label_tag :year, t('views.year')
+    = text_field_tag :year, 1.year.ago.year
+  = submit_tag "Ok"

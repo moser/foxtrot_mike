@@ -1,0 +1,32 @@
+%h1= "#{t('views.destatis_stat')} #{@year} (#{@airfield.name})"
+.p
+  =t('views.destatis_stats.training_flights')
+  %br
+  S
+  = @destatis_stats.echo_training[:s]
+  %br
+  P
+  = @destatis_stats.echo_training[:p]
+.p
+  =t('views.destatis_stats.rest_flights')
+  %br
+  S
+  = @destatis_stats.echo_rest[:s]
+  %br
+  P
+  = @destatis_stats.echo_rest[:p]
+.p
+  =t('views.destatis_stats.glider_flights')
+  = @destatis_stats.gliders[:all]
+  %br
+  =t('views.destatis_stats.training_flights')
+  = @destatis_stats.gliders[:training]
+  %br
+  =t('views.destatis_stats.towed')
+  = @destatis_stats.gliders[:towed]
+.p
+  =t('views.destatis_stats.motorglider_flights')
+  = @destatis_stats.motor_gliders[:all]
+  %br
+  =t('views.destatis_stats.towed')
+  = @destatis_stats.motor_gliders[:towed]

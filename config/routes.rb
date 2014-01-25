@@ -5,6 +5,7 @@ Server::Application.routes.draw do
   end
 
   resource :training_statistic, controller: 'training_statistics', only: [:new, :create]
+  resource :destatis_stats, controller: 'destatis_stats', only: [:new, :create]
 
   match '/logout', :to => 'account_sessions#destroy'
   match '/login', :to => 'account_sessions#new'

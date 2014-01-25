@@ -18,6 +18,7 @@
           %li= link_to t("views.bordbooks"), bordbook_path
           %li= link_to t("views.contact_list"), group_people_path(Group.first, format: :csv)
           %li= link_to t("views.training_statistic"), new_training_statistic_path
+          %li= link_to t("views.destatis_stat"), new_destatis_stats_path
     .well
       %h2= Group.l(:plural)
       %ul.nav.nav-tabs.nav-stacked

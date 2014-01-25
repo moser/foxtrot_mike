@@ -12,6 +12,13 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    destatis_stat: "Jahreserhebung nicht-gewerblicher Luftverkehr"
+    destatis_stats:
+      training_flights: "night-gewerbliche Schulflüge"
+      rest_flights: "sonstiger nicht-gewerblicher Luftverkehr"
+      glider_flights: "Segelflüge"
+      towed: "Flugzeugschleppstarts"
+      motorglider_flights: "Motorsegelflüge"
     training_statistic: "Schulbericht"
     training_statistics:
       wire_launch_count: "Anzahl Windenstarts"
