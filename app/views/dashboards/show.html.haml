@@ -8,22 +8,26 @@
         - if @current_person
           %li= link_to t("financial_account_overview"), own_financial_account_path
         %li= link_to t("change_password"), new_password_path
-    - if Airfield.home.count > 0
-      .well
-        %h2 Ansichten
-        %ul.nav.nav-tabs.nav-stacked
+    .well
+      %h2 Ansichten
+      %ul.nav.nav-tabs.nav-stacked
+        - if Airfield.home.count > 0
           - Airfield.home.each do |a|
             - date = AbstractFlight.latest_departure(a.flights).to_date
             %li= link_to t("views.main_flight_book", :name => a.to_s), scoped_flights_path(a, range: "#{date}_#{date}")
-          %li= link_to t("views.bordbooks"), bordbook_path
-          %li= link_to t("views.contact_list"), group_people_path(Group.first, format: :csv)
-          %li= link_to t("views.training_statistic"), new_training_statistic_path
-          %li= link_to t("views.destatis_stat"), new_destatis_stats_path
+        %li= link_to t("views.bordbooks"), bordbook_path
+        %li= link_to t("views.contact_list"), group_people_path(Group.first, format: :csv)
     .well
       %h2= Group.l(:plural)
       %ul.nav.nav-tabs.nav-stacked
         - @groups.each do |g|
           %li= link_to g.name, scoped_flights_path(g)
+    .well
+      %h2= t('views.statistics')
+      %ul.nav.nav-tabs.nav-stacked
+        %li= link_to t("views.training_statistic"), new_training_statistic_path
+        %li= link_to t("views.blsv_statistic"), new_blsv_statistics_path
+        %li= link_to t("views.destatis_stat"), new_destatis_stats_path
   .span6
     .well
       %h2= t('views.bordbooks')

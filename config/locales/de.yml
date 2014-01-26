@@ -12,6 +12,7 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    statistics: "Statistiken"
     blsv_statistic: "BLSV Bestandserhebung"
     blsv_statistics:
       by_year: 'Nach Jahrgang'
