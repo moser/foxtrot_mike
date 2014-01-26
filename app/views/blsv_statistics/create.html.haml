@@ -1,9 +1,15 @@
 %h1= "#{t('views.blsv_statistic')} #{l(@date)} (#{@group.name})"
 
 %h2= t('views.blsv_statistics.by_year')
-- @statistics.by_year.each do |a|
-  = a[0]
-  - a[1].each do |s|
-    = s[0]
-    = s[1]
-  %br
+%table
+  %tr
+    %td= t('views.year')
+    %td
+      m
+    %td
+      w
+  - @statistics.by_year.each do |a|
+    %tr
+      %td= a[0]
+      %td= (a[1].select {|s| s[0] == 'm' }.first || ['m', 0])[1]
+      %td= (a[1].select {|s| s[0] == 'w' }.first || ['w', 0])[1]
