@@ -1,0 +1,8 @@
+= form_tag "/blsv_statistics", method: :post do
+  .input
+    = label_tag :group_id, Group.l
+    = select_tag :group_id, options_from_collection_for_select(@groups, "id", "name")
+  .input.date
+    = label_tag :day, t('views.date')
+    = date_select :stat, :day
+  = submit_tag "Ok"

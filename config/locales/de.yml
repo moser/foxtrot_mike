@@ -12,6 +12,9 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    blsv_statistic: "BLSV Bestandserhebung"
+    blsv_statistics:
+      by_year: 'Nach Jahrgang'
     destatis_stat: "Jahreserhebung nicht-gewerblicher Luftverkehr"
     destatis_stats:
       training_flights: "night-gewerbliche Schulflüge"
