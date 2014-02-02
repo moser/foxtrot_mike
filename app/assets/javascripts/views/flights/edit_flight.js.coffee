@@ -4,8 +4,12 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
 
   events:
     'focus input.edit_field': 'edit_field'
+    'focus input.time': 'select_all'
     'change input.time': 'changeTimes'
     'change input': 'change'
+
+  select_all: (e) ->
+    @$(e.target).select()
 
   changeTimes: ->
     _.each ["departure_i", "arrival_i"], (f) =>
