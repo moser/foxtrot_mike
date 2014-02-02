@@ -7,18 +7,18 @@ class F.Views.SearchParent extends Backbone.View
 
   selectByClick: (e) =>
     @selected = @listFindById(@$(e.target).attr("data-id"))
-    @blur()
+    @blur(false)
 
   keydown: (e) =>
     switch e.keyCode
       when 27 #ESC
         @selected = @old
-        @blur()
+        @blur(false)
       when 13 #ENTER
         e.preventDefault()
-        @blur()
+        @blur(true)
       when 9
-        @blur()
+        @blur(true)
   
   keyup: (e) =>
     switch e.keyCode
@@ -42,10 +42,11 @@ class F.Views.SearchParent extends Backbone.View
             @selected = null
           @renderList()
 
-  blur: =>
+  blur: (focus_next) =>
     $("#block").remove()
     @select(@selected)
     @release()
+    window.setTimeout((=> @next_field.focus()), 100) if focus_next && @next_field
 
 
   release: =>
@@ -68,6 +69,7 @@ class F.Views.SearchParent extends Backbone.View
   initialize: ->
     [@for, @span, @list, @label, @match, @score, @callback] = [@options.for, @options.span, @options.list, @options.label, @options.match, @options.score, @options.callback]
     throw "@for, @span, @list, @label, @match, @score are needed" unless @for && @span && @list && @label && @match && @score
+    @next_field = $(@options.next)
     @filter = ""
     @results = @list
     @old = @listFindById(@for.val())

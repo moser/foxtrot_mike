@@ -21,6 +21,7 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
   edit_field: (e) ->
     target = @$(e.target)
     field = target.attr("data-edit")
+    is_tow = F.Presenters.Flight.present(@model).is_tow
     unless target.siblings(".searchParent").length > 0
       switch field
         when "plane"
@@ -29,37 +30,49 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
             label: (p) -> p.get("registration")
             score: (p) -> 1
             match: (p, q) -> p.get("registration").toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: @$(".seat1_person .edit_field")
         when "seat1_person"
           params =
             list: F.people.models
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: @$(".seat2 .edit_field")
         when "seat2"
           params =
             list: _.flatten([new F.Models.NoPerson(), F.people.models, new F.Models.NPersons(1), new F.Models.NPersons(2), new F.Models.NPersons(3)])
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: if is_tow then @$(".to .edit_field") else @$(".from .edit_field")
         when "controller"
           params =
             list: _.flatten([new F.Models.NoPerson(), F.people.models])
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: @$(".cost_hint .edit_field")
         when "cost_hint"
           params =
             list: _.flatten([new F.Models.NoCostHint(), F.cost_hints.models])
             label: (p) -> p.present().name
             score: (p) -> "#{1} #{p.present().name}"
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: @$(".comment textarea")
         when "from", "to"
+          if field == "from"
+            next_field = @$(".to .edit_field")
+          else if is_tow
+            next_field = @$(".times input[name=arrival_i_front]")
+          else
+            next_field = @$(".times input[name=departure_i_front]")
           present = (p) -> F.Presenters.Airfield.present(p)
           params =
             list: F.airfields.models
             label: (p) -> present(p).long
             score: (p) -> "#{p.get("name")}"
             match: (p, q) -> present(p).long.toLowerCase().indexOf(q.toLowerCase()) > -1
+            next: next_field
       
       params["for"] = @$(e.target).siblings("input[name=#{field}_id]")
       params["span"] = @$(e.target)
