@@ -1,13 +1,13 @@
 %form.form-horizontal
   %ul.nav.nav-tabs
     %li.tab_flight.active
-      %a{ "data-tab_name": "flight", "data-toggle": "tab", href: "#flight" } Flug
+      %a{ "data-tab_name": "flight", "data-toggle": "tab", href: "#flight_#{ @flight.cid }" } Flug
     %li.tab_launch
-      %a{ "data-tab_name": "launch",  "data-toggle": "tab", href: "#launch" } Start
+      %a{ "data-tab_name": "launch",  "data-toggle": "tab", href: "#launch_#{ @flight.cid }" } Start
   .tab-content{ style: "overflow: inherit;" }
-    .tab-pane.active#flight
+    .tab-pane.active{ "id": "flight_#{ @flight.cid }" }
       .edit_flight
-    .tab-pane.fade#launch
+    .tab-pane.fade{ "id": "launch_#{ @flight.cid }" }
       .edit_launch
   - if @flight.editable
     %a.save.btn

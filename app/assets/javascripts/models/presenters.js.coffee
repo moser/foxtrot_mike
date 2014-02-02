@@ -12,6 +12,7 @@ F.Presenters.Flight =
       comment = model.get("comment")
     r =
       id: model.id
+      cid: model.cid
       date: I18n.l("date.formats.default", model.get("departure_date"))
       plane: if model.plane()? then model.plane().get("registration") else ""
       seat1: if model.seat1_person()? then PersonPresenter.present(model.seat1_person()).name else ""

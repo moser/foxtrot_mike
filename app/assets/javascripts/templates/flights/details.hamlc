@@ -4,25 +4,25 @@
   .additional.span7
     %ul.nav.nav-tabs
       %li.active
-        %a.cost_tab{ "data-toggle": "tab", href: "#cost_tab" }= I18n.t("activerecord.attributes.abstract_flight.cost")
+        %a{ "data-toggle": "tab", href: "#cost_tab_#{ @flight.cid }", class: "cost_tab_#{ @flight.cid }" }= I18n.t("activerecord.attributes.abstract_flight.cost")
       - if !@flight.is_tow && @flight.raw.id
         %li
-          %a.liabilities_tab{ "data-toggle": "tab", href: "#liabilities_tab" }= I18n.t("activerecord.attributes.abstract_flight.liabilities")
+          %a.liabilities_tab{ "data-toggle": "tab", href: "#liabilities_tab_#{ @flight.cid }", class: "liabilities_tab_#{ @flight.cid }" }= I18n.t("activerecord.attributes.abstract_flight.liabilities")
       - if @flight.problems_exist
         %li
-          %a.problems_tab{ "data-toggle": "tab", href: "#problems_tab" }= I18n.t("activerecord.attributes.abstract_flight.problems")
+          %a.problems_tab{ "data-toggle": "tab", href: "#problems_tab_#{ @flight.cid }", class: "problems_tab_#{ @flight.cid }" }= I18n.t("activerecord.attributes.abstract_flight.problems")
       -#%li
-      -#  %a.history{ "data-toggle": "tab", href: "#history" }= I18n.t("activerecord.attributes.abstract_flight.history")
+      -#  %a.history{ "data-toggle": "tab", href: "#history_#{ @flight.cid }", class: "history_#{ @flight.cid }" }= I18n.t("activerecord.attributes.abstract_flight.history")
     .tab-content
-      .tab-pane.active#cost_tab
+      .tab-pane.active{ "id": "cost_tab_#{ @flight.cid }" }
         .cost
       - if !@flight.is_tow && @flight.raw.id
-        .tab-pane.fade#liabilities_tab
+        .tab-pane.fade{ "id": "liabilities_tab_#{ @flight.cid }" }
           .liabilities
       - if @flight.problems_exist
-        .tab-pane#problems_tab
+        .tab-pane{ "id": "problems_tab_#{ @flight.cid }" }
           .problems
-      -#.tab-pane.fade#history
+      -#.tab-pane.fade{ "id": "history_#{ @flight.cid }" }
       -#  History
     %a{ href: "/flights/#{@flight.id}" }
       %i.icon-link
