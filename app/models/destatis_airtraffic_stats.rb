@@ -3,7 +3,8 @@ class DestatisAirtrafficStats
 
   MAPPING = { 'Echo' => [ 'Echo' ],
               'Glider' => [ 'Kilo (SFL)', 'Segelflugzeuge' ],
-              'Kilo' => [ 'Kilo (TMG)' ] }
+              'Kilo' => [ 'Kilo (TMG)' ],
+              'UL' => [ 'UL' ] }
 
   def initialize(flights, airfield)
     @flights, @airfield = flights.where(from_id: airfield.id).to_a, airfield
@@ -30,6 +31,12 @@ class DestatisAirtrafficStats
 
   def motor_gliders
     flights = flights_of('Kilo')
+    { all: flights.count,
+      towed:  flights.select { |f| f.tow_launch? }.count }
+  end
+
+  def ultra_light
+    flights = flights_of('UL')
     { all: flights.count,
       towed:  flights.select { |f| f.tow_launch? }.count }
   end

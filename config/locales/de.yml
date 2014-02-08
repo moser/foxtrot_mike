@@ -23,6 +23,7 @@ de:
       glider_flights: "Segelflüge"
       towed: "Flugzeugschleppstarts"
       motorglider_flights: "Motorsegelflüge"
+      ultra_light_flights: "UL-Flüge"
     training_statistic: "Schulbericht"
     training_statistics:
       wire_launch_count: "Anzahl Windenstarts"
