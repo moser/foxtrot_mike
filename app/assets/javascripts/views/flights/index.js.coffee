@@ -53,8 +53,11 @@ class F.Views.Flights.Index extends F.TemplateView
     _.each(@views, (v) -> v.setMarked(!v.marked))
     e.stopPropagation()
 
-  marked_changed: (view) ->
-    #update collection of marked views
+  marked_changed: (view) =>
+    if view.marked
+      @markedViews.push(view)
+    else
+      @markedViews = _.without(@markedViews, view)
 
   showLoadingIndicator: =>
     $('.loading').css('display', 'block')
@@ -92,6 +95,7 @@ class F.Views.Flights.Index extends F.TemplateView
   initialize: ->
     @new_view = null
     @views = {}
+    @markedViews = []
     @collection = F.flights
     @collection.setFilter(@options.filter)
     @collection.setRange(@options.range)
