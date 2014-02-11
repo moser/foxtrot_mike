@@ -26,6 +26,11 @@
       = I18n.t("views.filter")
 
   .flights.alternate
+    .foot
+      %i.icon-plane
+      %span.count
+      %i.icon-time
+      %span.sum
     .head
       %button.mark.btn.btn-mini{ "type": "button", "data-toggle": "button" }
         %i.icon-tag
@@ -45,8 +50,3 @@
       %span.comment= I18n.t("attributes.comment")
     .main
       .flight_group
-      .foot
-        %i.icon-plane
-        %span.count
-        %i.icon-time
-        %span.sum

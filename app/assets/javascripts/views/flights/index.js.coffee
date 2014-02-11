@@ -51,6 +51,7 @@ class F.Views.Flights.Index extends F.TemplateView
 
   toggleMarkAll: (e) ->
     _.each(@views, (v) -> v.setMarked(!v.marked))
+    @updateAggregation()
     e.stopPropagation()
 
   marked_changed: (view) =>
@@ -58,6 +59,7 @@ class F.Views.Flights.Index extends F.TemplateView
       @markedViews.push(view)
     else
       @markedViews = _.without(@markedViews, view)
+    @updateAggregation()
 
   showLoadingIndicator: =>
     $('.loading').css('display', 'block')
@@ -66,8 +68,9 @@ class F.Views.Flights.Index extends F.TemplateView
     $('.loading').css('display', 'none')
 
   updateAggregation: ->
-    @$("span.count").html("#{@collection.length}")
-    @$("span.sum").html("#{F.Util.intTimeToString(@collection.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))}")
+    sum = (col) -> F.Util.intTimeToString(col.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))
+    @$("span.count").html("#{@collection.length} (#{@markedViews.length})")
+    @$("span.sum").html("#{sum(@collection)} (#{sum(_.map(@markedViews, (v) -> v.model))})")
 
   updateRange: =>
     @range._from = Parse.date_to_s(@$("#range_from").val())

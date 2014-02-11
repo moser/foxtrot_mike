@@ -20,10 +20,10 @@ class F.Views.Flights.Show extends F.TemplateView
   setMarked: (b) ->
     @marked = b
     @renderMarker()
+    @trigger("marked_changed", @)
 
   marked_changed: (e) ->
     @setMarked(!@marked)
-    @trigger("marked_changed", @)
     e.stopPropagation()
 
   delegateEvents: ->
