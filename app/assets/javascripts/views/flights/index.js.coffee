@@ -9,11 +9,13 @@ class F.Views.Flights.Index extends F.TemplateView
     "click a.load" : "updateRange"
     "click a.filter": "updateFilter"
     "submit form.filter": "updateFilter"
+    "click .mark": "toggleMarkAll"
 
   render: ->
     @$el.html(@template({}))
     @collection.each (e) =>
       @$(".flights .flight_group").append (@views[e.id] = new F.Views.Flights.Show({ model: e })).el
+      @views[e.id].on("marked_changed", @marked_changed)
       @views[e.id].render()
     @updateAggregation()
 
@@ -27,6 +29,7 @@ class F.Views.Flights.Index extends F.TemplateView
       view = @views[model.id]
     else
       view = @views[model.id] = new F.Views.Flights.Show({ model: model })
+      view.on("marked_changed", @marked_changed)
       view.render()
     @$("##{model.id}").remove()
     @$(".flights .flight_group").prepend(view.el)
@@ -45,6 +48,13 @@ class F.Views.Flights.Index extends F.TemplateView
       @$("##{model.id}").remove()
       @views[model.id] = null
     @updateAggregation()
+
+  toggleMarkAll: (e) ->
+    _.each(@views, (v) -> v.setMarked(!v.marked))
+    e.stopPropagation()
+
+  marked_changed: (view) ->
+    #update collection of marked views
 
   showLoadingIndicator: =>
     $('.loading').css('display', 'block')

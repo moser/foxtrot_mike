@@ -1,10 +1,30 @@
 class F.Views.Flights.Show extends F.TemplateView
   className: "flight"
   templateName: "flights/show"
+  marked: false
 
   events:
     "click span": "detailsEvent"
     "click .summary": "detailsEvent"
+    "click .mark": "marked_changed"
+
+  renderMarker: ->
+    mark = @$("button.mark")
+    if @marked
+      mark.addClass("active")
+      mark.parents(".flight").addClass("marked")
+    else
+      mark.removeClass("active")
+      mark.parents(".flight").removeClass("marked")
+
+  setMarked: (b) ->
+    @marked = b
+    @renderMarker()
+
+  marked_changed: (e) ->
+    @setMarked(!@marked)
+    @trigger("marked_changed", @)
+    e.stopPropagation()
 
   delegateEvents: ->
     super()
@@ -45,6 +65,7 @@ class F.Views.Flights.Show extends F.TemplateView
     false
 
   initialize: ->
+    _.extend(@, Backbone.Events)
     @no_summary = @options.no_summary || false
     @model = @options.model
     @model.on("change", @renderSummary)
@@ -59,5 +80,6 @@ class F.Views.Flights.Show extends F.TemplateView
   render: () =>
     @renderSummary()
     @$el.attr("id", @model.id)
+    @renderMarker()
     if @detailsView?
       @detailsView.render()

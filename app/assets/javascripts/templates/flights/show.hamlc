@@ -1,4 +1,6 @@
 .summary
+  %button.mark.btn.btn-mini{ "type": "button", "data-toggle": "button" }
+    %i.icon-tag
   %span.id= @flight.raw.id
   %span.date
     %a{ name: @flight.id }
