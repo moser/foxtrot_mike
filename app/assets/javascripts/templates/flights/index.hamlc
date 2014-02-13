@@ -31,6 +31,10 @@
       %span.count
       %i.icon-time
       %span.sum
+      %button.delete_selected.btn.btn-mini.btn-danger
+        %i.icon-minus-sign
+        = I18n.t("views.destroy")
+        %span.selected_count
     .head
       %button.mark.btn.btn-mini{ "type": "button", "data-toggle": "button" }
         %i.icon-tag

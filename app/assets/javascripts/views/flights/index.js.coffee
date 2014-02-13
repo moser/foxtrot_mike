@@ -10,6 +10,7 @@ class F.Views.Flights.Index extends F.TemplateView
     "click a.filter": "updateFilter"
     "submit form.filter": "updateFilter"
     "click .mark": "toggleMarkAll"
+    "click .delete_selected": "deleteSelected"
 
   render: ->
     @$el.html(@template({}))
@@ -59,7 +60,20 @@ class F.Views.Flights.Index extends F.TemplateView
       @markedViews.push(view)
     else
       @markedViews = _.without(@markedViews, view)
+    flights = _.map(@markedViews, (v) -> v.model)
     @updateAggregation()
+
+
+  deleteSelected: (e) ->
+    if @markedViews.length > 0
+      new F.Views.YesNo
+        model:
+          info:
+            title: I18n.t("views.destroy")
+            message: I18n.t("views.areusure")
+          yes: =>
+            _.each(@markedViews, (v) -> v.model.destroy())
+    false
 
   showLoadingIndicator: =>
     $('.loading').css('display', 'block')
@@ -71,6 +85,7 @@ class F.Views.Flights.Index extends F.TemplateView
     sum = (col) -> F.Util.intTimeToString(col.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))
     @$("span.count").html("#{@collection.length} (#{@markedViews.length})")
     @$("span.sum").html("#{sum(@collection)} (#{sum(_.map(@markedViews, (v) -> v.model))})")
+    @$("span.selected_count").html("(#{@markedViews.length})")
 
   updateRange: =>
     @range._from = Parse.date_to_s(@$("#range_from").val())
