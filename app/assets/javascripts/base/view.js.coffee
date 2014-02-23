@@ -21,3 +21,15 @@ class F.ModelBasedView extends F.TemplateView
   initialize: ->
     @model = @options.model
     @model.on("sync", => @trigger("changed"))
+
+class F.Modal extends F.TemplateView
+  initialize: ->
+    @render()
+    @$el.modal()
+
+  render: ->
+    @setElement(@template({ info: @model.info }))
+
+  hide: ->
+    @$el.modal("hide")
+    @remove()

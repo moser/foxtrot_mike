@@ -14,7 +14,7 @@ F.Presenters.Flight =
       id: model.id
       cid: model.cid
       date: I18n.l("date.formats.default", model.get("departure_date"))
-      plane: if model.plane()? then model.plane().get("registration") else ""
+      plane: if model.plane()? then model.plane().toString() else ""
       seat1: if model.seat1_person()? then PersonPresenter.present(model.seat1_person()).name else ""
       seat2: seat2
       launch_type: model.launch_type()
@@ -52,7 +52,7 @@ WireLaunchPresenter = F.Presenters.WireLaunch =
 PersonPresenter = F.Presenters.Person =
   present: (model) ->
     if model?
-      name = "#{model.get("firstname")} #{model.get("lastname")}"
+      name = model.toString()
       firstname = model.get("firstname")
       lastname = model.get("lastname")
     else

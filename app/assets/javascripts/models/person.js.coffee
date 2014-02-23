@@ -2,6 +2,7 @@ F.Models.Person = Backbone.Model.extend
   paramRoot: 'person'
   present: ->
     F.Presenters.Person.present(@)
+  toString: -> "#{@get("firstname")} #{@get("lastname")}"
 
 class F.Models.NoPerson
   constructor: ->

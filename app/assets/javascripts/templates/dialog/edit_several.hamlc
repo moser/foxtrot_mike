@@ -1,0 +1,60 @@
+.modal
+  .modal-header
+    %h3.title= I18n.t('views.edit_several')
+  .modal-body.form-horizontal.compact
+    .control-group.departure_date
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.departure_date")
+      .controls
+        %input{ type: "hidden", name: "departure_date" }
+        %input.input-small{ type: "text", name: "departure_date_front" }
+        %input.save{ type: "checkbox" }
+    .control-group.plane
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.plane")
+      .controls.relative
+        %input{ type: "hidden", name: "plane_id" }
+        %input.edit_field{ type: "text", name: "plane_front", data-edit: "plane" }
+        %input.save{ type: "checkbox" }
+    .control-group.seat1_person
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.seat1")
+      .controls.relative
+        %input{ type: "hidden", name: "seat1_person_id" }
+        %input.edit_field{ type: "text", name: "seat1_person_front", data-edit: "seat1_person" }
+        %input.save{ type: "checkbox" }
+    .control-group.seat2
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.seat2")
+      .controls.relative
+        %input{ type: "hidden", name: "seat2_id"  }
+        %input.edit_field{ type: "text", name: "seat2_front", data-edit: "seat2" }
+        %input.save{ type: "checkbox" }
+    .control-group.from
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.from")
+      .controls.relative
+        %input{ type: "hidden", name: "from_id"  }
+        %input.edit_field{ type: "text", name: "from_front", data-edit: "from" }
+        %input.save{ type: "checkbox" }
+    .control-group.to
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.to")
+      .controls.relative
+        %input{ type: "hidden", name: "to_id" }
+        %input.edit_field{ type: "text", name: "to_front", data-edit: "to" }
+        %input.save{ type: "checkbox" }
+    .control-group.controller
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.controller")
+      .controls.relative
+        %input{ type: "hidden", name: "controller_id" }
+        %input.edit_field{ type: "text", name: "controller_front", data-edit: "controller" }
+        %input.save{ type: "checkbox" }
+    .control-group.cost_hint
+      %label.control-label= I18n.t("activerecord.attributes.abstract_flight.cost_hint")
+      .controls.relative
+        %input{ type: "hidden", name: "cost_hint_id" }
+        %input.edit_field{ type: "text", name: "cost_hint_front", data-edit: "cost_hint" }
+        %input.save{ type: "checkbox" }
+    .control-group.comment
+      %label.control-label= I18n.t("attributes.comment")
+      .controls
+        %textarea{ name: "comment" }
+        %input.save{ type: "checkbox" }
+  .modal-footer
+    %a.btn.cancel= I18n.t("views.cancel")
+    %a.btn.btn-primary.save= I18n.t("helpers.submit.update")

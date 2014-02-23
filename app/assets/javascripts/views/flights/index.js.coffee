@@ -11,6 +11,7 @@ class F.Views.Flights.Index extends F.TemplateView
     "submit form.filter": "updateFilter"
     "click .mark": "toggleMarkAll"
     "click .delete_selected": "deleteSelected"
+    "click .edit_selected": "editSelected"
 
   render: ->
     @$el.html(@template({}))
@@ -74,6 +75,11 @@ class F.Views.Flights.Index extends F.TemplateView
           yes: =>
             _.each(@markedViews, (v) -> v.model.destroy())
     false
+
+  editSelected: (e) ->
+    if @markedViews.length > 0
+      model = new F.Models.SeveralFlights(_.map(@markedViews, (v) -> v.model))
+      view = new F.Views.Flights.EditSeveral({model: model})
 
   showLoadingIndicator: =>
     $('.loading').css('display', 'block')

@@ -32,6 +32,12 @@ class F.Models.Flight extends F.BaseModel
     if @get("seat2_person_id")?
       F.people.get(@get("seat2_person_id"))
 
+  seat2_n: ->
+    @get("seat2_n")
+
+  seat2: () ->
+    @seat2_person() || @seat2_n()
+
   controller: ->
     if @get("controller_id")?
       F.people.get(@get("controller_id"))

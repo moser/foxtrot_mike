@@ -1,16 +1,4 @@
-class Modal extends F.TemplateView
-  initialize: ->
-    @render()
-    @$el.modal()
-
-  render: ->
-    @setElement(@template({ info: @model.info }))
-
-  hide: ->
-    @$el.modal("hide")
-    @remove()
-
-class F.Views.CancelResetSaveDialogView extends Modal
+class F.Views.CancelResetSaveDialogView extends F.Modal
   templateName: "dialog/cancel_reset_save"
   events:
     "click a.cancel": "cancel"
@@ -31,7 +19,7 @@ class F.Views.CancelResetSaveDialogView extends Modal
     @hide()
     false
 
-class F.Views.YesNo extends Modal
+class F.Views.YesNo extends F.Modal
   templateName: "dialog/yes_no"
   events:
     "click a.yes": "yes"

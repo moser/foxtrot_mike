@@ -35,6 +35,10 @@
         %i.icon-minus-sign
         = I18n.t("views.destroy")
         %span.selected_count
+      %button.edit_selected.btn.btn-mini
+        %i.icon-edit
+        = I18n.t("views.edit")
+        %span.selected_count
     .head
       %button.mark.btn.btn-mini{ "type": "button", "data-toggle": "button" }
         %i.icon-tag

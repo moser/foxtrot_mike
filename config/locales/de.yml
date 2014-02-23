@@ -12,6 +12,7 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    edit_several: "Mehrere bearbeiten"
     statistics: "Statistiken"
     blsv_statistic: "BLSV Bestandserhebung"
     blsv_statistics:

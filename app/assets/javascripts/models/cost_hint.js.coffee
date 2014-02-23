@@ -1,6 +1,8 @@
 F.Models.CostHint = Backbone.Model.extend
   paramRoot: 'cost_hint'
 
+  toString: -> @get("name")
+
   present: ->
     r =
       name: @get("name")
