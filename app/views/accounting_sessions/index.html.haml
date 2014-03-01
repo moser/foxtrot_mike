@@ -3,6 +3,7 @@
 %table.table.table-striped.table-hover
   %thead
     %tr
+      %th= AccountingSession.l(:voucher_number)
       %th= AccountingSession.l(:name)
       %th= AccountingSession.l(:accounting_date)
       %th= AccountingSession.l(:start_date)
@@ -11,6 +12,7 @@
   %tbody
     - @accounting_sessions.each do |s|
       %tr
+        %td=h s.voucher_number
         %td=h s.name
         %td= l(s.accounting_date) if s.accounting_date
         %td= s.without_flights? ? "-" : l(s.start_date)
