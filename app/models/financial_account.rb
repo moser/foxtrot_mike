@@ -59,6 +59,22 @@ class FinancialAccount < ActiveRecord::Base
     end
   end
 
+  def kto_blz_to_iban
+    if bank_code? && bank_account_number?
+      cc = 'DE'
+      ccd = '131400'
+      bc = bank_code
+      ac = '%010d' % bank_account_number.to_i
+      bb = bc + ac
+      cs = '%02d' % (98 - ((bb + ccd).to_i % 97))
+      cc + cs + bb
+    end
+  end
+
+  def blz_to_bic
+    FuckingSepaBicLookup.lookup(bank_code) || []
+  end
+
   def sequence_type(accounting_session)
     if first_debit_accounting_session.nil? || first_debit_accounting_session == accounting_session
       'FRST'

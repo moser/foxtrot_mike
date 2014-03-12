@@ -22,6 +22,14 @@ describe FinancialAccount do
     end
   end
 
+  describe '#kto_blz_to_iban' do
+    subject { FinancialAccount.new(bank_account_number: '2209311', bank_code: '74221170') }
+
+    it 'should generate an IBAN' do
+      subject.kto_blz_to_iban.should == 'DE05742211700002209311'
+    end
+  end
+
   describe "#sequence_type" do
     context 'with no bank debits at all' do
       subject { FinancialAccount.generate!(first_debit_accounting_session_id: nil) }

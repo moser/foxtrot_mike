@@ -9,7 +9,8 @@ class SepaCreator < DirectDebitFileCreator
       if accounting_entry.to.sequence_type(@accounting_session) == filter
         sdd.add_transaction(
           name:                      accounting_entry.to.bank_account_holder,
-          bic:                       accounting_entry.to.bic.gsub(/\s/, ''),
+          # OPTIONAL
+          #bic:                       accounting_entry.to.bic.gsub(/\s/, ''),
           iban:                      accounting_entry.to.iban.gsub(/\s/, ''),
           amount:                    accounting_entry.value.to_f / 100.0,
           remittance_information:    booking_text(accounting_entry.to),
