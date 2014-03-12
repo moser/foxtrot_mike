@@ -147,7 +147,7 @@ class AccountingSession < ActiveRecord::Base
       end
       if bank_debit?
         accounting_entries.each do |e|
-          if e.to.first_debit_accounting_session.nil?
+          if self.sepa? && e.to.first_debit_accounting_session.nil?
             e.to.update_attribute :first_debit_accounting_session_id, self.id
           end
           e.save
