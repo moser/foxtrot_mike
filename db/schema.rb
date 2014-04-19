@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131224151619) do
+ActiveRecord::Schema.define(:version => 20140419135613) do
 
   create_table "abstract_flights", :force => true do |t|
     t.string   "plane_id",                 :limit => 36
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20131224151619) do
     t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "purpose_filter"
   end
 
   create_table "delayed_jobs", :force => true do |t|

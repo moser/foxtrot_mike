@@ -109,6 +109,7 @@ de:
       plane_cost_category: Flugzeugkategorie
       person: Person
       person_cost_category: Personenkategorie
+      purpose_cost_rule_condition: Einschränkung auf Zweck
       time_cost_rule: Zeitkostenregel
       wire_launch: Windenstart
       wire_launcher: Winde
@@ -290,6 +291,8 @@ de:
         sex: Geschlecht
         title: Titel
         zip: PLZ
+      purpose_cost_rule_condition:
+        purpose_filter: Zweck
       tow_flight:
         towed_flight: Geschleppter Flug
       wire_launch:

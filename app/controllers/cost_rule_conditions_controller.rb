@@ -2,7 +2,7 @@ class CostRuleConditionsController < ResourceController
   nested :cost_rule
 
   def types
-    @types ||= [ CostHintCondition, NumberCostRuleCondition ].map { |e| e.to_s }
+    @types ||= [ CostHintCondition, NumberCostRuleCondition, PurposeCostRuleCondition ].map { |e| e.to_s }
   end
 
   def nested_id

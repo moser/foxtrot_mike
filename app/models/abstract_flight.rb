@@ -1,7 +1,7 @@
 require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
-  #Purposes = ['training', 'exercise', 'tow', nil] 
+  Purposes = ['training', 'exercise', 'tow']
   IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to, :liabilities]
   before_save :destroy_launch
   before_save :execute_soft_validation

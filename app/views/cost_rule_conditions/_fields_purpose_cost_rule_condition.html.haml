@@ -1,0 +1,2 @@
+= f.input :purpose_filter,
+  :collection => AbstractFlight::Purposes.map { |e| [t("flight.purposes.#{e}.long"), e] }, :include_blank => false

@@ -1,6 +1,6 @@
 = #form_for(:cost_rule_condition, :url => flight_cost_rule_cost_rule_conditions_path(@cost_rule), :html => { :class => "simple_form" } ) do |f|
 = form_for(:cost_rule_condition, :url => [@cost_rule, :cost_rule_conditions], :html => { :class => "simple_form" } ) do |f|
-  - [CostHintCondition, NumberCostRuleCondition].each do |lt|
+  - [CostHintCondition, NumberCostRuleCondition, PurposeCostRuleCondition].each do |lt|
     .choice
       = radio_button_tag "cost_rule_condition_type", lt.to_s, @cost_rule_condition_type == lt.to_s
       = lt.l
