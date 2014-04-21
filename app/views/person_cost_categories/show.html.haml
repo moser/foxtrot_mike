@@ -3,10 +3,18 @@
 = edit_link(@person_cost_category)
 = back_link(PersonCostCategory)
 
-%table.data
+%h1= PersonCostCategory.l(:people_now)
+%table.table.table-hover
   %tr
-    %th= PersonCostCategory.l(:people_now)
-    %td
-      %ul.no_bullet
-        - @person_cost_category.current_people.each do |p|
-          %li= show_link(p, p.name, { :class => "facebox" })
+    %th
+      From
+    %th
+      To
+    %th
+      Name
+  - @person_cost_category.person_cost_category_memberships.order([:valid_from, :valid_to]).each do |m|
+    %tr{ class: m.valid_at?(DateTime.now) ? 'success' : '' }
+      %td= l(m.valid_from) rescue t('views.dates.minus_infinity')
+      %td= l(m.valid_to) rescue t('views.dates.infinity')
+      %td= show_link(m.person, m.person.name, { :class => "facebox" })
+
