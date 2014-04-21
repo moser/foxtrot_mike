@@ -40,4 +40,12 @@ describe AccountingEntry do
       a.category_text.should == 'Fluggebühren'
     end
   end
+
+  describe "#value_f" do
+    it "rounds correctly" do
+      a = AccountingEntry.new
+      a.value_f = 20.40
+      a.value.should == 2040
+    end
+  end
 end

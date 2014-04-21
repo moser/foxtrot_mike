@@ -27,7 +27,7 @@ class AccountingEntry < ActiveRecord::Base
 
   def value_f=(f)
     f = f.to_f if String === f
-    self.value = (f * 100).to_i 
+    self.value = (f * 100).round
   end
 
   def date
