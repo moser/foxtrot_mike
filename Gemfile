@@ -8,7 +8,7 @@ gem "uuidtools"
 gem "simple_form"
 gem "authlogic"
 gem "cancan"
-gem "wicked_pdf"
+gem "wicked_pdf", '0.10.2'
 gem "king_dtaus"
 gem "sepa_king"
 gem 'roo'
