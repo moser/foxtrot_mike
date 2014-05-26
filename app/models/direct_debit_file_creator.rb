@@ -16,6 +16,6 @@ class DirectDebitFileCreator
   end
     
   def last_debit_date
-    AccountingSession.where(bank_debit: true).where('id < ?', @accounting_session.accounting_date).maximum(:accounting_date) || Time.new(0).to_date
+    AccountingSession.where(bank_debit: true).where('accounting_date < ?', @accounting_session.accounting_date).maximum(:accounting_date) || Time.new(0).to_date
   end
 end
