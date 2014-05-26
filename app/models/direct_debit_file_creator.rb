@@ -11,7 +11,7 @@ class DirectDebitFileCreator
     accounting_entries = account.accounting_entries_from.select do |accounting_entry| 
       accounting_entry.accounting_session &&
       accounting_entry.accounting_session.accounting_date &&
-      accounting_entry.accounting_session.accounting_date >= last_debit_date
+      accounting_entry.accounting_session.accounting_date > last_debit_date
     end
   end
     
