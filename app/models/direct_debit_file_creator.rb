@@ -4,7 +4,7 @@ class DirectDebitFileCreator
   end
 
   def booking_text(account)
-    "#{@accounting_session.name} #{concerned_entries(account).map(&:category_text).uniq.join(" ")}"
+    "#{@accounting_session.name} #{concerned_entries(account).map(&:category_text).uniq.join("; ")}"
   end
 
   def concerned_entries(account)
