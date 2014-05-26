@@ -54,7 +54,7 @@
       - @accounting_session.aggregated_entries.each do |a|
         .accounting_entry
           = format_accounting_entry(a)
-          - if @accounting_session.bank_debit?
+          - if @accounting_session.bank_debit? && !@accounting_session.finished?
             = form_tag accounting_session_exclusions_path(@accounting_session) do
               = hidden_field_tag :id, a.to.id
               = submit_tag 'Ausschließen'
