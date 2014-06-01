@@ -2,7 +2,7 @@ require "digest/sha2"
 
 class AbstractFlight < ActiveRecord::Base
   Purposes = ['training', 'exercise', 'tow']
-  IncludeAll = [:plane, :seat1_person, :seat2_person, :from, :to, :liabilities]
+  IncludeAll = [:liabilities, :launch]
   before_save :destroy_launch
   before_save :execute_soft_validation
   before_save :execute_cost_calculation
@@ -148,7 +148,6 @@ class AbstractFlight < ActiveRecord::Base
 
   def cost
     if !cached_cost || cached_cost.empty? || !accounting_entries_valid
-      #p [ !cached_cost, cached_cost.empty?, !accounting_entries_valid ]
       calculate_cost
     end
     cached_cost

@@ -5,11 +5,19 @@ class CostHint < ActiveRecord::Base
 
   default_scope order("name ASC")
 
+  def short
+    name[0]
+  end
+
   def to_s
     name
   end
 
   def to_j
-    { :id => id, :name => name }
+    { :id => id, :name => name, :short => short }
+  end
+
+  def as_json(*args)
+    super((args[0] || {}).merge(methods: [ :short ]))
   end
 end

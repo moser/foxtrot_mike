@@ -30,6 +30,7 @@ F.Presenters.Flight =
       duration: Util.intTimeToString(model.duration())
       controller: if model.controller()? then PersonPresenter.present(model.controller()).name else ""
       cost_hint: if model.cost_hint()? then model.cost_hint().get("name") else ""
+      cost_hint_short: if model.cost_hint()? then model.cost_hint().get("short") else ""
       comment_short: comment
       comment_long: model.get("comment")
       is_tow: model.get("is_tow")

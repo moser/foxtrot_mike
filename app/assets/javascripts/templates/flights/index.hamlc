@@ -51,6 +51,7 @@
       %span.time= I18n.t("activerecord.attributes.abstract_flight.arrival")
       %span.time= I18n.t("activerecord.attributes.abstract_flight.duration")
       %span.seat= I18n.t("activerecord.attributes.abstract_flight.controller")
+      %span.purpose{ title: I18n.t("activerecord.attributes.abstract_flight.cost_hint") }= I18n.t("activerecord.attributes.abstract_flight.cost_hint_short")
       %span.comment= I18n.t("attributes.comment")
     .main
       .flight_group

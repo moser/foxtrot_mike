@@ -16,5 +16,6 @@
   %span.time= @flight.arrival
   %span.time= @flight.duration
   %span.seat= @flight.controller
+  %span.purpose{ title: @flight.cost_hint }= @flight.cost_hint_short
   %span.comment{ title: @flight.comment_long }= @flight.comment_short
   %span.badge.badge-warning= @flight.problem_count
