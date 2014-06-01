@@ -1,3 +1,5 @@
+%span.hint
+  = I18n.t("views.cost_comment_age")
 %table.table
   %thead
     %tr

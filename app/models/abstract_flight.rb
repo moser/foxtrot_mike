@@ -5,7 +5,6 @@ class AbstractFlight < ActiveRecord::Base
   IncludeAll = [:liabilities, :launch]
   before_save :destroy_launch
   before_save :execute_soft_validation
-  before_save :execute_cost_calculation
   after_save :notify_launch
   after_destroy :delete_accouting_entries
 
@@ -146,10 +145,13 @@ class AbstractFlight < ActiveRecord::Base
     self.cached_cost = candidates.first || Cost.new
   end
 
-  def cost
+  def calculate_cost_if_necessary
     if !cached_cost || cached_cost.empty? || !accounting_entries_valid
       calculate_cost
     end
+  end
+
+  def cost
     cached_cost
   end
 

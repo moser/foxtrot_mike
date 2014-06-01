@@ -12,6 +12,7 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    cost_comment_age: "Kosten werden nur alle 5 Minuten neu berechnet."
     statistics: "Statistiken"
     blsv_statistic: "BLSV Bestandserhebung"
     blsv_statistics:

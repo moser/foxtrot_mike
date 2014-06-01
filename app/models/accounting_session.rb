@@ -74,7 +74,7 @@ class AccountingSession < ActiveRecord::Base
       accounting_entries_without_default
     else
       unless bank_debit?
-        flights.map { |f| f.accounting_entries }.flatten + manual_accounting_entries
+        flights.map { |f| f.calculate_cost_if_necessary; f.accounting_entries }.flatten + manual_accounting_entries
       else
         negative_financial_accounts.select do |financial_account|
           !self.exclusions.include?(financial_account)
