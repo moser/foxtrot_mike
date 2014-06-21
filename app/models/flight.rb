@@ -113,7 +113,10 @@ private
   end
 
   def before_update_invalidate_accounting_entries
-    self.accounting_entries_valid = false if invalidation_necessary? && editable?
+    if invalidation_necessary? && editable?
+      self.accounting_entries_valid = false
+      launch.accounting_entries_valid = false if launch
+    end
     true
   end
 

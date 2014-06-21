@@ -104,6 +104,7 @@ describe AccountingSession do
     r = FlightCostRule.create!(:plane_cost_category => planecc, :person_cost_category => personcc, :valid_from => 2.days.ago, :flight_type => "Flight")
     r.flight_cost_items.create :depends_on => "duration", :value => 10
     f.reload
+    f.calculate_cost_if_necessary
     s = AccountingSession.generate!(:start_date => 1.day.ago, :end_date => 1.day.ago)
     f.accounting_entries.map { |e| e.accounting_session == s }.should == [ false ]
     s.finished = true

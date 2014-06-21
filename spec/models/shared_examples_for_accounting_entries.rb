@@ -24,7 +24,7 @@ shared_examples_for "an accounting entry factory" do
       @xf = Flight.create(:plane_id => @plane.id, :seat1_person_id => @person.id, :departure => DateTime.now, :arrival => 10.minutes.from_now, :controller_id => person2.id, :from => Airfield.generate!, :to => Airfield.generate!)
       @lnch = @xf.launch = WireLaunch.create(:wire_launcher_id => wl.id, :abstract_flight => @xf, :operator => Person.generate!)
       @xf.save!
-      @xf.accounting_entries
+      @xf.calculate_cost_if_necessary
 
     #it "should create 4 accounting entries" do #launch and flight each have 1 free and 1 bound cost item
       @xf.accounting_entries.count.should == 4
@@ -64,6 +64,8 @@ shared_examples_for "an accounting entry factory" do
         f.launch = TowFlight.create(:plane_id => tow_plane.id, :seat1_person_id => tow_pilot.id, :to => f.to, :abstract_flight => f)
         f.launch.duration = 5
         f.save!
+        f.calculate_cost_if_necessary
+        f.launch.calculate_cost_if_necessary
         f.launch.accounting_entries.should_not be_empty
         f.launch.accounting_entries.select { |e| e.from_id == person.financial_account.id && e.to_id == tow_plane.financial_account.id && e.value == 1000 }.should_not be_empty
         f.launch.accounting_entries.select { |e| e.from_id == fa.id && e.to_id == tow_plane.financial_account.id && e.value == 10 }.should_not be_empty
