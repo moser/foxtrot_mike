@@ -21,6 +21,8 @@
       = I18n.t("views.load")
   %form.form-inline.filter
     %input#filter_text.input-large{ type: 'text' }
+    %a#filter_hint.btn{ data-container: "body", data-toggle: "popover", title: 'Filter', data-content: I18n.t("views.filter_hint"), data-placement: "bottom" }
+      ?
     %a.btn.filter{ href: '#' }
       %i.icon-filter
       = I18n.t("views.filter")
