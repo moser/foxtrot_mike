@@ -3,6 +3,8 @@
   = form_tag import_people_path, multipart: true do |f|
     = file_field_tag :file
     = submit_tag 'Import'
+    %p.hint
+      =t 'views.people_import_hint'
 = new_link(Person)
 = link_to 'Mitgliederliste', status_list_people_path(format: :csv)
 %table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "group_id,filter_string" }

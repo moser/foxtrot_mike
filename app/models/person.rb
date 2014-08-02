@@ -225,9 +225,20 @@ class Person < ActiveRecord::Base
           import_group(hash)
           import_financial_account(hash)
           person_cost_category = import_person_cost_category(hash)
+          license_hash = hash.select { |k,_| k.to_s.start_with?('license_') }
+          hash = hash.select { |k,_| !k.to_s.start_with?('license_') }
           person = Person.create!(hash)
           if person_cost_category
             PersonCostCategoryMembership.create!(person: person, person_cost_category: person_cost_category, valid_from: Date.today)
+          end
+          if license_hash.keys.sort.map(&:to_s) == ['license_class', 'license_level']
+            lpc = LegalPlaneClass.where(name: license_hash[:license_class]).first
+            if lpc
+              person.licenses.create!(valid_from: Date.today,
+                                      level: license_hash[:license_level],
+                                      legal_plane_classes: [lpc],
+                                      name: 'Imported license')
+            end
           end
         rescue => e
           raise "#{e.message} - #{hash.inspect}"

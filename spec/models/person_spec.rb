@@ -219,6 +219,18 @@ describe Person do
       Person.where(firstname: 'foo', lastname: 'bar').first.financial_account.should == fa
     end
 
+    it 'creates licenses' do
+      lpc = LegalPlaneClass.generate! name: 'BarBar'
+      group = Group.generate!
+      hashes = [
+        { firstname: 'foo', lastname: 'bar', group_id: group.id, license_class: 'BarBar', license_level: 'instructor' }
+      ]
+      Person.import(hashes)
+      license = Person.where(firstname: 'foo', lastname: 'bar').first.licenses.first
+      license.instructor?.should be_true
+      license.legal_plane_classes.first.should == lpc
+    end
+
     it 'creates an financial account' do
       group = Group.generate!
       hashes = [
