@@ -427,7 +427,7 @@ private
   end
 
   def delete_accouting_entries
-    accounting_entries_without_validity_check.delete_all
+    accounting_entries_without_validity_check.destroy_all
   end
 
   def association_changed(obj)
