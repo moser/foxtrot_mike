@@ -4,5 +4,6 @@
   = f.input :lat
   = f.input :long
   = f.input :home
-  = f.input :disabled
+  = f.input :disabled unless airfield.new_record?
+  = f.input :deleted unless airfield.new_record?
   = f.button :submit

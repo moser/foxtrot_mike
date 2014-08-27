@@ -89,6 +89,7 @@ de:
     financial_accounts: Buchhaltungskonten
     financial_account_id: Buchhaltungskonto
     disabled: Deaktiviert
+    deleted: "Gelöscht"
   activerecord:
     models:
       account: Benutzerkonto
@@ -152,7 +153,7 @@ de:
         lat: geog. Breite (+ = Nord)
         long: geog. Länge (+ = Ost)
         home: Heimatflugplatz
-        disabled_long: Dieser Flugplatz ist deaktiviert. Er wird nicht zur Verwendung angeboten.
+        disabled_long: Dieser Flugplatz ist deaktiviert. Er wird nur unter Umstaenden zur Verwendung angeboten.
       abstract_flight:
         cost_hint: Kostengruppe
         id: "ID"
@@ -247,7 +248,7 @@ de:
         make: Typ
         seat_count: Sitzplätze
         book: "Bordbuch"
-        disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nicht zur Verwendung angeboten.
+        disabled_long: Dieses Flugzeug ist deaktiviert. Es wird nur unter Umstaenden zur Verwendung angeboten.
         legal_plane_class: Flugzeugklasse
         can_be_towed: Kann im F-Schlepp starten.
         can_be_wire_launched: Kann an der Winde starten.
@@ -270,7 +271,7 @@ de:
         address2: Adresszeile 2
         birthdate: Geburtsdatum
         book: "Flugbuch"
-        disabled_long: Diese Person ist deaktiviert. Sie wird nicht zur Verwendung angeboten.
+        disabled_long: Diese Person ist deaktiviert. Sie wird nur unter Umstaenden zur Verwendung angeboten.
         contact: Kontakt
         cell: Mobil
         city: Ort

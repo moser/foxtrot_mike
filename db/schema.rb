@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140419135613) do
+ActiveRecord::Schema.define(:version => 20140826205325) do
 
   create_table "abstract_flights", :force => true do |t|
     t.string   "plane_id",                 :limit => 36
@@ -95,15 +95,17 @@ ActiveRecord::Schema.define(:version => 20140419135613) do
   add_index "accounts", ["login"], :name => "index_accounts_on_login", :unique => true
 
   create_table "airfields", :id => false, :force => true do |t|
-    t.string   "id",           :limit => 36
+    t.string   "id",              :limit => 36
     t.string   "name"
     t.string   "registration"
-    t.boolean  "disabled",                   :default => false
+    t.boolean  "disabled",                      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "lat",                        :default => 0.0
-    t.float    "long",                       :default => 0.0
-    t.boolean  "home",                       :default => false
+    t.float    "lat",                           :default => 0.0
+    t.float    "long",                          :default => 0.0
+    t.boolean  "home",                          :default => false
+    t.string   "duplicate_of_id"
+    t.boolean  "deleted",                       :default => false
   end
 
   add_index "airfields", ["id"], :name => "index_airfields_on_id", :unique => true
@@ -243,7 +245,7 @@ ActiveRecord::Schema.define(:version => 20140419135613) do
   add_index "manual_costs", ["id"], :name => "index_manual_costs_on_id", :unique => true
 
   create_table "people", :id => false, :force => true do |t|
-    t.string   "id",             :limit => 36
+    t.string   "id",              :limit => 36
     t.string   "lastname"
     t.string   "firstname"
     t.date     "birthdate"
@@ -260,15 +262,17 @@ ActiveRecord::Schema.define(:version => 20140419135613) do
     t.string   "email"
     t.text     "comment"
     t.integer  "group_id"
-    t.boolean  "disabled",                     :default => false
+    t.boolean  "disabled",                      :default => false
     t.boolean  "in_training"
     t.string   "lvbnr"
-    t.boolean  "primary_member",               :default => true
+    t.boolean  "primary_member",                :default => true
     t.date     "entry_date"
     t.string   "member_state"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "member"
+    t.string   "duplicate_of_id"
+    t.boolean  "deleted",                       :default => false
   end
 
   add_index "people", ["id"], :name => "index_people_on_id", :unique => true
@@ -325,6 +329,8 @@ ActiveRecord::Schema.define(:version => 20140419135613) do
     t.integer  "seat_count"
     t.boolean  "default_engine_duration_to_duration"
     t.boolean  "warn_when_no_cost_rules",                           :default => false
+    t.string   "duplicate_of_id"
+    t.boolean  "deleted",                                           :default => false
   end
 
   add_index "planes", ["id"], :name => "index_planes_on_id", :unique => true

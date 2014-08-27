@@ -1,2 +1,2 @@
-class AirfieldsController < JsonEnabledOnlyController
+class AirfieldsController < ResourceWithDeletedController
 end

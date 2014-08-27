@@ -40,7 +40,7 @@ class ResourceController < ApplicationController
         end
       end
       format.csv do
-        send_data model_class.to_csv
+        send_data model_class.to_csv(@models)
       end
     end
   end

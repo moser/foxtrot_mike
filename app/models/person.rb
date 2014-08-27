@@ -21,6 +21,9 @@ class Person < ActiveRecord::Base
   belongs_to :group
   membership :person_cost_category_memberships
 
+  belongs_to :duplicate_of, class_name: 'Person'
+  has_many :duplications, class_name: 'Person', foreign_key: 'duplicate_of_id'
+
   validates_presence_of :firstname, :lastname, :group
 
   default_scope order("lastname asc, firstname asc")
@@ -132,6 +135,7 @@ class Person < ActiveRecord::Base
       :group_id => group_id,
       :group_name => group.name,
       :disabled => disabled,
+      :deleted => deleted,
       :licenses => licenses.map { |e| e.to_j } }
   end
 
@@ -201,7 +205,7 @@ class Person < ActiveRecord::Base
     flights_on_seat2.each do |f|
       f.update_attribute :seat2_person, other_person
     end
-    update_attributes disabled: true, lastname: "#{lastname} FALSCH"
+    update_attributes disabled: true, deleted: true, duplicate_of_id: other_person.id
   end
 
   def merge_info
@@ -213,7 +217,7 @@ class Person < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << columns.map { |col| Person.l(col) }
       models.each do |model|
-        csv << columns.map { |col| model.send(col) }
+        csv << columns.map { |col| model.send(col) } if !model.deleted
       end
     end
   end

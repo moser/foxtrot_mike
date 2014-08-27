@@ -28,35 +28,35 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
           params =
             list: F.planes.models
             label: (p) -> p.get("registration")
-            score: (p) -> 1
+            score: (p) -> "#{p.get("disabled")} #{p.get("registration")}".toLowerCase()
             match: (p, q) -> p.get("registration").toLowerCase().indexOf(q.toLowerCase()) > -1
             next: @$(".seat1_person .edit_field")
         when "seat1_person"
           params =
             list: F.people.models
             label: (p) -> p.present().name
-            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            score: (p) -> "#{p.present().disabled} #{p.present().lastname} #{p.present().firstname}".toLowerCase()
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
             next: @$(".seat2 .edit_field")
         when "seat2"
           params =
             list: _.flatten([new F.Models.NoPerson(), F.people.models, new F.Models.NPersons(1), new F.Models.NPersons(2), new F.Models.NPersons(3)])
             label: (p) -> p.present().name
-            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            score: (p) -> "#{p.present().disabled} #{p.present().lastname} #{p.present().firstname}".toLowerCase()
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
             next: if is_tow then @$(".to .edit_field") else @$(".from .edit_field")
         when "controller"
           params =
             list: _.flatten([new F.Models.NoPerson(), F.people.models])
             label: (p) -> p.present().name
-            score: (p) -> "#{1} #{p.present().lastname} #{p.present().firstname}"
+            score: (p) -> "#{p.present().disabled} #{p.present().lastname} #{p.present().firstname}".toLowerCase()
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
             next: @$(".cost_hint .edit_field")
         when "cost_hint"
           params =
             list: _.flatten([new F.Models.NoCostHint(), F.cost_hints.models])
             label: (p) -> p.present().name
-            score: (p) -> "#{1} #{p.present().name}"
+            score: (p) -> "#{1} #{p.present().name}".toLowerCase()
             match: (p, q) -> p.present().name.toLowerCase().indexOf(q.toLowerCase()) > -1
             next: @$(".comment textarea")
         when "from", "to"
@@ -70,7 +70,7 @@ class F.Views.Flights.EditFlight extends F.ModelBasedView
           params =
             list: F.airfields.models
             label: (p) -> present(p).long
-            score: (p) -> "#{p.get("name")}"
+            score: (p) -> "#{p.get("disabled")} #{p.get("name")}".toLowerCase()
             match: (p, q) -> present(p).long.toLowerCase().indexOf(q.toLowerCase()) > -1
             next: next_field
       

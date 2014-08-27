@@ -1,4 +1,4 @@
-class PeopleController < JsonEnabledOnlyController
+class PeopleController < ResourceWithDeletedController
   nested :group
 
   def status_list

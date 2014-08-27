@@ -56,6 +56,7 @@ PersonPresenter = F.Presenters.Person =
       name = "#{model.get("firstname")} #{model.get("lastname")}"
       firstname = model.get("firstname")
       lastname = model.get("lastname")
+      disabled = model.get("disabled")
     else
       name = I18n.t("unknown_person")
       firstname = ""
@@ -64,6 +65,7 @@ PersonPresenter = F.Presenters.Person =
       name: name
       firstname: firstname
       lastname: lastname
+      disabled: disabled
 
 AirfieldPresenter = F.Presenters.Airfield =
   present: (model) ->

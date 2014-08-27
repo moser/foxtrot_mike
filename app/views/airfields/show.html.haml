@@ -19,5 +19,9 @@
     %tr
       %th
       %td= Airfield.l(:disabled_long)
+  - if @airfield.deleted
+    %tr
+      %th
+      %td= Airfield.l(:deleted)
 = edit_link(@airfield)
 = back_link(Airfield)

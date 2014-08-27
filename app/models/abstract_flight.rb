@@ -3,6 +3,7 @@ require "digest/sha2"
 class AbstractFlight < ActiveRecord::Base
   Purposes = ['training', 'exercise', 'tow']
   IncludeAll = [:liabilities]
+  before_save :replace_duplicates
   before_save :destroy_launch
   before_save :execute_soft_validation
   after_save :notify_launch
@@ -406,6 +407,15 @@ protected
   end
 
 private
+  def replace_duplicates
+    %w(plane seat1_person seat2_person from to controller).each do |attr|
+      value = self.send(attr.to_sym)
+      if value && value.duplicate_of
+        self.send("#{attr}=".to_sym, value.duplicate_of)
+      end
+    end
+  end
+
   def destroy_launch
     if changes.keys.include?("launch_type") && changes.keys.include?("launch_id")
       old_type = changes[:launch_type][0]

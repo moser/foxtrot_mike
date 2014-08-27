@@ -7,6 +7,7 @@ class F.Models.NoPerson
   constructor: ->
     @name = @id = "-"
     @firstname = @lastname = "0"
+    @disabled = false
   present: ->
     @
 
@@ -18,4 +19,4 @@ class F.Models.NPersons extends F.Models.NoPerson
 
 F.Collections.People = Backbone.Collection.extend
   model: F.Models.Person
-  url: '/people'
+  url: '/people?deleted=false'

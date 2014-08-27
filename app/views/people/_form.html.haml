@@ -3,6 +3,7 @@
   = f.input :lastname
   = f.association :group
   = f.input :disabled unless person.new_record?
+  = f.input :deleted unless person.new_record?
   .choice
     .input.boolean.optional
       = f.check_box :member

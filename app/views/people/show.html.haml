@@ -12,6 +12,10 @@
     %tr
       %th
       %td= Person.l(:disabled_long)
+  - if @person.deleted
+    %tr
+      %th
+      %td= Person.l(:deleted)
   %tr
     %th= Person.l(:title)
     %td= @person.title

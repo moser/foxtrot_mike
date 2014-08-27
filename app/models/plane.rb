@@ -16,6 +16,9 @@ class Plane < ActiveRecord::Base
   belongs_to :group
   membership :plane_cost_category_memberships
 
+  belongs_to :duplicate_of, class_name: 'Plane'
+  has_many :duplications, class_name: 'Plane', foreign_key: 'duplicate_of_id'
+
   validates_presence_of :registration, :make, :legal_plane_class, :group, :default_launch_method
   validates_inclusion_of :default_launch_method, :in => LAUNCH_METHODS
 
@@ -79,12 +82,21 @@ class Plane < ActiveRecord::Base
       :can_fly_without_engine,
       :can_tow, :can_be_towed,
       :can_be_wire_launched,
+      :deleted,
       :disabled,
       :legal_plane_class_id,
       :selflaunching,
       :seat_count ]
     self.attributes.reject { |k,v| !a.include?(k.to_sym) }.merge({ :group_name => group.name })
   end
+
+  def merge_to(other_plane)
+    flights.each do |f|
+      f.update_attribute :plane, other_plane
+    end
+    update_attributes disabled: true, deleted: true, duplicate_of_id: other_plane.id
+  end
+
 private
   def association_changed(obj = nil)
     invalidate_concerned_accounting_entries

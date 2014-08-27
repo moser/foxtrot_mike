@@ -1,2 +1,2 @@
-class PlanesController < JsonEnabledOnlyController
+class PlanesController < ResourceWithDeletedController
 end
