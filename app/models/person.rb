@@ -22,7 +22,7 @@ class Person < ActiveRecord::Base
   membership :person_cost_category_memberships
 
   belongs_to :duplicate_of, class_name: 'Person'
-  has_many :duplications, class_name: 'Person', foreign_key: 'duplicate_of_id'
+  has_many :duplicates, class_name: 'Person', foreign_key: 'duplicate_of_id'
 
   validates_presence_of :firstname, :lastname, :group
 

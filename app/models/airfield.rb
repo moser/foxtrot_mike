@@ -5,7 +5,7 @@ class Airfield < ActiveRecord::Base
   has_many :flights_to, :foreign_key => 'to_id', :class_name => 'AbstractFlight', :include =>  AbstractFlight::IncludeAll
 
   belongs_to :duplicate_of, class_name: 'Airfield'
-  has_many :duplications, class_name: 'Airfield', foreign_key: 'duplicate_of_id'
+  has_many :duplicates, class_name: 'Airfield', foreign_key: 'duplicate_of_id'
 
   validates_presence_of :name
   validates_uniqueness_of :registration, :if => Proc.new { |airfield| airfield.registration != "" }

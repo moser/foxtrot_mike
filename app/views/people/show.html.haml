@@ -59,9 +59,18 @@
 = render :partial => "licenses/list", :locals => { :person => @person }
 = render :partial => "common/memberships", :locals => { :object => @person, :group => :person_cost_category }
 
-%h3
-  Merge to
-.merge
-  = form_tag person_merge_path(@person), method: :post do |f|
-    = select_tag 'to_id', options_from_collection_for_select(Person.all, 'id', 'merge_info')
-    = submit_tag 'Merge'
+- if @person.duplicates.count > 0
+  %h3
+    = Person.l(:duplicates)
+  - @person.duplicates.each do |dup|
+    = link_to dup.name, dup
+- else
+  %h3
+    = Person.l(:duplicate_of)
+  - if @person.duplicate_of
+    = link_to @person.duplicate_of.name, @person.duplicate_of
+  - else
+    .merge
+      = form_tag person_merge_path(@person), method: :post do |f|
+        = select_tag 'to_id', options_from_collection_for_select(Person.all, 'id', 'merge_info')
+        = submit_tag 'Merge'

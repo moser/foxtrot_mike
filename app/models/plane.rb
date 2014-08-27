@@ -17,7 +17,7 @@ class Plane < ActiveRecord::Base
   membership :plane_cost_category_memberships
 
   belongs_to :duplicate_of, class_name: 'Plane'
-  has_many :duplications, class_name: 'Plane', foreign_key: 'duplicate_of_id'
+  has_many :duplicates, class_name: 'Plane', foreign_key: 'duplicate_of_id'
 
   validates_presence_of :registration, :make, :legal_plane_class, :group, :default_launch_method
   validates_inclusion_of :default_launch_method, :in => LAUNCH_METHODS
