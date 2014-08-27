@@ -183,7 +183,8 @@ describe Person do
 
     it "adds a string to the lastname" do
       person.merge_to(other)
-      person.lastname.should =~ / FALSCH$/
+      person.duplicate_of.id.should == other.id
+      person.deleted.should be_true
     end
   end
 
