@@ -229,7 +229,7 @@ class Person < ActiveRecord::Base
           import_group(hash)
           import_financial_account(hash)
           person_cost_category = import_person_cost_category(hash)
-          license_hash = hash.select { |k,_| k.to_s.start_with?('license_') }
+          license_hash = hash.select { |k,_| k.to_s.start_with?('license_') }.with_indifferent_access
           hash = hash.select { |k,_| !k.to_s.start_with?('license_') }
           person = Person.create!(hash)
           if person_cost_category
