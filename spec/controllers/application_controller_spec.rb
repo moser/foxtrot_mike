@@ -21,19 +21,11 @@ end
 describe SomeController do
   describe "parse_date_time" do
     def params_should_hold_date
-      assigns[:params]["x(1i)"].should == "2010"
-      assigns[:params]["x(2i)"].should == "3"
-      assigns[:params]["x(3i)"].should == "13"
-      assigns[:params]["x_parsed"].should == Date.new(2010, 3, 13)
+      assigns[:params]["x"].should == Date.new(2010, 3, 13)
     end
 
     def params_should_hold_datetime
-      assigns[:params]["x(1i)"].should == "2010"
-      assigns[:params]["x(2i)"].should == "3"
-      assigns[:params]["x(3i)"].should == "13"
-      assigns[:params]["x(4i)"].should == "15"
-      assigns[:params]["x(5i)"].should == "30"
-      assigns[:params]["x_parsed"].should == DateTime.new(2010, 3, 13, 15, 30)
+      assigns[:params]["x"].should == DateTime.new(2010, 3, 13, 15, 30)
     end
     
     it "should parse dates in human style" do

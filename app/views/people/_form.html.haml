@@ -2,8 +2,8 @@
   = f.input :firstname
   = f.input :lastname
   = f.association :group
-  = f.input :disabled unless person.new_record?
-  = f.input :deleted unless person.new_record?
+  = f.input :disabled, as: :boolean  unless person.new_record?
+  = f.input :deleted, as: :boolean  unless person.new_record?
   .choice
     .input.boolean.optional
       = f.check_box :member

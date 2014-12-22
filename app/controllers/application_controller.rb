@@ -43,8 +43,6 @@ class ApplicationController < ActionController::Base
   end
 
   PA = { "datetime" => "%d.%m.%Y %H:%M", "date" => "%d.%m.%Y" }
-  SE = { "datetime" => {:min => "5i", :hour => "4i", :day => "3i", :month => "2i", :year => "1i"},
-         "date" => {:day => "3i", :month => "2i", :year => "1i"}}
   CL = { "date" => Date, "datetime" => DateTime }
 
   def parse_date_time_rec(h)
@@ -60,16 +58,7 @@ class ApplicationController < ActionController::Base
         else
           d = CL[m[2]].parse(v) rescue nil
         end
-        if d
-          SE[m[2]].each do |k,v|
-            add["#{m[1]}(#{v})".to_sym] = d.send(k).to_s
-          end
-          add["#{m[1]}_parsed".to_sym] = d
-        else
-          SE[m[2]].each do |k,v|
-            add["#{m[1]}(#{v})".to_sym] = ''
-          end
-        end
+        add["#{m[1]}".to_sym] = d
       end
     end
     add.each { |k, v| h[k] = v }

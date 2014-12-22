@@ -66,18 +66,8 @@ search_files(true)
 @last_time_all = DateTime.now
 @run_all_when_green = false
 
-@int_count = 0
-
 trap('INT') do
-  if @int_count == 0
-    puts "\nInterrupt again to quit"
-    @int_count = 1
-    sleep(2)
-    @int_count = 0
-    @run_all = true
-  else
-    exit
-  end
+  exit
 end
 
 loop do
