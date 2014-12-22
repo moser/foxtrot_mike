@@ -72,5 +72,5 @@
   - else
     .merge
       = form_tag person_merge_path(@person), method: :post do |f|
-        = select_tag 'to_id', options_from_collection_for_select(Person.all, 'id', 'merge_info')
+        = select_tag 'to_id', options_from_collection_for_select(Person.where(duplicate_of_id: nil).all, 'id', 'merge_info')
         = submit_tag 'Merge'

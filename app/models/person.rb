@@ -209,7 +209,9 @@ class Person < ActiveRecord::Base
   end
 
   def merge_info
-    "#{name} #{flights_on_seat1.count + flights_on_seat2.count} #{!current_person_cost_category_memberships.empty? ? 'Cat' : ''} #{current_financial_account_ownership && 'Acc'}"
+    "#{name} (#{flights_on_seat1.count + flights_on_seat2.count} #{AbstractFlight.l(:plural)})
+     #{!current_person_cost_category_memberships.empty? ? 'Cat' : ''}
+     #{current_financial_account_ownership && 'Acc'}"
   end
 
   def self.to_csv(models, options = {})

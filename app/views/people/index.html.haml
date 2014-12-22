@@ -21,6 +21,8 @@
       %th= Person.l(:group)
       %th= Person.l(:person_cost_categories)
       %th= Person.l(:financial_account)
+      %th= Person.l(:duplicate_of)
+      %th
   %tbody
     - @people.each do |person|
       %tr{ :"data-filter_string" => person.name.downcase, :"data-group_id" => person.group_id, :class => person.disabled? ? "disabled_record" : "" }
@@ -29,5 +31,7 @@
         %td=h person.group.name
         %td=h person.current_person_cost_category_memberships.map { |c| c.person_cost_category.name }.join(", ")
         %td=h person.financial_account_at(Date.today)
-        %td= show_link(person)
-        %td= edit_link(person)
+        %td=h person.duplicate_of && link_to(person.duplicate_of.name, person.duplicate_of)
+        %td
+          = show_link(person)
+          = edit_link(person)
