@@ -1,4 +1,6 @@
 %h1= @airfield.to_s
+= edit_link(@airfield)
+= back_link(Airfield)
 %table.data
   %tr
     %th= Airfield.l(:registration)
@@ -23,5 +25,19 @@
     %tr
       %th
       %td= Airfield.l(:deleted)
-= edit_link(@airfield)
-= back_link(Airfield)
+
+- if @airfield.duplicates.count > 0
+  %h3
+    = I18n.t("views.duplicates")
+  - @airfield.duplicates.each do |dup|
+    = link_to dup.to_s, dup
+- else
+  %h3
+    = I18n.t("views.duplicate_of")
+  - if @airfield.duplicate_of
+    = link_to @airfield.duplicate_of.to_s, @airfield.duplicate_of
+  - else
+    .merge
+      = form_tag airfield_merge_path(@airfield), method: :post do |f|
+        = select_tag 'to_id', options_from_collection_for_select(Airfield.where(duplicate_of_id: nil).all, 'id', 'merge_info')
+        = submit_tag 'Merge'

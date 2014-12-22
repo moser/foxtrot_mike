@@ -71,6 +71,7 @@ Server::Application.routes.draw do
   end
   resources :airfields do
     resource :main_log_book, :only => [:show], :controller => "pdfs"
+    resource :merge, only: [:create]
   end
   resources :wire_launchers do
     resources :wire_launcher_cost_category_memberships

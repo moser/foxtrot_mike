@@ -61,12 +61,12 @@
 
 - if @person.duplicates.count > 0
   %h3
-    = Person.l(:duplicates)
+    = I18n.t("views.duplicates")
   - @person.duplicates.each do |dup|
     = link_to dup.name, dup
 - else
   %h3
-    = Person.l(:duplicate_of)
+    = I18n.t("views.duplicate_of")
   - if @person.duplicate_of
     = link_to @person.duplicate_of.name, @person.duplicate_of
   - else

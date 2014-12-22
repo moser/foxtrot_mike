@@ -42,6 +42,10 @@ class Airfield < ActiveRecord::Base
     @controller_log ||= ControllerLog.new(self, date)
   end
 
+  def merge_info
+    "#{registration} #{name} (#{flights_from.count + flights_to.count} #{AbstractFlight.l(:plural)})"
+  end
+
   def merge_to(other_airfield)
     flights_from.each do |f|
       f.update_attribute :from, other_airfield

@@ -9,10 +9,14 @@
     %tr.no_filter
       %th= Airfield.human_attribute_name(:name)
       %th= Airfield.human_attribute_name(:registration)
+      %th= I18n.t("views.duplicate_of")
+      %th
   %tbody.alternate
     - @airfields.each do |airfield|
       %tr{ :"data-filter_string" => "#{(airfield.name || "").downcase} #{(airfield.registration || "").downcase}", :class => airfield.disabled? ? "disabled_record" : "" }
         %td{ :class => airfield.home? ? "marked" : "" }=h airfield.name
         %td=h airfield.registration
-        %td= show_link(airfield)
-        %td= edit_link(airfield)
+        %td=h airfield.duplicate_of && link_to(airfield.duplicate_of.to_s, airfield.duplicate_of)
+        %td
+          = show_link(airfield)
+          = edit_link(airfield)

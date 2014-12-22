@@ -298,8 +298,6 @@ de:
         sex: Geschlecht
         title: Titel
         zip: PLZ
-        duplicates: "Duplikate"
-        duplicate_of: "Duplikat von"
       purpose_cost_rule_condition:
         purpose_filter: Zweck
       tow_flight:

@@ -21,7 +21,7 @@
       %th= Person.l(:group)
       %th= Person.l(:person_cost_categories)
       %th= Person.l(:financial_account)
-      %th= Person.l(:duplicate_of)
+      %th= I18n.t("views.duplicate_of")
       %th
   %tbody
     - @people.each do |person|
