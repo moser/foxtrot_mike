@@ -11,6 +11,7 @@ Server::Application.routes.draw do
   match '/logout', :to => 'account_sessions#destroy'
   match '/login', :to => 'account_sessions#new'
   match 'dashboard', :to => 'dashboards#show'
+  match 'duplicate_check', to: 'duplicate_dashboard#show'
 
   resource :bordbook
 

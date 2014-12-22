@@ -12,6 +12,7 @@ de:
       reset: "Zurücksetzen"
       delete: "Löschen"
   views:
+    duplicate_check: "Duplikatsprüfung"
     people_import_hint: "Mögliche Felder: lastname, firstname, group_id, group, financial_account_number, financial_account_name, person_cost_category, license_class, license_level, financial_account_id"
     cost_comment_age: "Kosten werden nur alle 5 Minuten neu berechnet."
     statistics: "Statistiken"

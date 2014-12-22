@@ -42,11 +42,10 @@ class ApplicationController < ActionController::Base
     parse_date_time_rec(params)
   end
 
-  PA = { "datetime" => "%d.%m.%Y %H:%M", "date" => "%d.%m.%Y", "time" => "%H:%M" }
+  PA = { "datetime" => "%d.%m.%Y %H:%M", "date" => "%d.%m.%Y" }
   SE = { "datetime" => {:min => "5i", :hour => "4i", :day => "3i", :month => "2i", :year => "1i"},
-         "date" => {:day => "3i", :month => "2i", :year => "1i"},
-         "time" => {:min => "5i", :hour => "4i"}}
-  CL = { "date" => Date, "datetime" => DateTime, "time" => DateTime }
+         "date" => {:day => "3i", :month => "2i", :year => "1i"}}
+  CL = { "date" => Date, "datetime" => DateTime }
 
   def parse_date_time_rec(h)
     add = {}
@@ -65,6 +64,7 @@ class ApplicationController < ActionController::Base
           SE[m[2]].each do |k,v|
             add["#{m[1]}(#{v})".to_sym] = d.send(k).to_s
           end
+          add["#{m[1]}_parsed".to_sym] = d
         else
           SE[m[2]].each do |k,v|
             add["#{m[1]}(#{v})".to_sym] = ''

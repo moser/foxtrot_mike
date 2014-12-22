@@ -41,6 +41,9 @@
                     =h navigation_li(:name => "licenses", :path => licenses_path)
                   - if can?(:read, Account)
                     =h navigation_li(:name => "accounts", :path => accounts_path)
+                  - if can?(:read, Airfield)
+                    %li
+                      = link_to I18n.t("views.duplicate_check"), "/duplicate_check"
             - if can?(:read, Group) || can?(:read, LegalPlaneClass) || can?(:read, CostHint) || can?(:read, PersonCostCategory) || can?(:read, PlaneCostCategory) || can?(:read, WireLauncherCostCategory)
               %li.dropdown
                 %a.dropdown-toggle{ "data-toggle" => "dropdown", :href => "#" }= t("categories.index.title")

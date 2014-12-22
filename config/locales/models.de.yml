@@ -149,6 +149,7 @@ de:
         credit: "Gutschrift (Soll A, Haben B)"
         flight_cost_text: 'Fluggebühren'
       airfield:
+        plural: "Flugplätze"
         registration: Kennung
         lat: geog. Breite (+ = Nord)
         long: geog. Länge (+ = Ost)
@@ -244,6 +245,7 @@ de:
         condition_operator: Operator
         condition_value_i: Wert
       plane:
+        plural: Flugzeuge
         plane_cost_categories: Flugzeugkategorien
         registration: Kennzeichen
         make: Typ
@@ -267,6 +269,7 @@ de:
       person_cost_category:
         people_now: "Mitglieder"
       person:
+        plural: Personen
         address: Adresse
         address1: Adresszeile 1
         address2: Adresszeile 2

@@ -1,0 +1,67 @@
+%h1= I18n.t("views.duplicate_check")
+
+= form_tag "/duplicate_check", method: :post do
+  .input
+    = label_tag :from_parse_date, t('views.from')
+    = text_field_tag :from_parse_date, @from, type: "date"
+  .input
+    = label_tag :to_parse_date, t('views.to')
+    = text_field_tag :to_parse_date, @to, type: "date"
+  = submit_tag "Ok"
+
+- if @planes && @planes.length > 0
+  %h2= Plane.l(:plural)
+  %table.table.table-striped.table-hover
+    %thead
+      %tr.no_filter
+        %th= Plane.l(:registration)
+        %th= Plane.l(:make)
+        %th= Plane.l(:created_at)
+        %th
+    %tbody
+      - @planes.each do |plane|
+        %tr{ :class => plane.disabled? ? "disabled_record" : "" }
+          %td=h plane.registration
+          %td=h plane.make
+          %td=h l(plane.created_at)
+          %td
+            = show_link(plane)
+            = edit_link(plane)
+
+- if @people && @people.length > 0
+  %h2= Person.l(:plural)
+  %table.table.table-striped.table-hover
+    %thead
+      %tr.no_filter
+        %th= Person.l(:lastname)
+        %th= Person.l(:firstname)
+        %th= Person.l(:created_at)
+        %th
+    %tbody
+      - @people.each do |person|
+        %tr{ :class => person.disabled? ? "disabled_record" : "" }
+          %td=h person.lastname
+          %td=h person.firstname
+          %td=h l(person.created_at)
+          %td
+            = show_link(person)
+            = edit_link(person)
+
+- if @airfields && @airfields.length > 0
+  %h2= Airfield.l(:plural)
+  %table.table.table-striped.table-hover
+    %thead
+      %tr.no_filter
+        %th= Airfield.l(:name)
+        %th= Airfield.l(:registration)
+        %th= Airfield.l(:created_at)
+        %th
+    %tbody
+      - @airfields.each do |airfield|
+        %tr{ :class => airfield.disabled? ? "disabled_record" : "" }
+          %td=h airfield.name
+          %td=h airfield.registration
+          %td=h l(airfield.created_at)
+          %td
+            = show_link(airfield)
+            = edit_link(airfield)
