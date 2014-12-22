@@ -37,3 +37,19 @@
       %td= Plane.l(:deleted)
 = render :partial => "financial_account_ownerships/list", :locals => { :object => @plane }
 = render :partial => "common/memberships", :locals => { :object => @plane, :group => :plane_cost_category }
+
+- if @plane.duplicates.count > 0
+  %h3
+    = I18n.t("views.duplicates")
+  - @plane.duplicates.each do |dup|
+    = link_to dup.registration, dup
+- else
+  %h3
+    = I18n.t("views.duplicate_of")
+  - if @plane.duplicate_of
+    = link_to @plane.duplicate_of.registration, @plane.duplicate_of
+  - else
+    .merge
+      = form_tag plane_merge_path(@plane), method: :post do |f|
+        = select_tag 'to_id', options_from_collection_for_select(Plane.where(duplicate_of_id: nil).all, 'id', 'merge_info')
+        = submit_tag 'Merge'

@@ -7,7 +7,7 @@ class MergesController < ApplicationController
 
 private
   def parent
-    [ :person, :airfield ].each do |o|
+    [ :person, :plane, :airfield ].each do |o|
       return o.to_s.camelcase.constantize.find(params["#{o}_id"]) if params["#{o}_id"]
     end
   end

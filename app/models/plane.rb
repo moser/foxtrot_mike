@@ -90,6 +90,10 @@ class Plane < ActiveRecord::Base
     self.attributes.reject { |k,v| !a.include?(k.to_sym) }.merge({ :group_name => group.name })
   end
 
+  def merge_info
+    "#{registration} #{make} (#{flights.count} #{AbstractFlight.l(:plural)})"
+  end
+
   def merge_to(other_plane)
     flights.each do |f|
       f.update_attribute :plane, other_plane

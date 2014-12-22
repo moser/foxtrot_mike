@@ -68,6 +68,7 @@ Server::Application.routes.draw do
     end
     resources :plane_cost_category_memberships
     resources :financial_account_ownerships
+    resource :merge, only: [:create]
   end
   resources :airfields do
     resource :main_log_book, :only => [:show], :controller => "pdfs"
