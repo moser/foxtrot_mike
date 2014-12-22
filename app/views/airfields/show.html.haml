@@ -39,5 +39,5 @@
   - else
     .merge
       = form_tag airfield_merge_path(@airfield), method: :post do |f|
-        = select_tag 'to_id', options_from_collection_for_select(Airfield.where(duplicate_of_id: nil).all, 'id', 'merge_info')
+        = select_tag 'to_id', options_from_collection_for_select(Airfield.mergable(@airfield), 'id', 'merge_info')
         = submit_tag 'Merge'

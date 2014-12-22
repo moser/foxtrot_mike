@@ -24,6 +24,10 @@ class Plane < ActiveRecord::Base
 
   default_scope order("registration asc")
 
+  def self.mergable(plane)
+    self.where(duplicate_of_id: nil).where("id <> ?", plane.id).all
+  end
+
   def financial_account
     current_financial_account_ownership && current_financial_account_ownership.financial_account
   end

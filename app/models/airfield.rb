@@ -13,6 +13,10 @@ class Airfield < ActiveRecord::Base
   default_scope order("name asc")
   scope :home, where(:home => true)
 
+  def self.mergable(airfield)
+    self.where(duplicate_of_id: nil).where("id <> ?", airfield.id).all
+  end
+
   def registration
     read_attribute(:registration) || ""
   end

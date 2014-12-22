@@ -62,6 +62,10 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.mergable(person)
+    self.where(duplicate_of_id: nil).where("id <> ?", person.id).all
+  end
+
   def has_relevant_licenses_for(f)
     !relevant_licenses_for(f).empty?
   end
