@@ -88,6 +88,7 @@ class F.Views.Flights.Index extends F.TemplateView
         view.setMarked(true)
         @markedViews.push(view)
         upper = upper.nextSibling
+      @markedViews = _.unique(@markedViews)
 
     @updateAggregation()
 
