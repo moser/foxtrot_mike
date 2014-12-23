@@ -51,16 +51,44 @@ class F.Views.Flights.Index extends F.TemplateView
     @updateAggregation()
 
   toggleMarkAll: (e) ->
-    _.each(@views, (v) -> v.setMarked(!v.marked))
+    if @markedViews.length == 0
+      _.each @views, (v) =>
+        v.setMarked(!v.marked)
+        @markedViews.push(v)
+    else
+      _.each @views, (v) =>
+        v.setMarked(false)
+        @markedViews = []
     @updateAggregation()
     e.stopPropagation()
 
-  marked_changed: (view) =>
-    if view.marked
-      @markedViews.push(view)
+  marked_changed: (evt) =>
+    if evt.mode == "single" || !@lastMarked? || @lastMarked == evt.view
+      if evt.view.marked
+        evt.view.setMarked(false)
+        @markedViews = _.without(@markedViews, evt.view)
+      else
+        evt.view.setMarked(true)
+        @markedViews.push(evt.view)
+        @lastMarked = evt.view
     else
-      @markedViews = _.without(@markedViews, view)
-    flights = _.map(@markedViews, (v) -> v.model)
+      el = @lastMarked.el
+      other = evt.view.el
+      while el? && el != other
+        el = el.nextSibling
+      if el?
+        [ upper, lower ] = [ @lastMarked.el, evt.view.el ]
+      else
+        [ lower, upper ] = [ @lastMarked.el, evt.view.el ]
+
+      cont = true
+      while cont && upper?
+        cont = upper != lower
+        view = @views[upper.id]
+        view.setMarked(true)
+        @markedViews.push(view)
+        upper = upper.nextSibling
+
     @updateAggregation()
 
 

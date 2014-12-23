@@ -6,7 +6,7 @@ class F.Views.Flights.Show extends F.TemplateView
   events:
     "click span": "detailsEvent"
     "click .summary": "detailsEvent"
-    "click .mark": "marked_changed"
+    "click .mark": "clickMarker"
 
   renderMarker: ->
     mark = @$("button.mark")
@@ -20,10 +20,12 @@ class F.Views.Flights.Show extends F.TemplateView
   setMarked: (b) ->
     @marked = b
     @renderMarker()
-    @trigger("marked_changed", @)
 
-  marked_changed: (e) ->
-    @setMarked(!@marked)
+  clickMarker: (e) ->
+    mode = "single"
+    if e.shiftKey
+      mode = "multi"
+    @trigger("marked_changed", {view: @, mode: mode})
     e.stopPropagation()
 
   delegateEvents: ->
