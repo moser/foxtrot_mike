@@ -63,7 +63,21 @@ class F.Views.Flights.Index extends F.TemplateView
     e.stopPropagation()
 
   marked_changed: (evt) =>
-    if evt.mode == "single" || !@lastMarked? || @lastMarked == evt.view
+    if evt.mode == "aggregation"
+      el = evt.view.el
+      ag = el.dataset.aggregationId
+      while el? && el.dataset.aggregationId == ag
+        view = @views[el.id]
+        view.setMarked(true)
+        @markedViews.push(view)
+        el = el.nextSibling
+      el = evt.view.el
+      while el? && el.dataset.aggregationId == ag
+        view = @views[el.id]
+        view.setMarked(true)
+        @markedViews.push(view)
+        el = el.previousSibling
+    else if evt.mode == "single" || !@lastMarked? || @lastMarked == evt.view
       if evt.view.marked
         evt.view.setMarked(false)
         @markedViews = _.without(@markedViews, evt.view)
@@ -88,8 +102,7 @@ class F.Views.Flights.Index extends F.TemplateView
         view.setMarked(true)
         @markedViews.push(view)
         upper = upper.nextSibling
-      @markedViews = _.unique(@markedViews)
-
+    @markedViews = _.unique(@markedViews)
     @updateAggregation()
 
 

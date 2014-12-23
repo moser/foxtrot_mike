@@ -25,6 +25,8 @@ class F.Views.Flights.Show extends F.TemplateView
     mode = "single"
     if e.shiftKey
       mode = "multi"
+    if e.altKey
+      mode = "aggregation"
     @trigger("marked_changed", {view: @, mode: mode})
     e.stopPropagation()
 
