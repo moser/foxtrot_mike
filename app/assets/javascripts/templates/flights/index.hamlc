@@ -1,3 +1,13 @@
+.markOverlay
+  %i.icon-plane
+  %span.markedCount
+  %br
+  %i.icon-time
+  %span.markedSum
+  %br
+  %button.mark.btn.btn-mini{ "type": "button", "data-toggle": "button" }
+    %i.icon-remove
+
 .flights_index
   %h2
     = I18n.t("flights.index.title")
@@ -31,8 +41,12 @@
     .foot
       %i.icon-plane
       %span.count
+      != surround '(', ')', ->
+        %span.markedCount
       %i.icon-time
       %span.sum
+      != surround '(', ')', ->
+        %span.markedSum
       %button.delete_selected.btn.btn-mini.btn-danger
         %i.icon-minus-sign
         = I18n.t("views.destroy")

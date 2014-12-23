@@ -112,8 +112,14 @@ class F.Views.Flights.Index extends F.TemplateView
 
   updateAggregation: ->
     sum = (col) -> F.Util.intTimeToString(col.map((f) -> if f.duration() > 0 then f.duration() else 0).reduce(((a, e) -> a + e), 0))
-    @$("span.count").html("#{@collection.length} (#{@markedViews.length})")
-    @$("span.sum").html("#{sum(@collection)} (#{sum(_.map(@markedViews, (v) -> v.model))})")
+    if @markedViews.length > 0
+      @$("div.markOverlay").show()
+    else
+      @$("div.markOverlay").hide()
+    @$("span.count").text(@collection.length)
+    @$("span.markedCount").text(@markedViews.length)
+    @$("span.sum").text(sum(@collection))
+    @$("span.markedSum").text(sum(_.map(@markedViews, (v) -> v.model)))
     @$("span.selected_count").html("(#{@markedViews.length})")
 
   updateRange: =>
