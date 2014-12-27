@@ -115,5 +115,6 @@ Server::Application.routes.draw do
   root :to => 'dashboards#show'
 
   match "/flights/day/:day_parse_date", :controller => "flights", :action => "index"
+  match "/flights_summary(/:date_parse_date)", :controller => "summaries", :action => "show"
   match "/:controller(/:action(/:id))(.:format)"
 end

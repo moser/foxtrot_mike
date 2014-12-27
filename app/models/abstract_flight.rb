@@ -47,6 +47,10 @@ class AbstractFlight < ActiveRecord::Base
     def before(to)
       where("departure_date < ?", to)
     end
+
+    def on(date)
+      where(departure_date: date)
+    end
   end
 
   def self.writable_attributes
