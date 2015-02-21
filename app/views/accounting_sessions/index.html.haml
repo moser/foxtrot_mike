@@ -19,4 +19,5 @@
         %td= s.without_flights? ? "-" : l(s.end_date)
         %td= s.finished? ? l(s.finished_at, :format => :short) : "-"
         %td= show_link(s)
+        %td= link_to t("accounting_sessions.show.voucher"), accounting_session_path(s, :format => :pdf)
         %td= destroy_confirmation_link(s) unless s.finished?
