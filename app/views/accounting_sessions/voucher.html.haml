@@ -7,3 +7,5 @@
   - @accounting_session.aggregated_entries.each do |ae|
     .accounting_entry
       = format_accounting_entry(ae)
+.sum
+  = format_currency(@accounting_session.aggregated_entries.map(&:value).sum)
