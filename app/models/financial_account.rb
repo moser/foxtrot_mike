@@ -31,6 +31,11 @@ class FinancialAccount < ActiveRecord::Base
     !number.nil? && number != ""
   end
 
+  def balance_at(date)
+    AccountingEntry.joins(:accounting_session).where('accounting_sessions.accounting_date <= ?', date).where(to_id: id).select(:value).map(&:value).sum -
+      AccountingEntry.joins(:accounting_session).where('accounting_sessions.accounting_date <= ?', date).where(from_id: id).select(:value).map(&:value).sum
+  end
+
   def balance
     AccountingEntry.where(to_id: id).select(:value).map(&:value).sum -
       AccountingEntry.where(from_id: id).select(:value).map(&:value).sum
