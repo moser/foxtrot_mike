@@ -72,7 +72,7 @@ class Person < ActiveRecord::Base
       accounting_entries = account.accounting_entries_from.select do |accounting_entry| 
         accounting_entry.accounting_session &&
         accounting_entry.accounting_session.accounting_date &&
-        accounting_entry.accounting_session.accounting_date > last_deposit
+        accounting_entry.accounting_session.accounting_date > (last_deposit or Date.new(1970, 1, 1))
       end
       positions = accounting_entries.group_by(&:category_text).map do |category_text, entries|
         { category: category_text, value: entries.map(&:value).sum }
