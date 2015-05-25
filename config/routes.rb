@@ -112,6 +112,8 @@ Server::Application.routes.draw do
   resources :pdfs
   resources :csvs
 
+  resources :debitors, only: :index
+
   root :to => 'dashboards#show'
 
   match "/flights/day/:day_parse_date", :controller => "flights", :action => "index"

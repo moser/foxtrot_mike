@@ -7,6 +7,8 @@
       =t 'views.people_import_hint'
 = new_link(Person)
 = link_to 'Mitgliederliste', status_list_people_path(format: :csv)
+- if can?(:read, :debitors)
+  = link_to 'Schuldner', debitors_path(format: :json)
 %table.filtered.table.table-striped.table-hover{ :"data-filter-by" => "group_id,filter_string" }
   %thead
     %tr.no_filter.show_on_startup

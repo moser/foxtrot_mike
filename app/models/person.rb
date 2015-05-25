@@ -66,6 +66,28 @@ class Person < ActiveRecord::Base
     self.where(duplicate_of_id: nil).where("id <> ?", person.id).all
   end
 
+  def self.debitors
+    FinancialAccount.debitors.map do |account|
+      last_deposit = account.accounting_entries_to.map { |entry| entry.accounting_session && entry.accounting_session.accounting_date }.compact.max
+      accounting_entries = account.accounting_entries_from.select do |accounting_entry| 
+        accounting_entry.accounting_session &&
+        accounting_entry.accounting_session.accounting_date &&
+        accounting_entry.accounting_session.accounting_date > last_deposit
+      end
+      positions = accounting_entries.group_by(&:category_text).map do |category_text, entries|
+        { category: category_text, value: entries.map(&:value).sum }
+      end
+      account.owners.select { |owner| owner.is_a?(Person) }.map do |person|
+        person.attributes.select { |k, _| [:firstname, :lastname, :sex, :address1, :address2, :zip, :city, :email].map(&:to_s).include?(k) }.merge({
+          balance: account.balance,
+          account_number: account.number,
+          last_deposit: last_deposit,
+          positions: positions
+        })
+      end
+    end.flatten
+  end
+
   def has_relevant_licenses_for(f)
     !relevant_licenses_for(f).empty?
   end

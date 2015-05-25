@@ -15,6 +15,14 @@ class FinancialAccount < ActiveRecord::Base
 
   default_scope order("number asc")
 
+  def self.debitors
+    tbl = self.arel_table
+    advance_payment = tbl[:advance_payment].eq(true)
+    not_member_account = tbl[:member_account].eq(false)
+
+    where(advance_payment.or(not_member_account))
+  end
+
   def owners
     financial_account_ownerships.map { |o| o.owner if o.valid_at?(Time.now) }.compact.uniq
   end
