@@ -79,7 +79,7 @@ class Person < ActiveRecord::Base
       end
       account.owners.select { |owner| owner.is_a?(Person) }.map do |person|
         person.attributes.select { |k, _| [:firstname, :lastname, :sex, :address1, :address2, :zip, :city, :email].map(&:to_s).include?(k) }.merge({
-          balance: account.balance,
+          balance: account.accounted_balance,
           account_number: account.number,
           last_deposit: last_deposit,
           positions: positions
