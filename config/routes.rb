@@ -77,6 +77,7 @@ Server::Application.routes.draw do
   resources :wire_launchers do
     resources :wire_launcher_cost_category_memberships
     resources :financial_account_ownerships
+    resource :log_book, controller: "wire_launcher_log_books"
   end
 
   resources :person_cost_categories

@@ -1,4 +1,5 @@
 de:
+  log_book: "Kladde"
   unknown_person: Pilot
   change_password: "Passwort ändern"
   password_changed: "Passwort erfolgreich gesetzt."
@@ -230,6 +231,9 @@ de:
   wire_launcher_cost_rules:
     index:
       title: "Windenkosten"
+  wire_launcher_log_books:
+    show:
+      title: "Windenkladde"
   time_cost_rules:
     time_cost_rule:
       per_minute: "%{n} pro Minute %{on}"

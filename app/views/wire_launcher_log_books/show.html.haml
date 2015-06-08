@@ -1,0 +1,28 @@
+.no_print
+  %h1= t('.title')
+  = form_tag "", method: :get do
+    .input
+      = label_tag :from_parse_date, t('views.from')
+      = text_field_tag :from_parse_date, @from, type: "date"
+    .input
+      = label_tag :to_parse_date, t('views.to')
+      = text_field_tag :to_parse_date, @to, type: "date"
+    = submit_tag "Ok"
+.row
+  .span4
+    %table.table.table-striped.table-hover.table-condensed
+      %thead
+        %tr
+          %th= Person.l(:name)
+          %th
+            Anzahl
+      %tbody
+        %tr
+          %td{ colspan: 2 }
+            =l @from
+            bis
+            =l @to
+        - @counts.each do |person, count|
+          %tr
+            %td=h person.try(:name) || "Unbekannt"
+            %td= count
