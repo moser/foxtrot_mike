@@ -27,7 +27,7 @@ class AccountingSession < ActiveRecord::Base
       count = unaccounted_flights.count
       oldest = unaccounted_flights.order("departure_date ASC").first
       if count > 0
-        @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date) }
+        @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date), :ids => unaccounted_flights.limit(10).map(&:id).join(" ") }
       end
     end
     @problems[:financial_account_missing_number] = {} if concerned_financial_accounts.find { |a| !a.number? }
