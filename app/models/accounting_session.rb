@@ -25,9 +25,9 @@ class AccountingSession < ActiveRecord::Base
     unless without_flights?
       unaccounted_flights = Flight.where(Flight.arel_table[:departure_date].lt(start_date)).where(:accounting_session_id => nil)
       count = unaccounted_flights.count
-      oldest = unaccounted_flights.order("departure_date ASC").first
+      oldest = unaccounted_flights.pluck(:departure_date).min
       if count > 0
-        @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest.departure_date), :ids => unaccounted_flights.limit(10).map(&:id).join(" ") }
+        @problems[:unaccounted_flights_before_start] = { :count => count, :oldest => I18n.l(oldest), :ids => unaccounted_flights.limit(10).pluck(:id).join(" ") }
       end
     end
     @problems[:financial_account_missing_number] = {} if concerned_financial_accounts.find { |a| !a.number? }
