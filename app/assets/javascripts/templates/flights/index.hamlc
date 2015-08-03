@@ -21,6 +21,9 @@
     %a.btn.csv{ href: "#" }
       %i.icon-download-alt
       = I18n.t("views.csv")
+    %a.btn.reorder{ href: "#" }
+      %i.icon-refresh
+      = I18n.t("views.reorder")
   %form.form-inline.range
     %input#range_from_front.input-small{ type: "text" }
     %input#range_to_front.input-small{ type: "text" }

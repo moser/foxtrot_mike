@@ -75,6 +75,7 @@ de:
     print_voucher: "Beleg drucken"
     print: "Drucken"
     csv: "Tabelle"
+    reorder: "Ordnung umdrehen"
     show: "Anzeigen"
     signature: "Unterschrift"
     to: "Bis"

@@ -6,11 +6,18 @@ class F.Views.Flights.Index extends F.TemplateView
     "click a.new_flight": "new"
     "click a.print": "print"
     "click a.csv": "csv"
+    "click a.reorder": "reorder"
     "click a.load" : "updateRange"
     "click a.filter": "updateFilter"
     "submit form.filter": "updateFilter"
     "click .mark": "toggleMarkAll"
     "click .delete_selected": "deleteSelected"
+
+  reorder: ->
+    @order = !@order
+    @collection.each (model) =>
+      @add(model)
+    false
 
   render: ->
     @$el.html(@template({}))
@@ -34,7 +41,10 @@ class F.Views.Flights.Index extends F.TemplateView
       view.render()
     @$("##{model.id}").remove()
     @$(".flights .flight_group").prepend(view.el)
-    _.sortBy(@collection.models, (e) -> e.sortBy()).reverse().map (f) =>
+    models = _.sortBy(@collection.models, (e) -> e.sortBy())
+    if @order
+      models = models.reverse()
+    models.map (f) =>
       @$(".flights .flight_group").append(@views[f.id].$el) if @views[f.id]?
     #make sure the events are delegated correctly
     view.delegateEvents()
@@ -159,6 +169,7 @@ class F.Views.Flights.Index extends F.TemplateView
     false
   
   initialize: ->
+    @order = true
     @new_view = null
     @views = {}
     @markedViews = []
