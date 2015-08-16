@@ -15,8 +15,11 @@ class F.Views.Flights.Index extends F.TemplateView
 
   reorder: ->
     @order = !@order
-    @collection.each (model) =>
-      @add(model)
+    models = _.sortBy(@collection.models, (e) -> e.sortBy())
+    if @order
+      models.reverse()
+    _.each models, (model) =>
+      @add(model, true)
     false
 
   render: ->
@@ -32,7 +35,7 @@ class F.Views.Flights.Index extends F.TemplateView
     if model.id? && (_.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date"))
       @add(model)
   
-  add: (model) =>
+  add: (model, inorder=false) =>
     if @views[model.id]?
       view = @views[model.id]
     else
@@ -41,11 +44,12 @@ class F.Views.Flights.Index extends F.TemplateView
       view.render()
     @$("##{model.id}").remove()
     @$(".flights .flight_group").prepend(view.el)
-    models = _.sortBy(@collection.models, (e) -> e.sortBy())
-    if @order
-      models = models.reverse()
-    models.map (f) =>
-      @$(".flights .flight_group").append(@views[f.id].$el) if @views[f.id]?
+    if not inorder #make sure they get ordered properly
+      models = _.sortBy(@collection.models, (e) -> e.sortBy())
+      if @order
+        models = models.reverse()
+      models.map (f) =>
+        @$(".flights .flight_group").append(@views[f.id].$el) if @views[f.id]?
     #make sure the events are delegated correctly
     view.delegateEvents()
     @updateAggregation()
