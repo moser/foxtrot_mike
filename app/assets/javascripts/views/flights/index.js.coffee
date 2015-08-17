@@ -13,21 +13,22 @@ class F.Views.Flights.Index extends F.TemplateView
     "click .mark": "toggleMarkAll"
     "click .delete_selected": "deleteSelected"
 
-  reorder: ->
-    @order = !@order
-    models = _.sortBy(@collection.models, (e) -> e.sortBy())
+  sort: (models) =>
+    models = _.sortBy(models, (e) -> e.sortBy())
     if @order
       models.reverse()
-    _.each models, (model) =>
-      @add(model, true)
+    models
+
+  reorder: =>
+    @order = !@order
+    @sort(@collection.models).forEach (model) =>
+      @add(model, false)
     false
 
   render: ->
     @$el.html(@template({}))
-    @collection.each (e) =>
-      @$(".flights .flight_group").append (@views[e.id] = new F.Views.Flights.Show({ model: e })).el
-      @views[e.id].on("marked_changed", @markedChanged)
-      @views[e.id].render()
+    @sort(@collection.models).forEach (model) =>
+      @add(model, false)
     @updateAggregation()
 
   change: (model) =>
@@ -35,7 +36,7 @@ class F.Views.Flights.Index extends F.TemplateView
     if model.id? && (_.has(model.changedAttributes(), "departure_i") || _.has(model.changedAttributes(), "departure_date"))
       @add(model)
   
-  add: (model, inorder=false) =>
+  add: (model, needsOrdering=true) =>
     if @views[model.id]?
       view = @views[model.id]
     else
@@ -43,13 +44,19 @@ class F.Views.Flights.Index extends F.TemplateView
       view.on("marked_changed", @markedChanged)
       view.render()
     @$("##{model.id}").remove()
-    @$(".flights .flight_group").prepend(view.el)
-    if not inorder #make sure they get ordered properly
-      models = _.sortBy(@collection.models, (e) -> e.sortBy())
-      if @order
-        models = models.reverse()
-      models.map (f) =>
-        @$(".flights .flight_group").append(@views[f.id].$el) if @views[f.id]?
+    if needsOrdering #make sure they get ordered properly
+      sortedModels = @sort(@collection.models)
+      idx = sortedModels.indexOf(model)
+      if idx = 0
+        @$(".flights .flight_group").prepend(@views[f.id].$el)
+      else if idx >= sortedModels.length - 1
+        @$(".flights .flight_group").append(@views[f.id].$el)
+      else
+        el = sortedModels[idx + 1].$el
+        if el
+          el.after(@views[f.id].$el)
+    else
+      @$(".flights .flight_group").append(view.el)
     #make sure the events are delegated correctly
     view.delegateEvents()
     @updateAggregation()
@@ -89,12 +96,18 @@ class F.Views.Flights.Index extends F.TemplateView
         view.setMarked(true)
         @markedViews.push(view)
         idx += direction
+        if not aggregationId
+          break
     walk(1)
     walk(-1)
+    @markedViews = _.unique(@markedViews)
+    @updateAggregation()
+    @markedViews[0].$el.scrollintoview()
 
   markedChanged: (evt) =>
     if evt.mode == "aggregation"
       @markAggregation evt.model
+      return
     else if evt.mode == "single" || !@lastMarked? || @lastMarked == evt.view
       if evt.view.marked
         evt.view.setMarked(false)
@@ -196,6 +209,25 @@ class F.Views.Flights.Index extends F.TemplateView
     @$("#range_to").val(Format.date_to_s(@range.to()))
     @$("#range_from_front").val(Format.date_short(@range.from())).datepicker(dateFormat: I18n.t("date.formats.js.default"), altField: "#range_from", altFormat: "yy-mm-dd")
     @$("#range_to_front").val(Format.date_short(@range.to())).datepicker(dateFormat: I18n.t("date.formats.js.default"), altField: "#range_to", altFormat: "yy-mm-dd")
+
+    $(document).keydown @moveAggregationMark
+
+  moveAggregationMark: (e) =>
+      if e.altKey and (e.keyCode == 38 or e.keyCode == 40)
+        sortedModelsMarked = @sort(@markedViews.map((view) -> view.model))
+        sortedModels = @sort(@collection.models)
+        if e.keyCode == 38 # up
+          first = sortedModelsMarked[0]
+          nextIdx = sortedModels.indexOf(first) - 1
+          if nextIdx < 0
+            nextIdx = 0
+          console.log "up", first, sortedModels.indexOf(first), nextIdx
+        else if e.keyCode == 40 # down
+          last = sortedModelsMarked[sortedModelsMarked.length - 1]
+          nextIdx = sortedModels.indexOf(last) + 1
+          if nextIdx >= sortedModels.length
+            nextIdx = sortedModels.length - 1
+        @markAggregation(sortedModels[nextIdx])
 
   #creates a new flight
   new: ->

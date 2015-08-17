@@ -18,7 +18,7 @@ class F.Models.Flight extends F.BaseModel
 
   #departure time in ms
   sortBy: ->
-    Date.parse(@get("departure_date")) + (@get("departure_i") || 0) * 60000
+    Date.parse(@get("departure_date")) + (@get("departure_i") || 0) * 60000 + @get("arrival_i") + 1
 
   plane: ->
     if @get("plane_id")?
