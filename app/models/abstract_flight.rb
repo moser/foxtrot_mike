@@ -329,7 +329,7 @@ class AbstractFlight < ActiveRecord::Base
 
   def generate_aggregation_id
     from == to && 
-      Digest::SHA256.hexdigest("#{plane_id.to_s}#{seat1_person_id}#{seat2_person_id}#{seat2_n}#{departure_date}#{from_id}")
+      Digest::SHA256.hexdigest("#{plane_id.to_s}#{seat1_person_id}#{departure_date}#{from_id}")
   end
 
   def grouping_purposes
