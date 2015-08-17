@@ -26,7 +26,7 @@ class F.Views.Flights.Index extends F.TemplateView
     @$el.html(@template({}))
     @collection.each (e) =>
       @$(".flights .flight_group").append (@views[e.id] = new F.Views.Flights.Show({ model: e })).el
-      @views[e.id].on("marked_changed", @marked_changed)
+      @views[e.id].on("marked_changed", @markedChanged)
       @views[e.id].render()
     @updateAggregation()
 
@@ -40,7 +40,7 @@ class F.Views.Flights.Index extends F.TemplateView
       view = @views[model.id]
     else
       view = @views[model.id] = new F.Views.Flights.Show({ model: model })
-      view.on("marked_changed", @marked_changed)
+      view.on("marked_changed", @markedChanged)
       view.render()
     @$("##{model.id}").remove()
     @$(".flights .flight_group").prepend(view.el)
@@ -76,21 +76,25 @@ class F.Views.Flights.Index extends F.TemplateView
     @updateAggregation()
     e.stopPropagation()
 
-  marked_changed: (evt) =>
+  markAggregation: (model) =>
+    aggregationId = model.get("aggregation_id")
+    _.each @views, (v) =>
+      v.setMarked(false)
+      @markedViews = []
+    models = @collection.models
+    walk = (direction) =>
+      idx = models.indexOf(model)
+      while idx >= 0 and idx < models.length and models[idx].get("aggregation_id") == aggregationId
+        view = @views[models[idx].id]
+        view.setMarked(true)
+        @markedViews.push(view)
+        idx += direction
+    walk(1)
+    walk(-1)
+
+  markedChanged: (evt) =>
     if evt.mode == "aggregation"
-      el = evt.view.el
-      ag = el.dataset.aggregationId
-      while el? && el.dataset.aggregationId == ag
-        view = @views[el.id]
-        view.setMarked(true)
-        @markedViews.push(view)
-        el = el.nextSibling
-      el = evt.view.el
-      while el? && el.dataset.aggregationId == ag
-        view = @views[el.id]
-        view.setMarked(true)
-        @markedViews.push(view)
-        el = el.previousSibling
+      @markAggregation evt.model
     else if evt.mode == "single" || !@lastMarked? || @lastMarked == evt.view
       if evt.view.marked
         evt.view.setMarked(false)
@@ -118,7 +122,6 @@ class F.Views.Flights.Index extends F.TemplateView
         upper = upper.nextSibling
     @markedViews = _.unique(@markedViews)
     @updateAggregation()
-
 
   deleteSelected: (e) ->
     if @markedViews.length > 0
