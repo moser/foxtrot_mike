@@ -48,13 +48,18 @@ class F.Views.Flights.Index extends F.TemplateView
       sortedModels = @sort(@collection.models)
       idx = sortedModels.indexOf(model)
       if idx = 0
-        @$(".flights .flight_group").prepend(@views[f.id].$el)
+        @$(".flights .flight_group").prepend(view.el)
       else if idx >= sortedModels.length - 1
-        @$(".flights .flight_group").append(@views[f.id].$el)
+        @$(".flights .flight_group").append(view.el)
       else
         el = sortedModels[idx + 1].$el
         if el
-          el.after(@views[f.id].$el)
+          el.after(view)
+        else
+          if !@order
+            @$(".flights .flight_group").prepend(view.el)
+          else
+            @$(".flights .flight_group").append(view.el)
     else
       @$(".flights .flight_group").append(view.el)
     #make sure the events are delegated correctly
