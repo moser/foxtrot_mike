@@ -263,7 +263,7 @@ describe AbstractFlight do
   end
   
   describe "aggregation_id" do
-    it "should change when plane, departure_date, seat1 or seat2 change" do
+    it "should change when plane, departure_date or seat1 change" do
       f = F.build(:flight)
       f.from = f.to
       s = f.generate_aggregation_id
@@ -273,9 +273,6 @@ describe AbstractFlight do
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
       f.seat1_person = F.create(:person)
-      f.generate_aggregation_id.should_not == s
-      s = f.generate_aggregation_id
-      f.seat2_person = F.create(:person)
       f.generate_aggregation_id.should_not == s
       s = f.generate_aggregation_id
       f.seat1_person = F.create(:person)
