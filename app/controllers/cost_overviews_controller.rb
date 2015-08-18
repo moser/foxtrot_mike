@@ -2,8 +2,10 @@ class CostOverviewsController < ApplicationController
   def show
     @group = Group.find(params[:group_id])
     authorize! :read, @group
-    @from = params[:report][:from]
-    @to = params[:report][:to]
+    if params[:report]
+      @from = params[:report][:from]
+      @to = params[:report][:to]
+    end
     @from ||= @group.flights.last.try(:departure_date) || Date.today
     @to ||= @group.flights.first.try(:departure_date) || Date.today
     @group_cost = GroupCost.new(@group, @from, @to)
