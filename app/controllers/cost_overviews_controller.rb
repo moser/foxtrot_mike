@@ -2,8 +2,8 @@ class CostOverviewsController < ApplicationController
   def show
     @group = Group.find(params[:group_id])
     authorize! :read, @group
-    @from = get_date(:from)
-    @to = get_date(:to)
+    @from = params[:report][:from]
+    @to = params[:report][:to]
     @from ||= @group.flights.last.try(:departure_date) || Date.today
     @to ||= @group.flights.first.try(:departure_date) || Date.today
     @group_cost = GroupCost.new(@group, @from, @to)
@@ -21,13 +21,5 @@ class CostOverviewsController < ApplicationController
       return
     end
     redirect_to @group_cost.settle(params[:text], @account)
-  end
-
-private
-  def get_date(key)
-    begin
-      Date.new(*params[:report].select { |k,v| k.include?(key.to_s) }.sort_by { |a| a.first }.map(&:last).map(&:to_i))
-    rescue
-    end
   end
 end
