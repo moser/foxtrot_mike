@@ -172,7 +172,7 @@ class AccountingSession < ActiveRecord::Base
 
 
   def bookings_csv
-    (RUBY_VERSION =~ /^1\.9/ ? CSV : FasterCSV).generate do |csv|
+    CSV.generate do |csv|
       csv << %w(booking_date voucher_number from_account_number
       from_account to_account_number to_account value_f text)
       
@@ -180,9 +180,9 @@ class AccountingSession < ActiveRecord::Base
         csv << [ accounting_date.to_s,
                  voucher_number,
                  entry.from_account_number,
-                 entry.from_account.name,
+                 entry.from_account_name,
                  entry.to_account_number,
-                 entry.to_account.name,
+                 entry.to_account_name,
                  entry.value_f,
                  "#{ name } #{ entry.manual? ? entry.text : "" }" ]
       end

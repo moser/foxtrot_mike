@@ -23,6 +23,14 @@ class AggregatedEntry
     to.try(:number)
   end
 
+  def from_account_name
+    from.try(:name)
+  end
+
+  def to_account_name
+    to.try(:name)
+  end
+
   def value_f
     value / 100.0
   end
