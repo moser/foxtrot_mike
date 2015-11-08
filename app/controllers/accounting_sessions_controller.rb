@@ -9,7 +9,7 @@ class AccountingSessionsController < ResourceController
     respond_to do |f|
       f.html { render }
       f.txt do
-          send_data @accounting_session.bookings_csv, :type => 'text/plain; charset=utf8;',
+          send_data @accounting_session.bookings_csv, :type => 'text/csv; charset=utf8;',
                     :filename => @accounting_session.filename
       end
       f.pdf do
