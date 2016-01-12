@@ -1,4 +1,6 @@
 class AccountSessionsController < ApplicationController
+  layout 'account_sessions'
+
   def new
     @account_session = AccountSession.new
   end
