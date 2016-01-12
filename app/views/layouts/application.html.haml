@@ -68,6 +68,8 @@
                     =h navigation_li(:name => "cost_rules", :path => cost_rules_path)  
                   - if can?(:read, AccountingSession)
                     =h navigation_li(:name => "accounting_sessions", :path => accounting_sessions_path)  
+                  - if can?(:read, FinancialAccount)
+                    =h navigation_li(name: "balance_sheet", path: balance_sheet_path)
           .pull-right
             - if current_account
               = link_to I18n.t("logout", name: current_account.visible_name), "/logout", class: "btn btn-small btn-warning"

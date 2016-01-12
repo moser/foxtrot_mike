@@ -1,0 +1,18 @@
+= form_tag '', method: :get do
+  .input.date
+    = date_select :report, :date, default: @date
+  = submit_tag
+
+%table.table.table-hover
+  %tr
+    %th
+      Nr
+    %th
+      Konto
+    %th
+      Saldo
+  - @accounts.each do |acc|
+    %tr
+      %td= acc.account.number
+      %td= acc.account.name
+      %td= format_currency acc.balance

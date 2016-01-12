@@ -116,6 +116,9 @@ de:
   airfields:
     index:
       title: "Flugplätze"
+  balance_sheet:
+    index:
+      title: "Saldenblatt"
   categories:
     index:
       title: "Kategorien & Gruppen"
