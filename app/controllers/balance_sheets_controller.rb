@@ -9,7 +9,7 @@ class BalanceSheetsController < ApplicationController
       @accounts = FinancialAccount.all.map do |account|
         Tpl.new account, account.balance_at(@date)
       end.select do |obj|
-        obj.balance != 0 and obj.account.number =~ /\d\d\d\d\d/
+        obj.balance != 0 and obj.account.number =~ /^[123]\d\d\d\d$/
       end.sort_by do |obj|
         obj.account.name
       end
