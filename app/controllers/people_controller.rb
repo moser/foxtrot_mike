@@ -6,9 +6,10 @@ class PeopleController < ResourceWithDeletedController
     respond_to do |f|
       f.csv do
         csv = CSV.generate(encoding: 'UTF-8', col_sep: "\t") do |csv|
-          csv << %w(name account status lvb categories)
+          csv << %w(name birthdate account status lvb categories)
           people.each do |person|
             csv << [person.name,
+                    person.birthdate.to_date,
                     person.financial_account.try(:number),
                     I18n.t("person.member_state.#{person.member_state}"),
                     I18n.t("person.lvb_member_state.#{person.lvb_member_state}"),
