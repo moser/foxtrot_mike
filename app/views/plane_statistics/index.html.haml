@@ -1,0 +1,37 @@
+%h1 Flugzeugstatistik
+
+
+= form_tag "/plane_statistics", method: :get do
+  .input
+    = label_tag :group_id, Group.l
+    = select_tag :group_id, options_from_collection_for_select(@groups, "id", "name", @group.try(:id))
+  .input
+    = label_tag :year, t('views.year')
+    = text_field_tag :year, @year
+  = submit_tag "Ok"
+
+- @planes.each do |plane|
+  %h3= plane.registration
+
+  %table.table.table-hover
+    %tr
+      %th= CostHint.l
+      %th #
+      %th= Flight.l("duration")
+    - sum_cnt = sum_duration = 0
+    - (@stats[plane.id] or []).each do |row|
+      - sum_cnt += row['cnt'].to_i
+      - sum_duration += row['duration'].to_i
+      %tr
+        %td
+          - if row['cost_hint_id']
+            = @cost_hints[row['cost_hint_id']].name
+          - else
+            Normal
+        %td= row['cnt']
+        %td= format_minutes row['duration'].to_i
+    %tr
+      %td Summe
+      %td= sum_cnt
+      %td= format_minutes sum_duration
+

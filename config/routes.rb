@@ -1,6 +1,7 @@
 Server::Application.routes.draw do
 
   resource :balance_sheet, controller: "balance_sheets"
+  resources :plane_statistics, controller: "plane_statistics"
   resources :financial_accounts do
     resource :overview, :controller => "financial_account_overviews"
   end
