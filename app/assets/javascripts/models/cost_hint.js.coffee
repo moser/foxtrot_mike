@@ -12,6 +12,7 @@ F.Collections.CostHints = Backbone.Collection.extend
 
 class F.Models.NoCostHint
   constructor: ->
-    @name = @id = "-"
+    @name = "-"
+    @id = undefined
   present: ->
     @
