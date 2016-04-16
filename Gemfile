@@ -17,7 +17,7 @@ gem "less-rails"
 gem "twitter-bootstrap-rails"
 gem "i18n-js"
 gem "jquery-rails"
-gem "rails-backbone", git: "git://github.com/codebrew/backbone-rails.git" 
+gem "rails-backbone", "0.9.10"
 gem "coffee-rails"
 gem 'haml_coffee_assets'
 
