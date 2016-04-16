@@ -1,13 +1,3 @@
-GIT
-  remote: git://github.com/codebrew/backbone-rails.git
-  revision: 1a122de7b6ae770b381e280eea105316a2dd0bfd
-  specs:
-    rails-backbone (0.9.0)
-      coffee-script (~> 2.2.0)
-      ejs (~> 1.1.1)
-      jquery-rails (~> 2.1.3)
-      railties (>= 3.1.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -146,6 +136,11 @@ GEM
       activesupport (= 3.2.21)
       bundler (~> 1.0)
       railties (= 3.2.21)
+    rails-backbone (0.9.10)
+      coffee-script (~> 2.2.0)
+      ejs (~> 1.1.1)
+      jquery-rails (~> 2.1.3)
+      railties (>= 3.1.0)
     rails3-generators (1.0.0)
       railties (>= 3.0.0)
     railties (3.2.21)
@@ -423,7 +418,7 @@ DEPENDENCIES
   less-rails
   pg
   rails (~> 3.2)
-  rails-backbone!
+  rails-backbone (= 0.9.10)
   rails3-generators
   roo
   rspec
