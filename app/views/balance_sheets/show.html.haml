@@ -8,11 +8,20 @@
     %th
       Nr
     %th
-      Konto
+      = link_to 'Konto', "#{@current_url}&sort=name"
     %th
-      Saldo
+      = link_to 'Haben', "#{@current_url}&sort=balance"
+    %th
+      = link_to 'Soll', "#{@current_url}&sort=balance"
   - @accounts.each do |acc|
     %tr
       %td= acc.account.number
-      %td= acc.account.name
-      %td= format_currency acc.balance
+      %td= link_to acc.account.name, acc.account
+      %td= format_currency acc.balance if acc.balance > 0
+      %td= format_currency acc.balance if acc.balance < 0
+  %tr
+    %td
+      Summe
+    %td= format_currency @accounts.map(&:balance).sum
+    %td= format_currency @accounts.select { |acc| acc.balance > 0 }.map(&:balance).sum
+    %td= format_currency @accounts.select { |acc| acc.balance < 0 }.map(&:balance).sum
