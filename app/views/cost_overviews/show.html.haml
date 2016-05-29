@@ -7,18 +7,23 @@
   = submit_tag
 
 %table
+  %tr
+    %th
+      Name
+    %th
+      Posten
+    %th
+      Betrag
   - @group_cost.people_with_sorted_cost.each do |person, sorted_cost|
     - unless sorted_cost.keys.empty?
-      - first = true
       - sorted_cost.each do |what, how_much|
         %tr
-          %td= person.name if first
-          - first = false
+          %td= person.name
           %td
             =t ".cost_item.#{what.class.to_s.underscore}", count: how_much[:count], what: what.to_s
           %td= format_currency(how_much[:cost])
       %tr
-        %td
+        %td= person.name
         %td
           Gesamt
         %td
@@ -29,6 +34,25 @@
     %td
     %td
     %td= format_currency(@group_cost.sum)
+
+%table
+  %tr
+    %th
+      Kostenregel
+    %th
+      Anzahl
+    %th
+      Summe
+  - @group_cost.cost_by_rule.each do |cost_rule, cost|
+    %tr
+      %td= cost_rule.name
+      %td= cost[:count]
+      %td= format_currency(cost[:cost])
+  %tr
+    %td
+      Summe
+    %td
+    %td= format_currency(@group_cost.cost_by_rule.map { |_, cost| cost[:cost] }.sum)
 
 %h1
   Settle

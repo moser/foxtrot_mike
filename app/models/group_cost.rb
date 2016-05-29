@@ -21,6 +21,24 @@ class GroupCost
     @people_with_sorted_cost
   end
 
+  def cost_by_rule
+    @cost_by_rule ||= flights.map do |flight|
+      [flight, flight.launch]
+    end.flatten.compact.map do |item|
+      {item: item, cost: item.try(:cost)}
+    end.select do |item|
+      !item[:cost].empty?
+    end.group_by do |item|
+      item[:cost].cost_rule
+    end.map do |cost_rule, costs|
+      [cost_rule, costs.map do |cost|
+        cost_for_item(cost[:item], 1)
+      end.compact.reduce do |a, b|
+        { cost: a[:cost] + b[:cost], count: a[:count] + b[:count] }
+      end]
+    end
+  end
+
   def sum_for_person(person)
     liabilities_for(person).map(&:value).sum
   end

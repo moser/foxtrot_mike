@@ -157,9 +157,10 @@ de:
   groups:
     index:
       title: "Gruppen"
-    cost_overview:
+  cost_overviews:
+    show:
       cost_item:
-        wire_launcher: "%{count} Windenstarts mit %{what}"
+        wire_launcher: "%{count} Windenstarts (%{what})"
         plane: "%{count} Minuten mit %{what}"
   launches:
     edit:
