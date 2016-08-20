@@ -73,7 +73,7 @@ private
   end
 
   def flights
-    @flights ||= group.flights.where('departure_date BETWEEN ? AND ?', start_date, end_date)
+    @flights ||= group.flights.where('departure_date BETWEEN ? AND ?', start_date, end_date).select { |flight| flight.is_a?(Flight) }
   end
 
   def liabilities
