@@ -23,8 +23,9 @@ var DateTimePickers = {
     var label = e.children('label');
     var spans = e.children('span');
     var orig_name = e.children('select').first().attr('name');
-    var model_name = orig_name.split("[")[0];
-    var attribute = orig_name.split("[")[1].replace(/\(.*\)\]$/, '');
+    var parts = orig_name.split("[")
+    var model_name = parts.slice(0, parts.length - 1).join("[");
+    var attribute = parts[parts.length - 1].replace(/\(.*\)\]$/, '');
     var d = $('<input type="text" id="'+ model_name + '_'+ attribute +'" name="'+ model_name + '['+ attribute +'_parse_'+ type +']"/>');
     d.val(DateTimePickers.orig(e, type));
     e.empty().append(label).append(d).append(spans).addClass('replaced');

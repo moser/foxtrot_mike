@@ -15,9 +15,10 @@
         = ff.input :number
         = ff.input :member_account
         = ff.input :advance_payment
-        = ff.input :bank_account_holder
-        = ff.input :bank_account_number
-        = ff.input :bank_code
+        = ff.input :iban
+        = ff.input :bic
+        = ff.input :mandate_id
+        = ff.input :mandate_date_of_signature
   = f.input :valid_from
   = f.button :submit
 = link_to t('views.cancel'), @financial_account_ownership.owner, :class => "inline_form_hide"

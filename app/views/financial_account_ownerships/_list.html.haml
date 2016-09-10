@@ -11,7 +11,7 @@
                 = l(o.valid_from) rescue t('views.dates.minus_infinity')
                 \-
                 = l(o.valid_to) rescue t('views.dates.infinity')
-                = o.financial_account.name
+                = show_link o.financial_account, o.financial_account.name
     - unless object.current_financial_account_ownership.nil?
       %tr
         %th= t('views.current')
@@ -22,7 +22,7 @@
                 = l(object.current_financial_account_ownership.valid_from) rescue t('views.dates.minus_infinity')
                 \-
                 = l(object.current_financial_account_ownership.valid_to) rescue t('views.dates.infinity')
-                = object.current_financial_account_ownership.financial_account.name
+                = show_link object.current_financial_account_ownership.financial_account, object.current_financial_account_ownership.financial_account.name
     - if object.future_financial_account_ownerships.count > 0
       %tr
         %th= t('views.future')
@@ -34,7 +34,7 @@
                   = l(o.valid_from) rescue t('views.dates.minus_infinity')
                   \-
                   = l(o.valid_to) rescue t('views.dates.infinity')
-                  = o.financial_account.name
+                  = show_link o.financial_account, o.financial_account.name
                   = edit_link(o, nil, { :class => "inline_form_show", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) })
                   = button_to t('views.destroy'), polymorphic_path(o), :method => :delete, :class => "delete", :"data-replace" => polymorphic_path([object, FinancialAccountOwnership]) if can?(:destroy, o)
     %tr
