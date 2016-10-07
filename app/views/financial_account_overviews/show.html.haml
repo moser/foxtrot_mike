@@ -4,11 +4,28 @@
 - if @financial_account.member_account
   .max_debit_value= "#{FinancialAccount.l("max_debit_value")}: #{format_currency(@financial_account.max_debit_value)}"
 %table
+  - accounting_entries = (@financial_account.accounting_entries_from + @financial_account.accounting_entries_to).sort_by {|e| [e.date, e.id] }.reverse
   %tr
     %th= AccountingEntry.l(:date)
     %th= AccountingEntry.l(:text)
     %th= AccountingEntry.l(:value)
-  - (@financial_account.accounting_entries_from + @financial_account.accounting_entries_to).sort_by {|e| [e.date, e.id] }.reverse.each do |e|
+  - not_yet_accounted = accounting_entries.select { |entry| entry.accounting_session.nil? }
+  - if !not_yet_accounted.empty?
+    %tr
+      %th{colspan: 3}
+        Vorläufig
+    - not_yet_accounted.each do |e|
+      %tr
+        %td=l e.date.to_date
+        - if e.item
+          %td= link_to e.text, (AbstractFlight === e.item ? flight_path(e.item) : flight_path(e.item.abstract_flight))
+        - else
+          %td=h e.text
+        %td= "#{(e.to_id == @financial_account.id ? "+" : "-")} #{format_currency(e.value)}"
+  %tr
+    %th{colspan: 3}
+      Bereits Abgerechnet
+  - accounting_entries.select { |entry| !entry.accounting_session.nil? }.each do |e|
     %tr
       %td=l e.date.to_date
       - if e.item
