@@ -16,6 +16,9 @@
   %table.table.table-hover
     %tr
       %th= CostHint.l
+      %th
+        %span #
+        = Person.l
       %th #
       %th= Flight.l("duration")
     - sum_cnt = sum_duration = 0
@@ -28,10 +31,12 @@
             = @cost_hints[row['cost_hint_id']].name
           - else
             Normal
+        %td= row['pilot_count']
         %td= row['cnt']
         %td= format_minutes row['duration'].to_i
     %tr
       %td Summe
+      %td= @pilot_stats[plane.id]
       %td= sum_cnt
       %td= format_minutes sum_duration
 
