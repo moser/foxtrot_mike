@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "~> 3.2"
+gem "rails", "~> 3.2.22.2"
 gem "rails3-generators"
 
 gem "haml-rails"
@@ -20,6 +20,10 @@ gem "jquery-rails"
 gem "rails-backbone", "0.9.10"
 gem "coffee-rails"
 gem 'haml_coffee_assets'
+
+
+#gem 'pg'
+
 
 group :assets do
   gem "therubyracer", "0.10.2"
