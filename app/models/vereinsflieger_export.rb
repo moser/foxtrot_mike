@@ -85,10 +85,12 @@ def export(from, to)
         flight.plane.make,
       ]
       if flight.launch_type == "WireLaunch"
-        row += [
-          flight.launch.wire_launcher,
-          "#{flight.launch.operator.lastname}, #{flight.launch.operator.firstname}"
-        ]
+        row += [flight.launch.wire_launcher]
+        if not flight.launch.operator.nil?
+          row += ["#{flight.launch.operator.lastname}, #{flight.launch.operator.firstname}"]
+        else
+          row += [nil]
+        end
       else
         row += [
           nil, nil
