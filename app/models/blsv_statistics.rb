@@ -6,7 +6,7 @@ class BlsvStatistics
   end
   
   def by_year
-    people.filter { |p| not p.birthdate.nil? }.group_by { |p| p.birthdate.year }.map do |y, v|
+    people.select { |p| not p.birthdate.nil? }.group_by { |p| p.birthdate.year }.map do |y, v|
       [y, v.group_by(&:sex).map { |s, v| [s, v.count] }.sort_by { |a| a[0] }]
     end.sort_by { |a| a[0] }
   end
